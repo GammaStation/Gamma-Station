@@ -495,6 +495,8 @@
 	blood_color = /datum/dirt_cover/oil
 	flesh_color = "#575757"
 
+	has_gendered_icons = FALSE // It's a freaking machine, come on!
+
 /datum/species/abductor
 	name = ABDUCTOR
 	darksight = 3
