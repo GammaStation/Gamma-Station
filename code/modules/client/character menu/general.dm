@@ -328,7 +328,7 @@
 								continue
 							if(!(species in S.species_allowed))
 								continue
-							var/datum/robolimb/IPC_monitor = all_robolimbs[organ_prost_data[BP_HEAD]]
+							var/datum/robolimb/IPC_monitor = new all_robolimbs[organ_prost_data[BP_HEAD]]
 							if(species == IPC && !IPC_monitor.monitor)
 								continue
 
@@ -502,7 +502,7 @@
 
 							var/list/prothesis_types = list()
 							for(var/company in all_robolimbs)
-								var/datum/robolimb/limb_type = all_robolimbs[company]
+								var/datum/robolimb/limb_type = new all_robolimbs[company]
 								if(limb in limb_type.parts)
 									if(("exclude" in limb_type.restrict_species) && !(species in limb_type.restrict_species))
 										prothesis_types += company

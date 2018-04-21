@@ -49,6 +49,8 @@
 	var/sabotaged = FALSE                 // If a prosthetic limb is emagged, it will detonate when it fails.
 	var/protected = 0                 // Protection against EMP.
 	var/has_grid = FALSE              // Used for checking, whether limb has a grid inbuilt.
+	var/speed_tally = 0
+	var/speed_carry = 0
 
 /obj/item/organ/external/insert_organ()
 	..()
@@ -58,6 +60,16 @@
 
 	if(parent)
 		parent.children += src
+
+/obj/item/organ/external/atom_init()
+	. = ..()
+	if(model)
+		speed_tally = model.speed_mod
+		speed_carry = model.speed_carry
+
+/obj/item/organ/external/Destroy()
+	model = null
+	return ..()
 
 /****************************************************
 			   DAMAGE PROCS
@@ -363,6 +375,18 @@ This function completely restores a damaged organ to perfect condition.
 	// Process wounds, doing healing etc. Only do this every few ticks to save processing power
 	if(owner.life_tick % wound_update_accuracy == 0)
 		update_wounds()
+
+	if((status & ORGAN_ROBOT) && model && model.tech_tier < HIGH_TECH_PROSTHETIC) // They do boom, but ain't gone. Fix 'em up untill it's too late!
+		if(prob(brute_dam + burn_dam) && sabotaged)
+			explosion(get_turf(owner), -1, -1, 2, 3)
+			var/datum/effect/effect/system/spark_spread/spark_system = new
+			spark_system.set_up(5, 0, owner)
+			spark_system.attach(owner)
+			spark_system.start()
+			sleep(10)
+			qdel(spark_system)
+		if(prob(brute_dam + burn_dam) && !sabotaged) // If it ain't broke yet. It might become.
+			sabotaged = !sabotaged
 
 	//Chem traces slowly vanish
 	if(owner.life_tick % 10 == 0)
@@ -924,7 +948,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	status |= ORGAN_ROBOT
 	destspawn = 0
 	amputated = 0
-	model = all_robolimbs[company]
+	model = new all_robolimbs[company]
 	protected = model.protected
 	if(model.low_quality && prob(50)) // Even non-broken low quality prosthetics can break, on attachment.
 		sabotaged = TRUE

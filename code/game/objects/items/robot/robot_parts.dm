@@ -15,12 +15,16 @@
 /obj/item/robot_parts/atom_init()
 	. = ..()
 	if(!model)
-		model = all_robolimbs["Unbranded"]
+		model = new all_robolimbs["Unbranded"]
 	get_brand()
+
+/obj/item/robot_parts/Destroy()
+	model = null
+	return ..()
 
 /obj/item/robot_parts/proc/get_brand()
 	name = "[model.company] [initial(name)]"
-	desc = "[initial(desc)] Model seems to be [model.company]."
+	desc += " Model seems to be [model.company]."
 	protected = model.protected
 	if(model.low_quality && prob(50)) // 50% chance for a low quality prosthetic to be sabotaged.
 		sabotaged = model.low_quality

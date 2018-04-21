@@ -60,8 +60,7 @@
 				tally += 0.8
 			else if(BP.status & ORGAN_BROKEN)
 				tally += 3
-			else if((BP.status & ORGAN_ROBOT) && BP.model && !clothing_slowdown)
-				clothing_slowdown = max(clothing_slowdown - BP.model.speed_carry, 0)
+			clothing_slowdown = max(0, clothing_slowdown - BP.speed_carry)
 
 		tally += clothing_slowdown
 
@@ -72,9 +71,9 @@
 		if(CH && (CH.status & ORGAN_ROBOT) && CH.model)
 			max_weight = CH.model.weight_max
 		else
-			max_weight = 4
+			max_weight = 4 // 4 prothesises a normal human can wear
 
-		for(var/obj/item/organ/external/BP in BP_ALL)
+		for(var/obj/item/organ/external/BP in bodyparts)
 			if(!BP)
 				continue
 			if((BP.status & ORGAN_ROBOT) && BP.model)

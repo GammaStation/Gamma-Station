@@ -1277,10 +1277,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 				drop_from_inventory(W)
 			var/obj/tool_chosen = arm.model.possible_tools[choice_tool]
 			var/obj/tool_created = new tool_chosen()
-			if(hand)
-				put_in_l_hand(tool_created)
-			else
-				put_in_r_hand(tool_created)
+			put_in_active_hand(tool_created)
 
 	else if(!arm)
 		to_chat(usr, "<span class='notice'>You couldn't change the tooltype of a hand. Because you didn't have a hand.</span>")

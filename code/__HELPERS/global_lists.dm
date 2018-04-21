@@ -65,7 +65,7 @@
 
 	// Robotic limb types.
 	for(var/limb_type in typesof(/datum/robolimb))
-		var/datum/robolimb/R = new limb_type()
+		var/datum/robolimb/R = limb_type
 		all_robolimbs[R.company] = R
 
 /* // Uncomment to debug chemical reaction list.
