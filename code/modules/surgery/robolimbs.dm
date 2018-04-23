@@ -170,8 +170,8 @@
 	BP.sabotaged = L.sabotaged
 	BP.has_grid = L.has_grid
 	BP.robotize(L.model.company)
-  BP.sabotaged = L.sabotaged
-  BP.has_grid = L.has_grid
+	BP.sabotaged = L.sabotaged
+	BP.has_grid = L.has_grid
 	if(target_zone == BP_HEAD && !target.has_eyes())
 		target.organs += E
 		target.organs_by_name += O_EYES
