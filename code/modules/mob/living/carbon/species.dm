@@ -43,7 +43,6 @@
 
 	var/body_temperature = 310.15	//non-IS_SYNTHETIC species will try to stabilize at this temperature. (also affects temperature processing)
 	var/synth_temp_gain = 0			//IS_SYNTHETIC species will gain this much temperature every second
-	var/reagent_tag                 //Used for metabolizing reagents.
 
 	var/taste_sensitivity = TASTE_SENSITIVITY_NORMAL //the most widely used factor; humans use a different one
 	var/dietflags = 0	// Make sure you set this, otherwise it won't be able to digest a lot of foods
@@ -56,7 +55,6 @@
 	var/hazard_low_pressure = HAZARD_LOW_PRESSURE     // Dangerously low pressure.
 
 	var/list/flags = list()       // Various specific features.
-
 	var/list/abilities = list()	// For species-derived or admin-given powers
 
 	var/blood_color = "#A10808" //Red.
@@ -144,6 +142,9 @@
 /datum/species/proc/on_loose(mob/living/carbon/human/H)
 	return
 
+/datum/species/proc/regen(mob/living/carbon/human/H, light_amount, External) // Perhaps others will regenerate in different ways?
+	return
+
 /datum/species/proc/handle_death(mob/living/carbon/human/H) //Handles any species-specific death events (such nymph spawns).
 	if(flags[IS_SYNTHETIC])
  //H.make_jittery(200) //S-s-s-s-sytem f-f-ai-i-i-i-i-lure-ure-ure-ure
@@ -203,8 +204,6 @@
 	)
 
 	flesh_color = "#34AF10"
-
-	reagent_tag = IS_UNATHI
 	base_color = "#066000"
 
 /datum/species/tajaran
@@ -275,8 +274,6 @@
 
 	flesh_color = "#8CD7A3"
 
-	reagent_tag = IS_SKRELL
-
 /datum/species/vox
 	name = VOX
 	icobase = 'icons/mob/human_races/r_vox.dmi'
@@ -304,7 +301,6 @@
 
 	blood_color = "#2299FC"
 	flesh_color = "#808D11"
-	reagent_tag = IS_VOX
 
 	sprite_sheets = list(
 		"suit" = 'icons/mob/species/vox/suit.dmi',
@@ -379,7 +375,6 @@
 
 	blood_color = "#2299FC"
 	flesh_color = "#808D11"
-	reagent_tag = IS_VOX
 	tail = "armalis_tail"
 	icon_template = 'icons/mob/human_races/r_armalis.dmi'
 
@@ -411,6 +406,7 @@
 	heat_level_2 = 3000
 	heat_level_3 = 4000
 
+	burn_mod = 1.3
 	speed_mod = 7
 
 	body_temperature = T0C + 15		//make the plant people have a bit lower body temperature, why not
@@ -426,25 +422,54 @@
 	,NO_PAIN = TRUE
 	)
 
+	has_bodypart = list(
+		 BP_CHEST  = /obj/item/organ/external/chest
+		,BP_GROIN  = /obj/item/organ/external/groin
+		,BP_HEAD   = /obj/item/organ/external/head/diona
+		,BP_L_ARM  = /obj/item/organ/external/l_arm
+		,BP_R_ARM  = /obj/item/organ/external/r_arm
+		,BP_L_LEG  = /obj/item/organ/external/l_leg
+		,BP_R_LEG  = /obj/item/organ/external/r_leg
+		)
+
 	has_organ = list(
 		O_HEART   = /obj/item/organ/internal/heart,
-		O_BRAIN   = /obj/item/organ/internal/brain,
+		O_BRAIN   = /obj/item/organ/internal/brain/diona,
 		O_EYES    = /obj/item/organ/internal/eyes,
 		O_LUNGS   = /obj/item/organ/internal/lungs/diona,
-		O_LIVER   = /obj/item/organ/internal/liver,
-		O_KIDNEYS = /obj/item/organ/internal/kidneys
+		O_LIVER   = /obj/item/organ/internal/liver/diona,
+		O_KIDNEYS = /obj/item/organ/internal/kidneys/diona
 		)
 
 	blood_color = "#004400"
 	flesh_color = "#907E4A"
 
-	reagent_tag = IS_DIONA
 	has_gendered_icons = FALSE
 
 /datum/species/diona/handle_post_spawn(mob/living/carbon/human/H)
 	H.gender = NEUTER
 
 	return ..()
+
+/datum/species/diona/regen(mob/living/carbon/human/H, light_amount, External)
+	if(light_amount >=5) // If you can regen organs - do so.
+		for(var/obj/item/organ/internal/O in H.organs)
+			if(O.damage)
+				O.damage -= light_amount/10
+				H.nutrition -= light_amount
+				return
+			continue
+	if(H.nutrition > 350 && light_amount >= 4) // If you don't need to regen organs, regen bodyparts.
+		External = H.find_damaged_bodypart(External)
+		if(External)
+			H.nutrition -= 1
+			H.apply_damages(0,0,1,1,0,0)
+			H.regen_bodyparts(External, TRUE)
+			return
+	if(light_amount >= 3) // If you don't need to regen bodyparts, fix up small things.
+		H.adjustBruteLoss(-(light_amount))
+		H.adjustToxLoss(-(light_amount))
+		H.adjustOxyLoss(-(light_amount))
 
 /datum/species/diona/handle_death(mob/living/carbon/human/H)
 
@@ -461,11 +486,12 @@
 
 	H.visible_message("\red[H] splits apart with a wet slithering noise!")
 
+
 /datum/species/machine
 	name = IPC
 	icobase = 'icons/mob/human_races/r_machine.dmi'
 	deform = 'icons/mob/human_races/r_machine.dmi'
-	language = "Tradeband"
+	language = "Trinary"
 	unarmed_type = /datum/unarmed_attack/punch
 	dietflags = 0		//IPCs can't eat, so no diet
 	taste_sensitivity = TASTE_SENSITIVITY_NO_TASTE
@@ -498,6 +524,25 @@
 	,VIRUS_IMMUNE = TRUE
 	,BIOHAZZARD_IMMUNE = TRUE
 	)
+
+	has_bodypart = list(
+		 BP_CHEST  = /obj/item/organ/external/chest
+		,BP_GROIN  = /obj/item/organ/external/groin
+		,BP_HEAD   = /obj/item/organ/external/head/ipc
+		,BP_L_ARM  = /obj/item/organ/external/l_arm
+		,BP_R_ARM  = /obj/item/organ/external/r_arm
+		,BP_L_LEG  = /obj/item/organ/external/l_leg
+		,BP_R_LEG  = /obj/item/organ/external/r_leg
+		)
+
+	has_organ = list(
+		 O_HEART   = /obj/item/organ/internal/heart/ipc
+		,O_BRAIN   = /obj/item/organ/internal/brain/ipc
+		,O_EYES    = /obj/item/organ/internal/eyes/ipc
+		,O_LUNGS   = /obj/item/organ/internal/lungs/ipc
+		,O_LIVER   = /obj/item/organ/internal/liver/ipc
+		,O_KIDNEYS = /obj/item/organ/internal/kidneys/ipc
+		)
 
 	blood_color = "#1F181F"
 	flesh_color = "#575757"
