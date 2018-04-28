@@ -96,6 +96,8 @@
 
 		handle_heart_beat()
 
+		handle_feces()
+
 	handle_stasis_bag()
 
 	if(life_tick > 5 && timeofdeath && (timeofdeath < 5 || world.time - timeofdeath > 6000))	//We are long dead, or we're junk mobs spawned like the clowns on the clown shuttle
@@ -831,6 +833,7 @@
 			thermal_protection += THERMAL_PROTECTION_ARM_LEFT
 		if(thermal_protection_flags & ARM_RIGHT)
 			thermal_protection += THERMAL_PROTECTION_ARM_RIGHT
+
 
 	return min(1,thermal_protection)
 
@@ -1731,6 +1734,20 @@
 				temp = PULSE_NONE
 
 	return temp
+
+/mob/living/carbon/human/proc/handle_feces()
+	if(prob(5) && feces_count < MAX_FECES_COUNT && nutrition >= NUTRITION_LEVEL_FED )
+		switch(nutrition)
+			if(NUTRITION_LEVEL_FED to NUTRITION_LEVEL_FULL)
+				feces_count += 0.1
+			if(NUTRITION_LEVEL_FULL to INFINITY)
+				feces_count += 0.5
+
+	if(feces_count > MAX_FECES_COUNT)
+		feces_count = MAX_FECES_COUNT
+
+//	to_chat(src, "<span class='notice'>[feces_count].</span>")
+
 
 /*
 	Called by life(), instead of having the individual hud items update icons each tick and check for status changes

@@ -391,23 +391,23 @@
 
 	BP.embed(I, null, null, created_wound)
 
-/mob/living/carbon/human/bloody_hands(mob/living/source, amount = 2)
+/mob/living/carbon/human/bloody_hands(mob/living/source, amount = 2, blood_color)
 	if (gloves)
-		gloves.add_blood(source)
+		gloves.add_blood(source,blood_color)
 		gloves:transfer_blood = amount
 		gloves:bloody_hands_mob = source
 	else
-		add_blood(source)
+		add_blood(source,blood_color)
 		bloody_hands = amount
 		bloody_hands_mob = source
 	update_inv_gloves()		//updates on-mob overlays for bloody hands and/or bloody gloves
 
-/mob/living/carbon/human/bloody_body(mob/living/source)
+/mob/living/carbon/human/bloody_body(mob/living/source,blood_color)
 	if(wear_suit)
-		wear_suit.add_blood(source)
+		wear_suit.add_blood(source,blood_color)
 		update_inv_wear_suit()
 	if(w_uniform)
-		w_uniform.add_blood(source)
+		w_uniform.add_blood(source,blood_color)
 		update_inv_w_uniform()
 
 /mob/living/carbon/proc/check_thickmaterial(obj/item/organ/external/BP, target_zone)

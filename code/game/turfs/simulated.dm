@@ -140,7 +140,7 @@
 	..()
 
 //returns 1 if made bloody, returns 0 otherwise
-/turf/simulated/add_blood(mob/living/carbon/human/M)
+/turf/simulated/add_blood(mob/living/carbon/human/M,b_color)
 	if (!..())
 		return 0
 
@@ -161,6 +161,9 @@
 	else
 		newblood.basecolor = "#A10808"
 
+	if(b_color)
+		newblood.basecolor = b_color
+
 	newblood.blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
 	newblood.virus2 = virus_copylist(M.virus2)
 	newblood.update_icon()
@@ -169,7 +172,7 @@
 
 
 // Only adds blood on the floor -- Skie
-/turf/simulated/proc/add_blood_floor(mob/living/carbon/M)
+/turf/simulated/proc/add_blood_floor(mob/living/carbon/M,b_color)
 	if(istype(M, /mob/living/carbon/monkey))
 
 		var/obj/effect/decal/cleanable/blood/this = new /obj/effect/decal/cleanable/blood(src)
@@ -187,6 +190,9 @@
 			this.basecolor = H.species.blood_color
 		else
 			this.basecolor = "#A10808"
+
+		if(b_color)
+			this.basecolor = b_color
 		this.update_icon()
 
 		this.blood_DNA[M.dna.unique_enzymes] = M.dna.b_type

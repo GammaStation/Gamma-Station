@@ -557,12 +557,24 @@
 		if ("help")
 			to_chat(src, "blink, blink_r, blush, bow-(none)/mob, burp, choke, chuckle, clap, collapse, cough,\ncry, custom, deathgasp, drool, eyebrow, frown, gasp, giggle, groan, grumble, handshake, hug-(none)/mob, glare-(none)/mob,\ngrin, laugh, look-(none)/mob, moan, mumble, nod, pale, point-atom, raise, salute, shake, shiver, shrug,\nsigh, signal-#1-10, smile, sneeze, sniff, snore, stare-(none)/mob, tremble, twitch, twitch_s, whimper,\nwink, yawn")
 
+	//HOT STUFF
+		if (("poo"))
+			if (feces_count < MAX_FECES_COUNT)
+				to_chat(src, "<span class='notice'>You can't poo now.</span>")
+			else
+				feces_count = 0
+				nutrition -= 80
+				adjustToxLoss(-1)
+				playsound(src.loc, 'sound/effects/squish.ogg', 40, 1)
+				var/turf/location = loc
+				if (istype(location, /turf/simulated))
+					new /obj/effect/decal/cleanable/blood/poo(location)
+				new /obj/item/weapon/reagent_containers/food/snacks/solid_shit(src.loc)
+				to_chat(src, "<span class='warning'>You poo on the floor. </span>")
+				message = "<B>[src]</B> shits on the floor!"
+
 		else
 			to_chat(src, "\blue Unusable emote '[act]'. Say *help for a list.")
-
-
-
-
 
 	if (message)
 		log_emote("[name]/[key] : [message]")

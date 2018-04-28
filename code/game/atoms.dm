@@ -218,13 +218,15 @@
 		else
 			f_name = "a "
 		if(!src.blood_color) //Oil and blood puddles got 'blood_color = NULL', however they got 'color' instead
-			if(src.color == "#030303")
+			if(src.color == "#030303" || src.color ==  POOP_COLOR)
 				f_name += "<span class='warning'>[name]</span>!"
 			else
 				f_name += "<span class='danger'>[name]</span>!"
 		else
 			if(src.blood_color == "#030303")	//TODO: Define blood colors or make oil != blood
 				f_name += "<span class='warning'>oil-stained</span> [name]!"
+			else if(src.blood_color ==  POOP_COLOR)
+				f_name += "<span class='warning'>shit-stained</span> [name]!"
 			else
 				f_name += "<span class='danger'>blood-stained</span> [name]!"
 
@@ -422,7 +424,7 @@
 
 
 //returns 1 if made bloody, returns 0 otherwise
-/atom/proc/add_blood(mob/living/carbon/human/M)
+/atom/proc/add_blood(mob/living/carbon/human/M,b_color)
 	if(flags & NOBLOODY) return 0
 	.=1
 	if (!( istype(M, /mob/living/carbon/human) ))
@@ -436,6 +438,8 @@
 	blood_color = "#A10808"
 	if (M.species)
 		blood_color = M.species.blood_color
+	if(b_color)
+		blood_color = b_color
 	return
 
 /atom/proc/add_vomit_floor(mob/living/carbon/M, toxvomit = 0)
