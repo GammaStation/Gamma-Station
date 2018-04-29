@@ -129,7 +129,7 @@
 		for(var/obj/item/organ/external/BP in H.bodyparts)
 			if(BP.status & (ORGAN_CUT_AWAY | ORGAN_DESTROYED))
 				continue
-			BP.status |= ORGAN_ROBOT
+			BP.robotize("Morpheus")
 		for(var/obj/item/organ/internal/IO in H.organs)
 			IO.mechanize()
 
@@ -548,6 +548,8 @@
 
 	blood_color = "#1F181F"
 	flesh_color = "#575757"
+
+	has_gendered_icons = FALSE // It's a freaking machine, come on!
 
 /datum/species/abductor
 	name = ABDUCTOR

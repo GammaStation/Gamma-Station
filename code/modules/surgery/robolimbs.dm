@@ -166,11 +166,12 @@
 	user.visible_message("\blue [user] has attached \the [tool] where [target]'s [BP.name] used to be.",
 	"\blue You have attached \the [tool] where [target]'s [BP.name] used to be.")
 	BP.germ_level = 0
-	BP.robotize()
-	if(L.sabotaged)
-		BP.sabotaged = TRUE
-	else
-		BP.sabotaged = FALSE
+	BP.robotize(L.model.company)
+	BP.sabotaged = L.sabotaged
+	BP.has_grid = L.has_grid
+	BP.robotize(L.model.company)
+	BP.sabotaged = L.sabotaged
+	BP.has_grid = L.has_grid
 	if(target_zone == BP_HEAD && !target.has_eyes())
 		target.organs += E
 		target.organs_by_name += O_EYES
