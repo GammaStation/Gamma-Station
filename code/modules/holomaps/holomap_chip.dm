@@ -1,11 +1,13 @@
+var/global/list/holochips = list()
+
 /obj/item/holochip
 	name = "Holomap chip"
 	desc = "A small holomap module, attached to helmets."
 	icon = 'icons/holomaps/holochips.dmi'
 	icon_state = "holochip"
-	var/role_filter = null
-	var/color_filter = null
-	var/marker_prefix = null
+	var/role_filter = null //Because all holochips are stored in one list, this is used to display holochips only with same role_filters
+	var/color_filter = null //Color for station's image, defined in flags.dm
+	var/marker_prefix = null //Marker prefix for mob indicator on holomap, see holomap_markers.dmi
 
 	var/mob/activator = null
 	var/obj/item/holder = null
@@ -44,9 +46,6 @@
 		default_holomap = image(generate_holo_map())
 	holomap_base = default_holomap
 	holochips += src
-	if(!default_holomap)
-		default_holomap = image(generate_holo_map())
-	holomap_base = default_holomap
 	if(color_filter)
 		holomap_base.color = color_filter
 	holomap_base.loc = activator.hud_used.holomap_obj
@@ -136,7 +135,7 @@
 #undef HOLOMAP_WALKABLE_TILE
 #undef HOLOMAP_CONCRETE_TILE
 
-//Ãîëîãğàôè÷åñêèå ÷èïû äëÿ ğàçíûõ ğîëåé. ß Î×ÅÍÜ ÄÎËÃÎ ÄÓÌÀË ÊÀÊ İÒÎ ÌÎÆÍÎ ÑÄÅËÀÒÜ ÊÎĞÎ×Å, ÍÎ ×ÒÎ-ÒÎ ÍÅ ÂÛØËÎ
+//Holochip filters for different roles and marker_prefixes
 
 /obj/item/holochip/deathsquad
 	desc = "A small holomap module, attached to helmets. There is a NT logo and a skull on it's case"

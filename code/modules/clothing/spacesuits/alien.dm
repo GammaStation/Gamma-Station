@@ -110,7 +110,7 @@
 	desc = "Hey, wasn't this a prop in \'The Abyss\'?"
 
 /obj/item/clothing/head/helmet/space/vox/pressure/atom_init()
-	.=..()
+	. = ..()
 	holochip = new /obj/item/holochip/vox/pressure(src)
 	holochip.holder = src
 
@@ -128,7 +128,7 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 
 /obj/item/clothing/head/helmet/space/vox/carapace/atom_init()
-	.=..()
+	. = ..()
 	holochip = new /obj/item/holochip/vox/carapace(src)
 	holochip.holder = src
 
@@ -146,7 +146,7 @@
 	armor = list(melee = 60, bullet = 30, laser = 30, energy = 15, bomb = 30, bio = 30, rad = 30)
 
 /obj/item/clothing/head/helmet/space/vox/stealth/atom_init()
-	.=..()
+	. = ..()
 	holochip = new /obj/item/holochip/vox/stealth(src)
 	holochip.holder = src
 
@@ -236,7 +236,7 @@
 	desc = "An alien helmet with enormous goggled lenses."
 
 /obj/item/clothing/head/helmet/space/vox/medic/atom_init()
-	.=..()
+	. = ..()
 	holochip = new /obj/item/holochip/vox/medical(src)
 	holochip.holder = src
 

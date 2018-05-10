@@ -309,19 +309,23 @@ BLIND     // can't see anything
 	var/obj/item/holochip/holochip = null
 
 /obj/item/clothing/head/helmet/space/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/holochip) && holochip == null)
+	if(istype(I, /obj/item/holochip))
+		if(holochip)
+			to_chat(user, "<span class='notice'>The [src] is already modified with the [holochip]</span>")
+			return
 		user.drop_item(I)
 		I.loc = src
 		holochip = I
 		holochip.holder = src
-		playsound(user.loc, 'sound/items/Screwdriver.ogg', 100, 1)
+		playsound(user, 'sound/items/Screwdriver.ogg', 100, 1)
 		to_chat(user, "<span class='notice'>[user] modifies the [src] with the [holochip]</span>")
-	if(istype(I, /obj/item/weapon/screwdriver))
+	else if(istype(I, /obj/item/weapon/screwdriver))
 		holochip.deactivate_holomap()
 		holochip.holder = null
-		holochip.forceMove(get_turf(src))
+		if(!user.put_in_hands(holochip))
+			holochip.forceMove(get_turf(src))
 		holochip = null
-		playsound(user.loc, 'sound/items/Screwdriver.ogg', 100, 1)
+		playsound(user, 'sound/items/Screwdriver.ogg', 100, 1)
 		to_chat(user, "<span class='notice'>[user] removes the [holochip] from the [src]</span>")
 
 /obj/item/clothing/head/helmet/space/verb/toggle_holomap()
@@ -330,7 +334,7 @@ BLIND     // can't see anything
 	set category = "Object"
 	set src in usr
 
-	if(holochip == null)
+	if(!holochip)
 		to_chat(usr, "<span class='notice'>You deactivate the holomap.</span>")
 		return
 	if(usr.incapacitated())

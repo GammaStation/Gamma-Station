@@ -49,9 +49,6 @@
 	item_color = "ert_commander"
 	armor = list(melee = 60, bullet = 65, laser = 55, energy = 45, bomb = 50, bio = 100, rad = 60)
 
-/obj/item/clothing/head/helmet/space/rig/ert/commander/atom_init()
-	.=..()
-
 /obj/item/clothing/suit/space/rig/ert/commander
 	name = "emergency response team commander suit"
 	desc = "A suit worn by the commander of a NanoTrasen Emergency Response Team. Has blue highlights. Armoured, space ready, and fire resistant."
@@ -70,7 +67,7 @@
 	armor = list(melee = 60, bullet = 60, laser = 60, energy = 30, bomb = 65, bio = 100, rad = 10)
 
 /obj/item/clothing/head/helmet/space/rig/ert/security/atom_init()
-	.=..()
+	. = ..()
 	holochip = new /obj/item/holochip/ert/security(src)
 	holochip.holder = src
 
@@ -93,7 +90,7 @@
 	armor = list(melee = 60, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 75)
 
 /obj/item/clothing/head/helmet/space/rig/ert/engineer/atom_init()
-	.=..()
+	. = ..()
 	holochip = new /obj/item/holochip/ert/engineering(src)
 	holochip.holder = src
 
@@ -112,7 +109,7 @@
 	item_color = "ert_medical"
 
 /obj/item/clothing/head/helmet/space/rig/ert/medical/atom_init()
-	.=..()
+	. = ..()
 	holochip = new /obj/item/holochip/ert/medical(src)
 	holochip.holder = src
 
