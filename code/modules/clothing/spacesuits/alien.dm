@@ -109,6 +109,11 @@
 	item_state = "vox-pressure"
 	desc = "Hey, wasn't this a prop in \'The Abyss\'?"
 
+/obj/item/clothing/head/helmet/space/vox/pressure/atom_init()
+	.=..()
+	holochip = new /obj/item/holochip/vox/pressure(src)
+	holochip.holder = src
+
 /obj/item/clothing/suit/space/vox/pressure
 	name = "alien pressure suit"
 	icon_state = "vox-pressure"
@@ -122,6 +127,11 @@
 	desc = "A glowing visor, perhaps stolen from a depressed Cylon."
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 
+/obj/item/clothing/head/helmet/space/vox/carapace/atom_init()
+	.=..()
+	holochip = new /obj/item/holochip/vox/carapace(src)
+	holochip.holder = src
+
 /obj/item/clothing/suit/space/vox/carapace
 	name = "alien carapace armour"
 	icon_state = "vox-carapace"
@@ -133,8 +143,12 @@
 	icon_state = "vox-stealth"
 	item_state = "vox-stealth"
 	desc = "A smoothly contoured, matte-black alien helmet."
-
 	armor = list(melee = 60, bullet = 30, laser = 30, energy = 15, bomb = 30, bio = 30, rad = 30)
+
+/obj/item/clothing/head/helmet/space/vox/stealth/atom_init()
+	.=..()
+	holochip = new /obj/item/holochip/vox/stealth(src)
+	holochip.holder = src
 
 /obj/item/clothing/suit/space/vox/stealth
 	name = "alien stealth suit"
@@ -220,6 +234,11 @@
 	icon_state = "vox-medic"
 	item_state = "vox-medic"
 	desc = "An alien helmet with enormous goggled lenses."
+
+/obj/item/clothing/head/helmet/space/vox/medic/atom_init()
+	.=..()
+	holochip = new /obj/item/holochip/vox/medical(src)
+	holochip.holder = src
 
 /obj/item/clothing/suit/space/vox/medic
 	name = "alien armour"

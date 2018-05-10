@@ -306,6 +306,46 @@ BLIND     // can't see anything
 	siemens_coefficient = 0.2
 	species_restricted = list("exclude" , DIONA , VOX)
 	sprite_sheets = list(VOX = 'icons/mob/species/vox/head.dmi')
+	var/obj/item/holochip/holochip = null
+
+/obj/item/clothing/head/helmet/space/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/holochip) && holochip == null)
+		user.drop_item(I)
+		I.loc = src
+		holochip = I
+		holochip.holder = src
+		playsound(user.loc, 'sound/items/Screwdriver.ogg', 100, 1)
+		to_chat(user, "<span class='notice'>[user] modifies the [src] with the [holochip]</span>")
+	if(istype(I, /obj/item/weapon/screwdriver))
+		holochip.deactivate_holomap()
+		holochip.holder = null
+		holochip.forceMove(get_turf(src))
+		holochip = null
+		playsound(user.loc, 'sound/items/Screwdriver.ogg', 100, 1)
+		to_chat(user, "<span class='notice'>[user] removes the [holochip] from the [src]</span>")
+
+/obj/item/clothing/head/helmet/space/verb/toggle_holomap()
+
+	set name = "Toggle holomap"
+	set category = "Object"
+	set src in usr
+
+	if(holochip == null)
+		to_chat(usr, "<span class='notice'>You deactivate the holomap.</span>")
+		return
+	if(usr.incapacitated())
+		to_chat(usr, "<span class='notice'>You need your hands free to do that!</span>")
+		return
+	if(holochip.activator)
+		holochip.deactivate_holomap()
+		to_chat(usr, "<span class='notice'>You deactivate the holomap.</span>")
+	else
+		holochip.activate_holomap(usr)
+		to_chat(usr, "<span class='notice'>You activate the holomap.</span>")
+
+/obj/item/clothing/head/helmet/space/Destroy()
+	QDEL_NULL(holochip)
+	return ..()
 
 /obj/item/clothing/suit/space
 	name = "space suit"

@@ -32,6 +32,8 @@
 	var/obj/screen/action_intent
 	var/obj/screen/move_intent
 	var/obj/screen/staminadisplay
+	var/obj/screen/holomap/holomap_obj
+
 
 	var/list/adding
 	var/list/other
