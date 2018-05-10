@@ -211,15 +211,10 @@ var/const/INGEST = 2
 	for(var/A in reagent_list)
 		var/datum/reagent/R = A
 		if(M && R)
-			var/remove_amount = R.custom_metabolism
 			R.on_mob_life(M, alien)
-			if(ishuman(M))
-				var/mob/living/carbon/human/H = M
-				remove_amount += H.species.custom_metabolism
-			else if(ismonkey(M))
-				var/mob/living/carbon/monkey/Y = M
-				remove_amount += Y.custom_metabolism
-			remove_reagent(R.id, remove_amount)
+			if(istype(M, /mob/living/carbon))
+				var/mob/living/carbon/C = M
+				remove_reagent(R.id, C.metabolism_factor)
 	update_total()
 
 /datum/reagents/proc/conditional_update_move(atom/A, Running = 0)
