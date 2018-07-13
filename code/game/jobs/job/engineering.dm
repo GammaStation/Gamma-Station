@@ -13,7 +13,8 @@
 		access_engine, access_engine_equip, access_tech_storage, access_maint_tunnels,
 		access_teleporter, access_external_airlocks, access_atmospherics, access_emergency_storage, access_eva,
 		access_heads, access_construction, access_sec_doors, access_minisat,
-		access_ce, access_RC_announce, access_keycard_auth, access_tcomsat, access_ai_upload
+		access_ce, access_RC_announce, access_keycard_auth, access_tcomsat, access_ai_upload,
+		access_medical, access_research
 	)
 	minimal_player_age = 7
 	minimal_player_ingame_minutes = 2400
