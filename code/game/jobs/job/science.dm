@@ -14,7 +14,7 @@
 		access_tox_storage, access_teleporter, access_sec_doors, access_minisat,
 		access_research, access_robotics, access_xenobiology, access_ai_upload,
 		access_RC_announce, access_keycard_auth, access_tcomsat, access_gateway, access_xenoarch,
-		access_maint_tunnels, access_medical, access_engine, access_construction
+		access_maint_tunnels, access_medical
 	)
 	minimal_player_age = 7
 	minimal_player_ingame_minutes = 5000

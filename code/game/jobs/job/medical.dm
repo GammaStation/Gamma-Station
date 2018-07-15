@@ -13,7 +13,7 @@
 		access_medical, access_morgue, access_paramedic, access_genetics, access_heads,
 		access_chemistry, access_virology, access_cmo, access_surgery, access_RC_announce,
 		access_keycard_auth, access_sec_doors, access_psychiatrist, access_maint_tunnels,
-		access_engine, access_research, access_mailsorting, access_construction
+		access_research, access_mailsorting
 	)
 	minimal_player_age = 10
 	minimal_player_ingame_minutes = 5000
