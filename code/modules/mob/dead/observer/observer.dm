@@ -555,7 +555,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	dat += "<h4>Crew Manifest</h4>"
 	dat += data_core.get_manifest()
 
-	src << browse(dat, "window=manifest;size=370x420;can_close=1")
+	src << browse(entity_ja(dat), "window=manifest;size=370x420;can_close=1")
 
 //Used for drawing on walls with blood puddles as a spooky ghost.
 /mob/dead/observer/verb/bloody_doodle()
@@ -607,7 +607,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(!choice || choice.amount == 0 || !(src.Adjacent(choice)))
 		return
 
-	var/doodle_color = (choice.basecolor) ? choice.basecolor : "#A10808"
+	var/datum/dirt_cover/doodle_color = new/datum/dirt_cover(choice.basedatum)
 
 	var/num_doodles = 0
 	for (var/obj/effect/decal/cleanable/blood/writing/W in T)
@@ -618,16 +618,16 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	var/max_length = 50
 
-	var/message = stripped_input(src,"Write a message. It cannot be longer than [max_length] characters.","Blood writing", "")
+	var/message = sanitize_safe(input(src,"Write a message. It cannot be longer than [max_length] characters.","Blood writing", ""))
 
 	if (message)
 
 		if (length(message) > max_length)
-			message += "-"
+			message += "-"//Should crop any letters? No?
 			to_chat(src, "<span class='warning'>You ran out of blood to write with!</span>")
 
 		var/obj/effect/decal/cleanable/blood/writing/W = new(T)
-		W.basecolor = doodle_color
+		W.basedatum = new/datum/dirt_cover(doodle_color)
 		W.update_icon()
 		W.message = message
 		W.add_hiddenprint(src)
@@ -675,3 +675,28 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 /mob/dead/observer/IsAdvancedToolUser()
 	return IsAdminGhost(src)
+
+/mob/dead/observer/verb/change_icon()
+	set name = "Change Dead Icon"
+	set category = "Ghost"
+	if(!config.allow_donators)
+		to_chat(src, "<span class='warning'>Currently disabled by config.</span>")
+		return
+	if(!client.donator)
+		if(config.donate_info_url)
+			to_chat(src, "<span class='warning'>This only for donators, more info <a href='[config.donate_info_url]' target='_blank'>here</a>.</span>")
+		else
+			to_chat(src, "<span class='warning'>This only for donators, sorry.</span>")
+		return
+	var/new_icon_state = input("Please choose a new appearance","Changing Appearance") in icon_states('icons/mob/donators.dmi')
+	if(!new_icon_state)
+		return
+	overlays.Cut()
+	alpha = 127
+	icon = 'icons/mob/donators.dmi'
+	icon_state = new_icon_state
+	ghost_darkness_images -= ghostimage
+	qdel(ghostimage)
+	ghostimage = image(icon, src, icon_state)
+	ghost_darkness_images |= ghostimage
+	updateallghostimages()

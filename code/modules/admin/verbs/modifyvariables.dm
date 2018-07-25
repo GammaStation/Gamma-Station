@@ -39,7 +39,7 @@ var/list/forbidden_varedit_object_types = list(
 	switch(class)
 
 		if("text")
-			var_value = input("Enter new text:","Text") as null|text
+			var_value = sanitize(input("Enter new text:","Text") as null|text)
 
 		if("num")
 			var_value = input("Enter new number:","Num") as null|num
@@ -88,7 +88,7 @@ var/list/forbidden_varedit_object_types = list(
 	switch(class)
 
 		if("text")
-			var_value = input("Enter new text:","Text") as text
+			var_value = sanitize(input("Enter new text:","Text") as text)
 
 		if("num")
 			var_value = input("Enter new number:","Num") as num
@@ -243,7 +243,7 @@ var/list/forbidden_varedit_object_types = list(
 			return
 
 		if("text")
-			L[L.Find(variable)] = input("Enter new text:","Text") as text
+			L[L.Find(variable)] = sanitize(input("Enter new text:","Text") as text)
 
 		if("num")
 			L[L.Find(variable)] = input("Enter new number:","Num") as num
@@ -271,7 +271,7 @@ var/list/forbidden_varedit_object_types = list(
 	if(!check_rights(R_VAREDIT))	return
 
 	var/list/icons_modifying = list("resize")
-	var/list/locked = list("vars", "key", "ckey", "client", "virus", "viruses", "mutantrace", "player_ingame_age", "summon_type")
+	var/list/locked = list("vars", "key", "ckey", "client", "virus", "viruses", "mutantrace", "player_ingame_age", "summon_type", "AI_Interact")
 	var/list/typechange_locked = list("player_next_age_tick","player_ingame_age")
 	var/list/fully_locked = list("holder", "player_next_age_tick", "resize_rev")
 

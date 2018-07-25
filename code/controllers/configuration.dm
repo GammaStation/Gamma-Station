@@ -80,6 +80,7 @@
 
 	var/usealienwhitelist = 0
 	var/use_alien_job_restriction = 0
+	var/disallow_gene_hulks = 0
 	var/limitalienplayers = 0
 	var/alien_to_human_ratio = 0.5
 	var/list/whitelisted_species_by_time = list()
@@ -132,6 +133,9 @@
 	var/ban_legacy_system = 0	//Defines whether the server uses the legacy banning system with the files in /data or the SQL system. Config option in config.txt
 	var/use_age_restriction_for_jobs = 0 //Do jobs use account age restrictions? --requires database
 	var/use_ingame_minutes_restriction_for_jobs = 0 //Do jobs use in-game minutes instead account age for restrictions?
+
+	var/byond_version_min = 0
+	var/byond_version_recommend = 0
 
 	var/simultaneous_pm_warning_timeout = 100
 
@@ -218,6 +222,12 @@
 
 				if ("ban_legacy_system")
 					config.ban_legacy_system = 1
+
+				if ("byond_version_min")
+					config.byond_version_min = text2num(value)
+
+				if ("byond_version_recommend")
+					config.byond_version_recommend = text2num(value)
 
 				if ("use_age_restriction_for_jobs")
 					config.use_age_restriction_for_jobs = 1
@@ -459,6 +469,9 @@
 
 				if("use_alien_job_restriction")
 					config.use_alien_job_restriction = 1
+
+				if("disallow_gene_hulks")
+					config.disallow_gene_hulks = 1
 
 				if("alien_available_by_time") //totally not copypaste from probabilities
 					var/avail_time_sep = findtext(value, " ")

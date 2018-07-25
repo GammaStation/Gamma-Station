@@ -753,10 +753,10 @@
 	vend_delay = 34
 	icon_state = "cigs"
 	light_color = "#dddddd"
-	products = list(/obj/item/weapon/storage/fancy/cigarettes = 10,/obj/item/weapon/storage/fancy/cigarettes/menthol = 5,/obj/item/weapon/storage/box/matches = 10,/obj/item/weapon/lighter/random = 4)
+	products = list(/obj/item/weapon/storage/fancy/cigarettes/odetoviceroy_blue = 10,/obj/item/weapon/storage/fancy/cigarettes/odetoviceroy_green = 5,/obj/item/weapon/storage/box/matches = 10,/obj/item/weapon/lighter/random = 4)
 	contraband = list(/obj/item/weapon/lighter/zippo = 4)
 	premium = list(/obj/item/clothing/mask/cigarette/cigar/havana = 2)
-	prices = list(/obj/item/weapon/storage/fancy/cigarettes = 15,/obj/item/weapon/storage/fancy/cigarettes/menthol = 25,/obj/item/weapon/storage/box/matches = 1,/obj/item/weapon/lighter/random = 2)
+	prices = list(/obj/item/weapon/storage/fancy/cigarettes/odetoviceroy_blue = 15,/obj/item/weapon/storage/fancy/cigarettes/odetoviceroy_green = 20,/obj/item/weapon/storage/box/matches = 1,/obj/item/weapon/lighter/random = 2)
 	refill_canister = /obj/item/weapon/vending_refill/cigarette
 
 /obj/machinery/vending/medical
@@ -866,6 +866,73 @@
 	 /obj/item/device/modkit/wizard/unathi = 1, /obj/item/device/modkit/wizard/tajaran = 1, /obj/item/clothing/head/wizard/redhood = 1, /obj/item/clothing/head/wizard/bluehood = 1,
 	 /obj/item/clothing/suit/wizrobe/wiz_blue = 1, /obj/item/clothing/suit/wizrobe/wiz_red = 1)
 	contraband = list(/obj/item/weapon/reagent_containers/glass/bottle/wizarditis = 1)	//No one can get to the machine to hack it anyways; for the lulz - Microwave
+
+/obj/machinery/vending/weirdomat
+	name = "Weird-O-Mat"
+	desc = "A marvel, on the brink of technobabble and pixie fiction."
+	icon_state = "MagiVend"
+	light_color = "#97429a"
+	products = list(/obj/item/weapon/occult_pinpointer = 3,
+		/obj/item/device/occult_scanner = 3)
+	contraband = list(/obj/item/weapon/nullrod = 1)
+	product_slogans = "Amicitiae nostrae memoriam spero sempiternam fore;Aequam memento rebus in arduis servare mentem;Vitanda est improba siren desidia;Serva me, servabo te;Faber est suae quisque fortunae"
+	vend_reply = "Have fun! No returns!"
+	product_ads = "Occult is magic;Knowledge is magic;All the magic!;None to spook us;The dice has been cast"
+
+/obj/machinery/vending/weirdomat/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/device/occult_scanner))
+		var/obj/item/device/occult_scanner/OS = I
+		OS.scanned_type = src.type
+		to_chat(user, "<span class='notice'>[src] has been succesfully scanned by [OS]</span>")
+	if(istype(I, /obj/item/weapon/ectoplasm))
+		RedeemEctoplasm(I, user)
+		return
+	..()
+
+/obj/machinery/vending/weirdomat/proc/RedeemEctoplasm(obj/plasm, redeemer)
+	if(plasm.in_use)
+		return
+	plasm.in_use = TRUE
+	var/selection = input(redeemer, "Pick your eternal reward", "Ectoplasm Redemption") in list("Misfortune Set", "Spiritual Bond Set", "Contract From Below", "Cryptorecorder", "Black Candle Box", "Cancel")
+	if(!selection || !Adjacent(redeemer))
+		plasm.in_use = FALSE
+		return
+	switch(selection)
+		if("Misfortune Set")
+			new /obj/item/weapon/storage/pill_bottle/ghostdice(loc)
+		if("Spiritual Bond Set")
+			new /obj/item/weapon/game_kit/chaplain(loc)
+		if("Contract From Below")
+			new /obj/item/weapon/pen/ghost(loc)
+		if("Cryptorecorder")
+			new /obj/item/device/camera/spooky(loc)
+		if("Black Candle Box")
+			new /obj/item/weapon/storage/fancy/black_candle_box(loc)
+		if("Cancel")
+			plasm.in_use = FALSE
+			return
+	qdel(plasm)
+
+/obj/machinery/vending/barbervend
+	name = "Fab-O-Vend"
+	desc = "It would seem it vends dyes, and other stuff to make you pretty."
+	icon_state = "barbervend"
+	product_slogans = "Spread the colour, like butter, onto toast... Onto their hair.; Sometimes, I dream about dyes...; Paint 'em up and call me Mr. Painter.; Look brother, I'm a vendomat, I solve practical problems."
+	product_ads = "Cut 'em all!; To sheds!; Hair be gone!; Prettify!; Beautify!"
+	req_access_txt = "69"
+	refill_canister = /obj/item/weapon/vending_refill/barbervend
+	products = list(/obj/item/weapon/reagent_containers/glass/bottle/hair_dye/white = 10,
+					/obj/item/weapon/reagent_containers/glass/bottle/hair_dye/red = 10,
+					/obj/item/weapon/reagent_containers/glass/bottle/hair_dye/green = 10,
+					/obj/item/weapon/reagent_containers/glass/bottle/hair_dye/blue = 10,
+					/obj/item/weapon/reagent_containers/glass/bottle/hair_dye/black = 10,
+					/obj/item/weapon/reagent_containers/glass/bottle/hair_dye/brown = 10,
+					/obj/item/weapon/reagent_containers/glass/bottle/hair_dye/blond = 10,
+					/obj/item/weapon/reagent_containers/spray/hair_color_spray = 3)
+	contraband = list(/obj/item/weapon/razor = 1)
+	premium = list(/obj/item/weapon/scissors  = 3,
+				   /obj/item/weapon/hair_growth_accelerator = 3,
+				   /obj/item/weapon/storage/box/lipstick = 3)
 
 /obj/machinery/vending/dinnerware
 	name = "Dinnerware"

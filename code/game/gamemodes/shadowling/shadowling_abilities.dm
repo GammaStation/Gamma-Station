@@ -227,12 +227,13 @@
 
 /obj/effect/proc_holder/spell/targeted/shadowling_hivemind/cast(list/targets)
 	for(var/mob/living/user in targets)
-		var/text = stripped_input(user, "What do you want to say to fellow thralls and shadowlings?.", "Hive Chat", "")
+		var/text = sanitize(input(user, "What do you want to say to fellow thralls and shadowlings?.", "Hive Chat", ""))
 		if(!text)
 			return
 		for(var/mob/M in mob_list)
 			if(is_shadow_or_thrall(M) || isobserver(M))
-				to_chat(M, "<span class='shadowling'><b>\[Hive Chat\]</b><i> [usr.real_name]</i>: [sanitize(text)]</span>")
+				to_chat(M, "<span class='shadowling'><b>\[Hive Chat\]</b><i> [usr.real_name]</i>: [text]</span>")
+				log_say("Shadowling Hivemind: [key_name(usr)] : [text]")
 
 /obj/effect/proc_holder/spell/targeted/thrall_sight
 	name = "Dark Sight"
@@ -677,7 +678,7 @@ datum/reagent/shadowling_blindness_smoke/on_mob_life(var/mob/living/M as mob)
 
 /obj/effect/proc_holder/spell/targeted/shadowling_hivemind_ascendant/cast(list/targets)
 	for(var/mob/living/user in targets)
-		var/text = stripped_input(user, "What do you want to say to fellow thralls and shadowlings?.", "Hive Chat", "")
+		var/text = sanitize(input(user, "What do you want to say to fellow thralls and shadowlings?.", "Hive Chat", ""))
 		if(!text)
 			return
 		for(var/mob/M in mob_list)
@@ -697,7 +698,7 @@ datum/reagent/shadowling_blindness_smoke/on_mob_life(var/mob/living/M as mob)
 
 /obj/effect/proc_holder/spell/targeted/shadowlingAscendantTransmit/cast(list/targets)
 	for(var/mob/living/user in targets)
-		var/text = stripped_input(user, "What do you want to say to everything on and near [world.name]?.", "Transmit to World", "")
+		var/text = sanitize(input(user, "What do you want to say to everything on and near [world.name]?.", "Transmit to World", ""))
 		if(!text)
 			return
 		to_chat(world, "<font size=4><span class='shadowling'><b>\"[sanitize(text)]\"</font></span>")

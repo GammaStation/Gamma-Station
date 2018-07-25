@@ -19,10 +19,10 @@
 
 
 /datum/language/proc/format_message(message, verb)
-	return "[verb], <span class='message'><span class='[colour]'>\"[sanitize_plus_chat(capitalize(message))]\"</span></span>"
+	return "[verb], <span class='message'><span class='[colour]'>\"[capitalize(message)]\"</span></span>"
 
 /datum/language/proc/format_message_radio(message, verb)
-	return "[verb], <span class='[colour]'>\"[sanitize_plus_chat(capitalize(message))]\"</span>"
+	return "[verb], <span class='[colour]'>\"[capitalize(message)]\"</span>"
 
 /datum/language/proc/scramble(input)
 
@@ -96,8 +96,7 @@
 	exclaim_verb = "yowls"
 	colour = "tajaran_signlang"
 	allowed_species = list(TAJARAN)
-	key = list("y", "í")		//only "dfpqxyz" left.
-	//need to find a way to resolve possesive macros
+	key = list("y", "í")
 	signlang_verb = list("flicks their left ear", "flicks their right ear", "swivels their ears", "twitches their tail", "curls the end of their tail", "arches their tail", "wiggles the end of their tail", "waves their tail about", "holds up a claw", "gestures with their left hand", "gestures with their right hand", "gestures with their tail", "gestures with their ears")
 	flags = NONVERBAL
 
@@ -143,6 +142,18 @@
 	allowed_species = list(IPC, DIONA, SKRELL, UNATHI, TAJARAN)
 	syllables = list("tao","shi","tzu","yi","com","be","is","i","op","vi","ed","lec","mo","cle","te","dis","e")
 
+/datum/language/ipc
+	name = "Trinary"
+	desc = "A modified binary fuzzy logic based language spoken by IPC. Basically, is just a sequence of zeros, ones and twos."
+	speech_verb = "pings"
+	ask_verb = "beeps"
+	exclaim_verb = "boops"
+	colour = "ipc"
+	key = list("x", "?") //only "dfpz" left.
+	//need to find a way to resolve possesive macros
+	allowed_species = list(IPC)
+	syllables = list("000", "111", "222", "001", "010", "100", "002", "020", "200", "011", "101", "110", "022", "202", "220", "112", "121", "211", "122", "212", "221", "012", "021", "120", "210", "102", "201")
+
 // Galactic common languages (systemwide accepted standards).
 /datum/language/trader
 	name = "Tradeband"
@@ -150,7 +161,7 @@
 	speech_verb = "enunciates"
 	colour = "say_quote"
 	key = list("2")
-	allowed_species = list(HUMAN, DIONA, SKRELL, UNATHI, TAJARAN)
+	allowed_species = list(IPC, HUMAN, DIONA, SKRELL, UNATHI, TAJARAN)
 	syllables = list("lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
 					 "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore",
 					 "magna", "aliqua", "ut", "enim", "ad", "minim", "veniam", "quis", "nostrud",
@@ -205,5 +216,5 @@
 			dat += "(:[l_key])"
 		dat += " </b><br/>[L.desc]<br/><br/>"
 
-	src << browse(dat, "window=checklanguage")
+	src << browse(entity_ja(dat), "window=checklanguage")
 	return

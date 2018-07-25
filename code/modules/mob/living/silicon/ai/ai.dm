@@ -138,7 +138,8 @@ var/list/ai_verbs_default = list(
 	add_language("Siik'tajr", 0)
 	add_language("Skrellian", 0)
 	add_language("Rootspeak", 0)
-	add_language("Tradeband", 1)
+	add_language("Tradeband", 0)
+	add_language("Trinary", 1)
 	add_language("Gutter", 0)
 
 	if(!safety) // Only used by AIize() to successfully spawn an AI.
@@ -326,7 +327,7 @@ var/list/ai_verbs_default = list(
 		dat += "<BR>\n"
 
 	viewalerts = 1
-	src << browse(dat, "window=aialerts&can_close=0")
+	src << browse(entity_ja(dat), "window=aialerts&can_close=0")
 
 /mob/living/silicon/ai/var/message_cooldown = 0
 /mob/living/silicon/ai/proc/ai_announcement()
@@ -337,7 +338,7 @@ var/list/ai_verbs_default = list(
 	if(message_cooldown)
 		to_chat(src, "Please allow one minute to pass between announcements.")
 		return
-	var/input = stripped_input(usr, "Please write a message to announce to the station crew.", "A.I. Announcement")
+	var/input = sanitize(input(usr, "Please write a message to announce to the station crew.", "A.I. Announcement"))
 	if(!input)
 		return
 

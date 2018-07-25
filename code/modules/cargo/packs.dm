@@ -369,6 +369,16 @@ datum/supply_pack/New()
 	crate_name = "cigarette supply crate"
 	group = "Hospitality"
 
+/datum/supply_pack/vending_barber
+	name = "Barbershop supply crate"
+	contains = list(/obj/item/weapon/vending_refill/barbervend,
+					/obj/item/weapon/vending_refill/barbervend,
+					/obj/item/weapon/vending_refill/barbervend)
+	cost = 1500
+	crate_type = /obj/structure/closet/crate/freezer
+	crate_name = "barbershop supply crate"
+	group = "Hospitality"
+
 /datum/supply_pack/party
 	name = "Party equipment"
 	contains = list(/obj/item/weapon/storage/box/drinkingglasses,
@@ -376,7 +386,7 @@ datum/supply_pack/New()
 					/obj/item/weapon/reagent_containers/food/drinks/flask/barflask,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/patron,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/goldschlager,
-					/obj/item/weapon/storage/fancy/cigarettes/dromedaryco,
+					/obj/item/weapon/storage/fancy/cigarettes/odetoviceroy_red,
 					/obj/item/weapon/lipstick/random,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/ale,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/ale,
@@ -1221,7 +1231,7 @@ datum/supply_pack/New()
 					/obj/item/weapon/caution,
 					/obj/item/weapon/caution,
 					/obj/item/weapon/caution,
-					/obj/item/weapon/watertank/janitor,
+					/obj/item/weapon/reagent_containers/watertank_backpack/janitor,
 					/obj/item/weapon/storage/bag/trash,
 					/obj/item/weapon/reagent_containers/spray/cleaner,
 					/obj/item/weapon/reagent_containers/glass/rag,
@@ -1251,7 +1261,8 @@ datum/supply_pack/New()
 
 /datum/supply_pack/barber
 	name = "Barber supplies"
-	contains = list(/obj/item/weapon/storage/box/hairsprays,
+	contains = list(/obj/item/weapon/storage/box/hairdyes,
+	/obj/item/weapon/reagent_containers/spray/hair_color_spray,
 	/obj/item/weapon/hair_growth_accelerator,
 	/obj/item/weapon/scissors,
 	/obj/item/weapon/razor)

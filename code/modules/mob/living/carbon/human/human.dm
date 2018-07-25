@@ -67,6 +67,9 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		else
 			set_species()
 
+	if(species) // For safety, we put it seperately.
+		butcher_results = species.butcher_drops
+
 	dna.species = species.name
 
 	var/datum/reagents/R = new/datum/reagents(1000)
@@ -353,6 +356,62 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	put_in_inactive_hand(O)
 	return TRUE
 
+/mob/living/carbon/human/proc/is_damaged_organ(organ)
+	var/obj/item/organ/internal/IO = organs_by_name[organ]
+	if(!IO)
+		return TRUE
+	if(IO.is_bruised())
+		return TRUE
+	return FALSE
+
+/mob/living/carbon/human/proc/find_damaged_bodypart(External = null)
+	if(!External)
+		for(var/obj/item/organ/external/BP in bodyparts) // find a broken/destroyed limb
+			if(BP.status & ORGAN_DESTROYED)
+				if(BP.parent && (BP.parent.status & ORGAN_DESTROYED))
+					continue
+				else
+					heal_time = 65
+					External = BP
+			else if(BP.status & (ORGAN_BROKEN | ORGAN_SPLINTED))
+				heal_time = 30
+				External = BP
+			if(External)
+				break
+	return External
+
+/mob/living/carbon/human/proc/regen_bodyparts(obj/item/organ/external/External = null, use_cost = FALSE)
+	if(bodytemperature >= 170 && vessel && External) // start fixing broken/destroyed limb
+		for(var/datum/reagent/blood/B in vessel.reagent_list)
+			B.volume -= 4
+		data++
+		switch(data)
+			if(1)
+				visible_message("<span class='notice'>You see odd movement in [src]'s [External.name]...</span>","<span class='notice'> You [species && species.flags[NO_PAIN] ? "notice" : "feel"] strange vibration on tips of your [External.name]... </span>")
+			if(10)
+				visible_message("<span class='notice'>You hear sickening crunch In [src]'s [External.name]...</span>")
+			if(20)
+				visible_message("<span class='notice'>[src]'s [External.name] shortly bends...</span>")
+			if(30)
+				if(heal_time == 30)
+					visible_message("<span class='notice'>[src] stirs his [External.name]...</span>","<span class='userdanger'>You [species && species.flags[NO_PAIN] ? "notice" : "feel"] freedom in moving your [External.name]</span>")
+				else
+					visible_message("<span class='notice'>From [src]'s [External.parent.name] grows a small meaty sprout...</span>")
+			if(50)
+				visible_message("<span class='notice'>You see something resembling [External.name] at [src]'s [External.parent.name]...</span>")
+			if(65)
+				visible_message("<span class='userdanger'>A new [External.name] has grown from [src]'s [External.parent.name]!</span>","<span class='userdanger'>You [species && species.flags[NO_PAIN] ? "notice" : "feel"] your [External.name] again!</span>")
+		if(prob(50))
+			emote("scream",1,null,1)
+		if(data >= heal_time) // recover organ
+			External.rejuvenate()
+			data = 0
+			heal_time = 0
+			if(use_cost)
+				nutrition -= External.repair_cost
+			External = null
+			update_body()
+
 /mob/living/carbon/human/restrained(check_type = ARMS)
 	if ((check_type & ARMS) && handcuffed)
 		return TRUE
@@ -399,7 +458,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	<BR><A href='?src=\ref[user];refresh=1'>Refresh</A>
 	<BR><A href='?src=\ref[user];mach_close=mob[name]'>Close</A>
 	<BR>"}
-	user << browse(dat, text("window=mob[name];size=340x540"))
+	user << browse(entity_ja(dat), text("window=mob[name];size=340x540"))
 	onclose(user, "mob[name]")
 	return
 
@@ -668,7 +727,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 					for (var/datum/data/record/R in data_core.security)
 						if (R.fields["id"] == E.fields["id"])
 							if(hasHUD(usr,"security"))
-								var/t1 = sanitize(copytext(input("Add Comment:", "Sec. records", null, null)  as message,1,MAX_MESSAGE_LEN))
+								var/t1 = sanitize(input("Add Comment:", "Sec. records", null, null)  as message)
 								if ( !(t1) || usr.stat || usr.restrained() || !(hasHUD(usr,"security")) )
 									return
 								var/counter = 1
@@ -797,7 +856,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 					for (var/datum/data/record/R in data_core.medical)
 						if (R.fields["id"] == E.fields["id"])
 							if(hasHUD(usr,"medical"))
-								var/t1 = sanitize(copytext(input("Add Comment:", "Med. records", null, null)  as message,1,MAX_MESSAGE_LEN))
+								var/t1 = sanitize(input("Add Comment:", "Med. records", null, null)  as message)
 								if ( !(t1) || usr.stat || usr.restrained() || !(hasHUD(usr,"medical")) )
 									return
 								var/counter = 1
@@ -1158,7 +1217,8 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	if(blood_DNA[M.dna.unique_enzymes])
 		return 0 //already bloodied with this blood. Cannot add more.
 	blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
-	hand_blood_color = blood_color
+	hand_dirt_color = new/datum/dirt_cover/(dirt_overlay)
+
 	src.update_inv_gloves()	//handles bloody hands overlays and updating
 	verbs += /mob/living/carbon/human/proc/bloody_doodle
 	return 1 //we applied blood to the item
@@ -1166,7 +1226,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 /mob/living/carbon/human/clean_blood(var/clean_feet)
 	.=..()
 	if(clean_feet && !shoes && istype(feet_blood_DNA, /list) && feet_blood_DNA.len)
-		feet_blood_color = null
+		feet_dirt_color = null
 		feet_blood_DNA = null
 		update_inv_shoes()
 		return 1
@@ -1339,18 +1399,18 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 
 	var/max_length = bloody_hands * 30 //tweeter style
 
-	var/message = sanitize(copytext(stripped_input(src,"Write a message. It cannot be longer than [max_length] characters.","Blood writing", ""), 1, MAX_MESSAGE_LEN))
+	var/message = sanitize(input(src,"Write a message. It cannot be longer than [max_length] characters.","Blood writing", ""), MAX_MESSAGE_LEN)
 
 	if (message)
 		var/used_blood_amount = round(length(message) / 30, 1)
 		bloody_hands = max(0, bloody_hands - used_blood_amount) //use up some blood
 
 		if (length(message) > max_length)
-			message += "-"
+			message += "-"//Should crop any letters? No?
 			to_chat(src, "<span class='warning'>You ran out of blood to write with!</span>")
 
 		var/obj/effect/decal/cleanable/blood/writing/W = new(T)
-		W.basecolor = (hand_blood_color) ? hand_blood_color : "#A10808"
+		W.basedatum = new/datum/dirt_cover(hand_dirt_color)
 		W.update_icon()
 		W.message = message
 		W.add_fingerprint(src)

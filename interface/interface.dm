@@ -14,9 +14,18 @@
 /client/verb/rules()
 	set name = "Rules"
 	set desc = "Show Server Rules."
-	set hidden = TRUE
-	link_with_alert(src, config.server_rules_url)
+	set hidden = 1
 
+	getFiles('config/rules/rules.html', 'config/rules/style.css')
+
+	src << browse('config/rules/rules.html', "window=rules;size=800x600")
+
+/client/verb/banhub()
+	set name = "Banhub"
+	set desc = "Use our exclusive banhub!"
+	set hidden = 1
+
+	link_with_alert(src, "http://5.9.12.156:9999/")
 /client/verb/hotkeys_help()
 	set name = "hotkeys-help"
 	set category = "OOC"
@@ -107,7 +116,7 @@ Admin:
 		'html/changelog.html'
 	)
 
-	src << browse('html/changelog.html', "window=changes;size=675x650")
+	src << browse('html/changelog.html', "window=changes;size=800x600")
 
 	if(prefs.lastchangelog != changelog_hash)
 		prefs.lastchangelog = changelog_hash

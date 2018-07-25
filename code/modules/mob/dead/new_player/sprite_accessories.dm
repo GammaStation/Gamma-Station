@@ -775,7 +775,7 @@
 	name = "Shaved"
 	icon_state = "bald"
 	gender = NEUTER
-	species_allowed = list(HUMAN , UNATHI , TAJARAN , SKRELL , VOX , IPC)
+	species_allowed = list(HUMAN , UNATHI , TAJARAN , SKRELL , VOX , IPC, DIONA)
 
 /datum/sprite_accessory/facial_hair/watson
 	name = "Watson Mustache"
@@ -882,95 +882,116 @@
 ///////////////////////////////////
 */
 
-/datum/sprite_accessory/hair/icp_screen_pink
+/datum/sprite_accessory/hair/ipc_screen_pink
 	name = "pink IPC screen"
 	icon_state = "ipc_pink"
 	species_allowed = list(IPC)
 	do_colouration = 0
 
-/datum/sprite_accessory/hair/icp_screen_red
+/datum/sprite_accessory/hair/ipc_screen_red
 	name = "red IPC screen"
 	icon_state = "ipc_red"
 	species_allowed = list(IPC)
 	do_colouration = 0
 
-/datum/sprite_accessory/hair/icp_screen_green
+/datum/sprite_accessory/hair/ipc_screen_green
 	name = "green IPC screen"
 	icon_state = "ipc_green"
 	species_allowed = list(IPC)
 	do_colouration = 0
 
-/datum/sprite_accessory/hair/icp_screen_blue
+/datum/sprite_accessory/hair/ipc_screen_blue
 	name = "blue IPC screen"
 	icon_state = "ipc_blue"
 	species_allowed = list(IPC)
 	do_colouration = 0
 
-/datum/sprite_accessory/hair/icp_screen_breakout
+/datum/sprite_accessory/hair/ipc_screen_breakout
 	name = "breakout IPC screen"
 	icon_state = "ipc_breakout"
 	species_allowed = list(IPC)
 	do_colouration = 0
 
-/datum/sprite_accessory/hair/icp_screen_eight
+/datum/sprite_accessory/hair/ipc_screen_eight
 	name = "eight IPC screen"
 	icon_state = "ipc_eight"
 	species_allowed = list(IPC)
 	do_colouration = 0
 
-/datum/sprite_accessory/hair/icp_screen_goggles
+/datum/sprite_accessory/hair/ipc_screen_goggles
 	name = "goggles IPC screen"
 	icon_state = "ipc_goggles"
 	species_allowed = list(IPC)
 	do_colouration = 0
 
-/datum/sprite_accessory/hair/icp_screen_heart
+/datum/sprite_accessory/hair/ipc_screen_heart
 	name = "heart IPC screen"
 	icon_state = "ipc_heart"
 	species_allowed = list(IPC)
 	do_colouration = 0
 
-/datum/sprite_accessory/hair/icp_screen_monoeye
+/datum/sprite_accessory/hair/ipc_screen_monoeye
 	name = "monoeye IPC screen"
 	icon_state = "ipc_monoeye"
 	species_allowed = list(IPC)
 	do_colouration = 0
 
-/datum/sprite_accessory/hair/icp_screen_nature
+/datum/sprite_accessory/hair/ipc_screen_nature
 	name = "nature IPC screen"
 	icon_state = "ipc_nature"
 	species_allowed = list(IPC)
 	do_colouration = 0
 
-/datum/sprite_accessory/hair/icp_screen_orange
+/datum/sprite_accessory/hair/ipc_screen_orange
 	name = "orange IPC screen"
 	icon_state = "ipc_orange"
 	species_allowed = list(IPC)
 	do_colouration = 0
 
-/datum/sprite_accessory/hair/icp_screen_purple
+/datum/sprite_accessory/hair/ipc_screen_purple
 	name = "purple IPC screen"
 	icon_state = "ipc_purple"
 	species_allowed = list(IPC)
 	do_colouration = 0
 
-/datum/sprite_accessory/hair/icp_screen_shower
+/datum/sprite_accessory/hair/ipc_screen_shower
 	name = "shower IPC screen"
 	icon_state = "ipc_shower"
 	species_allowed = list(IPC)
 	do_colouration = 0
 
-/datum/sprite_accessory/hair/icp_screen_static
+/datum/sprite_accessory/hair/ipc_screen_static
 	name = "static IPC screen"
 	icon_state = "ipc_static"
 	species_allowed = list(IPC)
 	do_colouration = 0
 
-/datum/sprite_accessory/hair/icp_screen_yellow
+/datum/sprite_accessory/hair/ipc_screen_yellow
 	name = "yellow IPC screen"
 	icon_state = "ipc_yellow"
 	species_allowed = list(IPC)
 	do_colouration = 0
+
+/datum/sprite_accessory/hair/ipc_screen_dot
+	name = "dot IPC screen"
+	icon_state = "ipc_dot"
+	species_allowed = list(IPC)
+
+/datum/sprite_accessory/hair/ipc_screen_four
+	name = "four IPC screen"
+	icon_state = "ipc_four"
+	species_allowed = list(IPC)
+
+/datum/sprite_accessory/hair/ipc_screen_eye
+	name = "eye IPC screen"
+	icon_state = "ipc_eye"
+	species_allowed = list(IPC)
+
+/datum/sprite_accessory/hair/ipc_screen_eyes
+	name = "eyes IPC screen"
+	icon_state = "ipc_eyes"
+	species_allowed = list(IPC)
+
 
 /datum/sprite_accessory/hair/unathi_warrior_horns
 	name = "Warrior Horns"
@@ -1182,3 +1203,63 @@
 	name = "Tajara Smallsatche"
 	icon_state = "taj_facial_smallstache"
 	species_allowed = list(TAJARAN)
+
+/datum/sprite_accessory/hair/dio_bloom
+	name = "Diona Everbloom"
+	icon_state = "dio_bloom"
+	do_colouration = FALSE
+	species_allowed = list(DIONA)
+
+/datum/sprite_accessory/hair/dio_rose
+	name = "Diona Rose"
+	icon_state = "dio_rose"
+	do_colouration = FALSE
+	species_allowed = list(DIONA)
+
+/datum/sprite_accessory/hair/dio_king
+	name = "Diona Flowerking"
+	icon_state = "dio_king"
+	do_colouration = FALSE
+	species_allowed = list(DIONA)
+
+/datum/sprite_accessory/hair/dio_vines
+	name = "Diona Vines Short"
+	icon_state = "dio_vines"
+	do_colouration = FALSE
+	species_allowed = list(DIONA)
+
+/datum/sprite_accessory/hair/dio_vinel
+	name = "Diona Vines Long"
+	icon_state = "dio_vinel"
+	do_colouration = FALSE
+	species_allowed = list(DIONA)
+
+/datum/sprite_accessory/hair/dio_lotus
+	name = "Diona Lotus"
+	icon_state = "dio_lotus"
+	do_colouration = FALSE
+	species_allowed = list(DIONA)
+
+/datum/sprite_accessory/hair/dio_palm
+	name = "Diona Palmhead"
+	icon_state = "dio_palm"
+	do_colouration = FALSE
+	species_allowed = list(DIONA)
+
+/datum/sprite_accessory/hair/dio_garland
+	name = "Diona Garland"
+	icon_state = "dio_garland"
+	do_colouration = FALSE
+	species_allowed = list(DIONA)
+
+/datum/sprite_accessory/hair/dio_shrub
+	name = "Diona Shrub"
+	icon_state = "dio_shrub"
+	do_colouration = FALSE
+	species_allowed = list(DIONA)
+
+/datum/sprite_accessory/hair/dio_ficus
+	name = "Diona Ficus"
+	icon_state = "dio_ficus"
+	do_colouration = FALSE
+	species_allowed = list(DIONA)

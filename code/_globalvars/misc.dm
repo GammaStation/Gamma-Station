@@ -81,6 +81,8 @@ var/list/ignore_vision_inside = list(
 	/obj/structure/droppod
 	)
 
+var/SHIT_TOGGLED = 0 //Глобальный переключатель непотребства
+
 /var/global/image/shadowling_eyes = generate_ling_eyes()
 
 /proc/generate_ling_eyes()

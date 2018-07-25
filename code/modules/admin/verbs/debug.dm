@@ -85,7 +85,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 					return
 
 				if("text")
-					lst[i] = input("Enter new text:","Text",null) as text
+					lst[i] = sanitize(input("Enter new text:","Text",null) as text)
 
 				if("num")
 					lst[i] = input("Enter new number:","Num",0) as num
@@ -208,7 +208,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 			return 0
 	var/obj/item/device/paicard/card = new(T)
 	var/mob/living/silicon/pai/pai = new(card)
-	pai.name = input(choice, "Enter your pAI name:", "pAI Name", "Personal AI") as text
+	pai.name = sanitize_safe(input(choice, "Enter your pAI name:", "pAI Name", "Personal AI") as text, MAX_NAME_LEN)
 	pai.real_name = pai.name
 	pai.key = choice.key
 	card.setPersonality(pai)
@@ -617,7 +617,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 		"security officer",
 		"detective",
 		"doctor",
-		"emergency physician",
+		"paramedic",
 		"chemist",
 		"virologist",
 		"psychiatrist",
@@ -1061,7 +1061,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 			            access_all_personal_lockers, access_maint_tunnels, access_bar, access_janitor, access_construction, access_morgue,
 			            access_crematorium, access_kitchen, access_cargo, access_cargo_bot, access_mailsorting, access_qm, access_hydroponics, access_lawyer,
 			            access_theatre, access_chapel_office, access_library, access_research, access_mining, access_heads_vault, access_mining_station,
-			            access_clown, access_mime, access_hop, access_RC_announce, access_keycard_auth, access_gateway)
+			            access_clown, access_mime, access_hop, access_RC_announce, access_keycard_auth, access_gateway, access_barber)
 			W.registered_name = M.real_name
 			M.equip_to_slot_or_del(W, slot_wear_id)
 		if("hos")
@@ -1231,7 +1231,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 			W.access = list(access_medical, access_morgue, access_surgery)
 			W.registered_name = M.real_name
 			M.equip_to_slot_or_del(W, slot_wear_id)
-		if("emergency physician")
+		if("paramedic")
 			M.equip_to_slot_or_del(new /obj/item/device/radio/headset/headset_med(M), slot_l_ear)
 			M.equip_to_slot_or_del(new /obj/item/clothing/under/rank/medical(M), slot_w_uniform)
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/fr_jacket(M), slot_wear_suit)
@@ -1239,12 +1239,12 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 
 			var/obj/item/device/pda/medical/pda = new(M)
 			pda.owner = M.real_name
-			pda.ownjob = "Emergency Physician"
+			pda.ownjob = "Paramedic"
 			pda.name = "PDA-[M.real_name] ([pda.ownjob])"
 			M.equip_to_slot_or_del(pda, slot_belt)
 
 			var/obj/item/weapon/card/id/med/W = new(M)
-			W.assignment = "Emergency Physician"
+			W.assignment = "Paramedic"
 			W.name = "[M.real_name]'s ID Card ([W.assignment])"
 			W.access = list(access_medical, access_morgue, access_maint_tunnels, access_external_airlocks, access_security, access_engine_equip, access_research, access_mailsorting)
 			W.registered_name = M.real_name

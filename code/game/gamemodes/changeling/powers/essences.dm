@@ -41,6 +41,28 @@
 	if(rehost_timer_id)
 		deltimer(rehost_timer_id)
 		rehost_timer_id = 0
+	show_advice()
+
+/mob/living/parasite/essence/proc/show_advice()
+	to_chat(src, "<font color='blue'>[sanitize("============Краткий курс об эссенциях============")]</font>")
+	to_chat(src,"<font color='blue'>[sanitize("Вы -  часть единого организма, называемого генокрадом.\
+	 Вы теперь коллективный разум, состоящий из множества эссенций и главенствующего среди них хозяина,\
+	 определяющего ваши права на физическую оболочку.")]</font>")
+	to_chat(src, "<font color='blue'>[sanitize("Вы видите всё глазами мастера, так что каждая эссенция может быть как советником или наблюдающим,\
+	 так и непосредственно контролирующим тело разумом, в случае выхода  из игры управляющего на данный момент телом,\
+	 контроль передаётся случайной активной сущности, приоритет отдаётся доверенной сущности, что выбирает сам генокрад.")]</font>")
+	to_chat(src, "<font color='blue'>[sanitize("Помните о том, что у вас отныне общие цели и интересы,\
+	 а посему командная работа - основа вашего существования. Главенствующее сознание может как подавлять\
+	 принадлежащие эссенции, так и активно взаимодействовать с ними. Оно вольно как запрещать вам коммуникацию внутри\
+	 общего сознания (ключ для общения :a или же :ф в зависимости от раскладки) так и пускать ваше сознание в общий\
+	 канал связи всех активных генокрадов (ключ для общения :g или :п в зависимости от раскладки).")]</font>")
+	to_chat(src, "<font color='blue'>[sanitize("При достаточном уровне доверия к вам или желания мастера, он может разрешить\
+	 вам проявлять эмоции физической оболочкой, говорить от его лица либо же от своего на момент поглощения.")]</font>")
+	to_chat(src, "<font color='blue'>[sanitize("Так же вы можете напоминать о своей бывшей оболочке всему вашего коллективному\
+	 разуму в виде фантома, для этого достаточно попробовать двинуться или нажать соответствующую кнопку на нижней панели.")]</font>")
+	to_chat(src, "<font color='blue'>[sanitize("Помните - вы всё ещё находитесь в раунде и должны действовать соответствующе,\
+	 ведь вы не призрак и внутриигровые правила на вас всё ещё распространяются. Хоть вас и поглотили, но не забывайте о взаимоуважении,\
+	 игра всё ещё продолжается. Общайтесь, давайте дополнительные задания, убеждайте организм в своей правоте либо же помогайте советами.")]</font>")
 
 /mob/living/parasite/essence/Logout()
 	if(phantom)
@@ -87,7 +109,7 @@
 			to_chat(src, "<span class='userdanger'>Your host forbade you speaking to him</span>")
 			return
 		message = copytext(message, 3) // deleting prefix
-		var/n_message = sanitize_plus_chat(trim(sanitize_plus(message)))
+		var/n_message = sanitize(message)
 		for(var/M in changeling.essences)
 			to_chat(M, "<span class='shadowling'><b>[name]:</b> [n_message]</span>")
 		for(var/datum/orbit/O in host.orbiters)
@@ -101,7 +123,7 @@
 			to_chat(src, "<span class='userdanger'>Your host forbade you speaking in hivemind</span>")
 			return
 		message = copytext(message, 3) // deleting prefix
-		var/n_message = sanitize_plus_chat(trim(sanitize_plus(message)))
+		var/n_message = sanitize(message)
 		for(var/mob/M in mob_list)
 			if(M.mind && M.mind.changeling)
 				to_chat(M, "<span class='changeling'><b>[changeling.changelingID]'s Essence of [name]:</b> [n_message]</span>")

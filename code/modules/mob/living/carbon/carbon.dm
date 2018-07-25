@@ -467,7 +467,7 @@
 	<BR><A href='?src=\ref[user];refresh=1'>Refresh</A>
 	<BR><A href='?src=\ref[user];mach_close=mob[name]'>Close</A>
 	<BR>"}
-	user << browse(dat, text("window=mob[];size=325x500", name))
+	user << browse(entity_ja(dat), text("window=mob[];size=325x500", name))
 	onclose(user, "mob[name]")
 	return
 
@@ -664,3 +664,7 @@
 
 /mob/living/carbon/proc/can_eat(flags = 255) //I don't know how and why does it work
 	return TRUE
+
+/mob/living/carbon/proc/crawl_in_blood(obj/effect/decal/cleanable/blood/floor_blood,amount)
+	return
+

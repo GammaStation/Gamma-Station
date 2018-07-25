@@ -72,7 +72,7 @@
 	var/xylophone = 0 //For the spoooooooky xylophone cooldown
 
 	var/mob/remoteview_target = null
-	var/hand_blood_color
+	var/datum/dirt_cover/hand_dirt_color
 
 	//Golem stuff
 	var/my_master = 0
@@ -81,9 +81,10 @@
 	var/lastScream = 0 // Prevent scream spam in some situations
 	var/name_override //For temporary visible name changes
 
-	butcher_results = list(/obj/item/weapon/reagent_containers/food/snacks/meat/human = 5)
-
 	var/full_prosthetic    // We are a robutt.
 	var/robolimb_count = 0 // Number of robot limbs.
 	var/sightglassesmod = null
 	var/datum/personal_crafting/handcrafting
+	//Diona stuff
+	var/data = 0
+	var/heal_time = 0

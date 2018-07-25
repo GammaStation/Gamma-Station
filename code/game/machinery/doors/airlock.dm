@@ -476,7 +476,7 @@ var/list/airlock_overlays = list()
 			t1 += text("<A href='?src=\ref[];aiDisable=7'>Close door</a><br>\n", src)
 
 	t1 += text("<p><a href='?src=\ref[];close=1'>Close</a></p>\n", src)
-	user << browse(t1, "window=airlock")
+	user << browse(entity_ja(t1), "window=airlock")
 	onclose(user, "airlock")
 
 
@@ -969,11 +969,6 @@ var/list/airlock_overlays = list()
 	else
 		..()
 	return
-
-/obj/machinery/door/airlock/phoron/attackby(C, mob/user)
-	if(C)
-		ignite(is_hot(C))
-	..()
 
 /obj/machinery/door/airlock/proc/close_unsafe(bolt_after = FALSE)
 	var/temp = safe

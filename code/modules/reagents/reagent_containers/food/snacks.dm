@@ -1334,7 +1334,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/syndicake/atom_init()
 	. = ..()
 	reagents.add_reagent("nutriment", 4)
-	reagents.add_reagent("doctorsdelight", 5)
+	reagents.add_reagent("syndicream", 5)
 
 /obj/item/weapon/reagent_containers/food/snacks/loadedbakedpotato
 	name = "Loaded Baked Potato"
@@ -3039,7 +3039,7 @@
 		if( src.open )
 			return
 
-		var/t = input("Enter what you want to add to the tag:", "Write", null, null) as text
+		var/t = sanitize_safe(input("Enter what you want to add to the tag:", "Write", null, null) as text, MAX_LNAME_LEN)
 
 		var/obj/item/pizzabox/boxtotagto = src
 		if( boxes.len > 0 )
