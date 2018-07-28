@@ -420,7 +420,7 @@
 		if(access_gateway)
 			return "Gateway"
 		if(access_sec_doors)
-			return "Brig"
+			return "Police Department"
 		if(access_minisat)
 			return "AI Satellite"
 		if(access_barber)

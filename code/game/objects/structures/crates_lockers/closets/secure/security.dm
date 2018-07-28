@@ -295,7 +295,7 @@
 		new /obj/item/weapon/reagent_containers/ld50_syringe/choral(src)
 
 /obj/structure/closet/secure_closet/brig
-	name = "Brig Locker"
+	name = "Police Department Locker"
 	req_access = list(access_brig)
 	anchored = 1
 	var/id = null

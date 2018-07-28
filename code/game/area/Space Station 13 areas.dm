@@ -831,7 +831,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "security"
 
 /area/security/brig
-	name = "Brig"
+	name = "Police Department"
 	icon_state = "brig"
 
 /area/security/execution
@@ -871,7 +871,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "nuke_storage"
 
 /area/security/checkpoint
-	name = "Security Checkpoint"
+	name = "Police Checkpoint"
 	icon_state = "security"
 
 /area/security/vacantoffice
