@@ -26,7 +26,7 @@
 	item_color = "hop"
 
 /obj/item/weapon/stamp/hos
-	name = "head of security's rubber stamp"
+	name = "marshall's rubber stamp"
 	icon_state = "stamp-hos"
 	item_color = "hosred"
 

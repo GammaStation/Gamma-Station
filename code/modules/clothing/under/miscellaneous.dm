@@ -528,8 +528,8 @@
 	item_color = "qm_f"
 
 /obj/item/clothing/under/rank/head_of_security_fem
-	desc = "It's a jumpsuit worn by those few with the dedication to achieve the position of \"Head of Security\". It has additional armor to protect the wearer."
-	name = "head of security's dress"
+	desc = "It's a jumpsuit worn by those few with the dedication to achieve the position of \"Marshall\". It has additional armor to protect the wearer."
+	name = "marshall's dress"
 	icon_state = "hos_f"
 	item_state = "r_suit"
 	item_color = "hos_f"

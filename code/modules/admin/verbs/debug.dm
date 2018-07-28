@@ -1074,12 +1074,12 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 
 			var/obj/item/device/pda/heads/hos/pda = new(M)
 			pda.owner = M.real_name
-			pda.ownjob = "Head of Security"
+			pda.ownjob = "Marshall"
 			pda.name = "PDA-[M.real_name] ([pda.ownjob])"
 			M.equip_to_slot_or_del(pda, slot_belt)
 
 			var/obj/item/weapon/card/id/secGold/W = new(M)
-			W.assignment = "Head of Security"
+			W.assignment = "Marshall"
 			W.name = "[M.real_name]'s ID Card ([W.assignment])"
 			W.access = list(access_security, access_sec_doors, access_brig, access_armory, access_court,
 			            access_forensics_lockers, access_morgue, access_maint_tunnels, access_all_personal_lockers,

@@ -90,7 +90,7 @@
 	new /obj/item/airbag(src)
 
 /obj/structure/closet/secure_closet/hos
-	name = "Head of Security's Locker"
+	name = "Marshall's Locker"
 	req_access = list(access_hos)
 	icon_state = "hossecure1"
 	icon_closed = "hossecure"

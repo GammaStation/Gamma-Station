@@ -851,7 +851,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "Warden"
 
 /area/security/hos
-	name = "Head of Security's Office"
+	name = "Marshall's Office"
 	icon_state = "sec_hos"
 
 /area/security/detectives_office
