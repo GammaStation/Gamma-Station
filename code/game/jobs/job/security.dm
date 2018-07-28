@@ -52,7 +52,7 @@
 
 
 /datum/job/warden
-	title = "Warden"
+	title = "Sergeant"
 	flag = WARDEN
 	department_flag = ENGSEC
 	faction = "Station"

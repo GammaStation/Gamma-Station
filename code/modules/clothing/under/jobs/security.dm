@@ -9,8 +9,8 @@
  * Security
  */
 /obj/item/clothing/under/rank/warden
-	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for more robust protection. It has the word \"Warden\" written on the shoulders."
-	name = "warden's jumpsuit"
+	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for more robust protection. It has the word \"Sergeant\" written on the shoulders."
+	name = "sergeant's jumpsuit"
 	icon_state = "warden"
 	item_state = "r_suit"
 	item_color = "warden"

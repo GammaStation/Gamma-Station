@@ -2431,7 +2431,7 @@ datum
 	if(!..())
 		return
 	M.nutrition += nutriment_factor
-	if(istype(M, /mob/living/carbon/human) && M.job in list("Police Officer", "Head of Security", "Detective", "Warden", "Captain")) //if we want some FUN and FEATURES we should uncomment it
+	if(istype(M, /mob/living/carbon/human) && M.job in list("Police Officer", "Head of Security", "Detective", "Sergeant", "Captain")) //if we want some FUN and FEATURES we should uncomment it
 		M.heal_bodypart_damage(1, 1)
 		M.nutrition += nutriment_factor
 

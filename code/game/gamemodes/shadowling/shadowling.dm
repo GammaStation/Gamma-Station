@@ -75,7 +75,7 @@ Made by Xhuis
 	votable = 0
 
 	restricted_jobs = list("AI", "Cyborg")
-	protected_jobs = list("Police Officer", "Warden", "Detective", "Head of Security", "Captain")
+	protected_jobs = list("Police Officer", "Sergeant", "Detective", "Head of Security", "Captain")
 
 /datum/game_mode/shadowling/announce()
 	to_chat(world, "<b>The current game mode is - Shadowling!</b>")

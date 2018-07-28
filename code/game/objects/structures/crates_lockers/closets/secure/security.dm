@@ -140,7 +140,7 @@
 	#endif
 
 /obj/structure/closet/secure_closet/warden
-	name = "Warden's Locker"
+	name = "Sergeant's Locker"
 	req_access = list(access_armory)
 	icon_state = "wardensecure1"
 	icon_closed = "wardensecure"

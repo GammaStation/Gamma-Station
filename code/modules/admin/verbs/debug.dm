@@ -613,7 +613,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 		"cmo",
 		"rd",
 		"ce",
-		"warden",
+		"sergeant",
 		"police officer",
 		"detective",
 		"doctor",
@@ -1154,7 +1154,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 			            access_ce, access_RC_announce, access_keycard_auth, access_tcomsat, access_ai_upload)
 			W.registered_name = M.real_name
 			M.equip_to_slot_or_del(W, slot_wear_id)
-		if("warden")
+		if("sergeant")
 			M.equip_to_slot_or_del(new /obj/item/clothing/under/rank/warden(M), slot_w_uniform)
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/jackboots(M), slot_shoes)
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/black(M), slot_gloves)
@@ -1163,12 +1163,12 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 
 			var/obj/item/device/pda/warden/pda = new(M)
 			pda.owner = M.real_name
-			pda.ownjob = "Warden"
+			pda.ownjob = "Sergeant"
 			pda.name = "PDA-[M.real_name] ([pda.ownjob])"
 			M.equip_to_slot_or_del(pda, slot_l_store)
 
 			var/obj/item/weapon/card/id/sec/W = new(M)
-			W.assignment = "Warden"
+			W.assignment = "Sergeant"
 			W.name = "[M.real_name]'s ID Card ([W.assignment])"
 			W.access = list(access_security, access_sec_doors, access_brig, access_armory, access_court, access_maint_tunnels)
 			W.registered_name = M.real_name

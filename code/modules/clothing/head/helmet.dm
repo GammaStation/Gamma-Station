@@ -14,8 +14,8 @@
 	w_class = 3
 
 /obj/item/clothing/head/helmet/warden
-	name = "warden's hat"
-	desc = "It's a special helmet issued to the Warden of a security force. Protects the head from impacts."
+	name = "sergeant's hat"
+	desc = "It's a special helmet issued to the Sergeant of a police force. Protects the head from impacts."
 	icon_state = "helmet_warden"
 
 /obj/item/clothing/head/helmet/HoS
@@ -150,8 +150,8 @@
 	user.update_inv_head()
 
 /obj/item/clothing/head/helmet/warden/blue
-	name = "warden's hat"
-	desc = "It's a special helmet issued to the Warden of a securiy force. Protects the head from impacts."
+	name = "sergeant's hat"
+	desc = "It's a special helmet issued to the Sergeant of a police force. Protects the head from impacts."
 	icon_state = "oldwardenhelm"
 	item_state = "helmet"
 
