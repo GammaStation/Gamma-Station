@@ -145,7 +145,7 @@
 
 
 /datum/job/officer
-	title = "Security Officer"
+	title = "Police Officer"
 	flag = OFFICER
 	department_flag = ENGSEC
 	faction = "Station"
@@ -156,6 +156,7 @@
 	idtype = /obj/item/weapon/card/id/sec
 	access = list(access_security, access_sec_doors, access_brig, access_court, access_maint_tunnels)
 	minimal_player_age = 3
+	alt_titles = list("Deputy")
 	minimal_player_ingame_minutes = 3560
 	restricted_species = list(DIONA, TAJARAN)
 

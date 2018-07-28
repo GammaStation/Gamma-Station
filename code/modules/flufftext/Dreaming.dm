@@ -3,7 +3,7 @@
 #define NOT_DREAMING 0
 
 var/list/dreams = list(
-	"an ID card","a bottle","a familiar face","a crewmember","a toolbox","a security officer","the captain",
+	"an ID card","a bottle","a familiar face","a crewmember","a toolbox","a police officer","the captain",
 	"voices from all around","deep space","a doctor","the engine","a traitor","an ally","darkness",
 	"light","a scientist","a monkey","a catastrophe","a loved one","a gun","warmth","freezing","the sun",
 	"a hat","the Luna","a ruined station","a planet","phoron","air","the medical bay","the bridge","blinking lights",
