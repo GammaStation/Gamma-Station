@@ -823,11 +823,11 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 //Security
 
 /area/security/main
-	name = "Security Office"
+	name = "Police Office"
 	icon_state = "security"
 
 /area/security/lobby
-	name = "Security lobby"
+	name = "Police lobby"
 	icon_state = "security"
 
 /area/security/brig
@@ -843,7 +843,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "sec_prison"
 
 /area/security/warden
-	name = "Warden"
+	name = "Sergeant"
 	icon_state = "Warden"
 
 /area/security/armoury
