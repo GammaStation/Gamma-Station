@@ -299,6 +299,9 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "Thunderdome (Observer.)"
 	icon_state = "purple"
 
+/area/thunderfield
+	name = "Thunderfield"
+	icon_state = "thunderfield"
 
 //ENEMY
 
@@ -1243,7 +1246,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "Listening Post"
 	icon_state = "away"
 	requires_power = 0
-
 
 /area/awaymission/beach
 	name = "Beach"

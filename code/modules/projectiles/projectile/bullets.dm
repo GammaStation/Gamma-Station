@@ -38,6 +38,9 @@
 /obj/item/projectile/bullet/midbullet //.45 ACP
 	damage = 20
 
+/obj/item/projectile/bullet/midbullet/thunderfield_bullet
+	damage = 10
+
 /obj/item/projectile/bullet/midbullet2 // 9x19
 	damage = 25
 

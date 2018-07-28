@@ -13,3 +13,25 @@
 
 /turf/unsimulated/floor/attack_paw(user)
 	return src.attack_hand(user)
+
+/turf/unsimulated/floor/self_cleaning/atom_init()
+	..()
+	return INITIALIZE_HINT_LATELOAD
+
+/turf/unsimulated/floor/self_cleaning/atom_init_late()
+	..()
+	cleaner()
+
+#define CLEANING_DELAY 600
+
+/turf/unsimulated/floor/self_cleaning
+	var/list/uncleanable_items = list(/mob/living, /obj/item/thunder_dog_tag, /mob/dead/observer, /obj/effect/landmark, /obj/item/weapon) //We dont want this items to be deleted
+
+/turf/unsimulated/floor/self_cleaning/proc/cleaner() //Not sure if this is the correct way to do that
+	for(var/atom/A in contents)
+		if(is_type_in_list(A, uncleanable_items))
+			continue
+		qdel(A)
+	addtimer(CALLBACK(src, .proc/cleaner), CLEANING_DELAY)
+
+#undef CLEANING_DELAY

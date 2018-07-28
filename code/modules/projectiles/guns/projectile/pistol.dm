@@ -228,6 +228,11 @@
 	fire_sound = 'sound/weapons/guns/at7_shot.wav'
 	mag_type = /obj/item/ammo_box/magazine/at7_45
 
+/obj/item/weapon/gun/projectile/sec_pistol/thunderfield_pistol //Thunderfield stuff
+	name = "\improper self-defense pistol"
+	desc = ".22CB pistol"
+	mag_type = /obj/item/ammo_box/magazine/c22cb
+
 /obj/item/weapon/gun/projectile/sec_pistol/atom_init()
 	. = ..()
 	update_icon()
