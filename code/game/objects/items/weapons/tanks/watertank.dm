@@ -8,7 +8,7 @@
 	item_state = "waterbackpack"
 	flags = OPENCONTAINER
 	w_class = ITEM_SIZE_LARGE
-	action_button_name = "Toggle Mister"
+	actions_types = list(/datum/action/item_action/attack_self)
 
 	var/obj/item/weapon/reagent_containers/spray/mister/noz
 	volume = 500

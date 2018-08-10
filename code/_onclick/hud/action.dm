@@ -27,6 +27,7 @@
 /datum/action/New(var/Target)
 	target = Target
 
+
 /datum/action/Destroy()
 	if(owner)
 		Remove(owner)
@@ -253,3 +254,9 @@
 #undef AB_WEST_OFFSET
 #undef AB_NORTH_OFFSET
 #undef AB_MAX_COLUMNS
+
+//PRESETS FOR ACTIONS
+
+/datum/action/item_action/attack_self
+	action_type = AB_GENERIC
+	procname = "attack_self"

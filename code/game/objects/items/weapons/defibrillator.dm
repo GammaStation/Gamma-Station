@@ -14,7 +14,7 @@
 	throwforce = 6
 	w_class = ITEM_SIZE_LARGE
 	origin_tech = list("biotech" = 2, "powerstorage" = 1)
-	action_button_name = "Remove/Replace Paddles"
+	actions_types = list(/datum/action/item_action/attack_self)
 
 	var/obj/item/weapon/twohanded/shockpaddles/linked/paddles
 	var/obj/item/weapon/stock_parts/cell/bcell = null

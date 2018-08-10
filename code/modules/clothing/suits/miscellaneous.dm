@@ -561,7 +561,7 @@
 	name = "Student Jacket"
 	desc = "A Student's jacket from the eighties."
 	icon_state = "student_jacket"
-	action_button_name = "To Fasten"
+	actions_types = list(/datum/action/item_action/attack_self)
 	var/fastened = TRUE
 
 /obj/item/clothing/suit/student_jacket/ui_action_click()

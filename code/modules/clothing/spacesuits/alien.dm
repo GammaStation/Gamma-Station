@@ -145,7 +145,7 @@
 	armor = list(melee = 60, bullet = 30, laser = 30, energy = 15, bomb = 30, bio = 30, rad = 30)
 	slowdown = 0.5
 
-	action_button_name = "Toggle Stealth Technology"
+	actions_types = list(/datum/action/item_action/attack_self)
 	var/on = FALSE
 	var/mob/living/carbon/human/wearer
 
@@ -271,7 +271,7 @@
 		VOX_ARMALIS = 'icons/mob/species/armalis/feet.dmi'
 		)
 
-	action_button_name = "Toggle the magclaws"
+	actions_types = list(/datum/action/item_action/attack_self)
 
 /obj/item/clothing/shoes/magboots/vox/attack_self(mob/user)
 	if(src.magpulse)

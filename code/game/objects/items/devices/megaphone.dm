@@ -6,7 +6,7 @@
 	w_class = 2.0
 	flags = CONDUCT
 
-	action_button_name = "Toggle Megaphone"
+	actions_types = list(/datum/action/item_action/attack_self)
 
 	var/spamcheck = 0
 	var/emagged = 0

@@ -60,7 +60,7 @@
 	flags = MASKCOVERSMOUTH
 	w_class = 2
 	gas_transfer_coefficient = 0.90
-	action_button_name = "Adjust scarf"
+	actions_types = list(/datum/action/item_action/attack_self)
 	var/hanging = 0
 
 /obj/item/clothing/mask/scarf/blue
@@ -178,7 +178,7 @@
 	desc = "A fine bandana with nanotech lining and a hydroponics pattern."
 	w_class = 1
 	flags = MASKCOVERSMOUTH
-	action_button_name = "Adjust Bandana"
+	actions_types = list(/datum/action/item_action/attack_self)
 	icon_state = "bandbotany"
 	body_parts_covered = 0
 

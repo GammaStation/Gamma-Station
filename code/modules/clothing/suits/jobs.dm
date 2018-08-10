@@ -197,14 +197,14 @@
 
 //Recycler
 /obj/item/clothing/suit/recyclervest
-    name = "recycler vest"
-    desc = "This is Recycler vest."
-    icon = 'icons/obj/clothing/suits.dmi'
-    icon_state = "recycler_vest_open"
-    item_state = "recycler_vest"
-    blood_overlay_type = "coat" //it's the less thing that I can put here
-    body_parts_covered = 0
-    action_button_name = "Toggle vest buttons"
+	name = "recycler vest"
+	desc = "This is Recycler vest."
+	icon = 'icons/obj/clothing/suits.dmi'
+	icon_state = "recycler_vest_open"
+	item_state = "recycler_vest"
+	blood_overlay_type = "coat" //it's the less thing that I can put here
+	body_parts_covered = 0
+	actions_types = list(/datum/action/item_action/attack_self)
 
 /obj/item/clothing/suit/recyclervest/ui_action_click()
     toggle()

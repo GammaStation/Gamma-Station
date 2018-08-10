@@ -409,7 +409,7 @@ BLIND     // can't see anything
 	if(istype(loc, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = loc
 		H.update_inv_w_uniform()
-		action_button_name = null
+	actions_types = list(/datum/action/item_action/attack_self)
 
 /obj/item/clothing/under/verb/removetie()
 	set name = "Remove Accessory"
@@ -447,7 +447,7 @@ BLIND     // can't see anything
 			if(istype(loc, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = loc
 				H.update_inv_w_uniform()
-			action_button_name = "Use inventory."
+//actions_types = list(/datum/action/item_action/attack_self)
 			return
 		else
 			to_chat(user, "<span class='notice'>You cannot attach more accessories of this type to [src].</span>")

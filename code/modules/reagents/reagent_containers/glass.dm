@@ -13,7 +13,7 @@
 	volume = 50
 	flags = OPENCONTAINER
 
-	action_button_name = "Switch Lid"
+	actions_types = list(/datum/action/item_action/attack_self)
 
 	var/label_text = ""
 

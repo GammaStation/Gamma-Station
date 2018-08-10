@@ -25,7 +25,11 @@
 		if(A.CheckRemoval(src))
 			A.Remove(src)
 	for(var/obj/item/I in src)
-		if(I.action_button_name)
+		for(var/datum/action/A in I.actions)
+			A.target = I
+			A.Grant(src)
+
+	/*	if(I.action_button_name)
 			if(!I.action)
 				if(I.action_button_is_hands_free)
 					I.action = new/datum/action/item_action/hands_free
@@ -33,7 +37,7 @@
 					I.action = new/datum/action/item_action
 				I.action.name = I.action_button_name
 				I.action.target = I
-			I.action.Grant(src)
+			I.action.Grant(src)*/
 	return
 
 /mob/living/proc/handle_regular_hud_updates()
@@ -84,10 +88,9 @@
 	return
 
 /mob/living/update_action_buttons()
-	if(!hud_used) return
-	if(!client) return
-
-	if(hud_used.hud_shown != 1)	//Hud toggled to minimal
+	if(!hud_used || !client)
+		return
+	if(hud_used.hud_shown != TRUE)	//Hud toggled to minimal
 		return
 
 	client.screen -= hud_used.hide_actions_toggle
@@ -117,6 +120,9 @@
 			var/obj/screen/movable/action_button/N = new(hud_used)
 			N.owner = A
 			A.button = N
+		A.button_icon = A.target.icon
+		A.button_icon_state = A.target.icon_state
+		A.name = A.target.name
 
 		var/obj/screen/movable/action_button/B = A.button
 

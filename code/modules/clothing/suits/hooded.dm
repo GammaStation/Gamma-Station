@@ -1,5 +1,5 @@
 /obj/item/clothing/suit/hooded
-	action_button_name = "Hood"
+	actions_types = list(/datum/action/item_action/attack_self)
 	var/obj/item/clothing/head/hood
 	var/hoodtype = /obj/item/clothing/head //so the chaplain hoodie or other hoodies can override this
 	var/hooded = FALSE
