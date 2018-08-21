@@ -511,7 +511,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 	. = ..()
 	storage = new /obj/item/weapon/storage/internal/imp(src)
 
-/obj/item/weapon/implant/storage/ui_action_click()
+/obj/item/weapon/implant/storage/attack_self()
 	storage.open(imp_in)
 
 /obj/item/weapon/implant/storage/proc/removed()

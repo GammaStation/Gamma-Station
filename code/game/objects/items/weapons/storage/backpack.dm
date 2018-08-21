@@ -15,7 +15,7 @@
 	max_combined_w_class = 21
 	var/opened = 0
 
-/obj/item/weapon/storage/backpack/ui_action_click()
+/obj/item/weapon/storage/backpack/attack_self()
 	if(!opened)
 		open(loc)
 	else

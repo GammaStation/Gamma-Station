@@ -564,7 +564,7 @@
 	actions_types = list(/datum/action/item_action/attack_self)
 	var/fastened = TRUE
 
-/obj/item/clothing/suit/student_jacket/ui_action_click()
+/obj/item/clothing/suit/student_jacket/attack_self()
 	if(fastened)
 		icon_state = "student_jacket_open"
 		if(ishuman(loc))

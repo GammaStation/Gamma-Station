@@ -227,7 +227,6 @@
 	W.screen_loc = null // will get moved if inventory is visible
 
 	W.loc = src
-	W.make_actions()
 	switch(slot)
 		if(slot_back)
 			src.back = W

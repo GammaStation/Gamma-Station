@@ -8,7 +8,7 @@
 	item_state = "waterbackpack"
 	flags = OPENCONTAINER
 	w_class = ITEM_SIZE_LARGE
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = list(/datum/action/item_action/watertank_toggle_mister)
 
 	var/obj/item/weapon/reagent_containers/spray/mister/noz
 	volume = 500
@@ -20,9 +20,6 @@
 		noz = new noz(src, src)
 	else
 		noz = new(src, src)
-
-/obj/item/weapon/reagent_containers/watertank_backpack/ui_action_click()
-	toggle_mister()
 
 /obj/item/weapon/reagent_containers/watertank_backpack/verb/toggle_mister()
 	set name = "Toggle Mister"

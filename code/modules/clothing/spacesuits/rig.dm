@@ -419,16 +419,13 @@
 	               /obj/item/weapon/melee/energy/sword,
 	               /obj/item/weapon/handcuffs)
 	species_restricted = list("exclude" , UNATHI , TAJARAN , DIONA, VOX)
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = list(/datum/action/item_action/syndi_toggle_mode)
 	var/combat_mode = FALSE
 
 /obj/item/clothing/suit/space/rig/syndi/update_icon(mob/user)
 	..()
 	icon_state = "rig-syndie[combat_mode ? "-combat" : ""]"
 	user.update_inv_wear_suit()
-
-/obj/item/clothing/suit/space/rig/syndi/ui_action_click()
-	toggle_mode()
 
 /obj/item/clothing/suit/space/rig/syndi/verb/toggle_mode()
 	set category = "Object"

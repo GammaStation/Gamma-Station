@@ -260,3 +260,31 @@
 /datum/action/item_action/attack_self
 	action_type = AB_GENERIC
 	procname = "attack_self"
+
+/datum/action/item_action/defib_toggle_paddles
+	action_type = AB_GENERIC
+	procname = "toggle_paddles"
+
+/datum/action/item_action/watertank_toggle_mister
+	action_type = AB_GENERIC
+	procname = "toggle_mister"
+
+/datum/action/item_action/jetpack_toggle
+	action_type = AB_GENERIC
+	procname = "toggle"
+
+/datum/action/item_action/vox_toggle_stealth
+	action_type = AB_GENERIC
+	procname = "toggle_stealth"
+
+/datum/action/item_action/syndi_toggle_mode
+	action_type = AB_GENERIC
+	procname = "toggle_mode"
+
+/datum/action/item_action/suit_toggle_hood
+	action_type = AB_GENERIC
+	procname = "ToggleHood"
+
+/datum/action/item_action/recyclersuit_toggle
+	action_type = AB_GENERIC
+	procname = "toggle"

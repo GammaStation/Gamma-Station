@@ -204,10 +204,7 @@
 	item_state = "recycler_vest"
 	blood_overlay_type = "coat" //it's the less thing that I can put here
 	body_parts_covered = 0
-	actions_types = list(/datum/action/item_action/attack_self)
-
-/obj/item/clothing/suit/recyclervest/ui_action_click()
-    toggle()
+	actions_types = list(/datum/action/item_action/recyclersuit_toggle)
 
 /obj/item/clothing/suit/recyclervest/proc/toggle()
     switch(icon_state)

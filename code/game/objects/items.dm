@@ -76,6 +76,13 @@
 	*/
 	var/list/sprite_sheets_obj = null
 
+/obj/item/atom_init()
+	. = ..()
+	if(!actions_types.len)
+		return
+	for(var/path in actions_types)
+		actions += new path(src)
+
 /obj/item/proc/check_allowed_items(atom/target, not_inside, target_self)
 	if(((src in target) && !target_self) || ((!istype(target.loc, /turf)) && (!istype(target, /turf)) && (not_inside)) || is_type_in_list(target, can_be_placed_into))
 		return 0
@@ -443,7 +450,6 @@
 
 // called just as an item is picked up (loc is not yet changed)
 /obj/item/proc/pickup(mob/user)
-	make_actions()
 	return
 
 // called when this item is removed from a storage item, which is passed on as S. The loc variable is already set to the new destination before this is called.
@@ -747,8 +753,6 @@
 	return
 
 
-//This proc is executed when someone clicks the on-screen UI button. To make the UI button show, set the 'icon_action_button' to the icon_state of the image of the button in screen1_action.dmi
-//The default action is attack_self().
 //Checks before we get to here are: mob is alive, mob is not restrained, paralyzed, asleep, resting, laying, item is on the mob.
 /obj/item/proc/ui_action_click()
 	attack_self(usr)
@@ -893,9 +897,3 @@ var/global/list/items_blood_overlay_by_type = list()
 	var/obj/item/I = get_active_hand()
 	if(I && !I.abstract)
 		I.showoff(src)
-
-/obj/item/proc/make_actions()
-	if(!actions_types.len)
-		return
-	for(var/path in actions_types)
-		actions += new path(src)
