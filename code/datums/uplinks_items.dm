@@ -540,14 +540,14 @@
 	cost = 6
 
 /datum/uplink_item/device_tools/toolbox
-	name = "Full Syndicate Toolbox"
-	desc = "The syndicate toolbox is a suspicious black and red. Aside from tools, it comes with cable and a multitool. Insulated gloves are not included."
-	item = /obj/item/weapon/storage/toolbox/syndicate
+	name = "Full Nanotrasen Toolbox"
+	desc = "The Nanotrasen toolbox is an unsuspicious black and blue. Aside from tools, it comes with cable and a multitool. Insulated gloves are not included."
+	item = /obj/item/weapon/storage/toolbox/nt
 	cost = 1
 
 /datum/uplink_item/device_tools/surgerybag
-	name = "Syndicate Surgery Dufflebag"
-	desc = "The Syndicate surgery dufflebag is a toolkit containing all surgery tools, surgical drapes, \
+	name = "Nanotrasen Surgery Dufflebag"
+	desc = "The Nanotrasen surgery dufflebag is a toolkit containing all surgery tools, surgical drapes, \
 			a MMI, a straitjacket, and a muzzle."
 	item = /obj/item/weapon/storage/backpack/dufflebag/surgery
 	cost = 4

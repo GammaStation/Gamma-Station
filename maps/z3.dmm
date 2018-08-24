@@ -79,7 +79,7 @@
 "nb" = (/obj/item/weapon/scalpel,/turf/simulated/floor{icon_state = "dark"},/area/derelict/ship)
 "nc" = (/obj/structure/rack,/obj/item/weapon/tank/emergency_oxygen,/obj/item/weapon/tank/emergency_oxygen,/obj/item/weapon/tank/emergency_oxygen,/obj/item/weapon/tank/emergency_oxygen,/obj/machinery/light_construct/small{dir = 1},/turf/simulated/floor{icon_state = "dark"},/area/derelict/ship)
 "ob" = (/turf/simulated/floor{icon_state = "damaged1"},/area/derelict/ship)
-"oc" = (/obj/structure/rack,/obj/item/clothing/suit/space/syndicate,/obj/item/clothing/head/helmet/space/syndicate,/obj/item/clothing/mask/breath,/obj/item/weapon/storage/toolbox/syndicate,/turf/simulated/floor{icon_state = "dark"},/area/derelict/ship)
+"oc" = (/obj/structure/rack,/obj/item/clothing/suit/space/syndicate,/obj/item/clothing/head/helmet/space/syndicate,/obj/item/clothing/mask/breath,/obj/item/weapon/storage/toolbox/nt,/turf/simulated/floor{icon_state = "dark"},/area/derelict/ship)
 "pb" = (/turf/simulated/floor{icon_state = "dark"},/turf/simulated/shuttle/wall{icon_state = "swall_f9"; dir = 2},/area/derelict/ship)
 "pc" = (/obj/machinery/vending/engivend,/turf/simulated/floor{icon_state = "dark"},/area/derelict/ship)
 "qb" = (/obj/structure/computerframe{anchored = 1},/turf/simulated/floor{icon_state = "dark"},/area/derelict/ship)

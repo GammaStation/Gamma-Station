@@ -74,7 +74,7 @@
 	origin_tech = "combat=1;syndicate=1"
 	force = 7.0
 
-/obj/item/weapon/storage/toolbox/syndicate/atom_init()
+/obj/item/weapon/storage/toolbox/nt/atom_init()
 	. = ..()
 	new /obj/item/weapon/screwdriver(src)
 	new /obj/item/weapon/wrench(src)
