@@ -73,6 +73,13 @@
 	item_color = "syndi_vest"
 	slots = 5
 
+/obj/item/clothing/accessory/storage/nt_vest
+	name = "suspicious webbing vest"
+	desc = "A lawful blue synthcotton vest with lots of pockets to unload your hands."
+	icon_state = "nt_vest"
+	item_color = "nt_vest"
+	slots = 5
+
 /obj/item/clothing/accessory/storage/knifeharness
 	name = "decorated harness"
 	desc = "A heavily decorated harness of sinew and leather with two knife-loops."

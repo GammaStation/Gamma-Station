@@ -63,7 +63,7 @@
 	prob(50);/obj/item/ammo_box/magazine/m12mm,\
 	prob(50);/obj/item/ammo_box/magazine/m9mm,\
 	prob(50);/obj/item/weapon/storage/fancy/cigarettes/cigpack_syndicate,\
-	prob(50);/obj/item/weapon/cartridge/syndicate,\
+	prob(50);/obj/item/weapon/cartridge/assault,\
 	prob(50);/obj/item/toy/carpplushie/dehy_carp,\
 	prob(50);/obj/item/weapon/storage/box/syndie_kit/chameleon,\
 	prob(50);/obj/item/device/camera_bug,\

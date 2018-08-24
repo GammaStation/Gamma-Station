@@ -67,10 +67,10 @@
 	else
 		new /obj/item/stack/cable_coil/random(src)
 
-/obj/item/weapon/storage/toolbox/syndicate
-	name = "suspicious looking toolbox"
-	icon_state = "syndicate"
-	item_state = "toolbox_syndi"
+/obj/item/weapon/storage/toolbox/nt
+	name = "unsuspicious looking toolbox"
+	icon_state = "nt"
+	item_state = "toolbox_nt"
 	origin_tech = "combat=1;syndicate=1"
 	force = 7.0
 

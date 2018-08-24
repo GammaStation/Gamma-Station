@@ -299,10 +299,10 @@
 	new /obj/item/weapon/crowbar(src)
 
 /obj/item/weapon/storage/backpack/dufflebag
-	name = "suspicious looking dufflebag"
+	name = "unsuspicious looking dufflebag"
 	desc = "A large dufflebag for holding extra tactical supplies."
-	icon_state = "duffle-syndie"
-	item_state = "duffle-syndie"
+	icon_state = "duffle-nt"
+	item_state = "duffle-nt"
 	origin_tech = "syndicate=1"
 	max_combined_w_class = 30
 	storage_slots = 10

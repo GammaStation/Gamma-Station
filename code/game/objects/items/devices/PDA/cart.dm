@@ -194,7 +194,7 @@
 	access_status_display = 1
 	access_atmos = 1
 
-/obj/item/weapon/cartridge/syndicate
+/obj/item/weapon/cartridge/assault
 	name = "Detomatix Cartridge"
 	icon_state = "cart"
 	access_remote_door = 1

@@ -1,6 +1,6 @@
 /obj/item/clothing/under/syndicate
 	name = "tactical turtleneck"
-	desc = "It's some non-descript, slightly suspicious looking, civilian clothing."
+	desc = "It's some non-descript, totally unsuspicious looking, civilian clothing."
 	icon_state = "syndicate"
 	item_state = "bl_suit"
 	item_color = "syndicate"

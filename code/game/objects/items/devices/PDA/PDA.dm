@@ -148,9 +148,9 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	icon_state = "pda-miner"
 
 /obj/item/device/pda/syndicate
-	default_cartridge = /obj/item/weapon/cartridge/syndicate
-	icon_state = "pda-syn"
-	name = "Military PDA"
+	default_cartridge = /obj/item/weapon/cartridge/assault
+	icon_state = "pda-c"
+	name = "Assault PDA"
 	owner = "John Doe"
 	hidden = 1
 
@@ -758,7 +758,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					if(pos.z in signal.data["level"])
 						useTC = 2
 
-			if(istype(cartridge, /obj/item/weapon/cartridge/syndicate))
+			if(istype(cartridge, /obj/item/weapon/cartridge/assault))
 				if(!(useMS && useTC))
 					U.show_message("\red An error flashes on your [src]: Connection unavailable", 1)
 					return
