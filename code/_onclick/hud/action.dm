@@ -140,11 +140,9 @@
 
 	overlays.Cut()
 	var/image/img
-	if(owner.action_type == AB_ITEM && owner.target)
+	if(owner.target)
 		var/obj/item/I = owner.target
 		img = image(I.icon, src , I.icon_state)
-	else if(owner.button_icon && owner.button_icon_state)
-		img = image(owner.button_icon,src,owner.button_icon_state)
 	img.pixel_x = 0
 	img.pixel_y = 0
 	overlays += img
@@ -270,8 +268,14 @@
 	procname = "toggle_mister"
 
 /datum/action/item_action/jetpack_toggle
+	name = "Toggle jetpack"
 	action_type = AB_GENERIC
 	procname = "toggle"
+
+/datum/action/item_action/jetpack_rockets
+	name = "Toggle stabilization"
+	action_type = AB_GENERIC
+	procname = "toggle_rockets"
 
 /datum/action/item_action/vox_toggle_stealth
 	action_type = AB_GENERIC

@@ -120,16 +120,13 @@
 			var/obj/screen/movable/action_button/N = new(hud_used)
 			N.owner = A
 			A.button = N
-		A.button_icon = A.target.icon
-		A.button_icon_state = A.target.icon_state
-		A.background_icon_state = "bg_default"
 		A.name = A.target.name
 
 		var/obj/screen/movable/action_button/B = A.button
 
 		B.UpdateIcon()
 
-		B.name = A.UpdateName()
+		B.name = A.name
 
 		client.screen += B
 
