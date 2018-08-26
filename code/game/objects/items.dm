@@ -26,7 +26,7 @@
 	var/min_cold_protection_temperature //Set this variable to determine down to which temperature (IN KELVIN) the item protects against cold damage. 0 is NOT an acceptable number due to if(varname) tests!! Keep at null to disable protection. Only protects areas set by cold_protection flags
 
 	var/list/actions = list()
-	var/list/actions_types = list()
+	var/actions_types
 
 /*	var/datum/action/item_action/action = null
 	var/action_button_name //It is also the text which gets displayed on the action button. If not set it defaults to 'Use [name]'. If it's not set, there'll be no button.
@@ -78,10 +78,11 @@
 
 /obj/item/atom_init()
 	. = ..()
-	if(!actions_types.len)
-		return
-	for(var/path in actions_types)
-		actions += new path(src)
+	if(islist(actions_types))
+		for(var/i in actions_types)
+			actions += new i(src)
+	else if(actions_types)
+		actions = new actions_types
 
 /obj/item/proc/check_allowed_items(atom/target, not_inside, target_self)
 	if(((src in target) && !target_self) || ((!istype(target.loc, /turf)) && (!istype(target, /turf)) && (not_inside)) || is_type_in_list(target, can_be_placed_into))
@@ -208,7 +209,10 @@
 	if(ismob(loc))
 		var/mob/m = loc
 		m.drop_from_inventory(src)
-	QDEL_LIST(actions)
+	if(islist(actions))
+		for(var/a in actions)	//FUKKK, i cant use QDEL_NULL here because it treats actions only as SINGLE VAR, NOT AS LIST
+			QDEL_NULL(actions)
+	QDEL_NULL(actions)
 	return ..()
 
 /obj/item/ex_act(severity)
