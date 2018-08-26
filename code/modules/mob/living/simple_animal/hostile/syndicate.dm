@@ -32,7 +32,7 @@
 	max_n2 = 0
 	unsuitable_atoms_damage = 15
 	environment_smash = 1
-	faction = "syndicate"
+	faction = "nuke"
 	status_flags = CANPUSH
 
 /mob/living/simple_animal/hostile/syndicate/death()
@@ -149,7 +149,7 @@
 	melee_damage_upper = 15
 	attacktext = "cuts"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
-	faction = "syndicate"
+	faction = "nuke"
 	min_oxy = 0
 	max_oxy = 0
 	min_tox = 0

@@ -999,7 +999,7 @@
 					else
 						current.real_name = "Gorlex Maradeurs Operative #[ticker.mode.syndicates.len-1]"
 					special_role = "Syndicate"
-					current.faction = "syndicate"
+					current.faction = "nuke"
 					to_chat(current, "\blue You are a Gorlex Maradeurs agent!")
 
 					if(config.objectives_disabled)
@@ -1359,7 +1359,7 @@
 		else
 			current.real_name = "Gorlex Maradeurs Operative #[ticker.mode.syndicates.len-1]"
 		special_role = "Syndicate"
-		current.faction = "syndicate"
+		current.faction = "nuke"
 		assigned_role = "MODE"
 		to_chat(current, "\blue You are a Gorlex Maradeurs agent!")
 		ticker.mode.forge_syndicate_objectives(src)

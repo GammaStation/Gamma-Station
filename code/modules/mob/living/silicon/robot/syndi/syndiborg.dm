@@ -3,7 +3,7 @@
 	lawupdate = 0
 	scrambledcodes = 1
 	modtype = "Syndicate"
-	faction = "syndicate"
+	faction = "nuke"
 //	designation = "Syndicate"
 	braintype = "Robot"
 	req_access = list(access_syndicate)
