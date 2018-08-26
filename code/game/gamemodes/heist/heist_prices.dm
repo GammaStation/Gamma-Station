@@ -135,7 +135,7 @@
 /obj/item/clothing/under/dress/dress_cap/price = 654
 /obj/item/clothing/under/dress/dress_hop/price = 654
 /obj/item/clothing/under/dress/dress_hr/price = 654
-/obj/item/clothing/under/ert/price = 777
+/obj/item/clothing/under/nuke/price = 777
 /obj/item/clothing/under/nt_pmc_uniform/price = 1000
 /obj/item/clothing/under/nt_pmc_uniform_light/price = 1000
 /obj/item/clothing/under/rank/price = 140

@@ -116,7 +116,7 @@
 
 /datum/uplink_item/dangerous/revolver
 	name = "TR-7 Revolver"
-	desc = "The syndicate revolver is a traditional handgun that fires .357 Magnum cartridges and has 7 chambers."
+	desc = "The revolver is a traditional handgun that fires .357 Magnum cartridges and has 7 chambers."
 	item = /obj/item/weapon/gun/projectile/revolver
 	cost = 8
 

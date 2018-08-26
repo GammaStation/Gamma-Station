@@ -87,8 +87,8 @@
 	item_state = "dg_suit"
 	item_color = "centcom"
 
-/obj/item/clothing/under/ert
-	name = "ERT tactical uniform"
+/obj/item/clothing/under/nuke
+	name = "tactical uniform"
 	desc = "A short-sleeved black uniform, paired with grey digital-camo cargo pants. It looks very tactical."
 	icon_state = "ert_uniform"
 	item_state = "bl_suit"

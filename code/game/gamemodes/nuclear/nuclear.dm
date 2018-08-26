@@ -145,8 +145,9 @@
 
 	for(var/datum/mind/synd_mind in syndicates)
 		log_debug("Starting cycle - Ckey:[synd_mind.key] - [synd_mind]")
-		synd_mind.current.faction = "syndicate"
-		synd_mind.current.real_name = "Gorlex Maradeurs Operative" // placeholder while we get their actual name
+		synd_mind.current.faction = "nuke"
+		synd_mind.current.real_name = "Nanotrasen Operative" // placeholder while we get their actual name
+//		synd_mind.current.species = HUMAN
 		log_debug("Leader status [leader_selected]")
 		if(!leader_selected)
 			log_debug("Leader - [synd_mind]")
@@ -192,7 +193,7 @@
 
 /datum/game_mode/proc/prepare_syndicate_leader(datum/mind/synd_mind, nuke_code)
 	if (nuke_code)
-		synd_mind.store_memory("<B>Syndicate Nuclear Bomb Code</B>: [nuke_code]", 0)
+		synd_mind.store_memory("<B>Nuclear Bomb Code</B>: [nuke_code]", 0)
 		to_chat(synd_mind.current, "The nuclear authorization code is: <B>[nuke_code]</B>")
 		var/obj/item/weapon/paper/P = new
 		P.info = "The nuclear authorization code is: <b>[nuke_code]</b>"
@@ -220,9 +221,9 @@
 
 /datum/game_mode/proc/greet_syndicate(datum/mind/syndicate, you_are=1, boss=0)
 	if (you_are)
-		to_chat(syndicate.current, "<span class = 'info'>You are a <font color='red'>Gorlex Maradeurs agent</font>!</span>")
+		to_chat(syndicate.current, "<span class = 'info'>You are a <font color='red'>Nanotrasen agent</font>!</span>")
 	if(boss)
-		to_chat(syndicate.current, "<span class = 'info'>You are a <font color='red'>Gorlex Maradeurs Commander</font>!</span>")
+		to_chat(syndicate.current, "<span class = 'info'>You are a <font color='red'>Nanotrasen Commander</font>!</span>")
 	var/obj_count = 1
 
 	if(!config.objectives_disabled)
@@ -245,7 +246,7 @@
 	R.set_frequency(radio_freq)
 	synd_mob.equip_to_slot_or_del(R, slot_l_ear)
 
-	synd_mob.equip_to_slot_or_del(new /obj/item/clothing/under/syndicate(synd_mob), slot_w_uniform)
+	synd_mob.equip_to_slot_or_del(new /obj/item/clothing/under/nuke(synd_mob), slot_w_uniform)
 	synd_mob.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat(synd_mob), slot_shoes)
 	if(synd_mob.backbag == 2) synd_mob.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack(synd_mob), slot_back)
 	if(synd_mob.backbag == 3) synd_mob.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel/norm(synd_mob), slot_back)

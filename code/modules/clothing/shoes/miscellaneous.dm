@@ -181,11 +181,11 @@
 	icon_state = "western_boots"
 	item_color = "western_boots"
 
-/obj/item/clothing/shoes/magboots/syndie
-	desc = "Light-weighted magnetic boots that have a custom syndicate paintjob for use in combat."
-	name = "gorlex magboots"
-	icon_state = "syndiemag0"
-	magboot_state = "syndiemag"
+/obj/item/clothing/shoes/magboots/nt
+	desc = "Light-weighted magnetic boots that have a custom paintjob for use in combat."
+	name = "Nanotrasen magboots"
+	icon_state = "ntmag0"
+	magboot_state = "ntmag"
 	slowdown_off = 1
 
 /obj/item/clothing/shoes/workboots

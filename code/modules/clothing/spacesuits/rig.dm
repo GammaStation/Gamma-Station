@@ -301,7 +301,115 @@
 	breach_threshold = 26
 
 
-//Syndicate rig
+//Syndicate rigs
+/obj/item/clothing/head/helmet/space/rig/nuke
+	name = "assault team helmet"
+	desc = "A helmet worn by members of the NanoTrasen Assault Team. Armoured and space ready."
+	icon_state = "rig0-ert_commander"
+	item_state = "helm-command"
+	//armor = list(melee = 50, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 60)
+	armor = list(melee = 60, bullet = 55, laser = 30,energy = 30, bomb = 50, bio = 100, rad = 60)
+	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
+	var/obj/machinery/camera/camera
+
+/obj/item/clothing/head/helmet/space/rig/nuke/attack_self(mob/user)
+	if(camera)
+		..(user)
+	else
+		camera = new /obj/machinery/camera(src)
+		camera.network = list("NUKE")
+		cameranet.removeCamera(camera)
+		camera.c_tag = user.name
+		to_chat(user, "\blue User scanned as [camera.c_tag]. Camera activated.")
+
+/obj/item/clothing/head/helmet/space/rig/nuke/examine(mob/user)
+	..()
+	if(src in view(1, user))
+		to_chat(user, "This helmet has a built-in camera. It's [camera ? "" : "in"]active.")
+
+/obj/item/clothing/suit/space/rig/nuke
+	name = "assault team suit"
+	desc = "A suit worn by members of the NanoTrasen Assault Team. Armoured, space ready, and fire resistant."
+	icon_state = "ert_commander"
+	item_state = "suit-command"
+	w_class = 3
+	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_box/magazine,/obj/item/ammo_casing,
+	/obj/item/weapon/melee/baton,/obj/item/weapon/melee/energy/sword,/obj/item/weapon/handcuffs,
+	/obj/item/weapon/tank,/obj/item/weapon/rcd)
+	slowdown = 1
+	//armor = list(melee = 60, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 60)
+	armor = list(melee = 60, bullet = 65, laser = 55, energy = 45, bomb = 50, bio = 100, rad = 60)
+	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
+
+//Commander nuke
+/obj/item/clothing/head/helmet/space/rig/nuke/commander
+	name = "assault team commander helmet"
+	desc = "A helmet worn by the NanoTrasen Assault Team. Has blue highlights. Armoured and space ready."
+	icon_state = "rig0-ert_commander"
+	item_state = "helm-command"
+	item_color = "ert_commander"
+	//armor = list(melee = 60, bullet = 65, laser = 55, energy = 45, bomb = 50, bio = 100, rad = 60)
+	armor = list(melee = 60, bullet = 55, laser = 30,energy = 30, bomb = 50, bio = 100, rad = 60)
+
+
+/obj/item/clothing/suit/space/rig/nuke/commander
+	name = "assault team commander suit"
+	desc = "A suit worn by the NanoTrasen Assault Team. Has blue highlights. Armoured, space ready, and fire resistant."
+	icon_state = "ert_commander"
+	item_state = "suit-command"
+	slowdown = 1.4
+	//armor = list(melee = 60, bullet = 65, laser = 55, energy = 55, bomb = 50, bio = 100, rad = 60)
+	armor = list(melee = 60, bullet = 65, laser = 55, energy = 45, bomb = 50, bio = 100, rad = 60)
+	//breach_threshold = 28
+
+//Security nuke - not used
+/obj/item/clothing/head/helmet/space/rig/nuke/security
+	name = "assault team security helmet"
+	desc = "A helmet worn by security members of a NanoTrasen Assault Team. Has red highlights. Armoured and space ready."
+	icon_state = "rig0-ert_security"
+	item_state = "syndicate-helm-black-red"
+	item_color = "ert_security"
+	armor = list(melee = 60, bullet = 60, laser = 60, energy = 30, bomb = 65, bio = 100, rad = 10)
+
+/obj/item/clothing/suit/space/rig/nuke/security
+	name = "assault team security suit"
+	desc = "A suit worn by security members of a NanoTrasen Assault Team. Has red highlights. Armoured, space ready, and fire resistant."
+	icon_state = "ert_security"
+	item_state = "syndicate-black-red"
+	armor = list(melee = 60, bullet = 60, laser = 60, energy = 30, bomb = 65, bio = 100, rad = 10)
+	breach_threshold = 25
+	slowdown = 1.4
+
+//Engineer nuke - not used
+/obj/item/clothing/head/helmet/space/rig/nuke/engineer
+	name = "assault team engineer helmet"
+	desc = "A helmet worn by engineering members of a NanoTrasen Assault Team. Has orange highlights. Armoured and space ready."
+	icon_state = "rig0-ert_engineer"
+	item_color = "ert_engineer"
+	siemens_coefficient = 0
+	armor = list(melee = 60, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 75)
+
+/obj/item/clothing/suit/space/rig/nuke/engineer
+	name = "assault team engineer suit"
+	desc = "A suit worn by the engineering of a NanoTrasen Assault Team. Has orange highlights. Armoured, space ready, and fire resistant."
+	icon_state = "ert_engineer"
+	siemens_coefficient = 0
+	armor = list(melee = 60, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 75)
+
+//Medical nuke - not used
+/obj/item/clothing/head/helmet/space/rig/nuke/medical
+	name = "assault team medical helmet"
+	desc = "A helmet worn by medical members of a NanoTrasen Assault Team. Has white highlights. Armoured and space ready."
+	icon_state = "rig0-ert_medical"
+	item_color = "ert_medical"
+
+/obj/item/clothing/suit/space/rig/nuke/medical
+	name = "assault team medical suit"
+	desc = "A suit worn by medical members of a NanoTrasen Assault Team. Has white highlights. Armoured and space ready."
+	icon_state = "ert_medical"
+	slowdown = 0.8
+
+/*
 /obj/item/clothing/head/helmet/space/rig/syndi
 	name = "blood-red hybrid helmet"
 	desc = "An advanced helmet designed for work in special operations. Property of Gorlex Marauders."
@@ -351,7 +459,7 @@
 		on = !on
 	else
 		camera = new /obj/machinery/camera(src)
-		camera.replace_networks(list("NUKE"))
+		camera.replace_networks(list("ERT"))
 		cameranet.removeCamera(camera)
 		camera.c_tag = user.name
 		to_chat(user, "<span class='notice'>User scanned as [camera.c_tag]. Camera activated.</span>")
@@ -444,7 +552,7 @@
 			playsound(usr, "sound/effects/inflate.ogg", 30)
 			usr.visible_message("<span class='notice'>[usr]'s suit inflates and pressurizes.</span>")
 		update_icon(usr)
-
+*/
 
 //Wizard Rig
 /obj/item/clothing/head/helmet/space/rig/wizard
