@@ -127,3 +127,26 @@
 			if(p_loc == user.loc && p_loc_m == C.loc)
 				C.handcuffed = new /obj/item/weapon/handcuffs(C)
 				C.update_inv_handcuffed()
+
+var/last_chew = 0
+/mob/living/carbon/human/RestrainedClickOn(atom/A)
+	if(A != src)
+		return ..()//THIS can happen? WHUT?!
+	if(last_chew + 26 > world.time)
+		return
+
+	var/mob/living/carbon/human/H = A
+	if(!H.handcuffed || H.a_intent != "hurt" || H.zone_sel.selecting != O_MOUTH || H.wear_mask || istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket))
+		return
+
+	var/obj/item/organ/external/BP = H.bodyparts_by_name[hand ? BP_L_ARM : BP_R_ARM]
+	if(!BP)
+		return
+	var/m =  "<span class='warning'>[H.name] chews on his [BP.name]!</span>"
+	to_chat(src, "<span class='warning'>You chew on your [BP.name]!</span>")
+	visible_message("[m]")
+	H.attack_log += text("\[[time_stamp()]\] <font color='red'>[m] ([H.ckey])</font>")
+	last_chew = world.time
+	BP.take_damage(3, null, DAM_EDGE | DAM_SHARP, "teeth marks")
+	if(prob(25) && BP.brute_dam > 20)
+		BP.droplimb(null, null, DROPLIMB_EDGE)
