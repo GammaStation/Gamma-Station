@@ -8,7 +8,7 @@ var/ert_base_chance = 10 // Default base chance. Will be incremented by incremen
 var/can_call_ert
 
 /client/proc/response_team()
-	set name = "Dispatch Emergency Response Team"
+	set name = "Dispatch Gorlex Emergency Response Team"
 	set category = "Special Verbs"
 	set desc = "Send an emergency response team to the station."
 
@@ -22,9 +22,9 @@ var/can_call_ert
 		to_chat(usr, "\red The round hasn't started yet!")
 		return
 	if(send_emergency_team)
-		to_chat(usr, "\red Central Command has already dispatched an emergency response team!")
+		to_chat(usr, "\red Central Syndicate Command has already dispatched an emergency response team!")
 		return
-	if(alert("Do you want to dispatch an Emergency Response Team?",,"Yes","No") != "Yes")
+	if(alert("Do you want to dispatch a Gorlex Emergency Response Team?",,"Yes","No") != "Yes")
 		return
 	if(get_security_level() != "red") // Allow admins to reconsider if the alert level isn't Red
 		switch(alert("The station is not in red alert. Do you still want to dispatch a response team?",,"Yes","No"))
@@ -75,12 +75,12 @@ var/can_call_ert
 			new_commando.key = usr.key
 			create_random_account_and_store_in_mind(new_commando)
 
-			to_chat(new_commando, "\blue You are [!leader_selected?"a member":"the <B>LEADER</B>"] of an Emergency Response Team, a type of military division, under CentComm's service. There is a code red alert on [station_name()], you are tasked to go and fix the problem.")
+			to_chat(new_commando, "\blue You are [!leader_selected?"a member":"the <B>LEADER</B>"] of a Gorlex Emergency Response Team, a type of military division, under Syndicate's service. There is a code red alert on [station_name()], you are tasked to go and fix the problem.")
 			to_chat(new_commando, "<b>You should first gear up and discuss a plan with your team. More members may be joining, don't move out before you're ready.")
 			if(!leader_selected)
-				to_chat(new_commando, "<b>As member of the Emergency Response Team, you answer only to your leader and CentComm officials.</b>")
+				to_chat(new_commando, "<b>As member of the Gorlex Emergency Response Team, you answer only to your leader and Syndicate's officials.</b>")
 			else
-				to_chat(new_commando, "<b>As leader of the Emergency Response Team, you answer only to CentComm, and have authority to override the Captain where it is necessary to achieve your mission goals. It is recommended that you attempt to cooperate with the captain where possible, however.")
+				to_chat(new_commando, "<b>As leader of the Gorlex Emergency Response Team, you answer only to Syndicate, and have authority to override the Captain where it is necessary to achieve your mission goals. It is recommended that you attempt to cooperate with the captain where possible, however.")
 			return
 
 	else
@@ -140,11 +140,11 @@ var/can_call_ert
 
 	// there's only a certain chance a team will be sent
 	if(!prob(send_team_chance))
-		command_alert("It would appear that an emergency response team was requested for [station_name()]. Unfortunately, we were unable to send one at this time.", "Central Command")
+		command_alert("It would appear that an emergency response team was requested for [station_name()]. Unfortunately, we were unable to send one at this time.", "Central Syndicate Command")
 		can_call_ert = 0 // Only one call per round, ladies.
 		return
 
-	command_alert("It would appear that an emergency response team was requested for [station_name()]. We will prepare and send one as soon as possible.", "Central Command")
+	command_alert("It would appear that an emergency response team was requested for [station_name()]. We will prepare and send one as soon as possible.", "Central Syndicate Command")
 
 	can_call_ert = 0 // Only one call per round, gentleman.
 	send_emergency_team = 1
@@ -240,23 +240,23 @@ var/can_call_ert
 	equip_to_slot_or_del(new /obj/item/device/radio/headset/ert(src), slot_l_ear)
 
 	//Replaced with new ERT uniform
-	equip_to_slot_or_del(new /obj/item/clothing/under/ert(src), slot_w_uniform)
+	equip_to_slot_or_del(new /obj/item/clothing/under/syndicate/combat(src), slot_w_uniform)
 	equip_to_slot_or_del(new /obj/item/clothing/shoes/swat(src), slot_shoes)
 	equip_to_slot_or_del(new /obj/item/clothing/gloves/swat(src), slot_gloves)
 	equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses(src), slot_glasses)
 
 	if(leader_selected)
 		var/obj/item/weapon/card/id/ert/W = new(src)
-		W.assignment = "Emergency Response Team Leader"
-		W.rank = "Emergency Response Team Leader"
+		W.assignment = "Gorlex Emergency Response Team Leader"
+		W.rank = "Gorlex Emergency Response Team Leader"
 		W.registered_name = real_name
 		W.name = "[real_name]'s ID Card ([W.assignment])"
 		W.icon_state = "ert-leader"
 		equip_to_slot_or_del(W, slot_wear_id)
 	else
 		var/obj/item/weapon/card/id/ert/W = new(src)
-		W.assignment = "Emergency Response Team"
-		W.rank = "Emergency Response Team"
+		W.assignment = "Gorlex Emergency Response Team"
+		W.rank = "Gorlex Emergency Response Team"
 		W.registered_name = real_name
 		W.name = "[real_name]'s ID Card ([W.assignment])"
 		W.icon_state = "ert"

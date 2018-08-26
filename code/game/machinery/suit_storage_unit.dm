@@ -36,8 +36,8 @@
 	MASK_TYPE = /obj/item/clothing/mask/breath
 
 /obj/machinery/suit_storage_unit/syndicate_unit
-	SUIT_TYPE = /obj/item/clothing/suit/space/rig/syndi
-	HELMET_TYPE = /obj/item/clothing/head/helmet/space/rig/syndi
+	SUIT_TYPE = /obj/item/clothing/suit/space/rig/gert
+	HELMET_TYPE = /obj/item/clothing/head/helmet/space/rig/gert
 	MASK_TYPE = /obj/item/clothing/mask/gas/syndicate
 
 /obj/machinery/suit_storage_unit/science

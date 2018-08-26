@@ -432,10 +432,10 @@
 	. = ..()
 
 /obj/item/weapon/card/id/ert
-	name = "\improper CentCom. ID"
+	name = "\improper CentCon. ID"
 	icon_state = "ert"
-	registered_name = "Central Command"
-	assignment = "Emergency Response Team"
+	registered_name = "Syndie Cat"
+	assignment = "Gorlex Emergency Response Team"
 	customizable_view = TRAITOR_VIEW
 
 /obj/item/weapon/card/id/ert/atom_init()

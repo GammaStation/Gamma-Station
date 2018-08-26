@@ -253,8 +253,8 @@
 /obj/item/device/modkit/syndie
 	name = "Gorlex hardsuit modification kit"
 	permitted_types = list(
-		/obj/item/clothing/head/helmet/space/rig/syndi,
-		/obj/item/clothing/suit/space/rig/syndi
+		/obj/item/clothing/head/helmet/space/rig/gert,
+		/obj/item/clothing/suit/space/rig/gert
 		)
 
 /obj/item/device/modkit/syndie/tajaran
