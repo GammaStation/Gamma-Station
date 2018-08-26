@@ -78,7 +78,7 @@
 			new /obj/item/weapon/pen/edagger(src)
 			new /obj/item/weapon/melee/energy/sword/black(src)
 			new /obj/item/device/powersink(src)
-			new /obj/item/weapon/storage/box/syndie_kit/throwing_weapon(src)
+			new /obj/item/weapon/storage/box/badguy_kit/throwing_weapon(src)
 			new /obj/item/clothing/under/color/black(src)
 			new /obj/item/clothing/head/chaplain_hood(src)
 			new /obj/item/clothing/glasses/thermal/syndi(src)
@@ -99,59 +99,59 @@
 	tag = tagname
 
 
-/obj/item/weapon/storage/box/syndie_kit
+/obj/item/weapon/storage/box/badguy_kit
 	name = "box"
 	desc = "A sleek, sturdy box."
 	icon_state = "box_of_doom"
 
-/obj/item/weapon/storage/box/syndie_kit/imp_freedom
+/obj/item/weapon/storage/box/badguy_kit/imp_freedom
 	name = "boxed freedom implant (with injector)"
 
-/obj/item/weapon/storage/box/syndie_kit/imp_freedom/atom_init()
+/obj/item/weapon/storage/box/badguy_kit/imp_freedom/atom_init()
 	. = ..()
 	var/obj/item/weapon/implanter/O = new(src)
 	O.imp = new /obj/item/weapon/implant/freedom(O)
 	O.update()
 
-/obj/item/weapon/storage/box/syndie_kit/imp_compress
+/obj/item/weapon/storage/box/badguy_kit/imp_compress
 	name = "box (C)"
 
-/obj/item/weapon/storage/box/syndie_kit/imp_compress/atom_init()
+/obj/item/weapon/storage/box/badguy_kit/imp_compress/atom_init()
 	new /obj/item/weapon/implanter/compressed(src)
 	. = ..()
 
-/obj/item/weapon/storage/box/syndie_kit/imp_explosive
+/obj/item/weapon/storage/box/badguy_kit/imp_explosive
 	name = "box (E)"
 
-/obj/item/weapon/storage/box/syndie_kit/imp_explosive/atom_init()
+/obj/item/weapon/storage/box/badguy_kit/imp_explosive/atom_init()
 	new /obj/item/weapon/implanter/explosive(src)
 	. = ..()
 
-/obj/item/weapon/storage/box/syndie_kit/imp_uplink
+/obj/item/weapon/storage/box/badguy_kit/imp_uplink
 	name = "boxed uplink implant (with injector)"
 
-/obj/item/weapon/storage/box/syndie_kit/imp_uplink/atom_init()
+/obj/item/weapon/storage/box/badguy_kit/imp_uplink/atom_init()
 	. = ..()
 	var/obj/item/weapon/implanter/O = new(src)
 	O.imp = new /obj/item/weapon/implant/uplink(O)
 	O.update()
 
-/obj/item/weapon/storage/box/syndie_kit/space
+/obj/item/weapon/storage/box/badguy_kit/space
 	name = "boxed space suit and helmet"
 
-/obj/item/weapon/storage/box/syndie_kit/space/atom_init()
+/obj/item/weapon/storage/box/badguy_kit/space/atom_init()
 	. = ..()
 	new /obj/item/clothing/suit/space/syndicate(src)
 	new /obj/item/clothing/head/helmet/space/syndicate(src)
 	new /obj/item/clothing/mask/breath(src)
 	new /obj/item/weapon/tank/emergency_oxygen/engi(src)
 
-/obj/item/weapon/storage/box/syndie_kit/chameleon
+/obj/item/weapon/storage/box/badguy_kit/chameleon
 	name = "Chameleon Kit"
 	desc = "Comes with all the clothes you need to impersonate most people.  Acting lessons sold seperately."
 	storage_slots = 10
 
-/obj/item/weapon/storage/box/syndie_kit/chameleon/atom_init()
+/obj/item/weapon/storage/box/badguy_kit/chameleon/atom_init()
 	. = ..()
 	new /obj/item/clothing/under/chameleon(src)
 	new /obj/item/clothing/head/chameleon(src)
@@ -164,38 +164,38 @@
 	new /obj/item/weapon/gun/projectile/chameleon(src)
 	new /obj/item/ammo_box/magazine/chameleon(src)
 
-/obj/item/weapon/storage/box/syndie_kit/throwing_weapon
+/obj/item/weapon/storage/box/badguy_kit/throwing_weapon
 	name = "box (F)"
 
-/obj/item/weapon/storage/box/syndie_kit/throwing_weapon/atom_init()
+/obj/item/weapon/storage/box/badguy_kit/throwing_weapon/atom_init()
 	. = ..()
 	for (var/i in 1 to 2)
 		new /obj/item/weapon/legcuffs/bola/tactical(src)
 	for (var/i in 1 to 5)
 		new /obj/item/weapon/throwing_star(src)
 
-/obj/item/weapon/storage/box/syndie_kit/cutouts
+/obj/item/weapon/storage/box/badguy_kit/cutouts
 	name = "box (G)"
 
-/obj/item/weapon/storage/box/syndie_kit/cutouts/atom_init()
+/obj/item/weapon/storage/box/badguy_kit/cutouts/atom_init()
 	. = ..()
 	for(var/i = 1 to 3)
 		new /obj/item/cardboard_cutout(src)
 	new /obj/item/toy/crayon/rainbow (src)
 
-/obj/item/weapon/storage/box/syndie_kit/rig
+/obj/item/weapon/storage/box/badguy_kit/rig
 	name = "box (J)"
 
-/obj/item/weapon/storage/box/syndie_kit/rig/atom_init()
+/obj/item/weapon/storage/box/badguy_kit/rig/atom_init()
 	. = ..()
 	new /obj/item/clothing/suit/space/rig/syndi(src)
 	new /obj/item/clothing/head/helmet/space/rig/syndi(src)
 	new /obj/item/clothing/shoes/magboots/syndie(src)
 
-/obj/item/weapon/storage/box/syndie_kit/armor
+/obj/item/weapon/storage/box/badguy_kit/armor
 	name = "box (K)"
 
-/obj/item/weapon/storage/box/syndie_kit/armor/atom_init()
+/obj/item/weapon/storage/box/badguy_kit/armor/atom_init()
 	. = ..()
 	new /obj/item/clothing/suit/armor/syndiassault(src)
 	if(prob(50))
@@ -203,28 +203,28 @@
 	else
 		new /obj/item/clothing/head/helmet/syndiassault/alternate(src)
 
-/obj/item/weapon/storage/box/syndie_kit/fake
+/obj/item/weapon/storage/box/badguy_kit/fake
 	name = "box (B)"
 	desc = "This set allows you to forge various documents at the station."
 
-/obj/item/weapon/storage/box/syndie_kit/fake/atom_init()
+/obj/item/weapon/storage/box/badguy_kit/fake/atom_init()
 	. = ..()
 	new /obj/item/weapon/pen/chameleon(src)
 	new /obj/item/weapon/stamp/chameleon(src)
 
-/obj/item/weapon/storage/box/syndie_kit/posters
+/obj/item/weapon/storage/box/badguy_kit/posters
 	name = "box (P)"
 
-/obj/item/weapon/storage/box/syndie_kit/posters/atom_init()
+/obj/item/weapon/storage/box/badguy_kit/posters/atom_init()
 	. = ..()
 	for(var/i in 0 to 6)
 		new /obj/item/weapon/poster/contraband(src)
 
-/obj/item/weapon/storage/box/syndie_kit/merch
+/obj/item/weapon/storage/box/badguy_kit/merch
 	name = "box (M)"
-	desc = "Box containing some Syndicate merchandise for real agents!"
+	desc = "Box containing some merchandise for real agents!"
 
-/obj/item/weapon/storage/box/syndie_kit/merch/atom_init()
+/obj/item/weapon/storage/box/badguy_kit/merch/atom_init()
 	. = ..()
 	new /obj/item/clothing/head/soft/red(src)
 	new /obj/item/clothing/suit/syndieshirt(src)

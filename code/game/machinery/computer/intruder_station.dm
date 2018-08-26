@@ -154,11 +154,11 @@
 	name = "Syndi Rig"
 	desc = "The red syndicate space rig with additional armor plating.\
 	 Nanotrasen crewmembers are trained to report red space suit sightings."
-	item = /obj/item/weapon/storage/box/syndie_kit/rig
+	item = /obj/item/weapon/storage/box/badguy_kit/rig
 	cost = 8
 
 /datum/intruder_tools/armor
 	name = "Syndi Assault Armor"
 	desc = "The red syndicate heavy armor with additional armor plating and helmet to it."
-	item = /obj/item/weapon/storage/box/syndie_kit/armor
+	item = /obj/item/weapon/storage/box/badguy_kit/armor
 	cost = 4

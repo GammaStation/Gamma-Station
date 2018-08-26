@@ -399,7 +399,7 @@
 	name = "Adaptive Cardboard Cutouts"
 	desc = "These cardboard cutouts are coated with a thin material that prevents discoloration and makes the images on them appear more lifelike. This pack contains three as well as a \
 	crayon for changing their appearances."
-	item = /obj/item/weapon/storage/box/syndie_kit/cutouts
+	item = /obj/item/weapon/storage/box/badguy_kit/cutouts
 	cost = 1
 
 /datum/uplink_item/stealthy_weapons/strip_gloves
@@ -444,14 +444,14 @@
 /datum/uplink_item/stealthy_tools/chameleon_kit
 	name = "Chameleon Kit"
 	desc = "A set of clothes used to imitate the uniforms of Nanotrasen crewmembers."
-	item = /obj/item/weapon/storage/box/syndie_kit/chameleon
+	item = /obj/item/weapon/storage/box/badguy_kit/chameleon
 	cost = 2
 //	excludefrom = list(/datum/game_mode/nuclear)
 
 /datum/uplink_item/stealthy_tools/chameleon_penstamp
 	name = "Fake Bureucracy Set"
 	desc = "This set allows you to forge various documents at the station."
-	item = /obj/item/weapon/storage/box/syndie_kit/fake
+	item = /obj/item/weapon/storage/box/badguy_kit/fake
 	cost = 4
 
 /datum/uplink_item/stealthy_tools/smugglersatchel
@@ -504,7 +504,7 @@
 	name = "Box of Throwing Weapons"
 	desc = "A box of shurikens and reinforced bolas from ancient Earth martial arts. They are highly effective \
 			 throwing weapons. The bolas can knock a target down and the shurikens will embed into limbs."
-	item = /obj/item/weapon/storage/box/syndie_kit/throwing_weapon
+	item = /obj/item/weapon/storage/box/badguy_kit/throwing_weapon
 	cost = 6
 
 /datum/uplink_item/stealthy_weapons/edagger
@@ -587,7 +587,7 @@
 /datum/uplink_item/device_tools/space_suit
 	name = "Syndicate Space Suit"
 	desc = "The red syndicate space suit is less encumbering than Nanotrasen variants, fits inside bags, and has a weapon slot. Nanotrasen crewmembers are trained to report red space suit sightings."
-	item = /obj/item/weapon/storage/box/syndie_kit/space
+	item = /obj/item/weapon/storage/box/badguy_kit/space
 	cost = 4
 
 /datum/uplink_item/device_tools/thermal
@@ -621,7 +621,7 @@
 /datum/uplink_item/device_tools/poster_kit
 	name = "Poster kit"
 	desc = "Box of illegal posters"
-	item = /obj/item/weapon/storage/box/syndie_kit/posters
+	item = /obj/item/weapon/storage/box/badguy_kit/posters
 	cost = 1
 
 /datum/uplink_item/device_tools/headcan
@@ -707,14 +707,14 @@
 /datum/uplink_item/implants/freedom
 	name = "Freedom Implant"
 	desc = "An implant injected into the body and later activated using a bodily gesture to attempt to slip restraints."
-	item = /obj/item/weapon/storage/box/syndie_kit/imp_freedom
+	item = /obj/item/weapon/storage/box/badguy_kit/imp_freedom
 	cost = 5
 
 /datum/uplink_item/implants/uplink
 	name = "Uplink Implant"
 	desc = "An implant injected into the body, and later activated using a bodily gesture to open an uplink with 5 telecrystals. \
 	The ability for an agent to open an uplink after their posessions have been stripped from them makes this implant excellent for escaping confinement."
-	item = /obj/item/weapon/storage/box/syndie_kit/imp_uplink
+	item = /obj/item/weapon/storage/box/badguy_kit/imp_uplink
 	cost = 20
 
 /datum/uplink_item/implants/storage
@@ -727,7 +727,7 @@
 /datum/uplink_item/implants/adrenal
 	name = "Adrenal Implant"
 	desc = "An implant injected into the body, and later activated using a bodily gesture to inject a chemical cocktail, which has a mild healing effect along with removing all stuns and increasing his speed."
-	item = /obj/item/weapon/storage/box/syndie_kit/imp_adrenal
+	item = /obj/item/weapon/storage/box/badguy_kit/imp_adrenal
 	cost = 4 */
 
 // POINTLESS BADASSERY
@@ -745,7 +745,7 @@
 /datum/uplink_item/badass/merch
 	name = "Syndicate Merchandise"
 	desc = "To show your loalty to the Syndicate! Contains new red t-shirt with Syndicate logo, red cap and a fancy baloon!"
-	item = /obj/item/weapon/storage/box/syndie_kit/merch
+	item = /obj/item/weapon/storage/box/badguy_kit/merch
 	cost = 20
 
 /datum/uplink_item/badass/syndiecigs

@@ -1752,7 +1752,7 @@ datum/design/chameleon
 	req_tech = list("syndicate" = 2)
 	build_type = PROTOLATHE
 	materials = list(MAT_METAL = 5000)
-	build_path = /obj/item/weapon/storage/box/syndie_kit/chameleon
+	build_path = /obj/item/weapon/storage/box/badguy_kit/chameleon
 
 
 datum/design/bluespacebeaker

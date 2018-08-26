@@ -8,7 +8,7 @@
 	prob(3);/obj/item/weapon/antag_spawner/borg_tele,\
 	prob(3);/obj/item/weapon/gun/projectile/revolver/rocketlauncher,\
 	prob(4);/obj/item/weapon/gun/projectile/automatic/a74,\
-	prob(5);/obj/item/weapon/storage/box/syndie_kit/imp_uplink,\
+	prob(5);/obj/item/weapon/storage/box/badguy_kit/imp_uplink,\
 	prob(5);/obj/item/weapon/storage/box/syndicate,\
 	prob(5);/obj/item/toy/syndicateballoon,\
 	prob(5);/obj/item/weapon/gun/projectile/heavyrifle,\
@@ -33,13 +33,13 @@
 	prob(14);/obj/item/device/healthanalyzer/rad_laser,\
 	prob(16);/obj/item/weapon/gun/projectile/automatic/pistol,\
 	prob(16);/obj/item/weapon/grenade/syndieminibomb,\
-	prob(16);/obj/item/weapon/storage/box/syndie_kit/throwing_weapon,\
+	prob(16);/obj/item/weapon/storage/box/badguy_kit/throwing_weapon,\
 	prob(16);/obj/item/weapon/card/emag,\
 	prob(20);/obj/item/weapon/storage/box/emps,\
-	prob(20);/obj/item/weapon/storage/box/syndie_kit/imp_freedom,\
+	prob(20);/obj/item/weapon/storage/box/badguy_kit/imp_freedom,\
 	prob(20);/obj/item/ammo_box/magazine/m12g/incendiary,\
 	prob(20);/obj/item/device/chameleon,\
-	prob(20);/obj/item/weapon/storage/box/syndie_kit/space,\
+	prob(20);/obj/item/weapon/storage/box/badguy_kit/space,\
 	prob(20);/obj/item/clothing/glasses/thermal/syndi,\
 	prob(20);/obj/item/weapon/storage/firstaid/small_firstaid_kit/combat,\
 	prob(20);/obj/item/weapon/pen/edagger,\
@@ -65,7 +65,7 @@
 	prob(50);/obj/item/weapon/storage/fancy/cigarettes/cigpack_syndicate,\
 	prob(50);/obj/item/weapon/cartridge/assault,\
 	prob(50);/obj/item/toy/carpplushie/dehy_carp,\
-	prob(50);/obj/item/weapon/storage/box/syndie_kit/chameleon,\
+	prob(50);/obj/item/weapon/storage/box/badguy_kit/chameleon,\
 	prob(50);/obj/item/device/camera_bug,\
 	prob(50);/obj/item/weapon/silencer,\
 	prob(50);/obj/item/ammo_casing/a145,\
@@ -77,7 +77,7 @@
 	prob(100);/obj/item/weapon/storage/belt/military,\
 	prob(100);/obj/item/weapon/storage/toolbox/nt,\
 	prob(100);/obj/item/weapon/soap/syndie,\
-	prob(100);/obj/item/weapon/storage/box/syndie_kit/cutouts,\
+	prob(100);/obj/item/weapon/storage/box/badguy_kit/cutouts,\
 	prob(100);/obj/item/weapon/reagent_containers/food/snacks/donkpocket,\
 	prob(100);/obj/item/weapon/reagent_containers/food/snacks/syndicake\
 	)

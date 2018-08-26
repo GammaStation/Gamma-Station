@@ -10,7 +10,7 @@ var/global/obj/item/device/nuclear_challenge/Challenge
 	icon_state = "recaller"
 	item_state = "walkietalkie"
 	desc = "Use to send a declaration of hostilities to the target, delaying your shuttle departure for 20 minutes while they prepare for your assault.  \
-			Such a brazen move will attract the attention of powerful benefactors within the Syndicate, who will supply your team with a massive amount of bonus telecrystals.  \
+			Such a brazen move will attract the attention of powerful benefactors within the Nanotrasen, who will supply your team with a massive amount of bonus telecrystals.  \
 			Must be used within five minutes, or your benefactors will lose interest."
 	var/declaring_war = FALSE
 	var/static/Gateway_hack = FALSE
