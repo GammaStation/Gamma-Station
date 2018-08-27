@@ -5,7 +5,7 @@
 	name = "syndicate shuttle terminal"
 	circuit = /obj/item/weapon/circuitboard/computer/syndicate_shuttle
 	icon = 'icons/obj/computer.dmi'
-	icon_state = "syndishuttle"
+	icon_state = "ntshuttle"
 	light_color = "#a91515"
 	req_access = list(access_syndicate)
 	var/area/curr_location

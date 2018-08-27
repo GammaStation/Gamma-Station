@@ -1,7 +1,7 @@
 /obj/item/clothing/head/helmet/space/rig/gert
 	name = "blood-red hybrid helmet"
 	desc = "An advanced helmet designed for work in special operations. Property of Gorlex Emergency Responce Team."
-	icon_state = "rig0-syndie"
+	icon_state = "rig0-gert"
 	item_state = "syndie_helm"
 	//armor = list(melee = 60, bullet = 55, laser = 30,energy = 30, bomb = 50, bio = 100, rad = 60)
 	armor = list (melee = 60, bullet = 65, laser = 55, energy = 45, bomb = 50, bio = 100, rad = 60)
@@ -12,6 +12,7 @@
 	var/equipped_on_head = FALSE
 	flags = BLOCKHAIR | THICKMATERIAL | PHORONGUARD
 	light_color = "#00f397"
+	var/class = ""
 
 /obj/item/clothing/head/helmet/space/rig/gert/equipped(mob/user, slot)
 	. = ..()
@@ -40,7 +41,7 @@
 		lamp.plane = LIGHTING_PLANE + 1
 		lamp.alpha = on ? 255 : 127
 		user.overlays += lamp
-	icon_state = "rig[on]-syndie[combat_mode ? "-combat" : ""]"
+	icon_state = "rig[on]-gert_[class][combat_mode ? "-combat" : ""]"
 	user.update_inv_head()
 
 /obj/item/clothing/head/helmet/space/rig/gert/attack_self(mob/user)
@@ -116,7 +117,7 @@
 
 /obj/item/clothing/suit/space/rig/gert/update_icon(mob/user)
 	..()
-	icon_state = "rig-syndie[combat_mode ? "-combat" : ""]"
+	icon_state = "[initial(icon_state)][combat_mode ? "-combat" : ""]"
 	user.update_inv_wear_suit()
 
 /obj/item/clothing/suit/space/rig/gert/ui_action_click()
@@ -153,6 +154,7 @@
 	item_color = "gert_commander"
 	//armor = list(melee = 60, bullet = 65, laser = 55, energy = 45, bomb = 50, bio = 100, rad = 60)
 	armor = list(melee = 60, bullet = 55, laser = 30,energy = 30, bomb = 50, bio = 100, rad = 60)
+	class = "commander"
 
 
 /obj/item/clothing/suit/space/rig/gert/commander
@@ -173,6 +175,7 @@
 	item_state = "syndicate-helm-black-red"
 	item_color = "gert_security"
 	armor = list(melee = 60, bullet = 60, laser = 60, energy = 30, bomb = 65, bio = 100, rad = 10)
+	class = "security"
 
 /obj/item/clothing/suit/space/rig/gert/security
 	name = "Gorlex emergency responce team security suit"
@@ -191,6 +194,7 @@
 	item_color = "gert_engineer"
 	siemens_coefficient = 0
 	armor = list(melee = 60, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 75)
+	class = "engineer"
 
 /obj/item/clothing/suit/space/rig/gert/engineer
 	name = "Gorlex emergency responce team engineer suit"
@@ -205,6 +209,7 @@
 	desc = "A helmet worn by medical members of a Gorlex Emergency Responce Team. Has white highlights. Armoured and space ready."
 	icon_state = "rig0-gert_medical"
 	item_color = "ert_medical"
+	class = "medical"
 
 /obj/item/clothing/suit/space/rig/gert/medical
 	name = "Gorlex emergency responce team medical suit"

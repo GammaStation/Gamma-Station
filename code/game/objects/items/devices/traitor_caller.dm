@@ -36,9 +36,9 @@
 	ticker.mode.equip_traitor(newtraitor)
 	ticker.mode.syndicates += newtraitor.mind
 	ticker.mode.update_synd_icons_added(newtraitor.mind)
-	to_chat(newtraitor, "<span class='userdanger'> <B>ATTENTION:</B> You hear a call from Syndicate...</span>")
+	to_chat(newtraitor, "<span class='userdanger'> <B>ATTENTION:</B> You hear a call from Nanotrasen...</span>")
 	to_chat(newtraitor, "<B>You are now a special traitor.</B>")
-	newtraitor.mind.special_role = "Syndicate"
+	newtraitor.mind.special_role = "Nuclear"
 	newtraitor.hud_updateflag |= 1 << SPECIALROLE_HUD
 	ticker.mode.forge_syndicate_objectives(newtraitor.mind)
 	newtraitor.equip_or_collect(new /obj/item/device/encryptionkey/syndicate(newtraitor), slot_r_store)

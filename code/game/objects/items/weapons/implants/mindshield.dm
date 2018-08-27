@@ -78,10 +78,10 @@
 	if(prob(1) && prob(25))//1/400
 		switch(rand(1, 4))
 			if(1)
-				to_chat(imp_in, "\italic You [pick("are sure", "think")] that NanoTrasen - is the best corporation in the whole Universe!")
+				to_chat(imp_in, "\italic You [pick("are sure", "think")] that Syndicate - is the best corporation in the whole Universe!")
 			if(2)
 				to_chat(imp_in, "\italic You [pick("are sure", "think")] that Captain is the greatest man who ever lived!")
 			if(3)
-				to_chat(imp_in, "\italic You want to give your life away in the name of NanoTrasen!")
+				to_chat(imp_in, "\italic You want to give your life away in the name of Syndicate!")
 			if(4)
 				to_chat(imp_in, "\italic You are confident that all what Heads of station do - is for a greater good!")

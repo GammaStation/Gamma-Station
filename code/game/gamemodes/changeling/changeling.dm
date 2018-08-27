@@ -17,7 +17,7 @@ var/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","Epsilon"
 
 	votable = 0
 
-	uplink_welcome = "Syndicate Uplink Console:"
+	uplink_welcome = "Badass Uplink Console:"
 	uplink_uses = 20
 
 	var/const/prob_int_murder_target = 50 // intercept names the assassination target half the time

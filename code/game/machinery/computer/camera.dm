@@ -240,7 +240,7 @@
 /obj/machinery/computer/security/nuclear
 	name = "head mounted camera monitor"
 	desc = "Used to access the built-in cameras in helmets."
-	icon_state = "syndicam"
+	icon_state = "ntcam"
 	network = list("NUKE")
 	light_color = "#a91515"
 

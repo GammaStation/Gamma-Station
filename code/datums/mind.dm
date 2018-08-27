@@ -997,10 +997,10 @@
 					if (ticker.mode.syndicates.len==1)
 						ticker.mode.prepare_syndicate_leader(src)
 					else
-						current.real_name = "Gorlex Maradeurs Operative #[ticker.mode.syndicates.len-1]"
-					special_role = "Syndicate"
+						current.real_name = "Nanotrasen Operative #[ticker.mode.syndicates.len-1]"
+					special_role = "Nuclear"
 					current.faction = "nuke"
-					to_chat(current, "\blue You are a Gorlex Maradeurs agent!")
+					to_chat(current, "\blue You are a Nanotrasen agent!")
 
 					if(config.objectives_disabled)
 						to_chat(current, "<font color=blue>Within the rules,</font> try to act as an opposing force to the crew. Further RP and try to make sure other players have </i>fun<i>! If you are confused or at a loss, always adminhelp, and before taking extreme actions, please try to also contact the administration! Think through your actions and make the roleplay immersive! <b>Please remember all rules aside from those without explicit exceptions apply to antagonists.</i></b>")
@@ -1023,7 +1023,7 @@
 				qdel(H.w_uniform)
 
 				if (!ticker.mode.equip_syndicate(current))
-					to_chat(usr, "\red Equipping a syndicate failed!")
+					to_chat(usr, "\red Equipping a nuker failed!")
 			if("tellcode")
 				var/code
 				for (var/obj/machinery/nuclearbomb/bombue in machines)
@@ -1031,7 +1031,7 @@
 						code = bombue.r_code
 						break
 				if (code)
-					store_memory("<B>Syndicate Nuclear Bomb Code</B>: [code]", 0)
+					store_memory("<B>Nuclear Bomb Code</B>: [code]", 0)
 					to_chat(current, "The nuclear authorization code is: <B>[code]</B>")
 				else
 					to_chat(usr, "\red No valid nuke found!")
@@ -1357,11 +1357,11 @@
 		if (ticker.mode.syndicates.len==1)
 			ticker.mode.prepare_syndicate_leader(src)
 		else
-			current.real_name = "Gorlex Maradeurs Operative #[ticker.mode.syndicates.len-1]"
-		special_role = "Syndicate"
+			current.real_name = "Nanotrasen Operative #[ticker.mode.syndicates.len-1]"
+		special_role = "Nuclear"
 		current.faction = "nuke"
 		assigned_role = "MODE"
-		to_chat(current, "\blue You are a Gorlex Maradeurs agent!")
+		to_chat(current, "\blue You are a Nanotrasen agent!")
 		ticker.mode.forge_syndicate_objectives(src)
 		ticker.mode.greet_syndicate(src)
 

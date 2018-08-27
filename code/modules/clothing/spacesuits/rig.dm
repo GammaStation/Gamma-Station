@@ -301,7 +301,7 @@
 	breach_threshold = 26
 
 
-//Syndicate rigs
+//Nuke rigs
 /obj/item/clothing/head/helmet/space/rig/nuke
 	name = "assault team helmet"
 	desc = "A helmet worn by members of the NanoTrasen Assault Team. Armoured and space ready."
@@ -343,7 +343,7 @@
 
 //Commander nuke
 /obj/item/clothing/head/helmet/space/rig/nuke/commander
-	name = "assault team commander helmet"
+	name = "assault team helmet"
 	desc = "A helmet worn by the NanoTrasen Assault Team. Has blue highlights. Armoured and space ready."
 	icon_state = "rig0-ert_commander"
 	item_state = "helm-command"
@@ -353,7 +353,7 @@
 
 
 /obj/item/clothing/suit/space/rig/nuke/commander
-	name = "assault team commander suit"
+	name = "assault team suit"
 	desc = "A suit worn by the NanoTrasen Assault Team. Has blue highlights. Armoured, space ready, and fire resistant."
 	icon_state = "ert_commander"
 	item_state = "suit-command"

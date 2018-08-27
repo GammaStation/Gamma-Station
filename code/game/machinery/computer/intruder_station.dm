@@ -1,7 +1,7 @@
 /obj/machinery/computer/intruder_station
 	name = "Management Console of Intruding"
 	desc = "A device used to manage and buy the way of invasion to station."
-	icon_state = "tcboss"
+	icon_state = "bluetcboss"
 	var/list/tools = list()
 	var/show_tool_desc
 	var/obj/item/stored_uplink
