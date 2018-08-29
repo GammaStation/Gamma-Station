@@ -48,12 +48,18 @@
 /obj/vehicle/segway/atom_init()
 	. = ..()
 	overlays += image('icons/obj/vehicles.dmi', "[icon_state]_overlay", MOB_LAYER + 1)
+	turn_off()
 
 /obj/vehicle/segway/relaymove(mob/user, direction)
 	if(user.stat || user.stunned || user.weakened || user.paralysis)
 		unload(user)
 		return
+	if(open || !(powercell && powercell.charge >= step_energy_drain))
+		return
+
 	. = Move(get_step(src, direction))
+	if(.)
+		powercell.charge = max(0, powercell.charge - step_energy_drain)
 	user.dir = dir
 
 /obj/vehicle/segway/Move(var/turf/destination)
@@ -86,17 +92,19 @@
 		unload(load)
 
 /obj/vehicle/segway/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W, /obj/item/weapon/stock_parts/cell) && !powercell)
+	if(istype(W, /obj/item/weapon/stock_parts/cell) && !powercell && open)
 		user.drop_item()
-		W.loc = src
+		W.forceMove(src)
 		powercell = W
 		user.visible_message("[user] inserts a cell into the [name].", "You insert a cell into the [name].")
+		turn_on()
 		return
 	if(istype(W, /obj/item/weapon/crowbar))
 		if(open && powercell)
 			powercell.forceMove(loc)
 			powercell = null
 			user.visible_message("[user] removes the cell from the [name].", "You remove the cell from the [name].")
+			turn_off()
 			return
 	return ..()
 

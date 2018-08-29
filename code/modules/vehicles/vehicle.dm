@@ -161,12 +161,14 @@
 	on = 1
 	luminosity = initial(luminosity)
 	update_icon()
+	msg_admin_attack("on")
 	return 1
 
 /obj/vehicle/proc/turn_off()
 	on = 0
 	luminosity = 0
 	update_icon()
+	msg_admin_attack("off")
 
 /obj/vehicle/proc/explode()
 	src.visible_message("<span class='danger'>[src] blows apart!</span>", 1)
