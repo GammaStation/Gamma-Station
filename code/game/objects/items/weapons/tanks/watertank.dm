@@ -8,7 +8,7 @@
 	item_state = "waterbackpack"
 	flags = OPENCONTAINER
 	w_class = ITEM_SIZE_LARGE
-	actions_types = list(/datum/action/item_action/watertank_toggle_mister)
+	actions_types = /datum/action/item_action/watertank_toggle_mister
 
 	var/obj/item/weapon/reagent_containers/spray/mister/noz
 	volume = 500

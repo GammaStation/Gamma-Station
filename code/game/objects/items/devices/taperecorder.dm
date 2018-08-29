@@ -20,7 +20,7 @@
 	throw_speed = 4
 	throw_range = 20
 
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/device/taperecorder/hear_talk(mob/living/M, msg, verb="says")
 	if(recording)

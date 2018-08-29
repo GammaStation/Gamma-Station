@@ -561,7 +561,7 @@
 	name = "Student Jacket"
 	desc = "A Student's jacket from the eighties."
 	icon_state = "student_jacket"
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 	var/fastened = TRUE
 
 /obj/item/clothing/suit/student_jacket/attack_self()

@@ -7,7 +7,7 @@
 	light_color = "#E25822"
 	on_damage = 10
 	slot_flags = null
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/device/flashlight/flare/torch/attackby(obj/item/W, mob/user, params) // ravioli ravioli here comes stupid copypastoli
 	..()

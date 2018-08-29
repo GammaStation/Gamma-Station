@@ -409,7 +409,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	attack_verb = list("burnt", "singed")
 	var/lit = 0
 
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/weapon/lighter/zippo
 	name = "\improper Zippo lighter"

@@ -14,7 +14,7 @@
 	throwforce = 6
 	w_class = ITEM_SIZE_LARGE
 	origin_tech = list("biotech" = 2, "powerstorage" = 1)
-	actions_types = list(/datum/action/item_action/defib_toggle_paddles)
+	actions_types = /datum/action/item_action/defib_toggle_paddles
 
 	var/obj/item/weapon/twohanded/shockpaddles/linked/paddles
 	var/obj/item/weapon/stock_parts/cell/bcell = null

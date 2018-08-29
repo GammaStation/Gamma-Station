@@ -45,7 +45,7 @@
 	armor = list(melee = 82, bullet = 15, laser = 5,energy = 5, bomb = 5, bio = 2, rad = 0)
 	flags_inv = HIDEEARS
 	siemens_coefficient = 0.3
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 	var/up = 0
 
 /obj/item/clothing/head/helmet/riot/attack_self()
@@ -142,7 +142,7 @@
 	icon_state = "shitcuritron_0"
 	item_state = "helmet"
 	var/on = 0
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/clothing/head/helmet/helmet_of_justice/attack_self(mob/user)
 	on = !on

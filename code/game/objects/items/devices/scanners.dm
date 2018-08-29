@@ -196,7 +196,7 @@ REAGENT SCANNER
 	g_amt = 20
 	origin_tech = "magnets=1;engineering=1"
 
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 
 	var/advanced_mode = 0
 

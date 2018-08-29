@@ -210,8 +210,7 @@
 		var/mob/m = loc
 		m.drop_from_inventory(src)
 	if(islist(actions))
-		for(var/a in actions)	//FUKKK, i cant use QDEL_NULL here because it treats actions only as SINGLE VAR, NOT AS LIST
-			QDEL_NULL(actions)
+		QDEL_LIST(actions)
 	QDEL_NULL(actions)
 	return ..()
 

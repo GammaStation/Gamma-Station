@@ -6,7 +6,7 @@
 	item_state = "eng_helm"
 	armor = list(melee = 40, bullet = 5, laser = 10,energy = 5, bomb = 35, bio = 100, rad = 20)
 
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 	allowed = list(/obj/item/device/flashlight)
 	var/brightness_on = 4 //luminosity when on
 	var/on = 0
@@ -419,7 +419,7 @@
 	               /obj/item/weapon/melee/energy/sword,
 	               /obj/item/weapon/handcuffs)
 	species_restricted = list("exclude" , UNATHI , TAJARAN , DIONA, VOX)
-	actions_types = list(/datum/action/item_action/syndi_toggle_mode)
+	actions_types = /datum/action/item_action/syndi_toggle_mode
 	var/combat_mode = FALSE
 
 /obj/item/clothing/suit/space/rig/syndi/update_icon(mob/user)

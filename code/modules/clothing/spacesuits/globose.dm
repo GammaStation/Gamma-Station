@@ -7,7 +7,7 @@
 	var/mode = "white"
 	var/visor = 0
 
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/clothing/head/helmet/space/globose/attack_self(mob/user)
 	visor = !visor

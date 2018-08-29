@@ -6,7 +6,7 @@
 	icon = 'icons/obj/glowsticks.dmi'
 	icon_state = null
 	item_state = null
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 	slot_flags = SLOT_BELT
 	light_power = 2
 	var/on = 0
@@ -14,7 +14,7 @@
 	var/eaten = 0
 	var/datum/reagent/liquid_fuel
 	var/start_brightness = 4
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/weapon/reagent_containers/food/snacks/glowstick/atom_init()
 	name = "[colourName] glowstick"
@@ -87,7 +87,7 @@
 		return
 	on = !on
 	update_brightness(user)
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 	playsound(src, 'sound/weapons/glowstick_bend.ogg', 35, 0)
 	user.visible_message("<span class='notice'>[user] bends the [name].</span>", "<span class='notice'>You bend the [name]!</span>")
 	START_PROCESSING(SSobj, src)

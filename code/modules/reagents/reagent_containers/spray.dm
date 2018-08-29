@@ -17,7 +17,7 @@
 	volume = 250
 	var/safety = FALSE
 
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 
 
 /obj/item/weapon/reagent_containers/spray/atom_init()

@@ -9,7 +9,7 @@
 	slot_flags = SLOT_BELT
 	m_amt = 50
 	g_amt = 20
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 	var/on = 0
 	var/brightness_on = 5 //luminosity when on
 
@@ -36,7 +36,7 @@
 		return 0
 	on = !on
 	update_brightness(user)
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 	return 1
 
 /obj/item/device/flashlight/Destroy()
@@ -153,13 +153,13 @@
 	brightness_on = 4
 	icon_state = "flare"
 	item_state = "flare"
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 	var/fuel = 0
 	var/on_damage = 7
 	var/produce_heat = 1500
 	light_color = "#ff0000"
 	light_power = 2
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 
 
 /obj/item/device/flashlight/flare/atom_init()

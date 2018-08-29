@@ -27,7 +27,7 @@ RCD
 	var/canRwall = 0
 	var/disabled = 0
 
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 
 
 /obj/item/weapon/rcd/atom_init()

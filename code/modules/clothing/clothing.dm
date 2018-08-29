@@ -409,7 +409,7 @@ BLIND     // can't see anything
 	if(istype(loc, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = loc
 		H.update_inv_w_uniform()
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/clothing/under/verb/removetie()
 	set name = "Remove Accessory"

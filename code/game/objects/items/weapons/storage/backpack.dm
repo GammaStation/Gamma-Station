@@ -10,7 +10,7 @@
 	item_state = "backpack"
 	w_class = 4.0
 	slot_flags = SLOT_BACK	//ERROOOOO
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 	max_w_class = 3
 	max_combined_w_class = 21
 	var/opened = 0

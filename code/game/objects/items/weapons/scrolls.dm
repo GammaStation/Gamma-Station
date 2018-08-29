@@ -10,7 +10,7 @@
 	throw_range = 20
 	origin_tech = "bluespace=4"
 
-	actions_types = list(/datum/action/item_action/attack_self)
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/weapon/teleportation_scroll/attack_self(mob/user)
 	user.set_machine(src)

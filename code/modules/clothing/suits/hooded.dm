@@ -1,5 +1,5 @@
 /obj/item/clothing/suit/hooded
-	actions_types = list(/datum/action/item_action/suit_toggle_hood)
+	actions_types = /datum/action/item_action/suit_toggle_hood
 	var/obj/item/clothing/head/hood
 	var/hoodtype = /obj/item/clothing/head //so the chaplain hoodie or other hoodies can override this
 	var/hooded = FALSE
