@@ -197,13 +197,13 @@
 	name = "box (K)"
 
 
-/*/obj/item/weapon/storage/box/badguy_kit/armor/atom_init()
+/obj/item/weapon/storage/box/badguy_kit/armor/atom_init()
 	. = ..()
 	new /obj/item/clothing/suit/armor/syndiassault(src)
 	if(prob(50))
 		new /obj/item/clothing/head/helmet/syndiassault(src)
 	else
-		new /obj/item/clothing/head/helmet/syndiassault/alternate(src)*/
+		new /obj/item/clothing/head/helmet/syndiassault/alternate(src)
 
 /obj/item/weapon/storage/box/badguy_kit/fake
 	name = "box (B)"
