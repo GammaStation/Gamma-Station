@@ -151,14 +151,14 @@
 	cost = 2
 
 /datum/intruder_tools/rig
-	name = "Syndi Rig"
-	desc = "The red syndicate space rig with additional armor plating.\
-	 Nanotrasen crewmembers are trained to report red space suit sightings."
+	name = "Badass Rig"
+	desc = "The badass space rig with additional armor plating.\
+	 The crewmembers are trained to report such space suit sightings."
 	item = /obj/item/weapon/storage/box/badguy_kit/rig
 	cost = 8
 
 /datum/intruder_tools/armor
-	name = "Syndi Assault Armor"
-	desc = "The red syndicate heavy armor with additional armor plating and helmet to it."
+	name = "Badass Assault Armor"
+	desc = "The badass heavy armor with additional armor plating and helmet to it."
 	item = /obj/item/weapon/storage/box/badguy_kit/armor
 	cost = 4
