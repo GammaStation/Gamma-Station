@@ -18,8 +18,8 @@ var/list/weighted_mundaneevent_locations = list()
 
 //distance is measured in AU and co-relates to travel time
 /datum/trade_destination/centcomm
-	name = "CentComm"
-	description = "NanoTrasen's administrative centre for Tau Ceti."
+	name = "CentCon"
+	description = "Syndicate's administrative centre for Tau Ceti."
 	distance = 1.2
 	willing_to_buy = list()
 	willing_to_sell = list()
@@ -27,8 +27,8 @@ var/list/weighted_mundaneevent_locations = list()
 	viable_mundane_events = list(ELECTION, RESIGNATION, CELEBRITY_DEATH)
 
 /datum/trade_destination/anansi
-	name = "NSS Anansi"
-	description = "Medical station ran by Second Red Cross (but owned by NT) for handling emergency cases from nearby colonies."
+	name = "SFS Anansi"
+	description = "Medical station ran by Vey-Med (but owned by Syndicate) for handling emergency cases from nearby colonies."
 	distance = 1.7
 	willing_to_buy = list()
 	willing_to_sell = list()
@@ -37,13 +37,13 @@ var/list/weighted_mundaneevent_locations = list()
 
 /datum/trade_destination/anansi/get_custom_eventstring(event_type)
 	if(event_type == RESEARCH_BREAKTHROUGH)
-		return "Thanks to research conducted on the NSS Anansi, Second Red Cross Society wishes to announce a major breakthough in the field of \
-		[pick("mind-machine interfacing","neuroscience","nano-augmentation","genetics")]. NanoTrasen is expected to announce a co-exploitation deal within the fortnight."
+		return "Thanks to research conducted on the SFS Anansi, Vey-Med wishes to announce a major breakthough in the field of \
+		[pick("mind-machine interfacing","neuroscience","nano-augmentation","genetics")]. Syndicate is expected to announce a co-exploitation deal within the fortnight."
 	return null
 
 /datum/trade_destination/icarus
 	name = "NMV Icarus"
-	description = "Corvette assigned to patrol NSS Exodus local space."
+	description = "Corvette assigned to patrol SFS Gamma local space."
 	distance = 0.1
 	willing_to_buy = list()
 	willing_to_sell = list()
@@ -61,12 +61,12 @@ var/list/weighted_mundaneevent_locations = list()
 /datum/trade_destination/redolant/get_custom_eventstring(event_type)
 	if(event_type == RESEARCH_BREAKTHROUGH)
 		return "Thanks to research conducted on the OAV Redolant, Osiris Atmospherics wishes to announce a major breakthough in the field of \
-		[pick("phoron research","high energy flux capacitance","super-compressed materials","theoretical particle physics")]. NanoTrasen is expected to announce a co-exploitation deal within the fortnight."
+		[pick("phoron research","high energy flux capacitance","super-compressed materials","theoretical particle physics")]. Syndicate is expected to announce a co-exploitation deal within the fortnight."
 	return null
 
 /datum/trade_destination/beltway
 	name = "Beltway mining chain"
-	description = "A co-operative effort between Beltway and NanoTrasen to exploit the rich outer asteroid belt of the Tau Ceti system."
+	description = "A co-operative effort between Beltway and Syndicate to exploit the rich outer asteroid belt of the Tau Ceti system."
 	distance = 7.5
 	willing_to_buy = list()
 	willing_to_sell = list()
@@ -75,7 +75,7 @@ var/list/weighted_mundaneevent_locations = list()
 
 /datum/trade_destination/biesel
 	name = "Biesel"
-	description = "Large ship yards, strong economy and a stable, well-educated populace, Biesel largely owes allegiance to Sol / Vessel Contracting and begrudgingly tolerates NT. Capital is Lowell City."
+	description = "Large ship yards, strong economy and a stable, well-educated populace, Biesel largely owes allegiance to Sol / Vessel Contracting and begrudgingly tolerates Syndicate. Capital is Lowell City."
 	distance = 2.3
 	willing_to_buy = list()
 	willing_to_sell = list()
@@ -84,7 +84,7 @@ var/list/weighted_mundaneevent_locations = list()
 
 /datum/trade_destination/new_gibson
 	name = "New Gibson"
-	description = "Heavily industrialised rocky planet containing the majority of the planet-bound resources in the system, New Gibson is torn by unrest and has very little wealth to call it's own except in the hands of the corporations who jostle with NT for control."
+	description = "Heavily industrialised rocky planet containing the majority of the planet-bound resources in the system, New Gibson is torn by unrest and has very little wealth to call it's own except in the hands of the corporations who jostle with Syndicate for control."
 	distance = 6.6
 	willing_to_buy = list()
 	willing_to_sell = list()
@@ -93,7 +93,7 @@ var/list/weighted_mundaneevent_locations = list()
 
 /datum/trade_destination/luthien
 	name = "Luthien"
-	description = "A small colony established on a feral, untamed world (largely jungle). Savages and wild beasts attack the outpost regularly, although NT maintains tight military control."
+	description = "A small colony established on a feral, untamed world (largely jungle). Savages and wild beasts attack the outpost regularly, although Syndicate maintains tight military control."
 	distance = 8.9
 	willing_to_buy = list()
 	willing_to_sell = list()
@@ -102,7 +102,7 @@ var/list/weighted_mundaneevent_locations = list()
 
 /datum/trade_destination/reade
 	name = "Reade"
-	description = "A cold, metal-deficient world, NT maintains large pastures in whatever available space in an attempt to salvage something from this profitless colony."
+	description = "A cold, metal-deficient world, Syndicate maintains large pastures in whatever available space in an attempt to salvage something from this profitless colony."
 	distance = 7.5
 	willing_to_buy = list()
 	willing_to_sell = list()

@@ -87,8 +87,8 @@
 	var/dat = {"Location: [curr_location]<br>
 			Ready to move[max(lastMove + OFFICER_SHUTTLE_COOLDOWN - world.time, 0) ? " in [max(round((lastMove + OFFICER_SHUTTLE_COOLDOWN - world.time) * 0.1), 0)] seconds" : ": now"]<br>
 		<a href='?src=\ref[src];velocity=1'>NTS Velocity</a><br>
-		<a href='?src=\ref[src];station=1'>NSS Exodus</a> |
-		<a href='?src=\ref[src];centcomm=1'>Centcomm</a><br>
+		<a href='?src=\ref[src];station=1'>SFS Gamma</a> |
+		<a href='?src=\ref[src];centcomm=1'>Centcon</a><br>
 		<a href='?src=\ref[user];mach_close=computer'>Close</a>"}
 
 	user << browse(entity_ja(dat), "window=computer;size=575x450")
@@ -120,9 +120,9 @@
 	icon_state = "shuttle"
 
 /area/shuttle/officer/station
-	name = "NSS Exodus"
+	name = "SFS Gamma"
 	icon_state = "shuttle"
 
 /area/shuttle/officer/centcomm
-	name = "Centcomm"
+	name = "Centcon"
 	icon_state = "shuttle"

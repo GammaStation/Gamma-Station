@@ -51,7 +51,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	parallax_movedir = EAST
 
 /area/shuttle/arrival/station
-	name = "NSS Exodus"
+	name = "SFS Gamma"
 	icon_state = "shuttle"
 
 /area/shuttle/escape
@@ -63,7 +63,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "shuttle2"
 
 /area/shuttle/escape/centcom
-	name = "Emergency Shuttle Centcom"
+	name = "Emergency Shuttle Centcon"
 	icon_state = "shuttle"
 
 /area/shuttle/escape/transit // the area to pass through for 3 minute transit
@@ -164,15 +164,15 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "shuttlered2"
 
 /area/shuttle/syndicate_elite/mothership
-	name = "Syndicate Elite Shuttle"
+	name = "Nanotrasen Elite Shuttle"
 	icon_state = "shuttlered"
 
 /area/shuttle/syndicate_elite/station
-	name = "Syndicate Elite Shuttle"
+	name = "Nanotrasen Elite Shuttle"
 	icon_state = "shuttlered2"
 
 /area/shuttle/administration/centcom
-	name = "Administration Shuttle Centcom"
+	name = "Administration Shuttle Centcon"
 	icon_state = "shuttlered"
 
 /area/shuttle/administration/station
@@ -206,33 +206,33 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 // CENTCOM
 
 /area/centcom
-	name = "Centcom"
+	name = "Centcon"
 	icon_state = "centcom"
 	requires_power = 0
 
 /area/centcom/control
-	name = "Centcom Control"
+	name = "Centcon Control"
 
 /area/centcom/evac
-	name = "Centcom Emergency Shuttle"
+	name = "Centcon Emergency Shuttle"
 
 /area/centcom/suppy
-	name = "Centcom Supply Shuttle"
+	name = "Centcon Supply Shuttle"
 
 /area/centcom/ferry
-	name = "Centcom Transport Shuttle"
+	name = "Centcon Transport Shuttle"
 
 /area/centcom/shuttle
-	name = "Centcom Administration Shuttle"
+	name = "Centcon Administration Shuttle"
 
 /area/centcom/test
-	name = "Centcom Testing Facility"
+	name = "Centcon Testing Facility"
 
 /area/centcom/living
-	name = "Centcom Living Quarters"
+	name = "Centcon Living Quarters"
 
 /area/centcom/specops
-	name = "Centcom Special Ops"
+	name = "Centcon Special Ops"
 
 /area/centcom/creed
 	name = "Creed's Office"
@@ -247,16 +247,16 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 //SYNDICATES
 
 /area/syndicate_mothership
-	name = "Syndicate Mothership"
+	name = "Nanotrasen Mothership"
 	icon_state = "syndie-ship"
 	requires_power = 0
 
 /area/syndicate_mothership/control
-	name = "Syndicate Control Room"
+	name = "Nanotrasen Control Room"
 	icon_state = "syndie-control"
 
 /area/syndicate_mothership/elite_squad
-	name = "Syndicate Elite Squad"
+	name = "Nanotrasen Elite Squad"
 	icon_state = "syndie-elite"
 
 /area/syndicate_mothership/droppod_garage
@@ -304,12 +304,12 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 
 //names are used
 /area/syndicate_station
-	name = "Syndicate Station"
+	name = "Badass Station"
 	icon_state = "yellow"
 	requires_power = 0
 
 /area/syndicate_station/start
-	name = "Syndicate Forward Operating Base"
+	name = "Nanotrasen Forward Operating Base"
 	icon_state = "yellow"
 
 /area/syndicate_station/southwest
@@ -1183,7 +1183,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	requires_power = 0
 
 /area/awaymission/spacebattle/cruiser
-	name = "Nanotrasen Cruiser"
+	name = "Cruiser"
 
 /area/awaymission/spacebattle/syndicate1
 	name = "Syndicate Assault Ship 1"
