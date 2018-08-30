@@ -111,3 +111,11 @@
 /obj/vehicle/segway/examine(mob/user)
 	..()
 	to_chat(user, " [open ? "Maintenance panel is open. " : "Maintenance panel is closed. "] [ open && !powercell ? "Powercell is missing. " : "" ]")
+
+/obj/vehicle/segway/turn_on()
+	light_power = 3
+	return ..()
+
+/obj/vehicle/segway/turn_off()
+	light_power = 0
+	..()

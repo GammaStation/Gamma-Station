@@ -908,3 +908,12 @@
 	materials = list(MAT_METAL=500)
 	construction_time = 50
 	category = list("Misc")
+
+/datum/design/segway_common
+	name = "Segway"
+	id = "segway_common"
+	build_type = MECHFAB
+	build_path =/obj/vehicle/segway
+	materials = list(MAT_METAL=35000, MAT_GLASS=2500)
+	construction_time = 80
+	category = list("Misc")
