@@ -31,6 +31,9 @@
 	var/fire_delay = 6
 	var/last_fired = 0
 
+	var/burst_mode = FALSE
+	var/burst_amount = 1
+
 	lefthand_file = 'icons/mob/inhands/guns_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/guns_righthand.dmi'
 
@@ -140,15 +143,17 @@
 		if (world.time % 3) //to prevent spam
 			to_chat(user, "<span class='warning'>[src] is not ready to fire again!</span>")
 		return
+
 	if(chambered)
-		if(!chambered.fire(target, user, params, , silenced))
-			shoot_with_empty_chamber(user)
+		if(burst_mode)
+			var/Burst_iter = burst_amount
+			while(Burst_iter--)
+				if(!single_shot(target, user, params))
+					shoot_with_empty_chamber(user)
+					break
+				shoot_live_shot(user)
 		else
-			shoot_live_shot(user)
-	else
-		shoot_with_empty_chamber(user)
-	process_chamber()
-	user.newtonian_move(get_dir(target, user))
+			single_shot(target, user, params) ? shoot_live_shot(user) : shoot_with_empty_chamber(user)
 	update_icon()
 
 	if(user.hand)
@@ -156,6 +161,14 @@
 	else
 		user.update_inv_r_hand()
 
+/obj/item/weapon/gun/proc/single_shot(atom/target, mob/living/user, params)
+	if(chambered.fire(target, user, params, , silenced))
+		user.newtonian_move(get_dir(target, user))
+		process_chamber()
+		return TRUE
+	else
+		process_chamber()
+		return FALSE
 
 /obj/item/weapon/gun/proc/can_fire()
 	return

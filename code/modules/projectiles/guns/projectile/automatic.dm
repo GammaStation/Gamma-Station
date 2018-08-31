@@ -494,3 +494,57 @@
 	if(..())
 		playsound(user, 'sound/weapons/guns/ak74_reload.ogg', 50, 1)
 	update_icon()
+
+/obj/item/weapon/gun/projectile/automatic/vector_smg
+	name = "Vector smg"
+	desc = "Fancy gay firecracker. "
+	icon_state = "vector100"
+	item_state = "vector100"
+	w_class = 3.0
+	origin_tech = "combat=5;materials=2;syndicate=8"
+	mag_type = /obj/item/ammo_box/magazine/m12mm
+	fire_sound = 'sound/weapons/guns/vector_shot.ogg'
+	burst_mode = TRUE
+	burst_amount = 3
+
+
+/obj/item/weapon/gun/projectile/automatic/vector_smg/atom_init()
+	. = ..()
+	update_icon()
+
+/obj/item/weapon/gun/projectile/automatic/vector_smg/afterattack(atom/target, mob/living/user, flag)
+	..()
+	if(!chambered && !get_ammo() && !alarmed)
+		playsound(user, 'sound/weapons/smg_empty_alarm.ogg', 40, 1)
+		update_icon()
+		alarmed = 1
+	return
+
+/obj/item/weapon/gun/projectile/automatic/vector_smg/attack_self(mob/user)
+	if(silenced)
+		switch(alert("Would you like to unscrew silencer, or extract magazine?","Choose.","Silencer","Magazine"))
+			if("Silencer")
+				if(loc == user)
+					if(silenced)
+						silencer_attack_hand(user)
+			if("Magazine")
+				..()
+	else
+		..()
+
+/obj/item/weapon/gun/projectile/automatic/vector_smg/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/weapon/silencer))
+		return silencer_attackby(I,user)
+	return ..()
+
+/obj/item/weapon/gun/projectile/automatic/vector_smg/update_icon()
+	..()
+	overlays.Cut()
+	if(magazine)
+		var/image/magazine_icon = image('icons/obj/gun.dmi', "mag-[ceil(get_ammo(0) / 4) * 4]")
+		overlays += magazine_icon
+	if(silenced)
+		var/image/silencer_icon = image('icons/obj/gun.dmi', "c20r-silencer")
+		overlays += silencer_icon
+	//icon_state = "c20r[chambered ? "" : "-e"]"
+	return
