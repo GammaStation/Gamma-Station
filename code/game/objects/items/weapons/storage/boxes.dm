@@ -51,7 +51,7 @@
 
 /obj/item/weapon/storage/box/ipc_survival/atom_init()
 	. = ..()
-	new /obj/item/weapon/stock_parts/cell/crap(src)
+	new /obj/item/device/emergency_cooling_device(src)
 	new /obj/item/device/robotanalyzer(src)
 
 //Engineer
