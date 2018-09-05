@@ -495,24 +495,25 @@
 		playsound(user, 'sound/weapons/guns/ak74_reload.ogg', 50, 1)
 	update_icon()
 
-/obj/item/weapon/gun/projectile/automatic/vector_smg
-	name = "Vector smg"
-	desc = "Fancy gay firecracker. "
-	icon_state = "vector100"
-	item_state = "vector100"
+/obj/item/weapon/gun/projectile/automatic/type76
+	name = "Type .76"
+	desc = "Type 76 this is semi-automatic submachine gun that shoots 3 rounds per one shot. You've definitely seen this pretty one in some movie 'bout those Space-Vietnam wars. Pull the trigger, and become a narrow-eyed Solider!"
+	icon_state = "type76"
+	item_state = "type76"
 	w_class = 3.0
-	origin_tech = "combat=5;materials=2;syndicate=8"
+	origin_tech = "combat=4;materials=2;"
 	mag_type = /obj/item/ammo_box/magazine/m12mm
-	fire_sound = 'sound/weapons/guns/vector_shot.ogg'
+	fire_sound = 'sound/weapons/guns/type76_shot.ogg'
 	burst_mode = TRUE
 	burst_amount = 3
+	burst_delay = 4
 
 
-/obj/item/weapon/gun/projectile/automatic/vector_smg/atom_init()
+/obj/item/weapon/gun/projectile/automatic/type76/atom_init()
 	. = ..()
 	update_icon()
 
-/obj/item/weapon/gun/projectile/automatic/vector_smg/afterattack(atom/target, mob/living/user, flag)
+/obj/item/weapon/gun/projectile/automatic/type76/afterattack(atom/target, mob/living/user, flag)
 	..()
 	if(!chambered && !get_ammo() && !alarmed)
 		playsound(user, 'sound/weapons/smg_empty_alarm.ogg', 40, 1)
@@ -520,7 +521,7 @@
 		alarmed = 1
 	return
 
-/obj/item/weapon/gun/projectile/automatic/vector_smg/attack_self(mob/user)
+/obj/item/weapon/gun/projectile/automatic/type76/attack_self(mob/user)
 	if(silenced)
 		switch(alert("Would you like to unscrew silencer, or extract magazine?","Choose.","Silencer","Magazine"))
 			if("Silencer")
@@ -532,19 +533,19 @@
 	else
 		..()
 
-/obj/item/weapon/gun/projectile/automatic/vector_smg/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/silencer))
-		return silencer_attackby(I,user)
+/obj/item/weapon/gun/projectile/automatic/type76/attackby(obj/item/I, mob/user)
+	//if(istype(I, /obj/item/weapon/silencer))
+	//	return silencer_attackby(I,user)
 	return ..()
 
-/obj/item/weapon/gun/projectile/automatic/vector_smg/update_icon()
+/obj/item/weapon/gun/projectile/automatic/type76/update_icon()
 	..()
 	overlays.Cut()
-	if(magazine)
-		var/image/magazine_icon = image('icons/obj/gun.dmi', "mag-[ceil(get_ammo(0) / 4) * 4]")
-		overlays += magazine_icon
-	if(silenced)
-		var/image/silencer_icon = image('icons/obj/gun.dmi', "c20r-silencer")
-		overlays += silencer_icon
+	//if(magazine)
+	//	var/image/magazine_icon = image('icons/obj/gun.dmi', "mag-[ceil(get_ammo(0) / 4) * 4]")
+	//	overlays += magazine_icon
+	//if(silenced)
+	//	var/image/silencer_icon = image('icons/obj/gun.dmi', "c20r-silencer")
+	//	overlays += silencer_icon
 	//icon_state = "c20r[chambered ? "" : "-e"]"
 	return

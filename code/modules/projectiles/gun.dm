@@ -33,6 +33,7 @@
 
 	var/burst_mode = FALSE
 	var/burst_amount = 1
+	var/burst_delay = 3 //in world ticks
 
 	lefthand_file = 'icons/mob/inhands/guns_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/guns_righthand.dmi'
@@ -152,8 +153,12 @@
 					shoot_with_empty_chamber(user)
 					break
 				shoot_live_shot(user)
+				if(burst_delay)
+					sleep(burst_delay * world.tick_lag)
 		else
 			single_shot(target, user, params) ? shoot_live_shot(user) : shoot_with_empty_chamber(user)
+	else
+		shoot_with_empty_chamber(user)
 	update_icon()
 
 	if(user.hand)
