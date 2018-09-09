@@ -498,11 +498,11 @@
 /obj/item/weapon/gun/projectile/automatic/type76
 	name = "Type .76"
 	desc = "Type 76 this is semi-automatic submachine gun that shoots 3 rounds per one shot. You've definitely seen this pretty one in some movie 'bout those Space-Vietnam wars. Pull the trigger, and become a narrow-eyed Solider!"
-	icon_state = "type76"
-	item_state = "type76"
+	icon_state = "type76_100"
+	item_state = "type76_100"
 	w_class = 3.0
 	origin_tech = "combat=4;materials=2;"
-	mag_type = /obj/item/ammo_box/magazine/m12mm
+	mag_type = /obj/item/ammo_box/magazine/type76_rubber
 	fire_sound = 'sound/weapons/guns/type76_shot.ogg'
 	burst_mode = TRUE
 	burst_amount = 3
@@ -519,33 +519,11 @@
 		playsound(user, 'sound/weapons/smg_empty_alarm.ogg', 40, 1)
 		update_icon()
 		alarmed = 1
-	return
-
-/obj/item/weapon/gun/projectile/automatic/type76/attack_self(mob/user)
-	if(silenced)
-		switch(alert("Would you like to unscrew silencer, or extract magazine?","Choose.","Silencer","Magazine"))
-			if("Silencer")
-				if(loc == user)
-					if(silenced)
-						silencer_attack_hand(user)
-			if("Magazine")
-				..()
-	else
-		..()
 
 /obj/item/weapon/gun/projectile/automatic/type76/attackby(obj/item/I, mob/user)
-	//if(istype(I, /obj/item/weapon/silencer))
-	//	return silencer_attackby(I,user)
 	return ..()
 
 /obj/item/weapon/gun/projectile/automatic/type76/update_icon()
 	..()
-	overlays.Cut()
-	//if(magazine)
-	//	var/image/magazine_icon = image('icons/obj/gun.dmi', "mag-[ceil(get_ammo(0) / 4) * 4]")
-	//	overlays += magazine_icon
-	//if(silenced)
-	//	var/image/silencer_icon = image('icons/obj/gun.dmi', "c20r-silencer")
-	//	overlays += silencer_icon
-	//icon_state = "c20r[chambered ? "" : "-e"]"
-	return
+	icon_state = "type76_[magazine ? ceil(get_ammo(0) / magazine.max_ammo * 5 ) : 0]"
+	item_state = "type76_[magazine ? ceil(get_ammo(0) / magazine.max_ammo * 5 ) : 0]"
