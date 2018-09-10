@@ -520,9 +520,6 @@
 		update_icon()
 		alarmed = 1
 
-/obj/item/weapon/gun/projectile/automatic/type76/attackby(obj/item/I, mob/user)
-	return ..()
-
 /obj/item/weapon/gun/projectile/automatic/type76/update_icon()
 	..()
 	icon_state = "type76_[magazine ? ceil(get_ammo(0) / magazine.max_ammo * 5 ) : 0]"
