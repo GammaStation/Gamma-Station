@@ -16,7 +16,7 @@
 		access_ce, access_RC_announce, access_keycard_auth, access_tcomsat, access_ai_upload
 	)
 	minimal_player_age = 7
-	minimal_player_ingame_minutes = 2400
+	minimal_player_ingame_minutes = 2160
 
 /datum/job/chief_engineer/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0
@@ -52,7 +52,7 @@
 	access = list(access_engine, access_engine_equip, access_tech_storage, access_maint_tunnels, access_external_airlocks, access_construction)
 	alt_titles = list("Maintenance Technician","Engine Technician","Electrician")
 	minimal_player_age = 3
-	minimal_player_ingame_minutes = 540
+	minimal_player_ingame_minutes = 1440
 
 /datum/job/engineer/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0
@@ -89,7 +89,7 @@
 	idtype = /obj/item/weapon/card/id/eng
 	access = list(access_atmospherics, access_maint_tunnels, access_emergency_storage, access_construction, access_external_airlocks)
 	minimal_player_age = 3
-	minimal_player_ingame_minutes = 600
+	minimal_player_ingame_minutes = 1440
 
 /datum/job/atmos/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0

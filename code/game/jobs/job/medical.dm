@@ -15,7 +15,7 @@
 		access_keycard_auth, access_sec_doors, access_psychiatrist, access_maint_tunnels
 	)
 	minimal_player_age = 10
-	minimal_player_ingame_minutes = 5000
+	minimal_player_ingame_minutes = 2160
 
 /datum/job/cmo/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0
@@ -50,7 +50,7 @@
 	idtype = /obj/item/weapon/card/id/med
 	access = list(access_medical, access_morgue, access_surgery, access_maint_tunnels)
 	alt_titles = list("Surgeon", "Nurse")
-	minimal_player_ingame_minutes = 960
+	minimal_player_ingame_minutes = 1440
 
 /datum/job/doctor/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0
@@ -108,7 +108,7 @@
 	selection_color = "#ffeef0"
 	idtype = /obj/item/weapon/card/id/med
 	access = list(access_medical, access_morgue, access_paramedic, access_surgery, access_maint_tunnels, access_external_airlocks, access_sec_doors, access_engine_equip, access_research, access_mailsorting)
-	minimal_player_ingame_minutes = 1500 //they have too much access, so you have to play more to unlock it
+	minimal_player_ingame_minutes = 1440
 	restricted_species = list(DIONA)
 
 /datum/job/paramedic/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
@@ -145,7 +145,7 @@
 	idtype = /obj/item/weapon/card/id/med
 	access = list(access_medical, access_chemistry)
 	alt_titles = list("Pharmacist")
-	minimal_player_ingame_minutes = 960
+	minimal_player_ingame_minutes = 1440
 
 /datum/job/chemist/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0
@@ -178,8 +178,7 @@
 	selection_color = "#ffeef0"
 	idtype = /obj/item/weapon/card/id/med
 	access = list(access_medical, access_morgue, access_genetics, access_research)
-	minimal_player_ingame_minutes = 960
-
+	minimal_player_ingame_minutes = 720
 /datum/job/geneticist/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/geneticist(H), slot_w_uniform)
@@ -213,7 +212,7 @@
 	idtype = /obj/item/weapon/card/id/med
 	access = list(access_medical, access_virology)
 	alt_titles = list("Pathologist","Microbiologist")
-	minimal_player_ingame_minutes = 960
+	minimal_player_ingame_minutes = 1440
 
 /datum/job/virologist/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0
@@ -248,7 +247,7 @@
 	idtype = /obj/item/weapon/card/id/med
 	access = list(access_medical, access_psychiatrist)
 	alt_titles = list("Psychologist")
-	minimal_player_ingame_minutes = 960
+	minimal_player_ingame_minutes = 720
 
 /datum/job/psychiatrist/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0
