@@ -8,6 +8,24 @@
 	Returns
 	standard 0 if fail
 */
+/mob/living/proc/getDamageOfTypes(list/dam_types) // We call it like this, because other getDamage procs are in camel case.
+	var/total_dam = 0
+	for(var/dam_type in dam_types)
+		switch(dam_type)
+			if(BRUTE)
+				total_dam += getBruteLoss()
+			if(BURN)
+				total_dam += getFireLoss()
+			if(TOX)
+				total_dam += getToxLoss()
+			if(OXY)
+				total_dam += getOxyLoss()
+			if(CLONE)
+				total_dam += getCloneLoss()
+			if(HALLOSS)
+				total_dam += getHalLoss()
+	return total_dam
+
 /mob/living/proc/apply_damage(damage = 0, damagetype = BRUTE, def_zone = null, blocked = 0, damage_flags = 0, used_weapon = null)
 	if(!damage || (blocked >= 100))
 		return FALSE

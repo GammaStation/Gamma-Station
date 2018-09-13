@@ -11,6 +11,7 @@
 	if(!message)
 		message = sanitize(input(src,"Choose an emote to display.") as text|null)
 
+	var/raw_message = message
 	if(message)
 		message = "<B>[src]</B> [message]"
 	else
@@ -28,23 +29,28 @@
 				if(M.stat == DEAD && (M.client.prefs.chat_toggles & CHAT_GHOSTSIGHT) && !(M in viewers(src, null)))
 					M.show_message(message)
 
-
 		// Type 1 (Visual) emotes are sent to anyone in view of the item
 		if (m_type & 1)
-			for (var/mob/O in viewers(src, null))
+			var/list/views = viewers(src, null)
+			for (var/mob/O in views)
 				if(O.status_flags & PASSEMOTES)
 					for(var/obj/item/weapon/holder/thing in O.contents)
 						thing.show_message(message, m_type)
 				O.show_message(message, m_type)
+			for(var/obj/O in views)
+				O.hear_emote(src, raw_message, m_type)
 
 		// Type 2 (Audible) emotes are sent to anyone in hear range
 		// of the *LOCATION* -- this is important for pAIs to be heard
 		else if (m_type & 2)
-			for (var/mob/O in hearers(get_turf(src), null))
+			var/list/hears = hearers(get_turf(src), null)
+			for (var/mob/O in hears)
 				if(O.status_flags & PASSEMOTES)
 					for(var/obj/item/weapon/holder/thing in O.contents)
 						thing.show_message(message, m_type)
 				O.show_message(message, m_type)
+			for(var/obj/O in hears)
+				O.hear_emote(src, raw_message, m_type)
 
 /mob/proc/emote_dead(message)
 

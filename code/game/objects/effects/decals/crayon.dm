@@ -5,6 +5,8 @@
 	layer = 2.1
 	anchored = 1
 
+	var/rune_color // Used in rituals.
+
 var/list/crayon_overlay_cache = list()
 
 /obj/effect/decal/cleanable/crayon/atom_init(mapload, main = "#FFFFFF", shade = "#000000", type = "rune", e_name = "rune", override_color = 0)
@@ -21,6 +23,7 @@ var/list/crayon_overlay_cache = list()
 	switch(type)
 		if("rune")
 			type = "rune[rand(1,6)]"
+			rune_color = main // If it's not even a rune, it doesn't have rune color.
 		if("graffiti")
 			type = pick("amyjon","face","matt","revolution","engie","guy","end","dwarf","uboa","poseur tag")
 

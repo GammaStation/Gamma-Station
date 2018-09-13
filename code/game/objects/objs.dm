@@ -193,6 +193,9 @@
 		*/
 	return
 
+/obj/proc/hear_emote(momb/M, emote, emote_type)
+	return
+
 /obj/proc/tesla_act(power)
 	being_shocked = 1
 	var/power_bounced = power / 2

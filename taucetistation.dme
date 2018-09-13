@@ -1737,6 +1737,8 @@
 #include "code\modules\research\xenoarchaeology\tools\tools_depthscanner.dm"
 #include "code\modules\research\xenoarchaeology\tools\tools_locater.dm"
 #include "code\modules\research\xenoarchaeology\tools\tools_pickaxe.dm"
+#include "code\modules\rituals\ritual_items.dm"
+#include "code\modules\rituals\rituals.dm"
 #include "code\modules\scrap\oldificator.dm"
 #include "code\modules\scrap\scrap.dm"
 #include "code\modules\scrap\scrap_beacon.dm"
