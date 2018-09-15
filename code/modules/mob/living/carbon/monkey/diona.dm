@@ -12,14 +12,6 @@
 	var/list/donors = list()
 	var/ready_evolve = 0
 	var/mob/living/carbon/human/gestalt = null
-	var/allowedinjecting = list("nutriment",
-                                "orangejuice",
-                                "tomatojuice",
-                                "limejuice",
-                                "carrotjuice",
-                                "milk",
-                                "coffee"
-                               )
 	race = DIONA
 	var/datum/reagent/injecting = null
 	universal_understand = FALSE // Dionaea do not need to speak to people
@@ -105,73 +97,6 @@
 		to_chat(src, "<span class='warning'>You must be conscious to do this.</span>")
 		return
 	splitting(gestalt)
-
-/mob/living/carbon/monkey/diona/verb/pass_knowledge()
-
-	set category = "Diona"
-	set name = "Pass Knowledge"
-	set desc = "Teach the gestalt your own known languages."
-
-	if(!gestalt)
-		return
-
-	if(gestalt.incapacitated(null))
-		to_chat(src, "<span class='warning'>[gestalt] must be conscious to do this.</span>")
-		return
-	if(incapacitated())
-		to_chat(src, "<span class='warning'>You must be conscious to do this.</span>")
-		return
-
-	if(gestalt.nutrition < 230)
-		to_chat(src, "<span class='notice'>It would appear, that [gestalt] does not have enough nutrition to accept your knowledge.</span>")
-		return
-	if(nutrition < 230)
-		to_chat(src, "<span class='notice'>It would appear, that you do not have enough nutrition to pass knowledge onto [gestalt].</span>")
-		return
-
-	var/langdiff = languages - gestalt.languages
-	var/datum/language/L = pick(langdiff)
-	to_chat(gestalt, "<span class ='notice'>It would seem [src] is trying to pass on their knowledge onto you.</span>")
-	to_chat(src, "<span class='notice'>You concentrate your willpower on transcribing [L.name] onto [gestalt], this may take a while.</span>")
-	if(is_busy() || !do_after(src, 40, target = gestalt))
-		return
-	gestalt.add_language(L.name)
-	nutrition -= 30
-	gestalt.nutrition -= 30
-	to_chat(src, "<span class='notice'>It would seem you have passed on [L.name] onto [gestalt] succesfully.</span>")
-	to_chat(gestalt, "<span class='notice'>It would seem you have acquired knowledge of [L.name]!</span>")
-	if(prob(50))
-		to_chat(src, "<span class='warning'>You momentarily forget [L.name]. Is this how memory wiping feels?</span")
-		remove_language(L.name)
-
-/mob/living/carbon/monkey/diona/verb/synthesize()
-
-	set category = "Diona"
-	set name = "Synthesize"
-	set desc = "Synthesize chemicals inside gestalt's body."
-
-	if(!gestalt)
-		return
-
-	if(incapacitated())
-		to_chat(src, "<span class='warning'>You must be conscious to do this.</span>")
-		return
-
-	if(nutrition < 210)
-		to_chat(src, "<span class='warning'>You do not have enough nutriments to perform this action.</span>")
-		return
-
-	if(injecting)
-		switch(alert("Would you like to stop injecting, or change chemical?","Choose.","Stop injecting","Change chemical"))
-			if("Stop injecting")
-				injecting = null
-				return
-			if("Change chemical")
-				injecting = null
-	var/V = input(src,"What do you wish to inject?") in null|allowedinjecting
-
-	if(V)
-		injecting = V
 
 /mob/living/carbon/monkey/diona/verb/fertilize_plant()
 

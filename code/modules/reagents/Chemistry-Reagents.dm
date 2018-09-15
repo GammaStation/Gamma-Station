@@ -23,8 +23,6 @@ datum/reagent
 	var/custom_metabolism = REAGENTS_METABOLISM
 	var/taste_strength = 1 //how easy it is to taste - the more the easier
 	var/taste_message = "bitterness" //life's bitter by default. Cool points for using a span class for when you're tasting <span class='userdanger'>LIQUID FUCKING DEATH</span>
-	var/list/restrict_species = list(IPC) // Species that simply can not digest this reagent.
-
 	var/overdose = 0
 	var/overdose_dam = 1
 	//var/list/viruses = list()
@@ -99,15 +97,6 @@ datum/reagent/proc/on_update(atom/A)
 	return
 
 /datum/reagent/proc/check_digesting(mob/living/M, alien)
-	if(restrict_species)
-		if(ishuman(M))
-			var/mob/living/carbon/human/H = M
-			if(H.species in restrict_species)
-				return FALSE
-		if(ismonkey(M))
-			var/mob/living/carbon/monkey/C = M
-			if(C.race in restrict_species)
-				return FALSE
 	var/should_general_digest = TRUE
 	var/datum/species/specimen = all_species[alien]
 	should_general_digest = specimen.call_digest_proc(M, src)
@@ -179,11 +168,6 @@ datum/reagent/blood/reaction_mob(mob/M, method=TOUCH, volume)
 	if(self.data && self.data["antibodies"] && istype(M, /mob/living/carbon))//... and curing
 		var/mob/living/carbon/C = M
 		C.antibodies |= self.data["antibodies"]
-
-/datum/reagent/blood/on_diona_digest(mob/living/M)
-	..() // Should be put in these procs, in case a xeno of sorts has a reaction to ALL reagents.
-	M.adjustCloneLoss(-REM)
-	return FALSE // Returning false would mean that generic digestion proc won't be used.
 
 datum/reagent/blood/reaction_turf(var/turf/simulated/T, var/volume)//splash the blood all over the place
 	if(!istype(T))
@@ -301,11 +285,6 @@ datum/reagent/water/reaction_obj(var/obj/O, var/volume)
 		var/obj/item/weapon/reagent_containers/food/snacks/monkeycube/cube = O
 		if(!cube.wrapped)
 			cube.Expand()
-
-/datum/reagent/water/on_diona_digest(mob/living/M)
-	..()
-	M.nutrition += REM
-	return FALSE
 
 datum/reagent/water/holywater
 	name = "Holy Water"
@@ -459,7 +438,6 @@ datum/reagent/srejuvenate
 	color = "#c8a5dc" // rgb: 200, 165, 220
 	custom_metabolism = REAGENTS_METABOLISM * 0.5
 	overdose = REAGENTS_OVERDOSE
-	restrict_species = list(IPC, DIONA)
 
 /datum/reagent/srejuvenate/on_general_digest(mob/living/M)
 	..()
@@ -493,7 +471,7 @@ datum/reagent/inaprovaline
 	color = "#00bfff" // rgb: 200, 165, 220
 	custom_metabolism = REAGENTS_METABOLISM * 0.5
 	overdose = REAGENTS_OVERDOSE * 2
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/inaprovaline/on_general_digest(mob/living/M)
 	..()
@@ -513,7 +491,7 @@ datum/reagent/space_drugs
 	color = "#60a584" // rgb: 96, 165, 132
 	custom_metabolism = REAGENTS_METABOLISM * 0.5
 	overdose = REAGENTS_OVERDOSE
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/space_drugs/on_general_digest(mob/living/M)
 	..()
@@ -533,7 +511,7 @@ datum/reagent/serotrotium
 	color = "#202040" // rgb: 20, 20, 40
 	custom_metabolism = REAGENTS_METABOLISM * 0.25
 	overdose = REAGENTS_OVERDOSE
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/serotrotium/on_general_digest(mob/living/M)
 	..()
@@ -609,15 +587,6 @@ datum/reagent/nitrogen
 	taste_message = null
 	custom_metabolism = 0.01
 
-/datum/reagent/nitrogen/on_diona_digest(mob/living/M)
-	..()
-	M.adjustBruteLoss(-REM)
-	M.adjustOxyLoss(-REM)
-	M.adjustToxLoss(-REM)
-	M.adjustFireLoss(-REM)
-	M.nutrition += REM
-	return FALSE
-
 /datum/reagent/nitrogen/on_vox_digest(mob/living/M)
 	..()
 	M.adjustOxyLoss(-2 * REM)
@@ -650,7 +619,7 @@ datum/reagent/mercury
 	color = "#484848" // rgb: 72, 72, 72
 	overdose = REAGENTS_OVERDOSE
 	taste_message = "druggie poison"
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/mercury/on_general_digest(mob/living/M)
 	..()
@@ -732,15 +701,6 @@ datum/reagent/phosphorus
 	taste_message = "misguided choices"
 	custom_metabolism = 0.01
 
-/datum/reagent/phosphorus/on_diona_digest(mob/living/M)
-	..()
-	M.adjustBruteLoss(-REM)
-	M.adjustOxyLoss(-REM)
-	M.adjustToxLoss(-REM)
-	M.adjustFireLoss(-REM)
-	M.nutrition += REM
-	return FALSE
-
 datum/reagent/lithium
 	name = "Lithium"
 	id = "lithium"
@@ -749,7 +709,7 @@ datum/reagent/lithium
 	color = "#808080" // rgb: 128, 128, 128
 	overdose = REAGENTS_OVERDOSE
 	taste_message = "happiness"
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/lithium/on_general_digest(mob/living/M)
 	..()
@@ -863,7 +823,7 @@ datum/reagent/paracetamol
 	reagent_state = LIQUID
 	color = "#c8a5dc"
 	overdose = 60
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/paracetamol/on_general_digest(mob/living/M)
 	..()
@@ -878,7 +838,7 @@ datum/reagent/tramadol
 	color = "#cb68fc"
 	overdose = 30
 	custom_metabolism = 0.025
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/tramadol/on_general_digest(mob/living/M)
 	..()
@@ -893,7 +853,7 @@ datum/reagent/oxycodone
 	color = "#800080"
 	overdose = 20
 	custom_metabolism = 0.025
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/oxycodone/on_general_digest(mob/living/M)
 	..()
@@ -1113,7 +1073,7 @@ datum/reagent/cryptobiolin
 	overdose = REAGENTS_OVERDOSE
 	custom_metabolism = REAGENTS_METABOLISM * 0.5
 	taste_message = null
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/cryptobiolin/on_general_digest(mob/living/M)
 	..()
@@ -1130,7 +1090,7 @@ datum/reagent/kelotane
 	color = "#ffc600" // rgb: 200, 165, 220
 	overdose = REAGENTS_OVERDOSE
 	taste_message = null
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/kelotane/on_general_digest(mob/living/M)
 	..()
@@ -1144,7 +1104,7 @@ datum/reagent/dermaline
 	color = "#ff8000" // rgb: 200, 165, 220
 	overdose = REAGENTS_OVERDOSE * 0.5
 	taste_message = null
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/dermaline/on_general_digest(mob/living/M)
 	..()
@@ -1158,7 +1118,7 @@ datum/reagent/dexalin
 	color = "#0080ff" // rgb: 200, 165, 220
 	overdose = REAGENTS_OVERDOSE
 	taste_message = "oxygen"
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/dexalin/on_general_digest(mob/living/M)
 	..()
@@ -1180,7 +1140,7 @@ datum/reagent/dexalin
 	color = "#0040ff" // rgb: 200, 165, 220
 	overdose = REAGENTS_OVERDOSE * 0.5
 	taste_message = "ability to breath"
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/dexalinp/on_general_digest(mob/living/M)
 	..()
@@ -1201,7 +1161,7 @@ datum/reagent/tricordrazine
 	reagent_state = LIQUID
 	color = "#00b080" // rgb: 200, 165, 220
 	taste_message = null
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/tricordrazine/on_general_digest(mob/living/M)
 	..()
@@ -1221,7 +1181,7 @@ datum/reagent/anti_toxin
 	reagent_state = LIQUID
 	color = "#00a000" // rgb: 200, 165, 220
 	taste_message = null
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/anti_toxin/on_general_digest(mob/living/M)
 	..()
@@ -1276,7 +1236,7 @@ datum/reagent/synaptizine
 	color = "#99ccff" // rgb: 200, 165, 220
 	custom_metabolism = 0.01
 	overdose = REAGENTS_OVERDOSE
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/synaptizine/on_general_digest(mob/living/M)
 	..()
@@ -1297,7 +1257,7 @@ datum/reagent/impedrezene
 	reagent_state = LIQUID
 	color = "#C8A5DC" // rgb: 200, 165, 220
 	overdose = REAGENTS_OVERDOSE
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/impedrezene/on_general_digest(mob/living/M)
 	..()
@@ -1362,7 +1322,7 @@ datum/reagent/imidazoline
 	color = "#a0dbff" // rgb: 200, 165, 220
 	overdose = REAGENTS_OVERDOSE
 	taste_message = "carrot"
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/imidazoline/on_general_digest(mob/living/M)
 	..()
@@ -1383,7 +1343,7 @@ datum/reagent/peridaxon
 	color = "#561ec3" // rgb: 200, 165, 220
 	overdose = 10
 	taste_message = null
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/peridaxon/on_general_digest(mob/living/M)
 	..()
@@ -1405,7 +1365,7 @@ datum/reagent/kyphotorin
 	custom_metabolism = 0.07
 	var/obj/item/organ/external/External
 	taste_message = "machines"
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/kyphotorin/on_general_digest(mob/living/M)
 	..()
@@ -1431,7 +1391,7 @@ datum/reagent/bicaridine
 	color = "#bf0000" // rgb: 200, 165, 220
 	overdose = REAGENTS_OVERDOSE
 	taste_message = null
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/bicaridine/on_general_digest(mob/living/M, alien)
 	..()
@@ -1446,7 +1406,7 @@ datum/reagent/hyperzine
 	custom_metabolism = 0.03
 	overdose = REAGENTS_OVERDOSE * 0.5
 	taste_message = "speed"
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/hyperizine/on_general_digest(mob/living/M)
 	..()
@@ -1573,7 +1533,7 @@ datum/reagent/nicotine
 	reagent_state = LIQUID
 	color = "#181818" // rgb: 24, 24, 24
 	custom_metabolism = 0.005
-	restrict_species = list(IPC, DIONA)
+
 	var/alert_time = 0
 
 datum/reagent/nicotine/on_mob_life(mob/living/M)
@@ -1616,11 +1576,6 @@ datum/reagent/diethylamine
 	description = "A secondary amine, mildly corrosive."
 	reagent_state = LIQUID
 	color = "#604030" // rgb: 96, 64, 48
-
-/datum/reagent/diethylamine/on_diona_digest(mob/living/M)
-	..()
-	M.nutrition += 2 * REM
-	return FALSE
 
 /datum/reagent/diethylamine/reaction_mob(mob/M, method = TOUCH, volume)
 	if(volume >= 1 && ishuman(M))
@@ -1766,7 +1721,7 @@ datum/reagent/toxin/lexorin
 	color = "#C8A5DC" // rgb: 200, 165, 220
 	toxpwr = 0
 	overdose = REAGENTS_OVERDOSE
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/toxin/lexorin/on_general_digest(mob/living/M)
 	..()
@@ -1834,7 +1789,7 @@ datum/reagent/toxin/zombiepowder
 	reagent_state = SOLID
 	color = "#669900" // rgb: 102, 153, 0
 	toxpwr = 0.5
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/toxin/zombiepowder/on_general_digest(mob/living/M)
 	..()
@@ -1916,7 +1871,7 @@ datum/reagent/toxin/stoxin
 	toxpwr = 0
 	custom_metabolism = 0.1
 	overdose = REAGENTS_OVERDOSE
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/toxin/stoxin/on_general_digest(mob/living/M)
 	..()
@@ -1947,7 +1902,7 @@ datum/reagent/toxin/chloralhydrate
 	custom_metabolism = 0.1 //Default 0.2
 	overdose = 15
 	overdose_dam = 6
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/toxin/chloralhydrate/on_general_digest(mob/living/M)
 	..()
@@ -2008,7 +1963,7 @@ datum/reagent/toxin/beer2//disguised as normal beer for use by emagged brobots
 	color = "#FBBF0D" // rgb: 251, 191, 13
 	custom_metabolism = 0.15 // Sleep toxins should always be consumed pretty fast
 	overdose = REAGENTS_OVERDOSE * 0.5
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/toxin/beer2/on_general_digest(mob/living/M)
 	..()
@@ -2426,7 +2381,7 @@ datum/reagent/toxin/acid/polyacid
 	color = "#E700E7" // rgb: 231, 0, 231
 	overdose = REAGENTS_OVERDOSE
 	custom_metabolism = FOOD_METABOLISM * 0.5
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/consumable/psilocybin/on_general_digest(mob/living/M)
 	..()
@@ -3117,7 +3072,7 @@ datum/reagent/toxin/acid/polyacid
 	reagent_state = LIQUID
 	color = "#666300" // rgb: 102, 99, 0
 	taste_message = "fruity alcohol"
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/consumable/atomicbomb/on_general_digest(mob/living/M)
 	..()
@@ -3144,7 +3099,7 @@ datum/reagent/toxin/acid/polyacid
 	reagent_state = LIQUID
 	color = "#664300" // rgb: 102, 67, 0
 	taste_message = "the number fourty two"
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/consumable/gargle_blaster/on_general_digest(mob/living/M)
 	..()
@@ -3170,7 +3125,7 @@ datum/reagent/toxin/acid/polyacid
 	reagent_state = LIQUID
 	color = "#2E2E61" // rgb: 46, 46, 97
 	taste_message = "brain damageeeEEeee"
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/consumable/neurotoxin/on_general_digest(mob/living/M)
 	..()
@@ -3198,7 +3153,7 @@ datum/reagent/toxin/acid/polyacid
 	color = "#664300" // rgb: 102, 67, 0
 	custom_metabolism = FOOD_METABOLISM * 0.5
 	taste_message = "peeeeeeace"
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/consumable/hippies_delight/on_general_digest(mob/living/M)
 	..()
@@ -3267,7 +3222,7 @@ datum/reagent/toxin/acid/polyacid
 	var/blur_start = 300	//amount absorbed after which mob starts getting blurred vision
 	var/pass_out = 400	//amount absorbed after which mob starts passing out
 	taste_message = "liquid fire"
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/consumable/ethanol/on_mob_life(mob/living/M, alien) // There's a multiplier for Skrells, which can't be inbuilt in any other reasonable way.
 	if(!..())
@@ -4207,7 +4162,7 @@ datum/reagent/toxin/acid/polyacid
 	var/spawning_horror = 0
 	var/percent_machine = 0
 	taste_message = "nanomachines, son"
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/mednanobots/on_general_digest(mob/living/M)
 	..()
@@ -4375,7 +4330,7 @@ datum/reagent/toxin/acid/polyacid
 	custom_metabolism = 0.01
 	data = 1 //Used as a tally
 	taste_message = "DEATH"
-	restrict_species = list(IPC, DIONA)
+
 
 /datum/reagent/chefspecial/on_general_digest(mob/living/M)
 	..()

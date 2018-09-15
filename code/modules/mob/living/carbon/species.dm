@@ -452,8 +452,6 @@
 	taste_sensitivity = TASTE_SENSITIVITY_NO_TASTE
 	primitive = /mob/living/carbon/monkey/diona
 
-	siemens_coefficient = 0.8 // Because they are plants and stuff.
-
 	hazard_low_pressure = DIONA_HAZARD_LOW_PRESSURE
 
 	cold_level_1 = 50
@@ -464,7 +462,6 @@
 	heat_level_2 = 3000
 	heat_level_3 = 4000
 
-	burn_mod = 1.3
 	speed_mod = 7
 
 	restricted_inventory_slots = list(slot_wear_mask, slot_glasses, slot_gloves, slot_shoes) // These are trees. Not people. Deal with the fact that they don't have these.
@@ -487,7 +484,7 @@
 	has_bodypart = list(
 		 BP_CHEST  = /obj/item/organ/external/chest
 		,BP_GROIN  = /obj/item/organ/external/groin
-		,BP_HEAD   = /obj/item/organ/external/head/diona
+		,BP_HEAD   = /obj/item/organ/external/head
 		,BP_L_ARM  = /obj/item/organ/external/l_arm
 		,BP_R_ARM  = /obj/item/organ/external/r_arm
 		,BP_L_LEG  = /obj/item/organ/external/l_leg
@@ -496,11 +493,11 @@
 
 	has_organ = list(
 		O_HEART   = /obj/item/organ/internal/heart,
-		O_BRAIN   = /obj/item/organ/internal/brain/diona,
+		O_BRAIN   = /obj/item/organ/internal/brain,
 		O_EYES    = /obj/item/organ/internal/eyes,
-		O_LUNGS   = /obj/item/organ/internal/lungs/diona,
-		O_LIVER   = /obj/item/organ/internal/liver/diona,
-		O_KIDNEYS = /obj/item/organ/internal/kidneys/diona
+		O_LUNGS   = /obj/item/organ/internal/lungs,
+		O_LIVER   = /obj/item/organ/internal/liver,
+		O_KIDNEYS = /obj/item/organ/internal/kidneys
 		)
 
 	blood_color = "#004400"
@@ -512,27 +509,6 @@
 	H.gender = NEUTER
 
 	return ..()
-
-/datum/species/diona/regen(mob/living/carbon/human/H, light_amount, External)
-	if(light_amount >=5) // If you can regen organs - do so.
-		for(var/obj/item/organ/internal/O in H.organs)
-			if(O.damage)
-				O.damage -= light_amount/10
-				H.nutrition -= light_amount
-				return
-			continue
-	if(H.nutrition > 350 && light_amount >= 4) // If you don't need to regen organs, regen bodyparts.
-		External = H.find_damaged_bodypart(External)
-		if(External)
-			H.nutrition -= 1
-			H.apply_damages(0,0,1,1,0,0)
-			H.regen_bodyparts(External, TRUE)
-			return
-	if(light_amount >= 3) // If you don't need to regen bodyparts, fix up small things.
-		H.adjustBruteLoss(-(light_amount))
-		H.adjustToxLoss(-(light_amount))
-		H.adjustOxyLoss(-(light_amount))
-
 
 /datum/species/diona/call_digest_proc(mob/living/M, datum/reagent/R)
 	return R.on_diona_digest(M)

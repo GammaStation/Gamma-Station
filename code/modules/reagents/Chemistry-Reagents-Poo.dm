@@ -6,7 +6,6 @@
 	reagent_state = LIQUID
 	color = "#402000" //rgb: 64, 32, 0
 	taste_message = "devastating foul taste of shit"
-	restrict_species = list(IPC,DIONA,SHADOWLING,SKELETON,GOLEM)
 	var/datum/dirt_cover/decal_datum = new/datum/dirt_cover/poo
 
 /datum/reagent/poo/on_mob_life(mob/living/M)

@@ -164,7 +164,7 @@
 			if(!in_range(instrument, usr))
 				return
 
-			song_tempo = Clamp(new_tempo, 1, usr.get_species() == DIONA ?  MAX_DIONATEMPO_RATE : MAX_TEMPO_RATE )
+			song_tempo = Clamp(new_tempo, 1, MAX_TEMPO_RATE )
 
 		else if(href_list["play"])
 			playing = TRUE
@@ -280,7 +280,7 @@
 	var/list/lines = splittext(song_text, "\n")
 
 	if(copytext(lines[1], 1, 5) == "BPM:")
-		song_tempo = Clamp(text2num(copytext(lines[1], 5)), 1, usr.get_species() == DIONA ?  MAX_DIONATEMPO_RATE : MAX_TEMPO_RATE )
+		song_tempo = Clamp(text2num(copytext(lines[1], 5)), 1, MAX_TEMPO_RATE )
 		lines.Cut(1, 2)
 
 	if(lines.len > MAX_LINES_COUNT)
