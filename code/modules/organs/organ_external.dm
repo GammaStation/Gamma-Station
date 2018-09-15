@@ -1068,9 +1068,6 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	var/disfigured = FALSE
 
-/obj/item/organ/external/head/diona
-	vital = FALSE
-
 /obj/item/organ/external/head/ipc
 	vital = FALSE
 

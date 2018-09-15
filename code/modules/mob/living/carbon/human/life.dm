@@ -969,17 +969,8 @@
 			var/turf/T = loc
 			light_amount = round((T.get_lumcount()*10)-5)
 
-		if(get_species() == DIONA && !is_damaged_organ(O_LIVER)) // Specie may require light, but only plants, with chlorophyllic plasts can produce nutrition out of light!
+		if(get_species() == DIONA) // Specie may require light, but only plants, with chlorophyllic plasts can produce nutrition out of light!
 			nutrition += light_amount
-
-		if(species.flags[IS_PLANT])
-			var/obj/item/organ/internal/kidneys/KS = organs_by_name[O_KIDNEYS]
-			if(!KS)
-				nutrition = 0
-			if(KS && get_species() == DIONA && (nutrition > 500 - KS.damage*5))
-				nutrition = 500 - KS.damage*5
-			var/obj/item/organ/external/External
-			species.regen(src, light_amount, External)
 
 	if(dna && dna.mutantrace == "shadow")
 		var/light_amount = 0

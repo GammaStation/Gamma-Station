@@ -173,12 +173,8 @@
 				m_type = 1
 			else
 				if (!muzzled)
-					if (!(get_species() == DIONA))
-						message = "<B>[src]</B> coughs!"
-						m_type = 2
-					else
-						message = "<B>[src]</B> creaks!"
-						m_type = 2
+					message = "<B>[src]</B> coughs!"
+					m_type = 2
 				else
 					message = "<B>[src]</B> makes a strong noise."
 					m_type = 2
