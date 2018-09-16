@@ -365,6 +365,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/cookie/atom_init()
 	. = ..()
 	reagents.add_reagent("nutriment", 1)
+	reagents.add_reagent("ectoplasm", 1)
 
 /obj/item/weapon/reagent_containers/food/snacks/chocolatebar
 	name = "Chocolate Bar"
