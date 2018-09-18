@@ -214,8 +214,6 @@ var/datum/subsystem/ticker/ticker
 	current_state = GAME_STATE_PLAYING
 	round_start_time = world.time
 
-	setup_economy()
-
 	//start_landmarks_list = shuffle(start_landmarks_list) //Shuffle the order of spawn points so they dont always predictably spawn bottom-up and right-to-left
 	create_characters() //Create player characters and transfer them
 	collect_minds()
