@@ -79,7 +79,14 @@
 				continue
 
 			if(M.client && M.client.holder && (M.client.holder.rights & R_ADMIN) && (M.client.prefs.chat_toggles & CHAT_DEAD)) // Show the emote to admins
-				to_chat(M, message)
+<<<<<<< Updated upstream
+				to_chat(M, message, "")
 
 			else if(M.stat == DEAD && (M.client.prefs.chat_toggles & CHAT_DEAD)) // Show the emote to regular ghosts with deadchat toggled on
-				M.show_message(message, 2)
+				M.show_message(message, 2,flag = "")
+=======
+				to_chat(M, message,"emojiAllowed")
+
+			else if(M.stat == DEAD && (M.client.prefs.chat_toggles & CHAT_DEAD)) // Show the emote to regular ghosts with deadchat toggled on
+				M.show_message(message, 2,"emojiAllowed")
+>>>>>>> Stashed changes
