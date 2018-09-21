@@ -65,12 +65,7 @@ var/global/normal_ooc_colour = "#002eb8"
 
 			if(config.allow_donators && donator && prefs.ooccolor)
 				display_name = "<span style='color: [prefs.ooccolor]'>[display_name]</span>"
-
-<<<<<<< Updated upstream
-			to_chat(C, "<font color='[display_colour]'><span class='ooc'><span class='prefix'>OOC:</span> <EM>[display_name]:</EM> <span class='message'>[msg]</span></span></font>","")
-=======
 			to_chat(C, "<font color='[display_colour]'><span class='ooc'><span class='prefix'>OOC:</span> <EM>[display_name]:</EM> <span class='message'>[msg]</span></span></font>","emojiAllowed")
->>>>>>> Stashed changes
 
 			/*
 			if(holder)
