@@ -8,7 +8,7 @@ var/global/BSACooldown = 0
 	log_adminwarn(msg)
 	for(var/client/C in admins)
 		if(C.holder.rights & R_ADMIN)
-			to_chat(C, msg,"")
+			to_chat(C, msg)
 
 /proc/msg_admin_attack(text) //Toggleable Attack Messages
 	log_attack(text)
