@@ -193,11 +193,7 @@ var/emojiJson = file2text("code/modules/goonchat/browserassets/js/emojiList.json
 
 	return "<img [class] src='data:image/png;base64,[bicon_cache[key]]'>"
 
-<<<<<<< Updated upstream
-/proc/to_chat(target, message, flag = "preventLink")
-=======
 /proc/to_chat(target, message, flag)
->>>>>>> Stashed changes
 	if(!target) //shitty fix, but it's works
 		return
 
