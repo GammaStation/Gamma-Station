@@ -417,13 +417,15 @@
 
 	if(!(W.flags & ABSTRACT))
 		if(user.drop_item())
-			W.Move(loc)
 			var/list/click_params = params2list(params)
 			//Center the icon where the user clicked.
 			if(!click_params || !click_params["icon-x"] || !click_params["icon-y"])
 				return
 			W.pixel_x = Clamp(text2num(click_params["icon-x"]) - 16, -(world.icon_size/2), world.icon_size/2)
 			W.pixel_y = Clamp(text2num(click_params["icon-y"]) - 16, -(world.icon_size/2), world.icon_size/2)
+			var/obj/effect/temp_visual/obj_pickup_ghost/ghost = new(get_turf(W), W)
+			ghost.animate_towards(src, TRUE)
+			W.forceMove(loc)
 	return
 
 /obj/structure/table/proc/slam(var/mob/living/A, var/mob/living/M, var/obj/item/weapon/grab/G)

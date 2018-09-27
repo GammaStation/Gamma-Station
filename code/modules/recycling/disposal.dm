@@ -121,6 +121,8 @@
 			for (var/mob/V in viewers(usr))
 				V.show_message("<span class='red'>[usr] starts putting [GM.name] into the disposal.</span>", 3)
 			if(do_after(usr, 20, target = src))
+				var/obj/effect/temp_visual/obj_pickup_ghost/ghost = new(get_turf(GM), GM)
+				ghost.animate_towards(GM, src, , TRUE) // This TRUE stands for no_size_change.
 				GM.loc = src
 				GM.instant_vision_update(1,src)
 				for (var/mob/C in viewers(src))
@@ -135,6 +137,8 @@
 		return
 	user.drop_item()
 	if(I)
+		var/obj/effect/temp_visual/obj_pickup_ghost/ghost = new(get_turf(I), I)
+		ghost.animate_towards(I, src, , TRUE) // This TRUE stands for no_size_change.
 		I.loc = src
 
 	to_chat(user, "<span class='notice'>You place \the [I] into the [src].</span>")
@@ -185,6 +189,8 @@
 	else
 		return
 
+	var/obj/effect/temp_visual/obj_pickup_ghost/ghost = new(get_turf(target), target)
+	ghost.animate_towards(src, , TRUE) // This TRUE stands for no_size_change.
 	target.loc = src
 	target.instant_vision_update(1,src)
 
@@ -227,6 +233,8 @@
 		//target.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been placed in disposals by [user.name] ([user.ckey])</font>")
 		//msg_admin_attack("[user] ([user.ckey]) placed [target] ([target.ckey]) in a disposals unit. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
+		var/obj/effect/temp_visual/obj_pickup_ghost/ghost = new(get_turf(target), target)
+		ghost.animate_towards(src, , TRUE) // This TRUE stands for no_size_change.
 		target.loc = src
 
 		for (var/mob/C in viewers(src))

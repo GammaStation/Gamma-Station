@@ -296,6 +296,7 @@
 			to_chat(user, "\red \The [src] is far too small for you to pick up.")
 			return
 
+	var/atom/old_loc = loc
 	if(istype(src.loc, /obj/item/weapon/storage))
 		var/obj/item/weapon/storage/S = src.loc
 		S.remove_from_storage(src)
@@ -334,7 +335,10 @@
 
 	src.pickup(user)
 	add_fingerprint(user)
-	user.put_in_active_hand(src)
+	if(user.put_in_active_hand(src))
+		if(isturf(old_loc) || isturf(old_loc.loc)) // We also animate items being taken out of storage.
+			var/obj/effect/temp_visual/obj_pickup_ghost/ghost = new(get_turf(old_loc), src)
+			ghost.animate_towards(user)
 	return
 
 

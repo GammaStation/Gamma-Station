@@ -52,6 +52,10 @@
 	if(!holder_type || buckled || pinned.len)
 		return
 	var/obj/item/weapon/holder/H = new holder_type(loc)
+	var/old_loc = loc
+	if(isturf(old_loc)) // We don't need the old_loc.loc check, since if mob is inside "storage" it most likely is a holder, not a mob mob.
+		var/obj/effect/temp_visual/obj_pickup_ghost/ghost = new(old_loc, src)
+		ghost.animate_towards(grabber)
 	src.loc = H
 	H.name = src.name
 	H.attack_hand(grabber)
@@ -59,8 +63,6 @@
 	to_chat(grabber, "You scoop up [src].")
 	to_chat(src, "[grabber] scoops you up.")
 	LAssailant = grabber
-
-	return
 
 //Mob specific holders.
 
