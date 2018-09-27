@@ -205,6 +205,8 @@
 			return
 		usr.drop_item()
 		if(W)
+			var/obj/effect/temp_visual/obj_pickup_ghost/ghost = new(get_turf(W), W)
+			ghost.animate_towards(src, TRUE)
 			W.forceMove(src.loc)
 
 	else if(istype(W, /obj/item/weapon/packageWrap) || istype(W, /obj/item/weapon/extraction_pack))
