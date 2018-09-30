@@ -84,3 +84,10 @@
 			result = "potassium_chlorophoride"
 			required_reagents = list("potassium_chloride" = 1, "phoron" = 1, "chloralhydrate" = 1)
 			result_amount = 4
+
+/datum/chemical_reaction/cryptobiolin
+			name = "Cryptobiolin"
+			id = "cryptobiolin"
+			result = "cryptobiolin"
+			required_reagents = list("potassium" = 1, "oxygen" = 1, "sugar" = 1)
+			result_amount = 3
