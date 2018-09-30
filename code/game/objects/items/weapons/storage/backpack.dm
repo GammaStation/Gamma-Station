@@ -14,8 +14,10 @@
 	max_w_class = 3
 	max_combined_w_class = 21
 	var/opened = 0
+	cant_reach = TRUE
 
 /obj/item/weapon/storage/backpack/ui_action_click()
+
 	if(!opened)
 		open(loc)
 	else
@@ -30,6 +32,8 @@
 /obj/item/weapon/storage/backpack/equipped(mob/user, slot)
 	if (slot == slot_back && src.use_sound)
 		playsound(src.loc, src.use_sound, 50, 1, -5)
+		if(cant_reach == TRUE)
+			close(user)
 	..(user, slot)
 
 /*
@@ -133,6 +137,8 @@
 	desc = "It's a very fancy satchel made with fine leather."
 	icon_state = "satchel"
 	item_state = "satchel"
+	storage_slots = 4
+	cant_reach = FALSE
 
 /obj/item/weapon/storage/backpack/satchel/withwallet
 

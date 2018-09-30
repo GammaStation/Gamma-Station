@@ -24,6 +24,7 @@
 	var/collection_mode = 1;  //0 = pick one at a time, 1 = pick all on tile
 	var/foldable = null	// BubbleWrap - if set, can be folded (when empty) into a sheet of cardboard
 	var/use_sound = "rustle"	//sound played when used. null for no sound.
+	var/cant_reach = FALSE
 
 /obj/item/weapon/storage/Destroy()
 	close_all()
@@ -42,8 +43,12 @@
 			return
 
 		if(over_object == usr && Adjacent(usr)) // this must come before the screen objects only block
-			src.open(usr)
-			return
+			if(istype(src, /obj/item/weapon/storage/backpack) && usr.back == src && cant_reach == TRUE)
+				to_chat(usr, "<span class='warning'>You can't reach into your [name] while it's on your back!</span>")
+				return
+			else
+				open(usr)
+				return
 
 		if (!( istype(over_object, /obj/screen) ))
 			return ..()
@@ -387,6 +392,9 @@
 		if(H.r_store == src && !H.get_active_hand())
 			H.put_in_hands(src)
 			H.r_store = null
+			return
+		if(istype(src, /obj/item/weapon/storage/backpack) && H.back == src && cant_reach == TRUE)
+			to_chat(H, "<span class='warning'>You can't reach into your [name] while it's on your back!</span>")
 			return
 
 	if (src.loc == user)
