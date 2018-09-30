@@ -26,13 +26,6 @@
 			required_reagents = list("water" = 1, "milk" = 1)
 			result_amount = 5
 
-/datum/chemical_reaction/cryptobiolin
-			name = "Cryptobiolin"
-			id = "cryptobiolin"
-			result = "cryptobiolin"
-			required_reagents = list("potassium" = 1, "oxygen" = 1, "sugar" = 1)
-			result_amount = 3
-
 /datum/chemical_reaction/glycerol
 			name = "Glycerol"
 			id = "glycerol"
