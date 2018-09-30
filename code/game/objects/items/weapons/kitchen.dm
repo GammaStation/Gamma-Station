@@ -419,10 +419,7 @@
 		if(!isturf(loc))
 			return
 
-		var/foundtable = 0
-		for(var/obj/structure/table/T in loc)
-			foundtable = 1
-			break
+		var/foundtable = locate(/obj/structure/table) in loc
 
 		overlays.Cut()
 
