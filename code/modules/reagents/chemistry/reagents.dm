@@ -5,6 +5,8 @@
 #define DRINK_METABOLISM 0.8
 #define REAGENTS_OVERDOSE 30
 #define REM REAGENTS_EFFECT_MULTIPLIER
+#define MAX_PILL_SPRITE 20
+#define MAX_BOTTLE_SPRITE 3
 
 /datum/reagent
 	var/name = "Reagent"
