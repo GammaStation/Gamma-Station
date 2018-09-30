@@ -107,7 +107,7 @@
 
 	var/location = get_turf(holder.my_atom)
 	for(var/mob/M in viewers(5, location))
-		o_chat(M, "\red The solution violently bubbles!")
+		to_chat(M, "\red The solution violently bubbles!")
 
 	location = get_turf(holder.my_atom)
 
