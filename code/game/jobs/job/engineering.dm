@@ -36,6 +36,9 @@
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/heads/ce(H), slot_l_ear)
 	H.equip_to_slot_or_del(new /obj/item/device/pda/heads/ce(H), slot_l_store)
 
+	var/obj/item/weapon/implant/mindshield/L = new(H)
+	L.inject(H)
+
 	return TRUE
 
 
