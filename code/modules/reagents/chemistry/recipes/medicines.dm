@@ -214,30 +214,26 @@
 			result_amount = 2
 
 /datum/chemical_reaction/methylphenidate
-	name = "Methylphenidate"
-	id = "methylphenidate"
-	result = "methylphenidate"
-	required_reagents = list("mindbreaker" = 1, "hydrogen" = 1)
-	result_amount = 3
+			name = "Methylphenidate"
+			id = "methylphenidate"
+			result = "methylphenidate"
+			required_reagents = list("mindbreaker" = 1, "hydrogen" = 1)
+			result_amount = 3
 
 
 /datum/chemical_reaction/citalopram
-	name = "Citalopram"
-	id = "citalopram"
-	result = "citalopram"
-	required_reagents = list("mindbreaker" = 1, "carbon" = 1)
-	result_amount = 3
+			name = "Citalopram"
+			id = "citalopram"
+			result = "citalopram"
+			required_reagents = list("mindbreaker" = 1, "carbon" = 1)
+			result_amount = 3
 
 /datum/chemical_reaction/paroxetine
-	name = "Paroxetine"
-	id = "paroxetine"
-	result = "paroxetine"
-	required_reagents = list("mindbreaker" = 1, "oxygen" = 1, "inaprovaline" = 1)
-	result_amount = 3
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////// Nanobots /////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+			name = "Paroxetine"
+			id = "paroxetine"
+			result = "paroxetine"
+			required_reagents = list("mindbreaker" = 1, "oxygen" = 1, "inaprovaline" = 1)
+			result_amount = 3
 
 /datum/chemical_reaction/nanobots
 	name = "Nanobots"
@@ -259,7 +255,3 @@
 	result = "mednanobots"
 	required_reagents = list("nanobots" = 1, "doctorsdelight" = 5)
 	result_amount = 1
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////

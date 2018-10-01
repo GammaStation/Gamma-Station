@@ -1,6 +1,3 @@
-//Fuck that faggot who put that here//
-//////////////////////////////////////////FOOD MIXTURES////////////////////////////////////
-
 /datum/chemical_reaction/tofu
 			name = "Tofu"
 			id = "tofu"
@@ -88,10 +85,6 @@
 			result = "hell_ramen"
 			required_reagents = list("capsaicin" = 1, "hot_ramen" = 6)
 			result_amount = 6
-
-
-////////////////////////////////////////// COCKTAILS //////////////////////////////////////
-
 
 /datum/chemical_reaction/goldschlager
 			name = "Goldschlager"
@@ -479,10 +472,6 @@
 			result = "grapesoda"
 			required_reagents = list("grapejuice" = 2, "cola" = 1)
 			result_amount = 3
-
-
-
-////DRINKS THAT REQUIRED IMPROVED SPRITES BELOW:: -Agouri/////
 
 /datum/chemical_reaction/sbiten
 			name = "Sbiten"
