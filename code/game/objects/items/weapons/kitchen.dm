@@ -245,21 +245,6 @@
 	w_class = 3.0
 	flags = CONDUCT
 	m_amt = 3000
-	/* // NOPE
-	var/food_total= 0
-	var/burger_amt = 0
-	var/cheese_amt = 0
-	var/fries_amt = 0
-	var/classyalcdrink_amt = 0
-	var/alcdrink_amt = 0
-	var/bottle_amt = 0
-	var/soda_amt = 0
-	var/carton_amt = 0
-	var/pie_amt = 0
-	var/meatbreadslice_amt = 0
-	var/salad_amt = 0
-	var/miscfood_amt = 0
-	*/
 	var/list/carrying = list() // List of things on the tray. - Doohl
 	var/max_carry = 10 // w_class = 1 -- takes up 1
 					   // w_class = 2 -- takes up 3
@@ -432,31 +417,28 @@
 
 			I.loc = src
 			carrying.Add(I)
-			overlays += image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer)
+			overlays += image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer, "pixel_x" = I.pixel_x, "pixel_y" = I.pixel_y)
+
 
 /obj/item/weapon/tray/dropped(mob/user)
 
-	var/mob/living/M
-	for(M in src.loc) //to handle hand switching
-		return
+	spawn(1)
+		if(!isturf(loc))
+			return
 
-	var/foundtable = 0
-	for(var/obj/structure/table/T in loc)
-		foundtable = 1
-		break
+		var/foundtable = locate(/obj/structure/table) in loc
 
-	overlays.Cut()
+		overlays.Cut()
 
-	for(var/obj/item/I in carrying)
-		I.loc = loc
-		carrying.Remove(I)
-		if(!foundtable && isturf(loc))
-			// if no table, presume that the person just shittily dropped the tray on the ground and made a mess everywhere!
-			spawn()
-				for(var/i = 1, i <= rand(1,2), i++)
-					if(I)
-						step(I, pick(NORTH,SOUTH,EAST,WEST))
-						sleep(rand(2,4))
+		for(var/obj/item/I in carrying)
+			I.loc = loc
+			carrying.Remove(I)
+			if(!foundtable && isturf(loc))
+				spawn()
+					for(var/i = 1, i <= rand(1,2), i++)
+						if(I)
+							step(I, pick(NORTH,SOUTH,EAST,WEST))
+							sleep(rand(2,4))
 
 ///////////////////NEW//////////////////////
 
