@@ -155,9 +155,9 @@
 		if(CALL_IN_CALL)
 			hangUp()
 
-	hear_talk(mob/living/M, text, verb, datum/language/speaking)
-		if(call_state == CALL_IN_CALL)
-			abonent.receive(text,M==loc)
+/obj/item/device/holopad/hear_talk(mob/living/M, text, verb, datum/language/speaking)
+	if(call_state == CALL_IN_CALL)
+		abonent.receive(text,M==loc)
 
 /obj/item/device/holopad/proc/receive(text, verb, isowner)
 	var/list/listening = get_mobs_in_view(2,loc)
@@ -180,12 +180,3 @@
 #undef CALL_CALLING
 #undef CALL_RINGING
 #undef CALL_IN_CALL
-
-datum/design/holopad
-	name = "Holopad"
-	desc = "A holografic communication device."
-	id = "holopad-comm"
-	req_tech = list("programming" = 4, "bluespace" = 2, "magnets" = 4)
-	build_type = 2 //PROTOLATHE
-	materials = list("$metal" = 500, "$glass" = 500)
-	build_path = "/obj/item/device/holopad"
