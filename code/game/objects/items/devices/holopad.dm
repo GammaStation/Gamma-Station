@@ -7,8 +7,8 @@
 /obj/item/device/holopad
 	name = "Holopad"
 	desc = "Small handheld disk with controls."
-	icon = 'icons/ashtray.dmi'
-	icon_state = "ashtray_half_br"
+	icon = 'icons/obj/holopad.dmi'
+	icon_state = "holopad"
 	item_state = "card-id"
 	w_class = 2
 	var/id
@@ -155,26 +155,25 @@
 		if(CALL_IN_CALL)
 			hangUp()
 
-/obj/item/device/holopad/hear_talk(mob/living/M, text, verb, datum/language/speaking)
+/obj/item/device/holopad/hear_talk(mob/living/M, text, datum/language/speaking)
 	if(call_state == CALL_IN_CALL)
 		abonent.receive(text,M==loc)
 
-/obj/item/device/holopad/proc/receive(text, verb, isowner)
+/obj/item/device/holopad/proc/receive(text, isowner)
 	var/list/listening = get_mobs_in_view(2,loc)
 	for(var/mob/M in player_list)
 		if (!M.client)
 			continue
-		if (istype(M, /mob))
+		if (istype(M, /mob/dead/new_player))
 			continue
 		if(M.stat == 2)
 			listening|=M
 	var/voice = "Holopad Background Voice"
 	if(isowner)
 		voice = "Holopad [sanitize(abonent.id)]"
-	var/rendered = "<span class='game say'><span class='name'>transmits, \"[voice]\"</span> <span class='message'>[sanitize(text)]</span></span>"
+	var/rendered = "<span class='game say'><span class='name'>[voice]</span> transmits, \"<span class='message'>[sanitize(text)]</span>\"</span>"
 	for(var/mob/M in listening)
 		M:show_message(rendered, 2)
-
 
 #undef CALL_NONE
 #undef CALL_CALLING
