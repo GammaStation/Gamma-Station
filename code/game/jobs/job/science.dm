@@ -35,6 +35,9 @@
 		if(3) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel/tox(H), slot_back)
 		if(4) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel(H), slot_back)
 
+	var/obj/item/weapon/implant/mindshield/L = new(H)
+	L.inject(H)
+
 	return TRUE
 
 

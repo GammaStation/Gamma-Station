@@ -94,4 +94,6 @@
 	else
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/ids(H.back), slot_in_backpack)
 
+	var/obj/item/weapon/implant/mindshield/L = new(H)
+	L.inject(H)
 	return TRUE
