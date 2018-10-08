@@ -27,14 +27,12 @@
 	var/stat = 0
 	var/move_delay = 1	//set this to limit the speed of the vehicle
 	var/slow_cooef = 0
-	var/can_pull = 0
 
 	var/atom/movable/load		//all vehicles can take a load, since they should all be a least drivable
 	var/load_item_visible = 1	//set if the loaded item should be overlayed on the vehicle sprite
 	var/load_offset_x = 0		//pixel_x offset for item overlay
 	var/load_offset_y = 0		//pixel_y offset for item overlay
 	var/mob_offset_y = 0		//pixel_y offset for mob overlay
-	var/airlock_automatic_opening = 0 //set this 1 if you want airlocks to open(or not open) when you bump into them
 
 //-------------------------------------------
 // Standard procs
@@ -56,6 +54,7 @@
 		//See load_object() proc in cargo_trains.dm for an example
 		if(load && !istype(load, /datum/vehicle_dummy_load))
 			load.Move(loc, dir)
+
 		return 1
 	else
 		return 0
@@ -63,7 +62,7 @@
 /obj/vehicle/proc/can_move()
 	if(world.time <= l_move_time + move_delay)
 		return 0
-	if(!on && !can_pull)
+	if(!on)
 		return 0
 	if(istype(loc, /turf/space) && !istype(src, /obj/vehicle/space))
 		return 0
