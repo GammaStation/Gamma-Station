@@ -210,3 +210,10 @@
 	var/turf/T = get_turf(holder.my_atom)
 	if(istype(T))
 		new /obj/item/stack/sheet/mineral/deuterium(T, created_volume)
+
+/datum/chemical_reaction/coolant
+	name = "Coolant"
+	id = "coolant"
+	result = "coolant"
+	required_reagents = list("tungsten" = 1, "oxygen" = 1, "water" = 1)
+	result_amount = 3
