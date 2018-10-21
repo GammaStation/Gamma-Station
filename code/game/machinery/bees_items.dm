@@ -83,12 +83,6 @@
 	reagents.add_reagent("sugar", 2)
 	bitesize = 2
 
-/datum/reagent/honey
-	name = "Honey"
-	id = "honey"
-	description = "A golden yellow syrup, loaded with sugary sweetness."
-	color = "#FFFF00"
-
 /obj/item/weapon/book/manual/hydroponics_beekeeping
 	name = "The Ins and Outs of Apiculture - A Precise Art"
 	icon_state ="bookHydroponicsBees"

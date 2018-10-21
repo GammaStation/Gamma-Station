@@ -381,28 +381,6 @@
 		S.set_up(reagents, 10, 0, location, 15, 5)
 		S.start()
 
-/datum/reagent/shadowling_blindness_smoke //Blinds non-shadowlings, heals shadowlings/thralls
-	name = "Odd Black Liquid"
-	id = "blindness_smoke"
-	description = "<::ERROR::> CANNOT ANALYZE REAGENT <::ERROR::>"
-	color = "#000000" //Complete black (RGB: 0, 0, 0)
-	//metabolization_rate = 100 //lel
-	custom_metabolism = 100
-
-/datum/reagent/shadowling_blindness_smoke/on_general_digest(mob/living/M)
-	..()
-	if(!is_shadow_or_thrall(M))
-		to_chat(M, "<span class='warning bold'>You breathe in the black smoke, and your eyes burn horribly!</span>")
-		M.eye_blind = 5
-		if(prob(25))
-			M.visible_message("<b>[M]</b> claws at their eyes!")
-			M.Stun(3)
-	else
-		to_chat(M, "<span class='notice bold'>You breathe in the black smoke, and you feel revitalized!</span>")
-		M.heal_bodypart_damage(2, 2)
-		M.adjustOxyLoss(-2)
-		M.adjustToxLoss(-2)
-
 /obj/effect/proc_holder/spell/aoe_turf/unearthly_screech
 	name = "Sonic Screech"
 	desc = "Deafens, stuns, and confuses nearby people. Also shatters windows."
