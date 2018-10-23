@@ -263,10 +263,12 @@
 	if(!I || !user)
 		return FALSE
 
-	var/target_zone = def_zone? check_zone(def_zone) : get_zone_with_miss_chance(user.zone_sel.selecting, src)
-
-	if(user == src) // Attacking yourself can't miss
-		target_zone = user.zone_sel.selecting
+	var/target_zone
+	if(ishuman(user))
+		var/skill_diff = src.getSkill("combat")-user:getSkill("combat")
+		target_zone = get_zone_with_miss_chance(user.zone_sel.selecting, src, skill_diff*10)
+	else
+		target_zone = get_zone_with_miss_chance(user.zone_sel.selecting, src, 0)
 	if(!target_zone)
 		visible_message("<span class='userdanger'>[user] misses [src] with \the [I]!</span>")
 		return FALSE
