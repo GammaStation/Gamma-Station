@@ -120,6 +120,23 @@
 
 	add_fingerprint(user)
 
+	var/skill = ishuman(user)?(user:getSkill("weapons")):(issilicon(user)?3:0)
+	var/distance = get_dist(user,target)
+	var/unprecision = max(0,10-skill*3.8)*(distance+1)/8
+	if(round(unprecision)!=unprecision)
+		unprecision = round(unprecision)+prob((unprecision-round(unprecision))*100)?1:0
+
+	var/turf/curloc = user.loc
+	var/turf/targloc = get_turf(target)
+	if(skill<=0.2 && prob(15))
+		to_chat(user, "<span class='warning'>You try to fire but fail!</span>")
+	else if(unprecision>0 && targloc!=curloc)
+		target = pick(range(unprecision,targloc))
+		targloc = get_turf(target)
+
+		if (!istype(targloc) || !istype(curloc))
+			return
+
 	if(!special_check(user, target))
 		return
 

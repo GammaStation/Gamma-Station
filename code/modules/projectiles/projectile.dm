@@ -184,6 +184,11 @@
 				miss_modifier += -60
 		if(distance > 1)
 			def_zone = get_zone_with_miss_chance(def_zone, M, miss_modifier)
+		if(M.stat && M.lying && prob(15))
+			distance = get_dist(original,loc)
+			if(firer && ishuman(firer))
+				distance-=firer:getSkill("weapons")-1.5
+			def_zone = get_zone_with_miss_chance(def_zone, M, -30 + 8*distance)
 
 		if(!def_zone)
 			forcedodge = PROJECTILE_FORCE_MISS
