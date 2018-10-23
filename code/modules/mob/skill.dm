@@ -6,11 +6,11 @@ var/global/const
 	SKILL_EXPERT = 3
 
 datum/skill/var
-    ID = "none" // ID of the skill, used in code
-    name = "None" // name of the skill
-    desc = "Placeholder skill" // detailed description of the skill
-    field = "Misc" // the field under which the skill will be listed
-    secondary = 0 // secondary skills only have two levels and cost significantly less
+	ID = "none" // ID of the skill, used in code
+	name = "None" // name of the skill
+	desc = "Placeholder skill" // detailed description of the skill
+	field = "Misc" // the field under which the skill will be listed
+	secondary = 0 // secondary skills only have two levels and cost significantly less
 
 var/global/list/SKILLS = null
 var/list/SKILL_ENGINEER = list("field" = "Engineering", "EVA" = SKILL_BASIC, "construction" = SKILL_ADEPT, "electrical" = SKILL_BASIC, "engines" = SKILL_ADEPT)
@@ -20,9 +20,9 @@ var/list/SKILL_CHEMIST = list("field" = "Science", "chemistry" = SKILL_ADEPT, "s
 var/global/list/SKILL_PRE = list("Engineer" = SKILL_ENGINEER, "Roboticist" = SKILL_ORGAN_ROBOTICIST, "Security Officer" = SKILL_SECURITY_OFFICER, "Chemist" = SKILL_CHEMIST)
 
 datum/skill/management
-    ID = "management"
-    name = "Command"
-    desc = "Your ability to manage and commandeer other crew members."
+	ID = "management"
+	name = "Command"
+	desc = "Your ability to manage and commandeer other crew members."
 
 datum/skill/athletics
 	ID = "athletics"
@@ -57,40 +57,40 @@ datum/skill/forensics
 	field = "Security"
 
 datum/skill/construction
-    ID = "construction"
-    name = "Construction"
-    desc = "Your ability to construct various buildings, such as walls, floors, tables and so on. Note that constructing devices such as APCs additionally requires the Electronics skill. A low level of this skill is typical for janitors, a high level of this skill is typical for engineers."
-    field = "Engineering"
+	ID = "construction"
+	name = "Construction"
+	desc = "Your ability to construct various buildings, such as walls, floors, tables and so on. Note that constructing devices such as APCs additionally requires the Electronics skill. A low level of this skill is typical for janitors, a high level of this skill is typical for engineers."
+	field = "Engineering"
 
 datum/skill/management
-    ID = "management"
-    name = "Command"
-    desc = "Your ability to manage and commandeer other crew members."
+	ID = "management"
+	name = "Command"
+	desc = "Your ability to manage and commandeer other crew members."
 
 datum/skill/knowledge/law
-    ID = "law"
-    name = "NanoTrasen Law"
-    desc = "Your knowledge of NanoTrasen law and procedures. This includes Space Law, as well as general station rulings and procedures. A low level in this skill is typical for security officers, a high level in this skill is typical for captains."
-    field = "Security"
-    secondary = 1
+	ID = "law"
+	name = "NanoTrasen Law"
+	desc = "Your knowledge of NanoTrasen law and procedures. This includes Space Law, as well as general station rulings and procedures. A low level in this skill is typical for security officers, a high level in this skill is typical for captains."
+	field = "Security"
+	secondary = 1
 
 datum/skill/devices
-    ID = "devices"
-    name = "Complex Devices"
-    desc = "Describes the ability to assemble complex devices, such as computers, circuits, printers, robots or gas tank assemblies(bombs). Note that if a device requires electronics or programming, those skills are also required in addition to this skill."
-    field = "Science"
+	ID = "devices"
+	name = "Complex Devices"
+	desc = "Describes the ability to assemble complex devices, such as computers, circuits, printers, robots or gas tank assemblies(bombs). Note that if a device requires electronics or programming, those skills are also required in addition to this skill."
+	field = "Science"
 
 datum/skill/electrical
-    ID = "electrical"
-    name = "Electrical Engineering"
-    desc = "This skill describes your knowledge of electronics and the underlying physics. A low level of this skill implies you know how to lay out wiring and configure powernets, a high level of this skill is required for working complex electronic devices such as circuits or bots."
-    field = "Engineering"
+	ID = "electrical"
+	name = "Electrical Engineering"
+	desc = "This skill describes your knowledge of electronics and the underlying physics. A low level of this skill implies you know how to lay out wiring and configure powernets, a high level of this skill is required for working complex electronic devices such as circuits or bots."
+	field = "Engineering"
 
 datum/skill/atmos
-    ID = "atmos"
-    name = "Atmospherics"
-    desc = "Describes your knowledge of piping, air distribution and gas dynamics."
-    field = "Engineering"
+	ID = "atmos"
+	name = "Atmospherics"
+	desc = "Describes your knowledge of piping, air distribution and gas dynamics."
+	field = "Engineering"
 
 datum/skill/engines
 	ID = "engines"
@@ -100,40 +100,40 @@ datum/skill/engines
 	secondary = 1
 
 datum/skill/computer
-    ID = "computer"
-    name = "Information Technology"
-    desc = "Describes your understanding of computers, software and communication. Not a requirement for using computers, but definitely helps. Used in telecommunications and programming of computers and AIs."
-    field = "Science"
+	ID = "computer"
+	name = "Information Technology"
+	desc = "Describes your understanding of computers, software and communication. Not a requirement for using computers, but definitely helps. Used in telecommunications and programming of computers and AIs."
+	field = "Science"
 
 datum/skill/pilot
-    ID = "pilot"
-    name = "Heavy Machinery Operation"
-    desc = "Describes your experience and understanding of operating heavy machinery, which includes mechs and other large exosuits. Used in piloting mechs."
-    field = "Engineering"
+	ID = "pilot"
+	name = "Heavy Machinery Operation"
+	desc = "Describes your experience and understanding of operating heavy machinery, which includes mechs and other large exosuits. Used in piloting mechs."
+	field = "Engineering"
 
 datum/skill/medical
-    ID = "medical"
-    name = "Medicine"
-    desc = "Covers an understanding of the human body and medicine. At a low level, this skill gives a basic understanding of applying common types of medicine, and a rough understanding of medical devices like the health analyzer. At a high level, this skill grants exact knowledge of all the medicine available on the station, as well as the ability to use complex medical devices like the body scanner or mass spectrometer."
-    field = "Medical"
+	ID = "medical"
+	name = "Medicine"
+	desc = "Covers an understanding of the human body and medicine. At a low level, this skill gives a basic understanding of applying common types of medicine, and a rough understanding of medical devices like the health analyzer. At a high level, this skill grants exact knowledge of all the medicine available on the station, as well as the ability to use complex medical devices like the body scanner or mass spectrometer."
+	field = "Medical"
 
 datum/skill/anatomy
-    ID = "anatomy"
-    name = "Anatomy"
-    desc = "Gives you a detailed insight of the human body. A high skill in this is required to perform surgery.This skill may also help in examining alien biology."
-    field = "Medical"
+	ID = "anatomy"
+	name = "Anatomy"
+	desc = "Gives you a detailed insight of the human body. A high skill in this is required to perform surgery.This skill may also help in examining alien biology."
+	field = "Medical"
 
 datum/skill/virology
-    ID = "virology"
-    name = "Virology"
-    desc = "This skill implies an understanding of microorganisms and their effects on humans."
-    field = "Medical"
+	ID = "virology"
+	name = "Virology"
+	desc = "This skill implies an understanding of microorganisms and their effects on humans."
+	field = "Medical"
 
 datum/skill/genetics
-    ID = "genetics"
-    name = "Genetics"
-    desc = "Implies an understanding of how DNA works and the structure of the human DNA."
-    field = "Science"
+	ID = "genetics"
+	name = "Genetics"
+	desc = "Implies an understanding of how DNA works and the structure of the human DNA."
+	field = "Science"
 
 datum/skill/chemistry
 	ID = "chemistry"

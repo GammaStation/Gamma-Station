@@ -193,6 +193,11 @@
 				if (!istype(occupant,/mob/living/carbon/human))
 					dat += "<font color='red'>This device can only scan human occupants.</FONT>"
 				else
+					var/fullness = 0
+					if(issilicon(user))
+						fullness = 3
+					else if(ishuman(user))
+						fullness = user:getSkill("medical")
 					dat += text("[]\tHealth %: [] ([])</FONT><BR>", (occupant.health > 50 ? "<font color='blue'>" : "<font color='red'>"), occupant.health, t1)
 
 					//if(occupant.mind && occupant.mind.changeling && occupant.status_flags & FAKEDEATH)
@@ -206,149 +211,151 @@
 					dat += text("[]\t-Respiratory Damage %: []</FONT><BR>", (occupant.getOxyLoss() < 60 ? "<font color='blue'>" : "<font color='red'>"), occupant.getOxyLoss())
 					dat += text("[]\t-Toxin Content %: []</FONT><BR>", (occupant.getToxLoss() < 60 ? "<font color='blue'>" : "<font color='red'>"), occupant.getToxLoss())
 					dat += text("[]\t-Burn Severity %: []</FONT><BR><BR>", (occupant.getFireLoss() < 60 ? "<font color='blue'>" : "<font color='red'>"), occupant.getFireLoss())
-
-					dat += text("[]\tRadiation Level %: []</FONT><BR>", (occupant.radiation < 10 ?"<font color='blue'>" : "<font color='red'>"), occupant.radiation)
-					dat += text("[]\tGenetic Tissue Damage %: []</FONT><BR>", (occupant.getCloneLoss() < 1 ?"<font color='blue'>" : "<font color='red'>"), occupant.getCloneLoss())
-					dat += text("[]\tApprox. Brain Damage %: []</FONT><BR>", (occupant.getBrainLoss() < 1 ?"<font color='blue'>" : "<font color='red'>"), occupant.getBrainLoss())
-					dat += text("Paralysis Summary %: [] ([] seconds left!)<BR>", occupant.paralysis, round(occupant.paralysis / 4))
 					dat += text("Body Temperature: [occupant.bodytemperature-T0C]&deg;C ([occupant.bodytemperature*1.8-459.67]&deg;F)<BR><HR>")
 
-					if(occupant.has_brain_worms())
-						dat += "Large growth detected in frontal lobe, possibly cancerous. Surgical removal is recommended.<BR/>"
+					if(fullness>=1)
+						dat += text("[]\tRadiation Level %: []</FONT><BR>", (occupant.radiation < 10 ?"<font color='blue'>" : "<font color='red'>"), occupant.radiation)
+						dat += text("[]\tGenetic Tissue Damage %: []</FONT><BR>", (occupant.getCloneLoss() < 1 ?"<font color='blue'>" : "<font color='red'>"), occupant.getCloneLoss())
+						dat += text("[]\tApprox. Brain Damage %: []</FONT><BR>", (occupant.getBrainLoss() < 1 ?"<font color='blue'>" : "<font color='red'>"), occupant.getBrainLoss())
+						dat += text("Paralysis Summary %: [] ([] seconds left!)<BR>", occupant.paralysis, round(occupant.paralysis / 4))
 
-					if(occupant.vessel)
-						var/blood_volume = round(occupant.vessel.get_reagent_amount("blood"))
-						var/blood_percent =  blood_volume / 560
-						blood_percent *= 100
-						dat += text("[]\tBlood Level %: [] ([] units)</FONT><BR>", (blood_volume > 448 ?"<font color='blue'>" : "<font color='red'>"), blood_percent, blood_volume)
-					if(occupant.reagents)
-						dat += text("Inaprovaline units: [] units<BR>", occupant.reagents.get_reagent_amount("inaprovaline"))
-						dat += text("Soporific (Sleep Toxin): [] units<BR>", occupant.reagents.get_reagent_amount("stoxin"))
-						dat += text("[]\tDermaline: [] units</FONT><BR>", (occupant.reagents.get_reagent_amount("dermaline") < 30 ? "<font color='black'>" : "<font color='red'>"), occupant.reagents.get_reagent_amount("dermaline"))
-						dat += text("[]\tBicaridine: [] units<BR>", (occupant.reagents.get_reagent_amount("bicaridine") < 30 ? "<font color='black'>" : "<font color='red'>"), occupant.reagents.get_reagent_amount("bicaridine"))
-						dat += text("[]\tDexalin: [] units<BR>", (occupant.reagents.get_reagent_amount("dexalin") < 30 ? "<font color='black'>" : "<font color='red'>"), occupant.reagents.get_reagent_amount("dexalin"))
+						if(occupant.has_brain_worms())
+							dat += "Large growth detected in frontal lobe, possibly cancerous. Surgical removal is recommended.<BR/>"
 
-					for(var/datum/disease/D in occupant.viruses)
-						if(!D.hidden[SCANNER])
-							dat += text("<font color='red'><B>Warning: [D.form] Detected</B>\nName: [D.name].\nType: [D.spread].\nStage: [D.stage]/[D.max_stages].\nPossible Cure: [D.cure]</FONT><BR>")
+						if(occupant.vessel)
+							var/blood_volume = round(occupant.vessel.get_reagent_amount("blood"))
+							var/blood_percent =  blood_volume / 560
+							blood_percent *= 100
+							dat += text("[]\tBlood Level %: [] ([] units)</FONT><BR>", (blood_volume > 448 ?"<font color='blue'>" : "<font color='red'>"), blood_percent, blood_volume)
+						if(occupant.reagents)
+							dat += text("Inaprovaline units: [] units<BR>", occupant.reagents.get_reagent_amount("inaprovaline"))
+							dat += text("Soporific (Sleep Toxin): [] units<BR>", occupant.reagents.get_reagent_amount("stoxin"))
+							dat += text("[]\tDermaline: [] units</FONT><BR>", (occupant.reagents.get_reagent_amount("dermaline") < 30 ? "<font color='black'>" : "<font color='red'>"), occupant.reagents.get_reagent_amount("dermaline"))
+							dat += text("[]\tBicaridine: [] units<BR>", (occupant.reagents.get_reagent_amount("bicaridine") < 30 ? "<font color='black'>" : "<font color='red'>"), occupant.reagents.get_reagent_amount("bicaridine"))
+							dat += text("[]\tDexalin: [] units<BR>", (occupant.reagents.get_reagent_amount("dexalin") < 30 ? "<font color='black'>" : "<font color='red'>"), occupant.reagents.get_reagent_amount("dexalin"))
 
-					dat += "<HR><A href='?src=\ref[src];print=1'>Print body parts report</A><BR>"
-					storedinfo = null
-					dat += "<HR><table border='1'>"
-					dat += "<tr>"
-					dat += "<th>Body Part</th>"
-					dat += "<th>Burn Damage</th>"
-					dat += "<th>Brute Damage</th>"
-					dat += "<th>Other Wounds</th>"
-					dat += "</tr>"
-					storedinfo += "<HR><table border='1'>"
-					storedinfo += "<tr>"
-					storedinfo += "<th>Body Part</th>"
-					storedinfo += "<th>Burn Damage</th>"
-					storedinfo += "<th>Brute Damage</th>"
-					storedinfo += "<th>Other Wounds</th>"
-					storedinfo += "</tr>"
+					if(fullness>=2)
+						for(var/datum/disease/D in occupant.viruses)
+							if(!D.hidden[SCANNER])
+								dat += text("<font color='red'><B>Warning: [D.form] Detected</B>\nName: [D.name].\nType: [D.spread].\nStage: [D.stage]/[D.max_stages].\nPossible Cure: [D.cure]</FONT><BR>")
 
-					for(var/obj/item/organ/external/BP in occupant.bodyparts)
-
+						dat += "<HR><A href='?src=\ref[src];print=1'>Print body parts report</A><BR>"
+						storedinfo = null
+						dat += "<HR><table border='1'>"
 						dat += "<tr>"
+						dat += "<th>Body Part</th>"
+						dat += "<th>Burn Damage</th>"
+						dat += "<th>Brute Damage</th>"
+						dat += "<th>Other Wounds</th>"
+						dat += "</tr>"
+						storedinfo += "<HR><table border='1'>"
 						storedinfo += "<tr>"
-						var/AN = ""
-						var/open = ""
-						var/infected = ""
-						var/imp = ""
-						var/bled = ""
-						var/robot = ""
-						var/splint = ""
-						var/arterial_bleeding = ""
-						var/lung_ruptured = ""
-						if(BP.status & ORGAN_ARTERY_CUT)
-							arterial_bleeding = "<br>Arterial bleeding"
-						if(istype(BP, /obj/item/organ/external/chest) && occupant.is_lung_ruptured())
-							lung_ruptured = "Lung ruptured:"
-						if(BP.status & ORGAN_SPLINTED)
-							splint = "Splinted:"
-						if(BP.status & ORGAN_BLEEDING)
-							bled = "Bleeding:"
-						if(BP.status & ORGAN_BROKEN)
-							AN = "[BP.broken_description]:"
-						if(BP.status & ORGAN_ROBOT)
-							robot = "Prosthetic:"
-						if(BP.open)
-							open = "Open:"
-						switch (BP.germ_level)
-							if (INFECTION_LEVEL_ONE to INFECTION_LEVEL_ONE_PLUS)
-								infected = "Mild Infection:"
-							if (INFECTION_LEVEL_ONE_PLUS to INFECTION_LEVEL_ONE_PLUS_PLUS)
-								infected = "Mild Infection+:"
-							if (INFECTION_LEVEL_ONE_PLUS_PLUS to INFECTION_LEVEL_TWO)
-								infected = "Mild Infection++:"
-							if (INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO_PLUS)
-								infected = "Acute Infection:"
-							if (INFECTION_LEVEL_TWO_PLUS to INFECTION_LEVEL_TWO_PLUS_PLUS)
-								infected = "Acute Infection+:"
-							if (INFECTION_LEVEL_TWO_PLUS_PLUS to INFECTION_LEVEL_THREE)
-								infected = "Acute Infection++:"
-							if (INFECTION_LEVEL_THREE to INFINITY)
-								infected = "Septic:"
+						storedinfo += "<th>Body Part</th>"
+						storedinfo += "<th>Burn Damage</th>"
+						storedinfo += "<th>Brute Damage</th>"
+						storedinfo += "<th>Other Wounds</th>"
+						storedinfo += "</tr>"
 
-						var/unknown_body = 0
-						for(var/I in BP.implants)
-							if(is_type_in_list(I,known_implants))
-								imp += "[I] implanted:"
+						for(var/obj/item/organ/external/BP in occupant.bodyparts)
+
+							dat += "<tr>"
+							storedinfo += "<tr>"
+							var/AN = ""
+							var/open = ""
+							var/infected = ""
+							var/imp = ""
+							var/bled = ""
+							var/robot = ""
+							var/splint = ""
+							var/arterial_bleeding = ""
+							var/lung_ruptured = ""
+							if(BP.status & ORGAN_ARTERY_CUT)
+								arterial_bleeding = "<br>Arterial bleeding"
+							if(istype(BP, /obj/item/organ/external/chest) && occupant.is_lung_ruptured())
+								lung_ruptured = "Lung ruptured:"
+							if(BP.status & ORGAN_SPLINTED)
+								splint = "Splinted:"
+							if(BP.status & ORGAN_BLEEDING)
+								bled = "Bleeding:"
+							if(BP.status & ORGAN_BROKEN)
+								AN = "[BP.broken_description]:"
+							if(BP.status & ORGAN_ROBOT)
+								robot = "Prosthetic:"
+							if(BP.open)
+								open = "Open:"
+							switch (BP.germ_level)
+								if (INFECTION_LEVEL_ONE to INFECTION_LEVEL_ONE_PLUS)
+									infected = "Mild Infection:"
+								if (INFECTION_LEVEL_ONE_PLUS to INFECTION_LEVEL_ONE_PLUS_PLUS)
+									infected = "Mild Infection+:"
+								if (INFECTION_LEVEL_ONE_PLUS_PLUS to INFECTION_LEVEL_TWO)
+									infected = "Mild Infection++:"
+								if (INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO_PLUS)
+									infected = "Acute Infection:"
+								if (INFECTION_LEVEL_TWO_PLUS to INFECTION_LEVEL_TWO_PLUS_PLUS)
+									infected = "Acute Infection+:"
+								if (INFECTION_LEVEL_TWO_PLUS_PLUS to INFECTION_LEVEL_THREE)
+									infected = "Acute Infection++:"
+								if (INFECTION_LEVEL_THREE to INFINITY)
+									infected = "Septic:"
+
+							var/unknown_body = 0
+							for(var/I in BP.implants)
+								if(is_type_in_list(I,known_implants))
+									imp += "[I] implanted:"
+								else
+									unknown_body++
+
+							if(unknown_body || BP.hidden)
+								imp += "Unknown body present:"
+							if(!AN && !open && !infected & !imp)
+								AN = "None:"
+							if(!(BP.status & ORGAN_DESTROYED))
+								dat += "<td>[BP.name]</td><td>[BP.burn_dam]</td><td>[BP.brute_dam]</td><td>[robot][bled][AN][splint][open][infected][imp][arterial_bleeding][lung_ruptured]</td>"
+								storedinfo += "<td>[BP.name]</td><td>[BP.burn_dam]</td><td>[BP.brute_dam]</td><td>[robot][bled][AN][splint][open][infected][imp][arterial_bleeding][lung_ruptured]</td>"
 							else
-								unknown_body++
+								dat += "<td>[BP.name]</td><td>-</td><td>-</td><td>Not Found</td>"
+								storedinfo += "<td>[BP.name]</td><td>-</td><td>-</td><td>Not Found</td>"
+							dat += "</tr>"
+							storedinfo += "</tr>"
+						for(var/obj/item/organ/internal/IO in occupant.organs)
+							var/mech = ""
+							if(IO.robotic == 1)
+								mech = "Assisted:"
+							if(IO.robotic == 2)
+								mech = "Mechanical:"
 
-						if(unknown_body || BP.hidden)
-							imp += "Unknown body present:"
-						if(!AN && !open && !infected & !imp)
-							AN = "None:"
-						if(!(BP.status & ORGAN_DESTROYED))
-							dat += "<td>[BP.name]</td><td>[BP.burn_dam]</td><td>[BP.brute_dam]</td><td>[robot][bled][AN][splint][open][infected][imp][arterial_bleeding][lung_ruptured]</td>"
-							storedinfo += "<td>[BP.name]</td><td>[BP.burn_dam]</td><td>[BP.brute_dam]</td><td>[robot][bled][AN][splint][open][infected][imp][arterial_bleeding][lung_ruptured]</td>"
-						else
-							dat += "<td>[BP.name]</td><td>-</td><td>-</td><td>Not Found</td>"
-							storedinfo += "<td>[BP.name]</td><td>-</td><td>-</td><td>Not Found</td>"
-						dat += "</tr>"
-						storedinfo += "</tr>"
-					for(var/obj/item/organ/internal/IO in occupant.organs)
-						var/mech = ""
-						if(IO.robotic == 1)
-							mech = "Assisted:"
-						if(IO.robotic == 2)
-							mech = "Mechanical:"
+							var/infection = "None"
+							switch (IO.germ_level)
+								if (INFECTION_LEVEL_ONE to INFECTION_LEVEL_ONE_PLUS)
+									infection = "Mild Infection:"
+								if (INFECTION_LEVEL_ONE_PLUS to INFECTION_LEVEL_ONE_PLUS_PLUS)
+									infection = "Mild Infection+:"
+								if (INFECTION_LEVEL_ONE_PLUS_PLUS to INFECTION_LEVEL_TWO)
+									infection = "Mild Infection++:"
+								if (INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO_PLUS)
+									infection = "Acute Infection:"
+								if (INFECTION_LEVEL_TWO_PLUS to INFECTION_LEVEL_TWO_PLUS_PLUS)
+									infection = "Acute Infection+:"
+								if (INFECTION_LEVEL_TWO_PLUS_PLUS to INFECTION_LEVEL_THREE)
+									infection = "Acute Infection++:"
+								if (INFECTION_LEVEL_THREE to INFINITY)
+									infection = "Necrotic:"
 
-						var/infection = "None"
-						switch (IO.germ_level)
-							if (INFECTION_LEVEL_ONE to INFECTION_LEVEL_ONE_PLUS)
-								infection = "Mild Infection:"
-							if (INFECTION_LEVEL_ONE_PLUS to INFECTION_LEVEL_ONE_PLUS_PLUS)
-								infection = "Mild Infection+:"
-							if (INFECTION_LEVEL_ONE_PLUS_PLUS to INFECTION_LEVEL_TWO)
-								infection = "Mild Infection++:"
-							if (INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO_PLUS)
-								infection = "Acute Infection:"
-							if (INFECTION_LEVEL_TWO_PLUS to INFECTION_LEVEL_TWO_PLUS_PLUS)
-								infection = "Acute Infection+:"
-							if (INFECTION_LEVEL_TWO_PLUS_PLUS to INFECTION_LEVEL_THREE)
-								infection = "Acute Infection++:"
-							if (INFECTION_LEVEL_THREE to INFINITY)
-								infection = "Necrotic:"
-
-						dat += "<tr>"
-						dat += "<td>[IO.name]</td><td>N/A</td><td>[IO.damage]</td><td>[infection]:[mech]</td><td></td>"
-						dat += "</tr>"
-						storedinfo += "<tr>"
-						storedinfo += "<td>[IO.name]</td><td>N/A</td><td>[IO.damage]</td><td>[infection]:[mech]</td><td></td>"
-						storedinfo += "</tr>"
-					dat += "</table>"
-					storedinfo += "</table>"
-					if(occupant.sdisabilities & BLIND)
-						dat += text("<font color='red'>Cataracts detected.</font><BR>")
-						storedinfo += text("<font color='red'>Cataracts detected.</font><BR>")
-					if(occupant.sdisabilities & NEARSIGHTED)
-						dat += text("<font color='red'>Retinal misalignment detected.</font><BR>")
-						storedinfo += text("<font color='red'>Retinal misalignment detected.</font><BR>")
+							dat += "<tr>"
+							dat += "<td>[IO.name]</td><td>N/A</td><td>[IO.damage]</td><td>[infection]:[mech]</td><td></td>"
+							dat += "</tr>"
+							storedinfo += "<tr>"
+							storedinfo += "<td>[IO.name]</td><td>N/A</td><td>[IO.damage]</td><td>[infection]:[mech]</td><td></td>"
+							storedinfo += "</tr>"
+						dat += "</table>"
+						storedinfo += "</table>"
+						if(occupant.sdisabilities & BLIND)
+							dat += text("<font color='red'>Cataracts detected.</font><BR>")
+							storedinfo += text("<font color='red'>Cataracts detected.</font><BR>")
+						if(occupant.sdisabilities & NEARSIGHTED)
+							dat += text("<font color='red'>Retinal misalignment detected.</font><BR>")
+							storedinfo += text("<font color='red'>Retinal misalignment detected.</font><BR>")
 			else
 				dat += "\The [src] is empty."
 		else
