@@ -11,6 +11,8 @@
 	required_enemies = 1
 	recommended_enemies = 1
 
+	restricted_species = list(IPC)
+
 	votable = 0
 
 	uplink_welcome = "Wizardly Uplink Console:"

@@ -19,6 +19,7 @@ var/list/blob_nodes = list()
 	votable = 0
 
 	restricted_jobs = list("Cyborg", "AI")
+	restricted_species = list(IPC)
 
 	var/declared = 0
 

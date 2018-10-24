@@ -10,6 +10,7 @@ var/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","Epsilon"
 	role_type = ROLE_CHANGELING
 	restricted_jobs = list("AI", "Cyborg")
 	protected_jobs = list("Security Officer", "Warden", "Detective", "Head of Security", "Captain")
+	restricted_species = list(IPC, DIONA)
 	required_players = 2
 	required_players_secret = 10
 	required_enemies = 1

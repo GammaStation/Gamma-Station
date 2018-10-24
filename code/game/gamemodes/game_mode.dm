@@ -25,6 +25,7 @@
 	var/list/datum/mind/modePlayer = new
 	var/list/restricted_jobs = list()	// Jobs it doesn't make sense to be.  I.E chaplain or AI cultist
 	var/list/protected_jobs = list()	// Jobs that can't be traitors because
+	var/list/restricted_species = list() // This species will not be considered as a candidates for role
 	var/required_players = 0
 	var/required_players_secret = 0 //Minimum number of players for that game mode to be chose in Secret
 	var/required_enemies = 0
@@ -290,6 +291,12 @@ Implants;
 	if(security_level < SEC_LEVEL_BLUE)
 		set_security_level(SEC_LEVEL_BLUE)*/
 
+/datum/game_mode/proc/check_species_restriction(var/mob/dead/new_player/player)
+	if(restricted_species)
+		for(var/species in restricted_species)
+			if(player.client.prefs.species == species)
+				return 0
+			return 1
 
 /datum/game_mode/proc/get_players_for_role(role)
 	var/list/players = list()
@@ -300,7 +307,8 @@ Implants;
 		if(player.client && player.ready)
 			if(role in player.client.prefs.be_role)
 				if(!jobban_isbanned(player, "Syndicate") && !jobban_isbanned(player, role) && !role_available_in_minutes(player, role))
-					players += player
+					if(check_species_restriction(player)) // Remove candidates with inappropriate species for role
+						players += player
 
 	// Shuffle the players list so that it becomes ping-independent.
 	players = shuffle(players)
