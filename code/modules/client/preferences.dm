@@ -116,6 +116,10 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/metadata = ""
 	var/slot_name = ""
 
+	var/used_skillpoints = 0
+	var/skill_specialization = null
+	var/list/skills = list() // skills can range from 0 to 3
+
 	// Whether or not to use randomized character slots
 	var/randomslot = 0
 	// jukebox volume
@@ -161,6 +165,7 @@ var/const/MAX_SAVE_SLOTS = 10
 		dat += "[menu_type=="occupation"?"<b>Occupation</b>":"<a href=\"byond://?src=\ref[user];preference=occupation\">Occupation</a>"] - "
 		dat += "[menu_type=="roles"?"<b>Roles</b>":"<a href=\"byond://?src=\ref[user];preference=roles\">Roles</a>"] - "
 		dat += "[menu_type=="glob"?"<b>Global</b>":"<a href=\"byond://?src=\ref[user];preference=glob\">Global</a>"] - "
+		dat += "[menu_type=="skills"?"<b>Skills</b>":"<a href=\"byond://?src=\ref[user];preference=skills\">Skills</a>"] - "
 		dat += "[menu_type=="loadout"?"<b>Loadout</b>":"<a href=\"byond://?src=\ref[user];preference=loadout\">Loadout</a>"]"
 		dat += "<br><a href='?src=\ref[user];preference=close\'><b><font color='#FF4444'>Close</font></b></a>"
 		dat += "</div>"
@@ -177,6 +182,8 @@ var/const/MAX_SAVE_SLOTS = 10
 			dat += ShowRoles(user)
 		if("glob")
 			dat += ShowGlobal(user)
+		if("skills")
+			dat+= SetSkills(user)
 		if("load_slot")
 			dat += ShowLoadSlot(user)
 		if("loadout")
@@ -213,6 +220,9 @@ var/const/MAX_SAVE_SLOTS = 10
 		if("occupation")
 			menu_type = "occupation"
 
+		if("skills")
+			menu_type = "skills"
+
 		if("roles")
 			menu_type = "roles"
 
@@ -233,6 +243,9 @@ var/const/MAX_SAVE_SLOTS = 10
 			process_link_occupation(user, href_list)
 
 		if("roles")
+			process_link_roles(user, href_list)
+
+		if("skills")
 			process_link_roles(user, href_list)
 
 		if("glob")
@@ -372,3 +385,39 @@ var/const/MAX_SAVE_SLOTS = 10
 		character.update_body()
 		character.update_hair()
 
+/datum/preferences/proc/ZeroSkills(var/forced = 0)
+	for(var/V in SKILLS) for(var/datum/skill/S in SKILLS[V])
+		if(!skills.Find(S.ID) || forced)
+			skills[S.ID] = SKILL_NONE
+
+/datum/preferences/proc/GetSkillPoints(points)
+	// skill classes describe how your character compares in total points
+	var/original_points = points
+	var/active_age = age
+	if(species!="Human")
+		active_age+=4
+	points -= min(round((active_age - 20) / 2.5), 4) // every 2.5 years after 20, one extra skillpoint
+	if(active_age > 30)
+		points -= round((active_age - 30) / 5) // every 5 years after 30, one extra skillpoint
+	if(original_points > 0 && points <= 0) points = 1
+	return points
+
+/datum/preferences/proc/GetSkillClass(points)
+	var/skp = GetSkillPoints(points)
+	switch(skp)
+		if(0)
+			return "Unconfigured"
+		if(1 to 3)
+			return "Terrifying"
+		if(4 to 6)
+			return "Below Average"
+		if(7 to 10)
+			return "Average"
+		if(11 to 14)
+			return "Above Average"
+		if(15 to 18)
+			return "Exceptional"
+		if(19 to 24)
+			return "Genius"
+		if(24 to 1000)
+			return "God"
