@@ -200,6 +200,14 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["backbag"]			>> backbag
 	S["b_type"]				>> b_type
 
+	//Skills
+	S["used_skillpoints"] >> src.used_skillpoints
+	S["skills"] >> src.skills
+	S["skill_specialization"] >> src.skill_specialization
+	if(!src.skills) src.skills = list()
+	if(!src.used_skillpoints) src.used_skillpoints= 0
+
+
 	//Jobs
 	S["alternate_option"]	>> alternate_option
 	S["job_civilian_high"]	>> job_civilian_high
@@ -408,6 +416,12 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	S["UI_style_color"]		<< UI_style_color
 	S["UI_style_alpha"]		<< UI_style_alpha
+
+
+	//Skills
+	S["used_skillpoints"] << src.used_skillpoints
+	S["skills"] << src.skills
+	S["skill_specialization"] << src.skill_specialization
 
 	return 1
 
