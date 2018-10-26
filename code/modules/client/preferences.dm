@@ -246,7 +246,7 @@ var/const/MAX_SAVE_SLOTS = 10
 			process_link_roles(user, href_list)
 
 		if("skills")
-			process_link_roles(user, href_list)
+			process_link_skills(user, href_list)
 
 		if("glob")
 			process_link_glob(user, href_list)
@@ -304,6 +304,14 @@ var/const/MAX_SAVE_SLOTS = 10
 
 	character.h_style = h_style
 	character.f_style = f_style
+
+	if(character.mind)
+		character.mind.skills = skills
+	else
+//		addtimer(CALLBACK(src, .proc/mind_skills), 10)
+		spawn(10)
+			if(character && character.mind)
+				character.mind.skills = skills
 
 	character.home_system = home_system
 	character.citizenship = citizenship
@@ -421,3 +429,7 @@ var/const/MAX_SAVE_SLOTS = 10
 			return "Genius"
 		if(24 to 1000)
 			return "God"
+
+/datum/preferences/proc/mind_skills(mob/living/carbon/human/character)
+	if(character && character.mind)
+		character.mind.skills = skills
