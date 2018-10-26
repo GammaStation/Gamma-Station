@@ -1062,6 +1062,20 @@
 			if("Cancel")
 				return
 
+	else if(href_list["set_skill"])
+		if(!check_rights(R_ADMIN))
+			to_chat(usr, "You have not enough powers")
+			return
+		var/mob/M = locate(href_list["set_skill"])
+		var/datum/mind/Mind = M.mind
+		var/skill = href_list["skill"]
+		if(!Mind.skills)
+			Mind.skills = list()
+		var/level = input(usr, "New level", "Skill", Mind.skills[skill]) as num
+		level = min(3,max(0,level))
+		Mind.skills[skill] = level
+		show_skill_window(usr, M)
+
 	else if(href_list["mute"])
 		if(!check_rights(R_ADMIN))
 			return
