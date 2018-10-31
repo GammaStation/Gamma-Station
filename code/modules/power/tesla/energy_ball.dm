@@ -150,7 +150,7 @@ var/list/blacklisted_tesla_types = typecacheof(list(/obj/machinery/atmospherics,
 		C.dust()
 	return
 
-/proc/tesla_zap(atom/source, zap_range = 3, power)
+/proc/tesla_zap(atom/source, zap_range = 3, power, atom/initial_target)
 	. = source.dir
 	if(power < 1000)
 		return
@@ -163,62 +163,75 @@ var/list/blacklisted_tesla_types = typecacheof(list(/obj/machinery/atmospherics,
 	var/obj/machinery/closest_machine
 	var/obj/structure/closest_structure
 
-	for(var/A in oview(source, zap_range))
-		if(istype(A, /obj/machinery/power/tesla_coil))
-			var/dist = get_dist(source, A)
-			var/obj/machinery/power/tesla_coil/C = A
-			if((dist < closest_dist || !closest_tesla_coil) && !C.being_shocked)
-				closest_dist = dist
-
-				//we use both of these to save on istype and typecasting overhead later on
-				//while still allowing common code to run before hand
-				closest_tesla_coil = C
-				closest_atom = C
-
-
-		else if(closest_tesla_coil)
-			continue //no need checking these other things
-
-		else if(istype(A, /obj/machinery/power/grounding_rod))
-			var/dist = get_dist(source, A)
-			if(dist < closest_dist || !closest_grounding_rod)
-				closest_grounding_rod = A
-				closest_atom = A
-				closest_dist = dist
-
-		else if(closest_grounding_rod || is_type_in_typecache(A, blacklisted_tesla_types))
-			continue
-
-		else if(isliving(A))
-			var/mob/living/L = A
-			if(!L.tesla_ignore)
+	if(initial_target)
+		closest_atom = initial_target
+		if(istype(initial_target, /obj/machinery/power/tesla_coil))
+			closest_tesla_coil = initial_target
+		else if(istype(initial_target, /obj/machinery/power/grounding_rod))
+			closest_grounding_rod = initial_target
+		else if(isliving(initial_target))
+			closest_mob = initial_target
+		else if(istype(initial_target, /obj/machinery))
+			closest_machine = initial_target
+		else if(istype(initial_target, /obj/structure))
+			closest_structure = initial_target
+	else
+		for(var/A in oview(source, zap_range))
+			if(istype(A, /obj/machinery/power/tesla_coil))
 				var/dist = get_dist(source, A)
-				if((dist < closest_dist || !closest_mob) && L.stat != DEAD)
-					closest_mob = L
+				var/obj/machinery/power/tesla_coil/C = A
+				if((dist < closest_dist || !closest_tesla_coil) && !C.being_shocked)
+					closest_dist = dist
+
+					//we use both of these to save on istype and typecasting overhead later on
+					//while still allowing common code to run before hand
+					closest_tesla_coil = C
+					closest_atom = C
+
+
+			else if(closest_tesla_coil)
+				continue //no need checking these other things
+
+			else if(istype(A, /obj/machinery/power/grounding_rod))
+				var/dist = get_dist(source, A)
+				if(dist < closest_dist || !closest_grounding_rod)
+					closest_grounding_rod = A
 					closest_atom = A
 					closest_dist = dist
 
-		else if(closest_mob)
-			continue
+			else if(closest_grounding_rod || is_type_in_typecache(A, blacklisted_tesla_types))
+				continue
 
-		else if(istype(A, /obj/machinery))
-			var/obj/machinery/M = A
-			var/dist = get_dist(source, A)
-			if((dist < closest_dist || !closest_machine) && !M.being_shocked)
-				closest_machine = M
-				closest_atom = A
-				closest_dist = dist
+			else if(isliving(A))
+				var/mob/living/L = A
+				if(!L.tesla_ignore)
+					var/dist = get_dist(source, A)
+					if((dist < closest_dist || !closest_mob) && L.stat != DEAD)
+						closest_mob = L
+						closest_atom = A
+						closest_dist = dist
 
-		else if(closest_mob)
-			continue
+			else if(closest_mob)
+				continue
 
-		else if(istype(A, /obj/structure))
-			var/obj/structure/S = A
-			var/dist = get_dist(source, A)
-			if((dist < closest_dist || !closest_tesla_coil) && !S.being_shocked)
-				closest_structure = S
-				closest_atom = A
-				closest_dist = dist
+			else if(istype(A, /obj/machinery))
+				var/obj/machinery/M = A
+				var/dist = get_dist(source, A)
+				if((dist < closest_dist || !closest_machine) && !M.being_shocked)
+					closest_machine = M
+					closest_atom = A
+					closest_dist = dist
+
+			else if(closest_mob)
+				continue
+
+			else if(istype(A, /obj/structure))
+				var/obj/structure/S = A
+				var/dist = get_dist(source, A)
+				if((dist < closest_dist || !closest_tesla_coil) && !S.being_shocked)
+					closest_structure = S
+					closest_atom = A
+					closest_dist = dist
 
 
 	//Alright, we've done our loop, now lets see if was anything interesting in range

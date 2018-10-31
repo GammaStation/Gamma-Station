@@ -57,6 +57,7 @@
 
 	var/datum/faction/faction 			//associated faction
 	var/datum/changeling/changeling		//changeling holder
+	var/datum/wizard_powers/wizard_power_system		//wizard holder
 
 	var/rev_cooldown = 0
 
@@ -922,15 +923,13 @@
 		switch(href_list["wizard"])
 			if("clear")
 				if(src in ticker.mode.wizards)
-					ticker.mode.wizards -= src
-					special_role = null
+					remove_wizard()
 					current.spellremove(current, config.feature_object_spell_system? "object":"verb")
 					to_chat(current, "\red <FONT size = 3><B>You have been brainwashed! You are no longer a wizard!</B></FONT>")
 					log_admin("[key_name_admin(usr)] has de-wizard'ed [current].")
 			if("wizard")
 				if(!(src in ticker.mode.wizards))
-					ticker.mode.wizards += src
-					special_role = "Wizard"
+					make_wizard()
 					//ticker.mode.learn_basic_spells(current)
 					to_chat(current, "<B>\red You are the Space Wizard!</B>")
 					to_chat(current, "<font color=blue>Within the rules,</font> try to act as an opposing force to the crew. Further RP and try to make sure other players have </i>fun<i>! If you are confused or at a loss, always adminhelp, and before taking extreme actions, please try to also contact the administration! Think through your actions and make the roleplay immersive! <b>Please remember all rules aside from those without explicit exceptions apply to antagonists.</i></b>")

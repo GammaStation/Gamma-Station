@@ -19,6 +19,10 @@
 
 	if(stat == DEAD && (act != "deathgasp"))
 		return
+
+	if(silent)
+		return
+
 	switch(act)
 		if ("airguitar")
 			if (!src.restrained())
@@ -75,10 +79,6 @@
 			return custom_emote(m_type, message)
 
 		if ("me")
-
-			//if(silent && silent > 0 && findtext(message,"\"",1, null) > 0)
-			//	return //This check does not work and I have no idea why, I'm leaving it in for reference.
-
 			if (src.client)
 				if (client.prefs.muted & MUTE_IC)
 					to_chat(src, "\red You cannot send IC messages (muted).")

@@ -146,6 +146,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 				stat("Distribution Pressure", internal.distribute_pressure)
 
 		CHANGELING_STATPANEL_STATS(null)
+		STATPANEL_WIZARD_STATUS(null)
 
 		if(istype(wear_suit, /obj/item/clothing/suit/space/space_ninja))
 			var/obj/item/clothing/suit/space/space_ninja/SN = wear_suit
@@ -168,6 +169,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 				stat("Body Temperature:","[bodytemperature-T0C] degrees C ([bodytemperature*1.8-459.67] degrees F)")
 
 	CHANGELING_STATPANEL_POWERS(null)
+	STATPANEL_SPELLS(null)
 
 /mob/living/carbon/human/ex_act(severity)
 	if(!blinded)
