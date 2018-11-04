@@ -55,7 +55,7 @@
 			owner.wizard_power_system.chosen_spell.cast_on_object(target)
 		else if("turfs" in owner.wizard_power_system.chosen_spell.types_to_click)
 			owner.wizard_power_system.chosen_spell.cast_on_turf(get_turf(target))
-	else if(istype(target, /turf) && ("turfs" in owner.wizard_power_system.chosen_spell.types_to_click))
+	else if(isturf(target) && ("turfs" in owner.wizard_power_system.chosen_spell.types_to_click))
 		owner.wizard_power_system.chosen_spell.cast_on_turf(target)
 
 /obj/effect/proc_holder/magic/click_on/proc/cast_on_mob(mob/living/target)

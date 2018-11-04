@@ -14,7 +14,7 @@ var/list/magic_spells = typesof(/obj/effect/proc_holder/magic)
 
 /obj/effect/proc_holder/magic/Destroy()
 	owner = null
-	..()
+	return ..()
 
 /obj/effect/proc_holder/magic/proc/can_cast()		//Nondirect spells have NO target
 	if(!iswizard(owner.current))

@@ -62,6 +62,8 @@
 	redwizard.add_spell(/obj/effect/proc_holder/magic/click_on/shoot/water_sphere)
 	redwizard.add_spell(/obj/effect/proc_holder/magic/nondirect/lightning_storm)
 	redwizard.add_spell(/obj/effect/proc_holder/magic/click_on/brainrot)
+	redwizard.add_spell(/obj/effect/proc_holder/magic/click_on/illusion)
+	redwizard.add_spell(/obj/effect/proc_holder/magic/click_on/temperature_shift)
 
 	equip_wizard(bluewizard.current)
 	name_wizard(bluewizard.current)
@@ -71,6 +73,8 @@
 	bluewizard.add_spell(/obj/effect/proc_holder/magic/click_on/shoot/water_sphere)
 	bluewizard.add_spell(/obj/effect/proc_holder/magic/nondirect/lightning_storm)
 	bluewizard.add_spell(/obj/effect/proc_holder/magic/click_on/brainrot)
+	bluewizard.add_spell(/obj/effect/proc_holder/magic/click_on/illusion)
+	bluewizard.add_spell(/obj/effect/proc_holder/magic/click_on/temperature_shift)
 
 	return ..()
 
