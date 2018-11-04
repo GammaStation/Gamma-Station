@@ -297,6 +297,7 @@ Implants;
 			if(player.client.prefs.species == species)
 				return 0
 			return 1
+	return 1
 
 /datum/game_mode/proc/get_players_for_role(role)
 	var/list/players = list()
