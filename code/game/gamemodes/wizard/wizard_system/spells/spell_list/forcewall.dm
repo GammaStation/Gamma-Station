@@ -5,9 +5,10 @@
 	types_to_click = list("turfs")
 
 
+
 /obj/effect/proc_holder/magic/click_on/forcewall/cast_on_turf(turf/target)
 	if(is_blocked_turf(target))
-		to_chat(owner.current, "<font color='purple'><i>This place is occupied! I can't forge an energy wall here!</i></font>")
+		to_chat(owner.current, "<font color='purple'><i>This place is occupied! I can't forge an energy wall here!</i></font>")		//Still spends mana here
 		return
 	new /obj/effect/forcefield/magic(target,owner.current)
 

@@ -22,7 +22,7 @@
 	. = ..()
 	scanned = new
 
-
+// Fix tables and other questionable objects
 
 /obj/effect/proc_holder/magic/click_on/illusion/cast_on_mob(mob/living/target)
 	to_chat(owner.current, "<font color='purple'><i>I scanned the [target]! Now I can create decoys of it!</i></font>")
@@ -33,7 +33,8 @@
 	to_chat(owner.current, "<font color='purple'><i>I scanned the [target]! Now I can create decoys of it!</i></font>")
 	scanned.copy(target)
 
-
+//obj item
+//get turf
 /obj/effect/proc_holder/magic/click_on/illusion/cast_on_turf(turf/target)
 	if(!scanned.current_type)
 		to_chat(owner.current, "<font color='purple'><i>What do you want me to create?!</i></font>")		//Still spends mana here. Spell specific checks + istype

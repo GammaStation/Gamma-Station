@@ -16,7 +16,7 @@
 	damage_type = OXY
 
 /obj/item/projectile/magic/water_sphere/atom_init()
-	..()
+	. = ..()
 	var/matrix/Mx = matrix()
 	Mx.Scale(1.3)
 	transform = Mx

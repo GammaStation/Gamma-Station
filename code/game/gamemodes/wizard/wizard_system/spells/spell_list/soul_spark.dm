@@ -8,6 +8,9 @@
 /obj/item/projectile/magic/soulspark
 	name = "aether ball"
 	icon_state = "ice_1"
+	light_color = "#00BFFF"
+	light_power = 2
+	light_range = 2
 	nodamage = FALSE
 	damage = SOULSPARK_BASE_DAMAGE
 	damage_type = BURN

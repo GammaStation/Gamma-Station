@@ -44,9 +44,6 @@
 	var/datum/gas_mixture/env = target.return_air()
 	var/datum/gas_mixture/removed = env.remove(env.total_moles)
 
-	if(!removed)
-		return
-
 	switch(owner.current.a_intent)
 		if("help")
 			to_chat(owner.current, "<font color='purple'><i>I carefully lower air temperature in that area</i></font>")

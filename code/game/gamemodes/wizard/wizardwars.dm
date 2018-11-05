@@ -64,6 +64,9 @@
 	redwizard.add_spell(/obj/effect/proc_holder/magic/click_on/brainrot)
 	redwizard.add_spell(/obj/effect/proc_holder/magic/click_on/illusion)
 	redwizard.add_spell(/obj/effect/proc_holder/magic/click_on/temperature_shift)
+	redwizard.add_spell(/obj/effect/proc_holder/magic/click_on/shoot/chaos_bolt)
+	redwizard.add_spell(/obj/effect/proc_holder/magic/click_on/polymorph)
+	redwizard.add_spell(/obj/effect/proc_holder/magic/click_on/elemental_snare)
 
 	equip_wizard(bluewizard.current)
 	name_wizard(bluewizard.current)
@@ -75,6 +78,9 @@
 	bluewizard.add_spell(/obj/effect/proc_holder/magic/click_on/brainrot)
 	bluewizard.add_spell(/obj/effect/proc_holder/magic/click_on/illusion)
 	bluewizard.add_spell(/obj/effect/proc_holder/magic/click_on/temperature_shift)
+	bluewizard.add_spell(/obj/effect/proc_holder/magic/click_on/shoot/chaos_bolt)
+	bluewizard.add_spell(/obj/effect/proc_holder/magic/click_on/polymorph)
+	bluewizard.add_spell(/obj/effect/proc_holder/magic/click_on/elemental_snare)
 
 	return ..()
 

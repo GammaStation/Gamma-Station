@@ -20,6 +20,9 @@ var/list/magic_spells = typesof(/obj/effect/proc_holder/magic)
 	if(!iswizard(owner.current))
 		return FALSE
 
+	if(!ishuman(owner.current))
+		return FALSE
+
 	if(owner.wizard_power_system.mana < mana_cost)
 		to_chat(owner.current, "<font color='purple'><i>I have not enough mana!</i></font>")
 		return FALSE
