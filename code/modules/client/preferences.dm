@@ -308,10 +308,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	if(character.mind)
 		character.mind.skills = skills
 	else
-//		addtimer(CALLBACK(src, .proc/mind_skills), 10)
-		spawn(10)
-			if(character && character.mind)
-				character.mind.skills = skills
+		addtimer(CALLBACK(src, .proc/mind_skills, character), 10)
 
 	character.home_system = home_system
 	character.citizenship = citizenship
@@ -402,12 +399,13 @@ var/const/MAX_SAVE_SLOTS = 10
 	// skill classes describe how your character compares in total points
 	var/original_points = points
 	var/active_age = age
-	if(species!="Human")
-		active_age+=4
+	if(species!= HUMAN)
+		active_age += 4
 	points -= min(round((active_age - 20) / 2.5), 4) // every 2.5 years after 20, one extra skillpoint
 	if(active_age > 30)
 		points -= round((active_age - 30) / 5) // every 5 years after 30, one extra skillpoint
-	if(original_points > 0 && points <= 0) points = 1
+	if(original_points > 0 && points <= 0)
+		points = 1
 	return points
 
 /datum/preferences/proc/GetSkillClass(points)

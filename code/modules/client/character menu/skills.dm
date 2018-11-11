@@ -1,4 +1,4 @@
-datum/preferences/proc/SetSkills(mob/user)
+/datum/preferences/proc/SetSkills(mob/user)
 	if(SKILLS == null)
 		setup_skills()
 
@@ -33,41 +33,43 @@ datum/preferences/proc/SetSkills(mob/user)
 			. += "</tr>"
 	. += "</table>"
 
-	return
-
 /datum/preferences/proc/process_link_skills(mob/user, list/href_list)
 	if(href_list["preference"] == "skills")
 		if(href_list["cancel"])
 			user << browse(null, "window=show_skills")
 			ShowChoices(user)
-		else if(href_list["skillinfo"])
-			var/datum/skill/S = locate(href_list["skillinfo"])
-			var/HTML = "<b>[S.name]</b><br>[S.desc]"
-			user << browse(HTML, "window=\ref[user]skillinfo")
-		else if(href_list["setskill"])
-			var/datum/skill/S = locate(href_list["setskill"])
-			var/value = text2num(href_list["newvalue"])
-			skills[S.ID] = value
-			used_skillpoints=CalculateSkillPoints(skills)
-			SetSkills(user)
-		else if(href_list["preconfigured"])
-			var/selected = input(user, "Select a skillset", "Skillset") as null|anything in SKILL_PRE
-			if(!selected) return
-
-			ZeroSkills(1)
-			for(var/V in SKILL_PRE[selected])
-				if(V == "field")
-					skill_specialization = SKILL_PRE[selected]["field"]
-					continue
-				skills[V] = SKILL_PRE[selected][V]
-			used_skillpoints=CalculateSkillPoints(skills)
-
-			SetSkills(user)
-		else if(href_list["setspecialization"])
-			skill_specialization = href_list["setspecialization"]
-			used_skillpoints=CalculateSkillPoints(skills)
-			SetSkills(user)
 		else
+			if(href_list["skillinfo"])
+				var/datum/skill/S = locate(href_list["skillinfo"])
+				var/HTML = "<span class='bold'>[S.name]</span><br>[S.desc]"
+				user << browse(HTML, "window=\ref[user]skillinfo")
+
+			if(href_list["setskill"])
+				var/datum/skill/S = locate(href_list["setskill"])
+				var/value = text2num(href_list["newvalue"])
+				skills[S.ID] = value
+				used_skillpoints=CalculateSkillPoints(skills)
+				SetSkills(user)
+
+			if(href_list["preconfigured"])
+				var/selected = input(user, "Select a skillset", "Skillset") as null|anything in SKILL_PRE
+				if(!selected)
+					return
+
+				ZeroSkills(1)
+				for(var/V in SKILL_PRE[selected])
+					if(V == "field")
+						skill_specialization = SKILL_PRE[selected]["field"]
+						continue
+					skills[V] = SKILL_PRE[selected][V]
+				used_skillpoints=CalculateSkillPoints(skills)
+
+			SetSkills(user)
+			if(href_list["setspecialization"])
+				skill_specialization = href_list["setspecialization"]
+				used_skillpoints=CalculateSkillPoints(skills)
+				SetSkills(user)
+
 			SetSkills(user)
 		return 1
 

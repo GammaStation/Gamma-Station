@@ -190,14 +190,15 @@
 						t1 = "Unconscious"
 					else
 						t1 = "*dead*"
-				if (!istype(occupant,/mob/living/carbon/human))
+				if (!istype(occupant, /mob/living/carbon/human))
 					dat += "<font color='red'>This device can only scan human occupants.</FONT>"
 				else
-					var/fullness = 0
+					var/fullness = SKILL_NONE
 					if(issilicon(user))
-						fullness = 3
+						fullness = SKILL_EXPERT
 					else if(ishuman(user))
-						fullness = user:getSkill("medical")
+						var/mob/living/carbon/human/H = user
+						fullness = H.getSkill("medical")
 					dat += text("[]\tHealth %: [] ([])</FONT><BR>", (occupant.health > 50 ? "<font color='blue'>" : "<font color='red'>"), occupant.health, t1)
 
 					//if(occupant.mind && occupant.mind.changeling && occupant.status_flags & FAKEDEATH)
@@ -213,7 +214,7 @@
 					dat += text("[]\t-Burn Severity %: []</FONT><BR><BR>", (occupant.getFireLoss() < 60 ? "<font color='blue'>" : "<font color='red'>"), occupant.getFireLoss())
 					dat += text("Body Temperature: [occupant.bodytemperature-T0C]&deg;C ([occupant.bodytemperature*1.8-459.67]&deg;F)<BR><HR>")
 
-					if(fullness>=1)
+					if(fullness >= SKILL_BASIC)
 						dat += text("[]\tRadiation Level %: []</FONT><BR>", (occupant.radiation < 10 ?"<font color='blue'>" : "<font color='red'>"), occupant.radiation)
 						dat += text("[]\tGenetic Tissue Damage %: []</FONT><BR>", (occupant.getCloneLoss() < 1 ?"<font color='blue'>" : "<font color='red'>"), occupant.getCloneLoss())
 						dat += text("[]\tApprox. Brain Damage %: []</FONT><BR>", (occupant.getBrainLoss() < 1 ?"<font color='blue'>" : "<font color='red'>"), occupant.getBrainLoss())
@@ -234,7 +235,7 @@
 							dat += text("[]\tBicaridine: [] units<BR>", (occupant.reagents.get_reagent_amount("bicaridine") < 30 ? "<font color='black'>" : "<font color='red'>"), occupant.reagents.get_reagent_amount("bicaridine"))
 							dat += text("[]\tDexalin: [] units<BR>", (occupant.reagents.get_reagent_amount("dexalin") < 30 ? "<font color='black'>" : "<font color='red'>"), occupant.reagents.get_reagent_amount("dexalin"))
 
-					if(fullness>=2)
+					if(fullness >= SKILL_ADEPT)
 						for(var/datum/disease/D in occupant.viruses)
 							if(!D.hidden[SCANNER])
 								dat += text("<font color='red'><B>Warning: [D.form] Detected</B>\nName: [D.name].\nType: [D.spread].\nStage: [D.stage]/[D.max_stages].\nPossible Cure: [D.cure]</FONT><BR>")

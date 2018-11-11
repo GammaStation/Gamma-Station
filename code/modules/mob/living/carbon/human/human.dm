@@ -1716,8 +1716,10 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		return 1
 
 /mob/living/carbon/human/proc/getSkill(var/id)
-	var/mod=0
+	var/mod = 0
 	if(mind && mind.special_role)
-		mod=1
-	if(!mind || !mind.skills) return SKILL_NONE+mod
-	else return min(3,(mind.skills[id] ? mind.skills[id] : 0)+mod)
+		mod = 1
+	if(!mind || !mind.skills)
+		return SKILL_NONE + mod
+	else
+		return min(3, (mind.skills[id] ? mind.skills[id] : 0) + mod)

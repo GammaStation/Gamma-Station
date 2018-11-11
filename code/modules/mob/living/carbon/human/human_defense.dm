@@ -265,7 +265,8 @@
 
 	var/target_zone
 	if(ishuman(user))
-		var/skill_diff = src.getSkill("combat")-user:getSkill("combat")
+		var/mob/living/carbon/human/H = user
+		var/skill_diff = src.getSkill("combat") - H.getSkill("combat")
 		target_zone = get_zone_with_miss_chance(user.zone_sel.selecting, src, skill_diff*10)
 	else
 		target_zone = get_zone_with_miss_chance(user.zone_sel.selecting, src, 0)

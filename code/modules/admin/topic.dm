@@ -1064,7 +1064,6 @@
 
 	else if(href_list["set_skill"])
 		if(!check_rights(R_ADMIN))
-			to_chat(usr, "You have not enough powers")
 			return
 		var/mob/M = locate(href_list["set_skill"])
 		var/datum/mind/Mind = M.mind
