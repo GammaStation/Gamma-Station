@@ -10,17 +10,16 @@
 		return FALSE
 	if(user.incapacitated())
 		return FALSE
-	if(!src.Adjacent(user) || !over.Adjacent(user))
+	if((!src.Adjacent(user) || !over.Adjacent(user)) && !(TK in user.mutations))
 		return FALSE // should stop you from dragging through windows
+	if(!Adjacent(over))
+		return FALSE
 	return TRUE
 
 
 /atom/MouseDrop(atom/over)
-	if(!usr || !over)
+	if(!CanMouseDrop(over, usr))
 		return
-	if(!Adjacent(usr) || !over.Adjacent(usr))
-		return // should stop you from dragging through windows
-
 	INVOKE_ASYNC(over, /atom.proc/MouseDrop_T, src, usr)
 
 // recieve a mousedrop

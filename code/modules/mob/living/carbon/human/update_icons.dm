@@ -190,7 +190,10 @@ Please contact me on #coderbus IRC. ~Carn x
 //BASE MOB SPRITE
 /mob/living/carbon/human/proc/update_body()
 	remove_overlay(BODY_LAYER)
-	var/list/standing	= list()
+	var/list/standing = list()
+
+	if(istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
+		return
 
 	var/husk_color_mod = rgb(96,88,80)
 	var/hulk_color_mod = rgb(48,224,40)
@@ -205,7 +208,7 @@ Please contact me on #coderbus IRC. ~Carn x
 	var/g = (gender == FEMALE ? "f" : "m")
 	var/has_head = 0
 
-	//CACHING: Generate an index key from visible bodyparts.
+	//CACHING: Generate an index key from visible body parts.
 	//0 = destroyed, 1 = normal, 2 = robotic, 3 = necrotic.
 
 	var/icon/stand_icon = new(species.icon_template ? species.icon_template : 'icons/mob/human.dmi',"blank")
@@ -345,7 +348,7 @@ Please contact me on #coderbus IRC. ~Carn x
 		if(r_foot && !(r_foot.status & ORGAN_DESTROYED) && l_foot && !(l_foot.status & ORGAN_DESTROYED))
 			standing += image("icon"='icons/mob/human_socks.dmi', "icon_state"="socks[socks]_s", "layer"=-BODY_LAYER)
 
-	if(has_head)
+	if(has_head || !(BP_HEAD in species.has_bodypart)) // Because Tycheons don't have heads, but have an eye. Bootleg.
 		//Eyes
 		var/image/img_eyes_s = image("icon"='icons/mob/human_face.dmi', "icon_state"=species.eyes, "layer"=-BODY_LAYER)
 		img_eyes_s.color = rgb(r_eyes, g_eyes, b_eyes)
@@ -360,8 +363,6 @@ Please contact me on #coderbus IRC. ~Carn x
 	update_tail_showing()
 	overlays_standing[BODY_LAYER] = standing
 	apply_overlay(BODY_LAYER)
-
-
 
 //HAIR OVERLAY
 /mob/living/carbon/human/proc/update_hair()
@@ -412,6 +413,8 @@ Please contact me on #coderbus IRC. ~Carn x
 
 	for(var/datum/dna/gene/gene in dna_genes)
 		if(!gene.block)
+			continue
+		if(species && (gene.name in species.ignore_gene_icons) || ("All" in species.ignore_gene_icons))
 			continue
 		if(gene.is_active(src))
 			var/image/underlay = image("icon"='icons/effects/genetics.dmi', "icon_state"=gene.OnDrawUnderlays(src,g,fat), "layer"=-MUTATIONS_LAYER)
@@ -587,7 +590,7 @@ Please contact me on #coderbus IRC. ~Carn x
 		if(client && hud_used)
 			client.screen += wear_id
 
-		overlays_standing[ID_LAYER]	= image("icon"='icons/mob/mob.dmi', "icon_state"="id", "layer"=-ID_LAYER)
+		overlays_standing[ID_LAYER]	= image("icon"='icons/mob/mob.dmi', "icon_state"= get_species() == TYCHEON ? "id_tycheon" : "id", "layer"=-ID_LAYER)
 
 	hud_updateflag |= 1 << ID_HUD
 	hud_updateflag |= 1 << WANTED_HUD
@@ -796,22 +799,25 @@ Please contact me on #coderbus IRC. ~Carn x
 		standing.color = wear_suit.color
 		overlays_standing[SUIT_LAYER] = standing
 
-		if(istype(wear_suit, /obj/item/clothing/suit/straight_jacket))
-			drop_from_inventory(handcuffed)
-			drop_l_hand()
-			drop_r_hand()
-
 		if(FAT in mutations)
 			if(!(wear_suit.flags & ONESIZEFITSALL))
 				to_chat(src, "\red You burst out of \the [wear_suit]!")
 				drop_from_inventory(wear_suit)
 				return
 
-		if(istype(wear_suit,/obj/item/clothing/suit/wintercoat))
+		if(istype(wear_suit, /obj/item/clothing/suit/straight_jacket))
+			drop_from_inventory(handcuffed)
+			drop_l_hand()
+			drop_r_hand()
+
+		else if(istype(wear_suit,/obj/item/clothing/suit/wintercoat))
 			var/obj/item/clothing/suit/wintercoat/W = wear_suit
 			if(W.hooded) //used for coat hood due to hair layer viewed over the suit
 				overlays_standing[HAIR_LAYER]   = null
 				overlays_standing[HEAD_LAYER]	= null
+
+		else if(istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
+			remove_overlay(BODY_LAYER)
 
 		update_inv_shoes()
 

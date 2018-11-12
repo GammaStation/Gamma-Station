@@ -2,7 +2,9 @@
 	if (istype(loc, /turf) && istype(loc.loc, /area/start))
 		to_chat(M, "No attacking people at spawn, you jackass.")
 		return
-	..()
+
+	if(..())
+		return TRUE
 
 	if((M != src) && check_shields(0, M.name, get_dir(M,src)))
 		visible_message("\red <B>[M] attempted to touch [src]!</B>")
@@ -79,6 +81,10 @@
 //			log_debug("No gloves, [M] is truing to infect [src]")
 			M.spread_disease_to(src, "Contact")
 
+	if(species.flags[IS_FLYING] && !falling)
+		if(prob((10 - movement_delay()) * 5)) // Tycheon's default dodge - 45%
+			visible_message("<span class='notice'>[M] attempted to touch [src], missing narrowly.</span>")
+			return
 
 	switch(M.a_intent)
 		if("help")
@@ -165,8 +171,10 @@
 				apply_effect(2, WEAKEN, armor_block)
 
 			damage += attack.damage
-			apply_damage(damage, BRUTE, BP, armor_block, attack.damage_flags())
+			if(!attack.no_damage)
+				apply_damage(damage, attack.dam_type, BP, armor_block, attack.damage_flags())
 
+			attack.special_effects(M, src, damage)
 
 		if("disarm")
 			M.do_attack_animation(src)

@@ -98,7 +98,7 @@
 	if(!istype(A,/obj/item/weapon/gun) && !isturf(A) && !istype(A,/obj/screen))
 		last_target_click = world.time
 
-	var/obj/item/W = get_active_hand()
+	var/obj/item/W = no_check_get_active_hand()
 
 	if(W == A)
 		W.attack_self(src)
@@ -165,12 +165,10 @@
 /mob/proc/RangedAttack(atom/A, params)
 	if(!mutations.len)
 		return
+	var/dist = get_dist(src, A)
 	if(a_intent == "hurt" && (LASEREYES in mutations))
 		LaserEyes(A) // moved into a proc below
-	else if(TK in mutations)
-		var/dist = get_dist(src, A)
-		if(dist > tk_maxrange)
-			return
+	else if((TK in mutations) && do_telekinesis(dist))
 		SetNextMove(max(dist, CLICK_CD_MELEE))
 		A.attack_tk(src)
 
@@ -256,7 +254,13 @@
 	return
 
 /atom/proc/CtrlShiftClick(mob/user)
-	return
+	var/dist = get_dist(src, user)
+	var/obj/item/I = user.get_active_hand()
+	if(I && !istype(I, /obj/item/tk_grab))
+		return
+	if((TK in user.mutations) && user.do_telekinesis(dist))
+		user.SetNextMove(max(dist, CLICK_CD_MELEE))
+		attack_tk(user)
 
 /*
 	Misc helpers

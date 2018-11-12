@@ -456,7 +456,6 @@
 			user.eye_blind = 5
 			user.eye_blurry = 5
 
-
 /obj/item/weapon/weldingtool/largetank
 	name = "Industrial Welding Tool"
 	icon = 'icons/obj/items.dmi'
@@ -494,7 +493,6 @@ var/next_refuel_tick = 0
 		reagents.add_reagent("fuel", 1)
 	if(!welding && (get_fuel() == max_fuel))
 		STOP_PROCESSING(SSobj, src)
-
 /*
  * Crowbar
  */

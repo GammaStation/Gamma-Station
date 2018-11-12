@@ -224,7 +224,8 @@
 	return 0
 
 /mob/living/simple_animal/attack_hand(mob/living/carbon/human/M)
-	..()
+	if(..())
+		return
 
 	switch(M.a_intent)
 

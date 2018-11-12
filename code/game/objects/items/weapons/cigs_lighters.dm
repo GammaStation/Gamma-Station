@@ -429,7 +429,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	icon_state = icon_off
 
 /obj/item/weapon/lighter/attack_self(mob/living/user)
-	if(user.r_hand == src || user.l_hand == src)
+	if(user.r_hand == src || user.l_hand == src || TK in user.mutations)
 		if(!lit)
 			lit = 1
 			icon_state = icon_on

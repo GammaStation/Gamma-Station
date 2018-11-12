@@ -292,6 +292,10 @@
 /atom/proc/add_fingerprint(mob/M, ignoregloves = 0)
 	if(!M || !M.key || isAI(M)) //AI's clicks already calls add_hiddenprint from ClickOn() proc
 		return
+	if(!in_range(M, src)) // No Telekinetic fingerprint leaving!
+		fingerprintshidden += text("\[[]\]Real name: [], Key: []",time_stamp(), M.real_name, M.key) // So we, adming still know the TRUTH.
+		fingerprintslast = M.key
+		return
 	if (ishuman(M))
 		//Add the list if it does not exist.
 		if(!fingerprintshidden)
@@ -432,7 +436,7 @@
 //	blood_color = "#A10808"
 //	if (M.species)
 //		blood_color = M.species.blood_color
-	return
+	return 1
 
 /atom/proc/add_dirt_cover(dirt_datum)
 	if(flags & NOBLOODY) return 0
