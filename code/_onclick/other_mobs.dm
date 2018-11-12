@@ -26,6 +26,12 @@
 /atom/proc/attack_hand(mob/user)
 	return
 
+/mob/attack_hand(mob/user)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.species.flags[IS_IMMATERIAL])
+			return TRUE
+
 /*
 	Animals & All Unspecified
 */

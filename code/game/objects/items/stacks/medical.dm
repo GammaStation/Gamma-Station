@@ -25,6 +25,11 @@
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
+
+		if(H.species.flags[IS_IMMATERIAL])
+			to_chat(user, "<span class='warning'>It seems your [src] just passes thourgh [H].</span>")
+			return TRUE
+
 		var/obj/item/organ/external/BP = H.get_bodypart(def_zone)
 
 		if(BP.body_zone == BP_HEAD)
@@ -59,6 +64,11 @@
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
+
+		if(H.species.flags[IS_IMMATERIAL])
+			to_chat(user, "<span class='warning'>It seems your [src] just passes thourgh [H].</span>")
+			return TRUE
+
 		var/obj/item/organ/external/BP = H.get_bodypart(def_zone)
 
 		if(BP.open == 0)
@@ -123,6 +133,11 @@
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
+
+		if(H.species.flags[IS_IMMATERIAL])
+			to_chat(user, "<span class='warning'>It seems your [src] just passes thourgh [H].</span>")
+			return TRUE
+
 		var/obj/item/organ/external/BP = H.get_bodypart(def_zone)
 
 		if(BP.open == 0)
@@ -180,6 +195,11 @@
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
+
+		if(H.species.flags[IS_IMMATERIAL])
+			to_chat(user, "<span class='warning'>It seems your [src] just passes thourgh [H].</span>")
+			return TRUE
+
 		var/obj/item/organ/external/BP = H.get_bodypart(def_zone)
 
 		if(BP.open == 0)
@@ -240,6 +260,11 @@
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
+
+		if(H.species.flags[IS_IMMATERIAL])
+			to_chat(user, "<span class='warning'>It seems your [src] just passes thourgh [H].</span>")
+			return TRUE
+
 		var/obj/item/organ/external/BP = H.get_bodypart(def_zone)
 
 		if(BP.open == 0)
@@ -283,6 +308,11 @@
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
+
+		if(H.species.flags[IS_IMMATERIAL])
+			to_chat(user, "<span class='warning'>It seems your [src] just passes thourgh [H].</span>")
+			return TRUE
+
 		var/obj/item/organ/external/BP = H.get_bodypart(def_zone)
 		var/limb = BP.name
 		if(!((BP.body_zone == BP_L_ARM) || (BP.body_zone == BP_R_ARM) || (BP.body_zone == BP_L_LEG) || (BP.body_zone == BP_R_LEG)))

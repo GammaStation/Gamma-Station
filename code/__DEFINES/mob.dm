@@ -71,6 +71,11 @@
 #define SHADOWLING  "Shadowling"
 #define MONKEY      "Monkey"
 #define GOLEM       "Adamantine Golem"
+#define TYCHEON        "Tycheon"
+#define ZOMBIE         "Zombie"
+#define ZOMBIE_TAJARAN "Zombie Tajaran"
+#define ZOMBIE_SKRELL  "Zombie Skrell"
+#define ZOMBIE_UNATHI  "Zombie Unathi"
 
 #define HUMAN_STRIP_DELAY 40 //takes 40ds = 4s to strip someone.
 
@@ -117,3 +122,6 @@
 #define CLICK_CD_AI 9
 
 #define MAX_FECES_COUNT 5
+
+// Telepathy, but for dummies.
+#define MAX_TELEPATHY_RANGE 20

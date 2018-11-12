@@ -456,10 +456,9 @@
 			user.eye_blind = 5
 			user.eye_blurry = 5
 
-
 /obj/item/weapon/weldingtool/largetank
 	name = "Industrial Welding Tool"
-	icon = 'icons/obj/items.dmi'
+	icon = 'icons/obj/tools.dmi'
 	icon_state = "indwelder"
 	max_fuel = 40
 	m_amt = 70

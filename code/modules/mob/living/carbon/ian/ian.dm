@@ -405,7 +405,13 @@
 				Paralyse(3)
 
 			visible_message("<span class='danger'>[M] [response_harm] [src]!</span>")
-			adjustBruteLoss(damage)
+
+			damage += attack.damage
+			if(!attack.no_damage)
+				apply_damage(damage, attack.dam_type, , , attack.damage_flags())
+
+			attack.special_effects(M, src, damage)
+
 			updatehealth()
 
 		if("grab")

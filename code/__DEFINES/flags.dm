@@ -56,6 +56,12 @@
 #define VIRUS_IMMUNE       "virus_immune"
 #define BIOHAZZARD_IMMUNE  "biohazzard_immune"
 #define HAS_HAIR           "has_hair"
+#define NO_FINGERPRINT     "no_fingerprint"
+#define IS_FLYING          "is_flying"
+#define IS_IMMATERIAL      "is_immaterial"
+#define STATICALLY_CHARGED "statically_charged"
+#define NO_FAT             "no_fat"
+#define EMP_HEAL           "emp_heal" // TODO: make emp_act specie dependant.
 
 //Species Diet Flags
 #define DIET_CARN		1 //meat

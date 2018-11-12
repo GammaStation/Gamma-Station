@@ -143,8 +143,19 @@
 		var/t1 = text("window=[]", href_list["mach_close"])
 		unset_machine()
 		src << browse(null, t1)
-	if ((href_list["item"] && !( usr.stat ) && !( usr.restrained() ) && in_range(src, usr) ))
+
+	var/range_check = in_range(src, usr)
+	if(ismob(usr))
+		var/mob/M = usr
+		if(TK in M.mutations)
+			range_check = TRUE
+
+	if ((href_list["item"] && !( usr.stat ) && !( usr.restrained() ) && range_check ))
 		var/obj/item/item = usr.get_active_hand()
+		if(istype(item, /obj/item/tk_grab))
+			var/obj/item/tk_grab/T = item
+			item = T.focus
+			T.focus = null
 		if(item && (item.flags & (ABSTRACT | DROPDEL)))
 			return
 		var/obj/effect/equip_e/monkey/O = new /obj/effect/equip_e/monkey(  )
@@ -206,6 +217,9 @@
 	if (istype(loc, /turf) && istype(loc.loc, /area/start))
 		to_chat(M, "No attacking people at spawn, you jackass.")
 		return
+
+	if(..())
+		return TRUE
 
 	if(M.gloves && istype(M.gloves,/obj/item/clothing/gloves))
 		var/obj/item/clothing/gloves/G = M.gloves

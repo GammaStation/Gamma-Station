@@ -331,24 +331,29 @@
 /obj/item/weapon/shard/Crossed(AM as mob|obj)
 	if(ismob(AM))
 		var/mob/M = AM
-		to_chat(M, "\red <B>You step in the broken glass!</B>")
-		playsound(src.loc, 'sound/effects/glass_step.ogg', 50, 1)
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
 
 			if(H.species.flags[IS_SYNTHETIC])
+				playsound(src.loc, 'sound/effects/glass_step.ogg', 50, 1)
 				return
 
 			if(H.wear_suit && (H.wear_suit.body_parts_covered & LEGS) && H.wear_suit.flags & THICKMATERIAL)
+				playsound(src.loc, 'sound/effects/glass_step.ogg', 50, 1)
 				return
 
 			if(!H.shoes)
 				var/obj/item/organ/external/BP = H.bodyparts_by_name[pick(BP_L_LEG , BP_R_LEG)]
+				if(H.species.flags[IS_FLYING] && !H.falling) // No sound here. Just cruising by...
+					return
 				if(BP.status & ORGAN_ROBOT)
+					playsound(src.loc, 'sound/effects/glass_step.ogg', 50, 1)
 					return
 				H.Weaken(3)
 				BP.take_damage(5, 0)
 				H.updatehealth()
+		to_chat(M, "<span class='warning bold>You step in the broken glass!</span>")
+		playsound(src.loc, 'sound/effects/glass_step.ogg', 50, 1)
 	..()
 
 

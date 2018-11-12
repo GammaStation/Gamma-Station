@@ -262,6 +262,8 @@
 		return
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
+		if(H.species.flags[IS_IMMATERIAL])
+			return
 		if(!H.gloves && !(H.dna && H.dna.mutantrace == "adamantine")) //specflags please..
 			to_chat(H, "<span class='warning'>[src] cuts into your hand!</span>")
 			var/obj/item/organ/external/BP = H.bodyparts_by_name[H.hand ? BP_L_ARM : BP_R_ARM]

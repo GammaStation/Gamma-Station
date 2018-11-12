@@ -51,8 +51,7 @@
 			else if (response == "Carbon-Copy")
 				P = new /obj/item/weapon/paper/carbon
 
-		P.loc = user.loc
-		user.put_in_hands(P)
+		user.put_in_hands(P, FALSE) // FALSE means if we can't put in hands, we just drop it under OURSELVES.
 		to_chat(user, "<span class='notice'>You take [P] out of the [src].</span>")
 	else
 		to_chat(user, "<span class='notice'>[src] is empty!</span>")

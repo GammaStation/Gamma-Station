@@ -4443,6 +4443,9 @@ datum
 						IO.take_damage(10, 0)
 	data++
 
+/datum/reagent/proc/on_tycheon_digest(mob/living/M)
+	return TRUE
+
 /datum/reagent/Destroy() // This should only be called by the holder, so it's already handled clearing its references
 	. = ..()
 	holder = null

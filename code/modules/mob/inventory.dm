@@ -113,24 +113,45 @@ var/list/slot_equipment_priority = list(
 //as they handle all relevant stuff like adding it to the player's screen and updating their overlays.
 
 //Returns the thing in our active hand
+/mob/proc/no_check_get_active_hand() // In case we would ever need to detect a tk_grab in mob's active hand.
+	if(hand)
+		return l_hand
+	return r_hand
 
-
-//Returns the thing in our active hand
 /mob/proc/get_active_hand()
-	if(hand)	return l_hand
-	else		return r_hand
+	if(hand)
+		. = l_hand
+	else
+		. = r_hand
+
+	if(istype(., /obj/item/tk_grab))
+		var/obj/item/tk_grab/T = .
+		if(T.focus)
+			. = T.focus
 
 //Returns the thing in our inactive hand
+/mob/proc/no_check_get_inactive_hand() // In case we would ever need to detect a tk_grab in mob's inactive hand.
+	if(hand)
+		return l_hand
+	return r_hand
+
 /mob/proc/get_inactive_hand()
-	if(hand)	return r_hand
-	else		return l_hand
+	if(hand)
+		. = r_hand
+	else
+		. = l_hand
+
+	if(istype(., /obj/item/tk_grab))
+		var/obj/item/tk_grab/T = .
+		if(T.focus)
+			. = T.focus
 
 //Checks if thing in mob's hands
 /mob/living/carbon/human/proc/is_in_hands(typepath)
-	if(istype(l_hand,typepath))
-		return l_hand
-	if(istype(r_hand,typepath))
-		return r_hand
+	if(istype(get_active_hand(), typepath))
+		return get_active_hand()
+	if(istype(get_inactive_hand(), typepath))
+		return get_inactive_hand()
 	return 0
 
 //Puts the item into your l_hand if possible and calls all necessary triggers/updates. returns 1 on success.
@@ -154,6 +175,16 @@ var/list/slot_equipment_priority = list(
 		return 1
 	return 0
 
+/mob/living/carbon/human/put_in_l_hand(obj/item/W)
+	if(species.flags[IS_IMMATERIAL] && !(W.flags & ABSTRACT))
+		W.forceMove(get_turf(src))
+		W.layer = initial(W.layer)
+		W.plane = initial(W.plane)
+		W.appearance_flags = initial(W.appearance_flags)
+		W.dropped()
+		return 0
+	return ..()
+
 //Puts the item into your r_hand if possible and calls all necessary triggers/updates. returns 1 on success.
 /mob/proc/put_in_r_hand(obj/item/W)
 	if(lying && !(W.flags&ABSTRACT))	return 0
@@ -175,6 +206,16 @@ var/list/slot_equipment_priority = list(
 		return 1
 	return 0
 
+/mob/living/carbon/human/put_in_r_hand(obj/item/W)
+	if(species.flags[IS_IMMATERIAL] && !(W.flags & ABSTRACT))
+		W.forceMove(get_turf(src))
+		W.layer = initial(W.layer)
+		W.plane = initial(W.plane)
+		W.appearance_flags = initial(W.appearance_flags)
+		W.dropped()
+		return 0
+	return ..()
+
 //Puts the item into our active hand if possible. returns 1 on success.
 /mob/proc/put_in_active_hand(obj/item/W)
 	if(hand)	return put_in_l_hand(W)
@@ -185,22 +226,24 @@ var/list/slot_equipment_priority = list(
 	if(hand)	return put_in_r_hand(W)
 	else		return put_in_l_hand(W)
 
-//Puts the item our active hand if possible. Failing that it tries our inactive hand. Returns 1 on success.
-//If both fail it drops it on the floor and returns 0.
+//Puts the item our active hand if possible. Failing that it tries our inactive hand. Returns TRUE on success.
+//If both fail it drops it on the floor and returns FALSE.
 //This is probably the main one you need to know :)
-/mob/proc/put_in_hands(obj/item/W)
-	if(!W)		return 0
+/mob/proc/put_in_hands(obj/item/W, put_in_user_loc = TRUE)
+	if(!W)
+		return FALSE
 	if(put_in_active_hand(W))
-		return 1
+		return TRUE
 	else if(put_in_inactive_hand(W))
-		return 1
+		return TRUE
 	else
-		W.forceMove(get_turf(src))
+		var/atom/alt_loc = put_in_user_loc ? src : W
+		W.forceMove(get_turf(alt_loc))
 		W.layer = initial(W.layer)
 		W.plane = initial(W.plane)
 		W.appearance_flags = initial(W.appearance_flags)
 		W.dropped()
-		return 0
+		return FALSE
 
 // Removes an item from inventory and places it in the target atom
 /mob/proc/drop_from_inventory(obj/item/W, atom/target = null)
