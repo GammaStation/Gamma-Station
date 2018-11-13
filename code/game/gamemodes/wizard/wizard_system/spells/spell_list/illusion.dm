@@ -22,28 +22,35 @@
 	. = ..()
 	scanned = new
 
-// Fix tables and other questionable objects
+
+/obj/effect/proc_holder/magic/click_on/illusion/check_turf_cast(turf/target)
+	. = ..()
+	if(!scanned.current_type)
+		to_chat(owner.current, "<font color='purple'><i>What do you want me to create?!</i></font>")
+		return FALSE
+
+	if(istype(target, /turf/simulated/wall))
+		to_chat(owner.current, "<font color='purple'><i>How can I forge an illusion inside a wall?! You fool!</i></font>")
+		return FALSE
+
+
+/obj/effect/proc_holder/magic/click_on/illusion/check_object_cast(obj/target)
+	. = ..()
+	if(!istype(target, /obj/item))
+		return FALSE
+
 
 /obj/effect/proc_holder/magic/click_on/illusion/cast_on_mob(mob/living/target)
 	to_chat(owner.current, "<font color='purple'><i>I scanned the [target]! Now I can create decoys of it!</i></font>")
 	scanned.copy(target)
 
 
-/obj/effect/proc_holder/magic/click_on/illusion/cast_on_object(obj/target)			//It can also scan stuff like tables and copy them. Should I leave it so? Creating illusions of tables and pulling them around sounds fun, but...
+/obj/effect/proc_holder/magic/click_on/illusion/cast_on_object(obj/target)
 	to_chat(owner.current, "<font color='purple'><i>I scanned the [target]! Now I can create decoys of it!</i></font>")
 	scanned.copy(target)
 
-//obj item
-//get turf
+
 /obj/effect/proc_holder/magic/click_on/illusion/cast_on_turf(turf/target)
-	if(!scanned.current_type)
-		to_chat(owner.current, "<font color='purple'><i>What do you want me to create?!</i></font>")		//Still spends mana here. Spell specific checks + istype
-		return
-
-	if(istype(target, /turf/simulated/wall))
-		to_chat(owner.current, "<font color='purple'><i>How can I forge an illusion inside a wall?! You fool!</i></font>")
-		return
-
 	var/obj/effect/dummy/chameleon/illusion/decoy = new (target)
 	decoy.copy(scanned)
 	decoy.dir = owner.current.dir

@@ -4,6 +4,7 @@
 	mana_cost = CHAOS_BOLT_MANACOST
 	projectile = /obj/item/projectile/magic/chaos_bolt
 
+// Negative Energy
 
 /obj/item/projectile/magic/chaos_bolt
 	name = "bolt of chaos"

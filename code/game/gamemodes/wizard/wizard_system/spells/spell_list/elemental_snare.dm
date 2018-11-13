@@ -4,13 +4,15 @@
 	mana_cost = SNARE_MANACOST
 	types_to_click = list("turfs")
 
-
-
-/obj/effect/proc_holder/magic/click_on/elemental_snare/cast_on_turf(turf/target)
+/obj/effect/proc_holder/magic/click_on/elemental_snare/check_turf_cast(turf/target)
+	. = ..()
 	if(is_blocked_turf(target))
 		to_chat(owner.current, "<font color='purple'><i>This place is occupied! I can't place a trap here!</i></font>")
-		return
+		return FALSE
+	if(locate(/obj/structure/trap) in target.contents)
+		return FALSE
 
+/obj/effect/proc_holder/magic/click_on/elemental_snare/cast_on_turf(turf/target)
 	var/obj/structure/trap/snare
 	switch(owner.current.a_intent)
 		if("help")

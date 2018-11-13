@@ -6,10 +6,14 @@
 
 
 
-/obj/effect/proc_holder/magic/click_on/forcewall/cast_on_turf(turf/target)
+/obj/effect/proc_holder/magic/click_on/forcewall/check_turf_cast(turf/target)
+	. = ..()
 	if(is_blocked_turf(target))
-		to_chat(owner.current, "<font color='purple'><i>This place is occupied! I can't forge an energy wall here!</i></font>")		//Still spends mana here
-		return
+		to_chat(owner.current, "<font color='purple'><i>This place is occupied! I can't forge an energy wall here!</i></font>")
+		return FALSE
+
+
+/obj/effect/proc_holder/magic/click_on/forcewall/cast_on_turf(turf/target)
 	new /obj/effect/forcefield/magic(target,owner.current)
 
 /obj/effect/forcefield/magic

@@ -49,7 +49,7 @@
 	icon_state = "trap-shock"
 
 /obj/structure/trap/stun/trap_effect(mob/living/L)
-	L.electrocute_act(25, src) // electrocute act does a message.
+	L.electrocute_act(40, src) // electrocute act does a message.
 
 /obj/structure/trap/fire
 	name = "flame trap"
@@ -58,8 +58,8 @@
 
 /obj/structure/trap/fire/trap_effect(mob/living/L)
 	to_chat(L, "<span class='danger'>Spontaneous combustion!</span>")
-	L.fire_act()
-	L.adjust_fire_stacks(10)
+	L.adjust_fire_stacks(20)
+	L.IgniteMob()
 
 /obj/structure/trap/chill
 	name = "frost trap"

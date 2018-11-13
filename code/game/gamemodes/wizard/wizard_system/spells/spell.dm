@@ -33,10 +33,6 @@ var/list/magic_spells = typesof(/obj/effect/proc_holder/magic)
 	return TRUE
 
 
-/obj/effect/proc_holder/magic/proc/spell_specific_checks(atom/spell_target)
-	return TRUE
-
-
 
 /obj/effect/proc_holder/magic/nondirect/proc/cast()
 	return
@@ -46,14 +42,13 @@ var/list/magic_spells = typesof(/obj/effect/proc_holder/magic)
 	if(!can_cast(owner.current))
 		return
 
-	if(!spell_specific_checks())
-		return
-
 	if(delay)		//Multicast delay spells
 		if(owner.current.busy_with_action == TRUE)
 			return
 		to_chat(owner.current, "<font color='purple'><i>I start to cast [name]!</i></font>")		//proc for delay stuff
 		if(!do_after(owner.current,delay, needhand = FALSE, target = owner.current))
+			return
+		if(!can_cast(owner.current))
 			return
 
 	cast()

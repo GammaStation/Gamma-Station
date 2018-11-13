@@ -6,7 +6,6 @@
 	types_to_click = list("mobs", "turfs")
 
 
-
 /obj/effect/proc_holder/magic/click_on/temperature_shift/cast_on_mob(mob/living/target)
 	switch(owner.current.a_intent)
 		if("help")
@@ -27,18 +26,16 @@
 			target.bodytemperature += TEMP_SHIFT_WEAK_HEAT
 
 
-/obj/effect/proc_holder/magic/click_on/temperature_shift/spell_specific_checks(atom/spell_target)
+/obj/effect/proc_holder/magic/click_on/temperature_shift/check_turf_cast(turf/target)
 	. = ..()
-	if(isturf(spell_target))
-		var/turf/T = spell_target
-		var/datum/gas_mixture/aircheck = T.return_air()
-		if(!aircheck || !aircheck.total_moles || T.blocks_air)
-			to_chat(owner.current, "<font color='purple'><i>There is no gas to manipulate in this area!</i></font>")
-			return FALSE
+	var/datum/gas_mixture/aircheck = target.return_air()
+	if(!aircheck || !aircheck.total_moles || target.blocks_air)
+		to_chat(owner.current, "<font color='purple'><i>There is no gas to manipulate in this area!</i></font>")
+		return FALSE
 
-		if(istype(spell_target, /turf/unsimulated))
-			to_chat(owner.current, "<font color='purple'><i>Some kind of mystical force prevents me to manipulate temperature in this area!</i></font>")
-			return FALSE
+	if(istype(target, /turf/unsimulated))
+		to_chat(owner.current, "<font color='purple'><i>Some kind of mystical force prevents me to manipulate temperature in this area!</i></font>")
+		return FALSE
 
 /obj/effect/proc_holder/magic/click_on/temperature_shift/cast_on_turf(turf/target)
 	var/datum/gas_mixture/env = target.return_air()

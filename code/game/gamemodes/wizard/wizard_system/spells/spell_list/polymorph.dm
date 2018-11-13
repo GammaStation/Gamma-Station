@@ -7,7 +7,7 @@
 
 // Taking damage in space
 
-/obj/effect/proc_holder/magic/click_on/polymorph/spell_specific_checks(atom/target)
+/obj/effect/proc_holder/magic/click_on/polymorph/check_mob_cast(mob/living/target)
 	. = ..()
 	if(!ishuman(target))
 		to_chat(owner.current, "<font color = 'purple'><span class = 'bold'>This spell works only on humans and human-like creatures!</span></font>")
@@ -16,35 +16,29 @@
 
 
 /obj/effect/proc_holder/magic/click_on/polymorph/cast_on_mob(mob/living/carbon/human/target)
+	var/mob/living/polymorphed
 	switch(owner.current.a_intent)
 		if("help")
-			var/mob/living/simple_animal/mouse/polymorph/critter_transform = new(target.loc)
-			target.forceMove(critter_transform)
-			critter_transform.original_body = target
-			if(target.mind)
-				target.mind.transfer_to(critter_transform)
-			to_chat(owner.current, "<font color = 'purple'><span class = 'bold'>I transform [target] into [critter_transform]!</span></font>")
+			polymorphed = new /mob/living/simple_animal/mouse/polymorph(target.loc)
+			var/mob/living/simple_animal/mouse/polymorph/mouse = polymorphed
+			mouse.original_body = target
 		if("disarm")
-			var/mob/living/simple_animal/headcrab/polymorph/headcrab_transform = new(target.loc)
-			target.forceMove(headcrab_transform)
-			headcrab_transform.original_body = target
-			if(target.mind)
-				target.mind.transfer_to(headcrab_transform)
-			to_chat(owner.current, "<font color = 'purple'><span class = 'bold'>I transform [target] into [headcrab_transform]!</span></font>")
+			polymorphed = new /mob/living/simple_animal/headcrab/polymorph(target.loc)
+			var/mob/living/simple_animal/headcrab/polymorph/headcrab = polymorphed
+			headcrab.original_body = target
 		if("hurt")
-			var/mob/living/simple_animal/hulk/human/polymorph/hulk_transform = new(target.loc)
-			target.forceMove(hulk_transform)
-			hulk_transform.original_body = target
-			if(target.mind)
-				target.mind.transfer_to(hulk_transform)
-			to_chat(owner.current, "<font color = 'purple'><span class = 'bold'>I transform [target] into [hulk_transform]!</span></font>")
+			polymorphed = new /mob/living/simple_animal/hulk/human/polymorph(target.loc)
+			var/mob/living/simple_animal/hulk/human/polymorph/hulk = polymorphed
+			hulk.original_body = target
 		if("grab")
-			var/mob/living/simple_animal/hostile/carp/megacarp/polymorph/carp_transform = new(target.loc)
-			target.forceMove(carp_transform)
-			carp_transform.original_body = target
-			if(target.mind)
-				target.mind.transfer_to(carp_transform)
-			to_chat(owner.current, "<font color = 'purple'><span class = 'bold'>I transform [target] into [carp_transform]!</span></font>")
+			polymorphed = new /mob/living/simple_animal/hostile/carp/megacarp/polymorph(target.loc)
+			var/mob/living/simple_animal/hostile/carp/megacarp/polymorph/carp = polymorphed
+			carp.original_body = target
+
+	target.forceMove(polymorphed)
+	if(target.mind)
+		target.mind.transfer_to(polymorphed)
+	to_chat(owner.current, "<font color = 'purple'><span class = 'bold'>I transform [target] into [polymorphed]!</span></font>")
 
 
 

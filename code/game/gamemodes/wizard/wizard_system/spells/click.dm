@@ -20,11 +20,27 @@
 	owner.wizard_power_system.chosen_spell = null
 
 
+/obj/effect/proc_holder/magic/click_on/proc/get_target_type(atom/target)
+	if(isliving(target))
+		if(("mobs" in types_to_click) && check_mob_cast(target))
+			return "mob"
+		else if(("turfs" in types_to_click) && check_turf_cast(get_turf(target)))
+			return "turf"
+	else if(istype(target, /obj))
+		if(("objects" in types_to_click) && check_object_cast(target))
+			return "object"
+		else if(("turfs" in types_to_click) && check_turf_cast(get_turf(target)))
+			return "turf"
+	else if(isturf(target) && ("turfs" in types_to_click))
+		if(check_turf_cast(get_turf(target)))
+			return "turf"
+
+
 /obj/effect/proc_holder/magic/click_on/proc/handle_targeted_cast(atom/spell_target)
 	if(!can_cast(spell_target))
 		return
 
-	if(!spell_specific_checks(spell_target))
+	if(!get_target_type(spell_target))
 		return
 
 	if(delay)		//Multicast delay spells
@@ -33,9 +49,10 @@
 		to_chat(owner.current, "<font color='purple'><i>I start to cast [name]!</i></font>")		//proc for delay stuff
 		if(!do_after(owner.current,delay, needhand = FALSE, target = spell_target))
 			return
+		if(!can_cast(spell_target))
+			return
 
 	targeted_cast(spell_target)
-	owner.wizard_power_system.spend_mana(mana_cost)
 	return
 
 
@@ -44,19 +61,17 @@
 //If we can't cast spell on type we click, but can cast spell on turf, we cast spell on turf, on which that object is standing
 //So you won't, for example, be unable to create a forcewall because you clicked on vent, and not on turf with that vent
 //Maybe I can make this a bit less ugly
+	switch(get_target_type(target))
+		if("mob")
+			cast_on_mob(target)
+		if("object")
+			cast_on_object(target)
+		if("turf")
+			cast_on_turf(get_turf(target))
+		else
+			return
 
-	if(istype(target, /mob/living))
-		if("mobs" in owner.wizard_power_system.chosen_spell.types_to_click)
-			owner.wizard_power_system.chosen_spell.cast_on_mob(target)
-		else if("turfs" in owner.wizard_power_system.chosen_spell.types_to_click)
-			owner.wizard_power_system.chosen_spell.cast_on_turf(get_turf(target))
-	else if(istype(target, /obj))
-		if("objects" in owner.wizard_power_system.chosen_spell.types_to_click)
-			owner.wizard_power_system.chosen_spell.cast_on_object(target)
-		else if("turfs" in owner.wizard_power_system.chosen_spell.types_to_click)
-			owner.wizard_power_system.chosen_spell.cast_on_turf(get_turf(target))
-	else if(isturf(target) && ("turfs" in owner.wizard_power_system.chosen_spell.types_to_click))
-		owner.wizard_power_system.chosen_spell.cast_on_turf(target)
+	owner.wizard_power_system.spend_mana(mana_cost)
 
 /obj/effect/proc_holder/magic/click_on/proc/cast_on_mob(mob/living/target)
 	return
@@ -66,6 +81,15 @@
 
 /obj/effect/proc_holder/magic/click_on/proc/cast_on_turf(turf/target)
 	return
+
+/obj/effect/proc_holder/magic/click_on/proc/check_mob_cast(mob/living/target)
+	return TRUE
+
+/obj/effect/proc_holder/magic/click_on/proc/check_object_cast(obj/target)
+	return TRUE
+
+/obj/effect/proc_holder/magic/click_on/proc/check_turf_cast(turf/target)
+	return TRUE
 
 
 /obj/effect/proc_holder/magic/click_on/shoot
