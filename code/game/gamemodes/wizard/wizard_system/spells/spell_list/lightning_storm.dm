@@ -9,6 +9,8 @@
 /obj/effect/proc_holder/magic/nondirect/lightning_storm/cast()
 	owner.current.tesla_ignore = TRUE
 	playsound(owner.current.loc, 'sound/magic/lightningbolt.ogg', 100, 1)
+	message_admins("[usr] ([usr.ckey]) used [src.name] spell at [get_area(usr)].(<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[usr.x];Y=[usr.y];Z=[usr.z]'>JMP</a>)")
+	log_game("[usr] ([usr.ckey]) used [src.name] spell.")
 	var/list/affected_objects = list()
 	for(var/atom/A in oview(owner.current, LIGHTNING_STORM_RANGE))
 		if(istype(A, /obj/machinery) || istype(A, /obj/structure) || isliving(A))

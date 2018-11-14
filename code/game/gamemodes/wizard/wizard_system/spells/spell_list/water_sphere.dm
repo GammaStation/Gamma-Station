@@ -31,6 +31,9 @@
 	target.water_act(WATERSPHERE_AMOUNT_OF_LIQUID/10)
 	spawn_fluid(loc, WATERSPHERE_AMOUNT_OF_LIQUID)
 
+	message_admins("[src.name] launched by [usr] ([usr.ckey]) spawned [WATERSPHERE_AMOUNT_OF_LIQUID] units of water at [get_area(target)](<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[target.x];Y=[target.y];Z=[target.z]'>JMP</a>)")
+	log_game("[src.name] launched by [usr] ([usr.ckey]) spawned [WATERSPHERE_AMOUNT_OF_LIQUID] units of water at [get_area(target)]")
+
 	for(var/atom/movable/A in orange(WATERSPHERE_WATERBLAST_RANGE,loc))
 		if(A.anchored)
 			continue
