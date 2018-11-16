@@ -83,7 +83,7 @@ var/bomb_set
 			flick("nuclearbombc", src)
 
 		return
-	if (is_wire_tool(O) && opened)
+	if (is_wire_tool(O) && opened && removal_stage == 5)
 		if(wires.interact(user))
 			return
 
@@ -396,7 +396,7 @@ var/bomb_set
 			else
 				icon_state = "nuclearbomb1"
 				safety = 1.0
-				timing = -1.0
+				timing = 0
 				timeleft = TIMER_MAX
 				visible_message("<span class = 'red'>The anchoring bolts slide back into the depths of [src] and timer has stopped.</span>")
 
