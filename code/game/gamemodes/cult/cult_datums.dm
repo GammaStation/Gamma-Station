@@ -184,7 +184,8 @@ var/list/cult_runes = list()
 	for(var/mob/living/carbon/M in get_turf(holder))
 		if(iscultist(M) || M.stat == DEAD)
 			continue
-		if(M.species && M.species.restricted_roles.Find(ROLE_CULTIST))
+		var/mob/living/carbon/human/MM = M
+		if(MM.species && MM.species.restricted_roles.Find(ROLE_CULTIST))
 			continue
 		user.say("Mah[pick("'","`")]weyh pleggh at e'ntrath!")
 		M.visible_message("<span class='userdanger'>[M] writhes in pain as the markings below him glow a bloody red.</span>", \
