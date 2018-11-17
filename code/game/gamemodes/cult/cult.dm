@@ -22,7 +22,6 @@
 	role_type = ROLE_CULTIST
 	restricted_jobs = list("Chaplain","AI", "Cyborg", "Star Vigil Officer", "Star Vigil Sergeant", "Detective", "Star Vigil Commander", "Captain", "Internal Affairs Agent")
 	protected_jobs = list()
-	restricted_species = list(IPC)
 	required_players = 5
 	required_players_secret = 15
 
@@ -79,6 +78,11 @@
 
 	return (cult.len >= required_enemies)
 
+/datum/game_mode/changeling/check_species_restriction(var/mob/dead/new_player/player)
+	var/datum/species/S = all_species[player.client.prefs.species]
+	if(S)
+		return S.restricted_roles.Find(ROLE_CULTIST) ? 0 : 1
+	return 1
 
 /datum/game_mode/cult/post_setup()
 	modePlayer += cult

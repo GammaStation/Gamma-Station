@@ -19,7 +19,6 @@ var/list/blob_nodes = list()
 	votable = 0
 
 	restricted_jobs = list("Cyborg", "AI")
-	restricted_species = list(IPC)
 
 	var/declared = 0
 
@@ -56,6 +55,11 @@ var/list/blob_nodes = list()
 
 	return 1
 
+/datum/game_mode/blob/check_species_restriction(var/mob/dead/new_player/player)
+	var/datum/species/S = all_species[player.client.prefs.species]
+	if(S)
+		return S.restricted_roles.Find(ROLE_BLOB) ? 0 : 1
+	return 1
 
 /datum/game_mode/blob/announce()
 	to_chat(world, "<B>The current game mode is - <font color='green'>Blob</font>!</B>")

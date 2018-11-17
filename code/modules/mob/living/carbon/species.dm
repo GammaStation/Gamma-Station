@@ -66,6 +66,8 @@
 	var/flesh_color = "#FFC896" //Pink.
 	var/base_color      //Used when setting species.
 
+	var/list/restricted_roles = list()
+
 	//Used in icon caching.
 	var/race_key = 0
 	var/icon/icon_template
@@ -316,6 +318,7 @@
 
 	eyes = "skrell_eyes"
 	blood_color = /datum/dirt_cover/purple_blood
+
 	flesh_color = "#8CD7A3"
 
 /datum/species/skrell/call_digest_proc(mob/living/M, datum/reagent/R)
@@ -508,6 +511,11 @@
 		O_KIDNEYS = /obj/item/organ/internal/kidneys/diona
 		)
 
+	restricted_roles = list(
+		ROLE_CHANGELING,
+		ROLE_SHADOWLING
+	)
+
 	blood_color = "#004400"
 	flesh_color = "#907E4A"
 
@@ -625,6 +633,14 @@
 		,O_LIVER   = /obj/item/organ/internal/liver/ipc
 		,O_KIDNEYS = /obj/item/organ/internal/kidneys/ipc
 		)
+
+	restricted_roles = list(
+		ROLE_BLOB,
+		ROLE_CULTIST,
+		ROLE_WIZARD,
+		ROLE_CHANGELING,
+		ROLE_SHADOWLING
+	)
 
 	blood_color = "#1F181F"
 	flesh_color = "#575757"

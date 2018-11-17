@@ -292,11 +292,7 @@ Implants;
 		set_security_level(SEC_LEVEL_BLUE)*/
 
 /datum/game_mode/proc/check_species_restriction(var/mob/dead/new_player/player)
-	if(restricted_species)
-		for(var/species in restricted_species)
-			if(player.client.prefs.species == species)
-				return 0
-			return 1
+	return 1
 
 /datum/game_mode/proc/get_players_for_role(role)
 	var/list/players = list()

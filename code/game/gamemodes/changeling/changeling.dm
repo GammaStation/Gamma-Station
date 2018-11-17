@@ -10,7 +10,6 @@ var/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","Epsilon"
 	role_type = ROLE_CHANGELING
 	restricted_jobs = list("AI", "Cyborg")
 	protected_jobs = list("Star Vigil Officer", "Star Vigil Sergeant", "Detective", "Star Vigil Commander", "Captain")
-	restricted_species = list(IPC, DIONA)
 	required_players = 2
 	required_players_secret = 10
 	required_enemies = 1
@@ -76,6 +75,11 @@ var/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","Epsilon"
 
 	return ..()
 
+/datum/game_mode/changeling/check_species_restriction(var/mob/dead/new_player/player)
+	var/datum/species/S = all_species[player.client.prefs.species]
+	if(S)
+		return S.restricted_roles.Find(ROLE_CHANGELING) ? 0 : 1
+	return 1
 
 /datum/game_mode/proc/forge_changeling_objectives(datum/mind/changeling)
 	//OBJECTIVES - Always absorb 5 genomes, plus random traitor objectives.
