@@ -45,6 +45,11 @@
 	path = /obj/item/clothing/suit/unathi/robe
 	cost = 1
 
+/datum/gear/suit/unathi_mantle
+	display_name = "Hide mantle"
+	path = /obj/item/clothing/suit/unathi/mantle
+	cost = 1
+
 /datum/gear/suit/suspenders
 	display_name = "Suspenders"
 	path = /obj/item/clothing/suit/suspenders
@@ -132,6 +137,7 @@
 	jackets["burgundy"] = /obj/item/clothing/under/suit_jacket/burgundy
 	jackets["charcoal"] = /obj/item/clothing/under/suit_jacket/charcoal
 	jackets["white"] = /obj/item/clothing/under/suit_jacket/white
+	jackets["amish"] = /obj/item/clothing/under/sl_suit
 	gear_tweaks += new/datum/gear_tweak/path(jackets)
 
 /datum/gear/under/pants
@@ -162,6 +168,11 @@
 	display_name = "Kilt"
 	path = /obj/item/clothing/under/kilt
 
+/datum/gear/under/suit_jacket/rogue
+	display_name = "Rogue Jacket"
+	path = /obj/item/clothing/under/suit_jacket/rogue
+	cost = 1
+
 /datum/gear/under/kung
 	display_name = "Kung under"
 	path = /obj/item/clothing/under/fluff/kung
@@ -190,3 +201,17 @@
 	m65s["ranger"] = /obj/item/clothing/under/pants/milipants_army/ranger
 	m65s["navy"] = /obj/item/clothing/under/pants/milipants_army/navy
 	gear_tweaks += new/datum/gear_tweak/path(m65s)
+
+/datum/gear/suit/color_shirt
+	display_name = "Colored shirt selection"
+	path = /obj/item/clothing/suit/blueshirt
+
+/datum/gear/suit/color_shirt/New()
+	..()
+	var/shirt = list()
+	shirt["blue"] = /obj/item/clothing/suit/blueshirt
+	shirt["orange"] = /obj/item/clothing/suit/chemshirt
+	shirt["purple"] = /obj/item/clothing/suit/roundshirt
+	shirt["grey"] = /obj/item/clothing/suit/catshirt
+	gear_tweaks += new/datum/gear_tweak/path(shirt)
+
