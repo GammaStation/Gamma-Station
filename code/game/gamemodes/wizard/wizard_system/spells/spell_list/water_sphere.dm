@@ -3,7 +3,7 @@
 	desc = ""
 	mana_cost = WATERSPHERE_MANACOST
 	projectile = /obj/item/projectile/magic/water_sphere
-
+	shootsound = 'sound/effects/water.ogg'
 
 /obj/item/projectile/magic/water_sphere
 	name = "watersphere"

@@ -25,10 +25,12 @@ var/list/magic_spells = typesof(/obj/effect/proc_holder/magic)
 
 	if(owner.wizard_power_system.mana < mana_cost)
 		to_chat(owner.current, "<font color='purple'><i>I have not enough mana!</i></font>")
+		owner.current << sound('sound/effects/magicfail.ogg')
 		return FALSE
 
 	if(req_stat < owner.current.stat)
 		to_chat(owner.current, "<font color='purple'><i>How am I supposed to cast a spell when I lost consciousness?!</i></font>")
+		owner.current << sound('sound/effects/magicfail.ogg')
 		return FALSE
 	return TRUE
 

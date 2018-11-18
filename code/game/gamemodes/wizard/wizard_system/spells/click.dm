@@ -35,6 +35,9 @@
 		if(check_turf_cast(get_turf(target)))
 			return "turf"
 
+	owner.current << sound('sound/effects/magicfail.ogg')
+	return
+
 
 /obj/effect/proc_holder/magic/click_on/proc/handle_targeted_cast(atom/spell_target)
 	if(!can_cast(spell_target))
@@ -94,6 +97,7 @@
 
 /obj/effect/proc_holder/magic/click_on/shoot
 	var/projectile
+	var/shootsound
 
 
 /obj/effect/proc_holder/magic/click_on/shoot/targeted_cast(atom/target)
@@ -102,10 +106,12 @@
 
 	if(istype(target, /turf))		//This fixes bug of projectile just remaining in the air, if caster tries to shoot on his own turf
 		var/turf/targetturf = target
-		if(owner.current.TurfAdjacent(targetturf))
+		if(locate(owner.current) in targetturf.contents)
 			return
-
+	if(shootsound)
+		playsound(owner.current, shootsound, 50)
 	var/obj/item/projectile/P = new projectile(owner.current.loc)
 	P.Fire(target, owner.current)
+	owner.wizard_power_system.spend_mana(mana_cost)
 
 

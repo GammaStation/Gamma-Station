@@ -3,7 +3,7 @@
 	desc = ""
 	mana_cost = SOULSPARK_MANACOST
 	projectile = /obj/item/projectile/magic/soulspark
-
+	shootsound = 'sound/effects/soulspark.ogg'
 
 /obj/item/projectile/magic/soulspark
 	name = "aether ball"
