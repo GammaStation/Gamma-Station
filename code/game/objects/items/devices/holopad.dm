@@ -1,4 +1,3 @@
-//
 #define CALL_NONE 0
 #define CALL_CALLING 1
 #define CALL_RINGING 2
@@ -23,6 +22,11 @@
 	id = rand(1000,9999)
 	name = "[initial(name)] [id]"
 
+/obj/item/device/holopad/Destroy()
+	if(CALL_IN_CALL)
+		call_state = CALL_NONE
+	return ..()
+
 /obj/item/device/holopad/verb/setID()
 	set name="Set ID"
 	set category = "Object"
@@ -39,22 +43,22 @@
 		return "Holopad [id]"
 
 /obj/item/device/holopad/proc/incall(var/obj/item/device/holopad/caller)
-	if(call_state != CALL_NONE) return 0
+	if(call_state != CALL_NONE)
+		return 0
 	abonent = caller
 	call_state = CALL_RINGING
 	icon_state = "holopad_ringing"
 	desc = "[initial(desc)] Incoming call from [caller.getName()]"
-	spawn(0)
-		ring()
+	INVOKE_ASYNC(src, .proc/ring)
 	return 1
 
 /obj/item/device/holopad/proc/ring()
 	if(call_state != CALL_RINGING) return
-	if(isliving(loc) && loc:client)
-		loc<<"bzzzzt"
+	var/mob/living/L = loc
+	if(isliving(loc) && L.client)
+		to_chat(loc, "bzzzzt")
 		playsound(loc, 'sound/machines/twobeep.ogg', 25, -5)
-	spawn(50)
-		ring()
+	addtimer(CALLBACK(src, .proc/ring), 50)
 
 /obj/item/device/holopad/proc/placeCall()
 	var/list/Targets = list()
@@ -69,9 +73,9 @@
 		call_state = CALL_CALLING
 		abonent = target
 		icon_state = "holopad_calling"
-		usr << "Calling [sanitize(abonent.getName(1))]"
+		to_chat(usr, "Calling [sanitize(abonent.getName(1))]")
 	else
-		usr << "Remote device is busy"
+		to_chat(usr, "Remote device is busy")
 
 /obj/item/device/holopad/proc/acceptCall()
 	if(call_state == CALL_RINGING)
@@ -79,8 +83,9 @@
 			abonent.acceptCall()
 			call_state = CALL_IN_CALL
 			icon_state = "holopad_in_call"
-			spawn(1) update_holo()
-			if(isliving(loc)) loc << "Connection established"
+			addtimer(CALLBACK(src, .proc/update_holo), 1)
+			if(isliving(loc))
+				to_chat(loc, "Connection established")
 		else
 			call_state = CALL_NONE
 			icon_state = initial(icon_state)
@@ -89,21 +94,24 @@
 	else if(call_state == CALL_CALLING)
 		call_state = CALL_IN_CALL
 		icon_state = "holopad_in_call"
-		spawn(1) update_holo()
-		if(isliving(loc)) loc << "Connection established"
+		addtimer(CALLBACK(src, .proc/update_holo), 1)
+		if(isliving(loc))
+			to_chat(loc, "Connection established")
 
 /obj/item/device/holopad/proc/hangUp(var/remote = 0)
 	if(!remote && abonent)
 		abonent.hangUp(1)
-	if(call_state==CALL_NONE) return
+	if(call_state==CALL_NONE)
+		return
 
-	if(isliving(loc)) loc << "Connection closed"
+	if(isliving(loc))
+		to_chat(loc, "Connection closed")
 
 	call_state = CALL_NONE
 	icon_state = initial(icon_state)
 	desc = initial(desc)
 	abonent = null
-	del(hologram)
+	qdel(hologram)
 
 /obj/item/device/holopad/dropped()
 	update_holo()
@@ -141,8 +149,8 @@
 		hologram.pixel_y = 0
 	else
 		hangUp()
-	spawn(2)
-		src.update_holo_pos()
+	addtimer(CALLBACK(src, .proc/update_holo_pos), 2)
+
 
 /obj/item/device/holopad/attack_self(mob/user as mob)
 	switch(call_state)
