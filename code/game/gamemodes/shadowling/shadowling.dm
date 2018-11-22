@@ -123,8 +123,8 @@ Made by Xhuis
 /datum/game_mode/shadowling/check_species_restriction(var/mob/dead/new_player/player)
 	var/datum/species/S = all_species[player.client.prefs.species]
 	if(S)
-		return S.restricted_roles.Find(ROLE_SHADOWLING) ? 0 : 1
-	return 1
+		return S.restricted_roles.Find(ROLE_BLOB) ? TRUE : FALSE
+	return TRUE
 
 
 /datum/game_mode/proc/greet_shadow(datum/mind/shadow)
