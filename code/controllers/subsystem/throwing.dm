@@ -147,8 +147,14 @@ var/datum/subsystem/throwing/SSthrowing
 			continue
 		if (isliving(AM))
 			var/mob/living/L = AM
-			if (L.lying)
+			if(L.lying)
 				continue
+			if(ishuman(L))
+				var/mob/living/carbon/human/H = L
+				if(H.species.flags[IS_FLYING] && !H.falling)
+					if(prob((10 - H.movement_delay()) * 5)) // Tycheon's default dodge - 45%
+						H.visible_message("<span class='notice'>\The [AM] misses [src] narrowly!</span>")
+						continue
 		if (AM.density && !AM.throwpass)
 			finialize(null, AM)
 			return TRUE

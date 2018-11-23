@@ -76,7 +76,9 @@
 	if (!silent)
 		owner.custom_pain("Something inside your [BP.name] hurts a lot.", 1)
 
-/obj/item/organ/internal/emp_act(severity)
+/obj/item/organ/internal/emp_act(severity) // I am not criticizing people who coded this. But I feel like there is no way to get severity 3 emp_act.~Luduk.
+	if(severity == 3)
+		world.log << "It seems there has been an emp severity 3 act. Please contact Luduk personally and tell him it happened. [src]"
 	switch(robotic)
 		if(0)
 			return
@@ -286,6 +288,15 @@
 /obj/item/organ/internal/brain/ipc
 	name = "positronic brain"
 	parent_bodypart = BP_CHEST
+
+/obj/item/organ/internal/brain/tycheon
+	name = "core"
+	parent_bodypart = BP_CHEST
+
+/obj/item/organ/internal/brain/tycheon/process()
+	if(owner.life_tick % 10 == 0) // Update once per 10 ticks.
+		if(is_bruised())
+			owner.falling = min(30, owner.falling + 3)
 
 /obj/item/organ/internal/eyes
 	name = "eyes"

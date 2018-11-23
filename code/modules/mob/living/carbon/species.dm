@@ -51,6 +51,7 @@
 
 	var/taste_sensitivity = TASTE_SENSITIVITY_NORMAL //the most widely used factor; humans use a different one
 	var/dietflags = 0	// Make sure you set this, otherwise it won't be able to digest a lot of foods
+	var/custom_metabolism = 1.0
 
 	var/darksight = 2
 	var/nighteyes = 0
@@ -61,6 +62,7 @@
 
 	var/list/flags = list()       // Various specific features.
 	var/list/abilities = list()	// For species-derived or admin-given powers
+	var/list/ignore_gene_icons = list() // Some species may want to ignore a visual of gene or two.
 
 	var/datum/dirt_cover/blood_color = /datum/dirt_cover/red_blood //Red.
 	var/flesh_color = "#FFC896" //Pink.
@@ -152,6 +154,9 @@
 
 /datum/species/proc/call_digest_proc(mob/living/M, datum/reagent/R) // Humans don't have a seperate proc, but need to return TRUE so general proc is called.
 	return TRUE
+
+/datum/species/proc/on_emp_act(mob/living/M, emp_severity)
+	return
 
 /datum/species/proc/handle_death(mob/living/carbon/human/H) //Handles any species-specific death events (such nymph spawns).
 	if(flags[IS_SYNTHETIC])
@@ -431,6 +436,7 @@
 	,NO_BLOOD = TRUE
 	,HAS_TAIL = TRUE
 	,NO_PAIN = TRUE
+	,NO_FAT = TRUE
 	)
 
 	blood_color = /datum/dirt_cover/blue_blood
@@ -486,6 +492,7 @@
 	,NO_BLOOD = TRUE
 	,NO_PAIN = TRUE
 	,NO_FINGERPRINT = TRUE
+	,NO_FAT = TRUE
 	)
 
 	has_bodypart = list(
@@ -603,6 +610,8 @@
 	,BIOHAZZARD_IMMUNE = TRUE
 	,NO_FINGERPRINT = TRUE
 	,NO_MINORCUTS = TRUE
+	,RAD_IMMUNE = TRUE
+	,NO_FAT = TRUE
 	)
 
 	has_bodypart = list(
@@ -985,3 +994,369 @@
 	,VIRUS_IMMUNE = TRUE
 	,HAS_TAIL = TRUE
 	)
+
+/datum/species/tycheon // Do keep in mind that they use nutrition as static electricity, which they can waste.
+	name = "Tycheon"
+	icobase = 'icons/mob/human_races/r_tycheon.dmi'
+	deform = 'icons/mob/human_races/r_tycheon.dmi'
+	damage_mask = FALSE
+	eyes = "core"                              // Glowing core.
+
+	brute_mod = 3.0
+	burn_mod = 3.0
+	brain_mod = 0.0
+	speed_mod =  -1.0
+	siemens_coefficient = 0
+
+	custom_metabolism = 0.0
+
+	language = "The Gaping Maw"
+	force_racial_language = TRUE
+
+	butcher_drops = list()
+	taste_sensitivity = 0
+
+	dietflags = 0
+	darksight = 8
+
+	flags = list(NO_BLOOD = TRUE,
+	             NO_BREATHE = TRUE,
+	             NO_SCAN = TRUE,
+	             HAS_SKIN_COLOR = TRUE,
+	             RAD_IMMUNE = TRUE,
+	             VIRUS_IMMUNE = TRUE,
+	             BIOHAZZARD_IMMUNE = TRUE,
+	             IS_FLYING = TRUE,
+	             IS_IMMATERIAL = TRUE,
+	             STATICALLY_CHARGED = TRUE,
+	             NO_FAT = TRUE,
+	             EMP_HEAL = TRUE)
+	abilities = list()
+
+	ignore_gene_icons = list("All")
+	blood_color = /datum/dirt_cover/tycheon_blood
+	flesh_color = "#1F1F1F"
+	base_color = "#BB1111"
+
+	body_temperature = 300 // Which is slightly lower than the normal human being. Slight deviations from Tycheon's bodytemperature may result in... Bleh.
+	cold_level_1 = 273
+	cold_level_2 = 263
+	cold_level_3 = 253
+	// Default seems to be 293.3.
+	heat_level_1 = 313
+	heat_level_2 = 323
+	heat_level_3 = 333
+
+	warning_low_pressure = 90
+	hazard_low_pressure = 70
+
+	has_bodypart = list(
+		 BP_CHEST  = /obj/item/organ/external/chest/tycheon
+		,BP_L_ARM  = /obj/item/organ/external/l_arm/tycheon
+		,BP_R_ARM  = /obj/item/organ/external/r_arm/tycheon
+		,BP_L_LEG  = /obj/item/organ/external/l_leg/tycheon
+		,BP_R_LEG  = /obj/item/organ/external/r_leg/tycheon
+		)
+	has_organ = list(
+		O_BRAIN   = /obj/item/organ/internal/brain/tycheon
+		)
+	restricted_inventory_slots = list(slot_back, slot_wear_mask, slot_handcuffed, slot_l_hand, slot_r_hand, slot_belt, slot_l_ear, slot_r_ear, slot_glasses, slot_glasses,
+	                                  slot_shoes, slot_w_uniform, slot_l_store, slot_r_store, slot_s_store, slot_in_backpack, slot_legcuffed, slot_legs, slot_tie, slot_head) // Still allows them to wear rigs, and ids.
+	has_gendered_icons = FALSE
+
+/datum/species/tycheon/call_digest_proc(mob/living/M, datum/reagent/R)
+	return R.on_tycheon_digest(M)
+
+/datum/species/tycheon/on_emp_act(mob/living/carbon/human/H, emp_severity)
+	H.heal_overall_damage(emp_severity, emp_severity)
+
+/datum/species/tycheon/handle_death(mob/living/carbon/human/H)
+	new /obj/item/weapon/reagent_containers/food/snacks/tycheon_core(H.loc)
+	H.gib()
+
+/mob/living/carbon/human/proc/metal_bend()
+	set name = "Bend Metal"
+	set desc = "Using metal around you to do wonders."
+	set category = "Tycheon"
+	if(metal_bending)
+		metal_bending = FALSE
+		return
+	metal_bending = TRUE
+	var/list/list_of_metal = list()
+	for(var/obj/item/stack/sheet/metal/M in view(1, src))
+		list_of_metal += M
+	for(var/obj/item/stack/sheet/metal/M in list_of_metal)
+		metal_retracting:
+			while(M.get_amount() >= 1)
+				if(!metal_bending)
+					return
+				if(!in_range(src, M)) // Nobody would've thought, but do_after() for any reason doesn't work here.
+					break metal_retracting
+				if(do_after(src, 5, TRUE, M, FALSE, TRUE))
+					var/obj/item/effect/kinetic_blast/K = new(get_turf(M))
+					K.name = "circling metal"
+					var/obj/item/effect/kinetic_blast/K2 = new(loc)
+					K2.name = "circling metal"
+					switch(a_intent)
+						if(I_DISARM)
+							if(nutrition > 215)
+								electrocuting:
+									for(var/mob/living/L in view(1, src))
+										if(nutrition <= 215)
+											break electrocuting
+										L.electrocute_act(1, src, 1.0)
+										nutrition--
+							else
+								metal_bending = FALSE
+								return
+						if(I_GRAB)
+							var/obj/item/organ/internal/brain/tycheon/core = organs_by_name[O_BRAIN]
+							if(core && nutrition > 215)
+								core.damage -= 1
+								nutrition -= 15
+							else
+								metal_bending = FALSE
+								return
+						if(I_HURT)
+							if(nutrition > 215)
+								nutrition -= 15
+								empulse(src, 0, 1)
+							else
+								metal_bending = FALSE
+								return
+					M.use(1)
+	metal_bending = FALSE
+
+/mob/living/carbon/human/proc/toggle_sphere()
+	set name = "Toggle Iron Sphere"
+	set desc = "Requires metal and charge, creates an iron sphere to protect you."
+	set category = "Tycheon"
+	if(metal_bending)
+		metal_bending = FALSE
+		return
+	metal_bending = TRUE
+	if(istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
+		drop_from_inventory(wear_suit, loc)
+		metal_bending = FALSE
+		return
+	else if(!wear_suit) // They use nutrition as their static charge, which is needed for telekinetic actions.
+		if(nutrition < 250)
+			to_chat(src, "<span class='warning'>Not enough static charge.</span>")
+			metal_bending = FALSE
+			return
+		var/list/list_of_metal = list()
+		for(var/obj/item/stack/sheet/metal/M in view(1, src))
+			list_of_metal += M
+		var/metal_harvested = 0
+		metal_finding:
+			for(var/obj/item/stack/sheet/metal/M in list_of_metal)
+				metal_retracting:
+					while(M.get_amount() >= 1)
+						if(!metal_bending)
+							return
+						if(!in_range(src, M))
+							break metal_retracting
+						if(nutrition < 205)
+							to_chat(src, "<span class='warning'>Not enough static charge.</span>")
+							metal_bending = FALSE
+							return
+						if(do_after(src, 5, TRUE, M, FALSE, TRUE))
+							nutrition -= 5
+							var/obj/item/effect/kinetic_blast/K = new(M.loc)
+							K.name = "circling metal"
+							var/obj/item/effect/kinetic_blast/K2 = new(loc)
+							K2.name = "circling metal"
+							M.use(1)
+							metal_harvested++
+							if(metal_harvested >= 10)
+								break metal_finding
+						else // No refunds!
+							metal_bending = FALSE
+							return
+		if(metal_harvested >= 10)
+			var/obj/item/clothing/suit/space/rig/tycheon/TR = new /obj/item/clothing/suit/space/rig/tycheon(src)
+			TR.refit_for_species(TYCHEON)
+			equip_to_slot_or_del(TR, slot_wear_suit)
+	metal_bending = FALSE
+
+/obj/item/clothing/suit/space/rig/tycheon
+	name = "iron sphere"
+	icon_state = "sphere"
+	item_state = "sphere"
+	icon = 'icons/mob/species/tycheon/suit.dmi'
+	slowdown = 3
+	flags = HEADCOVERSEYES|BLOCKHAIR|HEADCOVERSMOUTH|THICKMATERIAL|PHORONGUARD|DROPDEL
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|HEAD|FACE|EYES
+	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAIL|HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE
+	cold_protection = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|HEAD|FACE|EYES
+	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|HEAD|FACE|EYES
+	max_heat_protection_temperature = 313 // See the tycheon species.
+	min_cold_protection_temperature = 273
+	armor = list(melee = 75, bullet = 10, laser = 10,energy = 100, bomb = 75, bio = 100, rad = 100)
+
+/obj/item/clothing/suit/space/rig/tycheon/equipped(mob/user)
+	if(ishuman(user))
+		user.pass_flags &= ~(PASSMOB | PASSGRILLE | PASSCRAWL)
+
+/obj/item/clothing/suit/space/rig/tycheon/dropped(mob/user)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		var/obj/item/effect/kinetic_blast/K = new(H.loc)
+		K.name = "circling metal"
+		new /obj/item/stack/sheet/metal(H.loc, 10, TRUE)
+		H.pass_flags |= PASSMOB | PASSGRILLE | PASSCRAWL
+		H.update_body()
+	..()
+
+/datum/species/tycheon/on_gain(mob/living/carbon/human/H)
+	H.status_flags &= ~(CANSTUN | CANWEAKEN | CANPARALYSE)
+	H.pass_flags |= PASSTABLE | PASSMOB | PASSGRILLE | PASSBLOB | PASSCRAWL
+	H.flags |= NOSLIP
+	H.mutations.Add(TK)
+	H.mutations.Add(REMOTE_TALK)
+	H.update_mutations()
+	H.ventcrawler = TRUE
+	H.verbs += /mob/living/carbon/human/proc/toggle_sphere
+	H.verbs += /mob/living/carbon/human/proc/metal_bend
+	H.verbs += /mob/living/carbon/human/proc/toggle_telepathy_hear
+	H.verbs += /mob/living/carbon/human/proc/force_telepathy_say
+	H.verbs += /mob/living/carbon/human/proc/breath_from_tank
+	H.toggle_sphere_icon = new /obj/screen/tycheon_ability/toggle_sphere(null, H)
+	H.toggle_sphere_icon.screen_loc = "EAST-2:-8,SOUTH+1:-5"
+	H.metal_bend_icon = new /obj/screen/tycheon_ability/bend_metal(null, H)
+	H.metal_bend_icon.screen_loc = "EAST-2:-8,SOUTH+1:7"
+	if(H.hud_used)
+		H.hud_used.adding += H.toggle_sphere_icon
+		H.hud_used.adding += H.metal_bend_icon
+	if(H.client)
+		H.client.screen += H.toggle_sphere_icon
+		H.client.screen += H.metal_bend_icon
+	return ..()
+
+/datum/species/tycheon/on_loose(mob/living/carbon/human/H)
+	H.status_flags |= MOB_STATUS_FLAGS_DEFAULT
+	H.pass_flags &= ~(PASSTABLE | PASSMOB | PASSGRILLE | PASSBLOB | PASSCRAWL)
+	H.flags &= ~NOSLIP
+	H.mutations.Remove(TK)
+	H.mutations.Remove(REMOTE_TALK)
+	H.update_mutations()
+	H.ventcrawler = FALSE
+	H.verbs -= /mob/living/carbon/human/proc/toggle_sphere
+	H.verbs -= /mob/living/carbon/human/proc/metal_bend
+	H.verbs -= /mob/living/carbon/human/proc/toggle_telepathy_hear
+	H.verbs -= /mob/living/carbon/human/proc/force_telepathy_say
+	H.verbs -= /mob/living/carbon/human/proc/breath_from_tank
+	if(H.hud_used)
+		if(H.toggle_sphere_icon)
+			H.hud_used.adding -= H.toggle_sphere_icon
+		if(H.metal_bend_icon)
+			H.hud_used.adding -= H.metal_bend_icon
+	if(H.client)
+		if(H.toggle_sphere_icon)
+			H.client.screen -= H.toggle_sphere_icon
+		if(H.metal_bend_icon)
+			H.client.screen -= H.metal_bend_icon
+	QDEL_NULL(H.toggle_sphere_icon)
+	QDEL_NULL(H.toggle_sphere_icon)
+	return ..()
+
+/mob/proc/telepathy_hear(verb, message, source) // Makes all those nosy telepathics hear what we hear. Also, please do see game\sound.dm, I have a little bootleg hidden there for you ;).
+	for(var/mob/M in remote_hearers)
+		var/dist = get_dist(src, M)
+		if(source)
+			dist = get_dist(src, source)
+		world.log << "[dist]"
+		if(!M.do_telepathy(dist))
+			continue
+		var/star_chance = 0 // A chance to censore some symbols.
+		if(dist > MAX_TELEPATHY_RANGE)
+			star_chance += dist
+		if(M.remote_listen_count > 3)
+			star_chance += M.remote_listen_count * 5
+		if(star_chance)
+			stars(message, star_chance)
+		if(prob(MAX_TELEPATHY_RANGE - dist)) // The further they are, the lesser the chance to understand something.
+			to_chat(src, "<span class='warning'>You feel as if somebody is eavesdropping on you.</span>")
+		to_chat(M, "<span class='bold'>[src]</span> [verb]: [message]")
+
+/mob/living/carbon/human/proc/toggle_telepathy_hear(mob/M in view()) // Makes us hear what they hear.
+	set name = "Toggle Telepathy Hear"
+	set desc = "Hear anything this mob hears."
+	set category = "Tycheon"
+
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		if(H.species.flags[IS_SYNTHETIC])
+			to_chat(src, "<span class='notice'>They don't have a mind for us to eavesdrop on.</span>")
+			return
+
+	if(src in M.remote_hearers)
+		M.remote_hearers -= src
+		to_chat(src, "<span class='notice'>You stop telepathically eavesdropping on [M]")
+		remote_listen_count--
+	else
+		if(remote_listen_count > 3)
+			if(alert("Listening to more than three people may distort your perception, continue?", "Yes", "No") != "Yes")
+				return
+		M.remote_hearers += src
+		to_chat(src, "<span class='notice'>You start telepathically eavesdropping on [M]")
+		remote_listen_count++
+
+/mob/living/carbon/human/proc/force_telepathy_say(mob/living/M in view()) // Makes them hear what we want.
+	set name = "Project Mind"
+	set desc = "Make them hear what you desire."
+	set category = "Tycheon"
+
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		if(H.species.flags[IS_SYNTHETIC])
+			to_chat(src, "<span class='notice'>They don't have a mind to project to.</span>")
+			return
+
+	if(!M.client)
+		to_chat(src, "<span class='notice'>They don't have a mind to project to.</span>")
+		return
+
+	var/say = input ("What do you wish to say")
+	if(!say)
+		return
+	else
+		say = sanitize(say)
+
+	if((REMOTE_TALK in M.mutations))
+		to_chat(M, "<span class='notice'>You hear <b>[real_name]'s voice</b>: [say]</span>")
+	else
+		to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room: [say]</span>")
+	to_chat(src, "<span class='notice'>You project your mind into <b>[M.real_name]</b>: [say]</span>")
+
+	for(var/mob/dead/observer/G in dead_mob_list)
+		to_chat(G, "<span class='italics'>Telepathic message from <b>[src]</b> to <b>[M]</b>: [say]</span>")
+
+	log_say("Telepathic message from [key_name(src)] to [key_name(M)]: [say]")
+
+/mob/living/carbon/human/proc/breath_from_tank(obj/item/weapon/tank/T in view(1, src))
+	set name = "Inhale From"
+	set desc = "Inhales a portion of gas from tank."
+	set category = "Tycheon"
+
+	if(!istype(T))
+		return
+
+	if(breathing)
+		return
+
+	breathing = TRUE
+
+	while(TRUE)
+		if(do_after(src, 5, TRUE, T))
+			var/datum/gas_mixture/removed = T.air_contents.remove(T.distribute_pressure)
+			if(removed.gas["phoron"] < 5)
+				breathing = FALSE
+				return
+			if(wear_suit)
+				breathing = FALSE
+				return
+			if(!regenerating_bodypart)
+				regenerating_bodypart = find_damaged_bodypart()
+			if(regenerating_bodypart)
+				regen_bodyparts(0, FALSE)
