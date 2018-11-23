@@ -13,7 +13,7 @@
 	if(default_unfasten_wrench(user, I))
 		return
 	else if(!anchored && istype(I, /obj/item/stack/rods))
-		to_chat(user, "<span class='notice'>Wrench it up first!</span>")
+		to_chat(user, "<span class='warning'>Wrench it up first!</span>")
 	else if(anchored && istype(I, /obj/item/stack/rods))
 		var/obj/item/stack/rods/R = I
 		if(R.use(4))
