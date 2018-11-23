@@ -22,7 +22,7 @@
 			transfer_fingerprints_to(F)
 			qdel(src)
 		else
-			to_chat(user, "\red You need at least four rods to do this.")
+			to_chat(user, "<span class='warning'>You need at least four rods to do this.</span>")
 	else
 		..()
 
