@@ -17,14 +17,12 @@
 	var/updatingPos = 0
 	origin_tech = "programming=4;bluespace=2;magnets=4"
 
-/obj/item/device/holopad/New()
+/obj/item/device/holopad/atom_init()
 	..()
 	id = rand(1000,9999)
 	name = "[initial(name)] [id]"
 
 /obj/item/device/holopad/Destroy()
-	if(CALL_IN_CALL)
-		call_state = CALL_NONE
 	return ..()
 
 /obj/item/device/holopad/verb/setID()
@@ -56,13 +54,13 @@
 	if(call_state != CALL_RINGING) return
 	var/mob/living/L = loc
 	if(isliving(loc) && L.client)
-		to_chat(loc, "bzzzzt")
+		to_chat(loc, "<span class='warning'>Something vibrates..</span>")
 		playsound(loc, 'sound/machines/twobeep.ogg', 25, -5)
 	addtimer(CALLBACK(src, .proc/ring), 50)
 
 /obj/item/device/holopad/proc/placeCall()
 	var/list/Targets = list()
-	for(var/obj/item/device/holopad/H in world)
+	for(var/obj/item/device/holopad/H)
 		if(H == src) continue
 		Targets[H.getName()] = H
 	var/selection = input("Who do you want to call?") as null|anything in Targets
@@ -140,8 +138,8 @@
 		var/mob/living/L = loc
 		hologram.dir = turn(L.dir,180)
 		hologram.loc = L.loc
-		hologram.pixel_x = ((L.dir&4)?48:((L.dir&8)?-48:0))
-		hologram.pixel_y = ((L.dir&1)?48:((L.dir&2)?-48:0))
+		hologram.pixel_x = ((L.dir&4)?32:((L.dir&8)?-32:0))
+		hologram.pixel_y = ((L.dir&1)?32:((L.dir&2)?-32:0))
 	else if(isturf(loc))
 		hologram.dir = 2
 		hologram.loc = loc
@@ -181,7 +179,7 @@
 		voice = "Holopad [sanitize(abonent.id)]"
 	var/rendered = "<span class='game say'><span class='name'>[voice]</span> transmits, \"<span class='message'>[sanitize(text)]</span>\"</span>"
 	for(var/mob/M in listening)
-		M:show_message(rendered, 2)
+		M.show_message(rendered, 2)
 
 #undef CALL_NONE
 #undef CALL_CALLING
