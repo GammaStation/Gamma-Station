@@ -75,11 +75,11 @@ datum/reagent/proc/reaction_turf(var/turf/T, var/volume)
 
 datum/reagent/proc/on_mob_life(mob/living/M, alien)
 	if(!M || !holder)
-		return
+		return FALSE
 	if(!isliving(M))
 		return //Noticed runtime errors from pacid trying to damage ghosts, this should fix. --NEO
 	if(!check_digesting(M, alien)) // You can't overdose on what you can't digest
-		return
+		return FALSE
 	if((overdose > 0) && (volume >= overdose))//Overdosing, wooo
 		M.adjustToxLoss(overdose_dam)
 	return TRUE
@@ -108,10 +108,8 @@ datum/reagent/proc/on_update(atom/A)
 			var/mob/living/carbon/monkey/C = M
 			if(C.race in restrict_species)
 				return FALSE
-	var/should_general_digest = TRUE
 	var/datum/species/specimen = all_species[alien]
-	should_general_digest = specimen.call_digest_proc(M, src)
-	if(should_general_digest)
+	if(specimen.call_digest_proc(M, src)) // call_digest_proc returns TRUE if we need to do general digest.
 		on_general_digest(M)
 	return TRUE
 
@@ -144,6 +142,9 @@ datum/reagent/proc/on_update(atom/A)
 
 /datum/reagent/proc/on_golem_digest(mob/living/M)
 	return TRUE
+
+/datum/reagent/proc/on_tycheon_digest(mob/living/M)
+	return FALSE // Do not call general digestion proc.
 
 datum/reagent/blood
 	data = new/list("donor"=null,"viruses"=null,"blood_DNA"=null,"blood_type"=null,"resistances"=null,"trace_chem"=null, "antibodies" = null)
@@ -945,6 +946,15 @@ datum/reagent/iron
 	overdose = REAGENTS_OVERDOSE
 	taste_message = "metal"
 
+datum/reagent/iron/on_tycheon_digest(mob/living/M)
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		var/obj/item/organ/internal/brain/tycheon/core = H.organs_by_name[O_BRAIN]
+		if(core)
+			core.damage -= 1
+		H.reagents.remove_reagent("iron", 1)
+	return FALSE
+
 datum/reagent/gold
 	name = "Gold"
 	id = "gold"
@@ -1730,6 +1740,16 @@ datum/reagent/toxin/phoron
 	..()
 	if(holder.has_reagent("inaprovaline"))
 		holder.remove_reagent("inaprovaline", 2 * REM)
+
+/datum/reagent/toxin/phoron/on_tycheon_digest(mob/living/M)
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		if(!H.regenerating_bodypart)
+			H.reagents.remove_reagent("phoron", 1)
+			H.regenerating_bodypart = H.find_damaged_bodypart()
+		if(H.regenerating_bodypart)
+			H.regen_bodyparts(0, FALSE)
+	return FALSE
 
 datum/reagent/toxin/phoron/reaction_obj(var/obj/O, var/volume)
 	src = null
@@ -3273,7 +3293,9 @@ datum/reagent/toxin/acid/polyacid
 
 /datum/reagent/consumable/ethanol/on_mob_life(mob/living/M, alien) // There's a multiplier for Skrells, which can't be inbuilt in any other reasonable way.
 	if(!..())
-		return
+		return FALSE
+
+	world.log << alien
 
 	M.nutrition += nutriment_factor
 
