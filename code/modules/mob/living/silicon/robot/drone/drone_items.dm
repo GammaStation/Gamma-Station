@@ -168,6 +168,12 @@
 
 				user.visible_message("\red [user] removes the power cell from [A]!", "You remove the power cell.")
 
+/obj/item/weapon/gripper/attack_self(mob/user)
+	if(wrapped)
+		drop_item()
+		return
+	..()
+
 //TODO: Matter decompiler.
 /obj/item/weapon/matter_decompiler
 
