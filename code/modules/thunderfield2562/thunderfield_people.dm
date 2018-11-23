@@ -2,6 +2,7 @@
 #define DEAD_DELETE_COUNTDOWN 20 //Pause before dead body gets qdeld
 #define BRAINLOSS_PER_DEATH 20
 #define POINTS_FOR_CHEATER 10
+#define CLEANUP_COOLDOWN 600
 /mob/living/carbon/human/vrhuman
 	var/obj/screen/vrhuman_shop
 	var/obj/screen/vrhuman_exit
@@ -9,8 +10,8 @@
 	var/datum/mind/vr_mind
 	var/died = FALSE                                    //Look death() proc here, for comments
 	var/obj/item/device/uplink/hidden/vr_uplink/vr_shop //To buy stuff
+	var/global/last_cleanup_time
 	alpha = 127
-	see_in_dark = 8 //Just because there is no light on arena
 
 /mob/living/carbon/human/vrhuman/atom_init()
 	..()
@@ -24,11 +25,11 @@
 
 /mob/living/carbon/human/vrhuman/proc/generate_random_body()
 
-	var/obj/randomcatcher/CATCH = new /obj/randomcatcher(src)
-	equip_to_slot_or_del(CATCH.get_item(/obj/random/cloth/under), slot_w_uniform)
-	equip_to_slot_or_del(CATCH.get_item(/obj/random/cloth/shoes), slot_shoes)
+	var/obj/randomcatcher/catcher = new /obj/randomcatcher(src)
+	equip_to_slot_or_del(catcher.get_item(/obj/random/cloth/under), slot_w_uniform)
+	equip_to_slot_or_del(catcher.get_item(/obj/random/cloth/shoes), slot_shoes)
 	equip_to_slot_or_del(new /obj/item/weapon/extinguisher(src), slot_l_hand)
-	qdel(CATCH)
+	qdel(catcher)
 
 	gender = pick(MALE, FEMALE)
 	if(gender == MALE)
@@ -62,11 +63,13 @@
 		return
 	died = TRUE
 	var/obj/item/thunder_dog_tag/dog_tag = new /obj/item/thunder_dog_tag/(loc) //Spawning dog tag for players to get points
-	dog_tag.points = 1
 	if(!vr_mind)                        //Dont know, if we should keep it, but i prefer to leave it in case some dumbass with VV breaks smthng
 		hide_body()
 		return ..()
-	dog_tag.points = vr_mind.thunder_points
+	if(vr_mind.thunder_points == 0)//We should reward killer even in case there is no points
+		dog_tag.points = 1
+	else
+		dog_tag.points = vr_mind.thunder_points
 	dog_tag = null
 	vr_mind.thunder_points = 0
 	if(vr_mind.thunder_respawns == 0)
@@ -119,6 +122,14 @@
 	set category = "IC"
 
 	vr_shop.trigger(src)
+
+/mob/living/carbon/human/vrhuman/verb/try_cleanup()
+	if(!world.time > (last_cleanup_time + CLEANUP_COOLDOWN))
+		to_chat(src, "<span class='danger'>Please wait!</span>")
+		return
+	last_cleanup_time = world.time
+	for(var/a in self_cleaning_list)
+		a.cleaner()
 
 #undef SPAWN_PROTECTION_TIME
 #undef DEAD_DELETE_COUNTDOWN

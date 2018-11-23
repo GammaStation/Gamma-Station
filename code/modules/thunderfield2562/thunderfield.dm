@@ -18,11 +18,6 @@ var/global/list/thunderfield_spawns_list = list()
 	layer = FLY_LAYER //So the dog tag will be located higher than dead bodies
 	var/points
 
-/obj/item/thunder_dog_tag/atom_init()
-	. = ..()
-	if(!points)
-		points = 1
-
 /obj/item/thunder_dog_tag/equipped(mob/user)
 	..()
 	if(!isvrhuman(user))

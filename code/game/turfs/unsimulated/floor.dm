@@ -22,8 +22,6 @@
 	..()
 	cleaner()
 
-#define CLEANING_DELAY 600
-
 var/global/list/self_cleaning_list
 
 /turf/unsimulated/floor/self_cleaning
@@ -35,12 +33,9 @@ var/global/list/self_cleaning_list
 
 /turf/unsimulated/floor/self_cleaning/proc/cleaner() //Not sure if this is the correct way to do that
 	for(var/atom/A in contents)
-		if(is_type_in_list(A, uncleanable_items))
-			continue
-		qdel(A)
+		if(!is_type_in_list(A, uncleanable_items))
+			qdel(A)
 
 /turf/unsimulated/floor/self_cleaning/Destroy()
 	self_cleaning_list -= src
 	return ..()
-
-#undef CLEANING_DELAY
