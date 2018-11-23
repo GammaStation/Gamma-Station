@@ -11,6 +11,7 @@
 	item_state = "card-id"
 	w_class = 2
 	var/id
+	var/uniq_id
 	var/obj/item/device/holopad/abonent = null
 	var/call_state = CALL_NONE
 	var/obj/effect/hologram = null
@@ -18,8 +19,9 @@
 	origin_tech = "programming=4;bluespace=2;magnets=4"
 
 /obj/item/device/holopad/atom_init()
-	..()
-	id = rand(1000,9999)
+	. = ..()
+	uniq_id = rand(00000, 999999)
+	id = rand(1000, 9999)
 	name = "[initial(name)] [id]"
 
 /obj/item/device/holopad/Destroy()
@@ -31,27 +33,28 @@
 	set src in usr
 	var/newid = input(usr,"What would be new ID?") as text
 	if(newid)
-		id=newid
+		id = newid
 		name = "[initial(name)] [id]"
 
 /obj/item/device/holopad/proc/getName(var/override_busy = 0)
 	if(call_state!=CALL_NONE && !override_busy)
-		return "Holopad [id] - busy"
+		return "Holopad [id] #[uniq_id] - busy"
 	else
-		return "Holopad [id]"
+		return "Holopad [id] #[uniq_id]"
 
 /obj/item/device/holopad/proc/incall(var/obj/item/device/holopad/caller)
 	if(call_state != CALL_NONE)
-		return 0
+		return FALSE
 	abonent = caller
 	call_state = CALL_RINGING
 	icon_state = "holopad_ringing"
 	desc = "[initial(desc)] Incoming call from [caller.getName()]"
 	INVOKE_ASYNC(src, .proc/ring)
-	return 1
+	return TRUE
 
 /obj/item/device/holopad/proc/ring()
-	if(call_state != CALL_RINGING) return
+	if(call_state != CALL_RINGING)
+		return
 	var/mob/living/L = loc
 	if(isliving(loc) && L.client)
 		to_chat(loc, "<span class='warning'>Something vibrates..</span>")
@@ -61,12 +64,15 @@
 /obj/item/device/holopad/proc/placeCall()
 	var/list/Targets = list()
 	for(var/obj/item/device/holopad/H)
-		if(H == src) continue
+		if(H == src)
+			continue
 		Targets[H.getName()] = H
 	var/selection = input("Who do you want to call?") as null|anything in Targets
-	if(!selection) return
+	if(!selection)
+		return
 	var/obj/item/device/holopad/target = Targets[selection]
-	if(!target) return
+	if(!target)
+		return
 	if(target.incall(src))
 		call_state = CALL_CALLING
 		abonent = target
@@ -82,6 +88,7 @@
 			call_state = CALL_IN_CALL
 			icon_state = "holopad_in_call"
 			addtimer(CALLBACK(src, .proc/update_holo), 1)
+
 			if(isliving(loc))
 				to_chat(loc, "Connection established")
 		else
@@ -89,16 +96,19 @@
 			icon_state = initial(icon_state)
 			desc = initial(desc)
 			abonent = null
+
 	else if(call_state == CALL_CALLING)
 		call_state = CALL_IN_CALL
 		icon_state = "holopad_in_call"
 		addtimer(CALLBACK(src, .proc/update_holo), 1)
+
 		if(isliving(loc))
 			to_chat(loc, "Connection established")
 
 /obj/item/device/holopad/proc/hangUp(var/remote = 0)
 	if(!remote && abonent)
 		abonent.hangUp(1)
+
 	if(call_state==CALL_NONE)
 		return
 
@@ -117,7 +127,8 @@
 
 /obj/item/device/holopad/proc/update_holo()
 	if(call_state == CALL_IN_CALL)
-		if(!abonent) return
+		if(!abonent)
+			return
 		if(!abonent.hologram)
 			abonent.hologram = new()
 			abonent.hologram.name = "Hologram [sanitize(id)]"
