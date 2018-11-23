@@ -1019,7 +1019,7 @@
 	dietflags = 0
 	darksight = 8
 
-	flags = list(IS_WHITELISTED = TRUE
+	flags = list(IS_WHITELISTED = TRUE,
 	             NO_BLOOD = TRUE,
 	             NO_BREATHE = TRUE,
 	             NO_SCAN = TRUE,
