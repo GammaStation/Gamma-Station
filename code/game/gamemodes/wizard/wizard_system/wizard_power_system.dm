@@ -39,11 +39,15 @@ proc/iswizard(mob/living/M)
 		spell_to_add.owner = src
 		wizard_power_system.spells += spell_to_add
 
+/datum/mind/proc/add_all_spells()
+	for(var/spell in magic_spells)
+		add_spell(spell)
+
 
 /datum/mind/proc/remove_spell(var/obj/effect/proc_holder/magic/spell)
 	if(iswizard(current))
 		wizard_power_system.spells -= spell
-	spell.Destroy()
+	qdel(spell)
 
 
 /mob/living/carbon/human/proc/get_clothes_strength()

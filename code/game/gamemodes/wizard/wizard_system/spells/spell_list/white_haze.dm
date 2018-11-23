@@ -1,9 +1,14 @@
 /obj/effect/proc_holder/magic/click_on/haze
 	name = "White haze"
 	desc = ""
+	delay = HAZE_DELAY
 	mana_cost = HAZE_MANACOST
 	types_to_click = list("turfs")
 
+/obj/effect/proc_holder/magic/click_on/haze/check_turf_cast(turf/target)
+	. = ..()
+	if(is_blocked_turf(target))
+		return FALSE
 
 /obj/effect/proc_holder/magic/click_on/haze/cast_on_turf(turf/target)
 	var/datum/effect/effect/system/smoke_spread/white_haze/S = new
@@ -69,5 +74,6 @@
 
 
 #undef HAZE_MANACOST
+#undef HAZE_DELAY
 #undef HAZE_DAMAGE_MULT
 #undef HAZE_LINGER_TIME

@@ -5,7 +5,7 @@
 	if(!iswizard(owner.current))
 		return
 
-	if(!(owner.wizard_power_system.chosen_spell) || owner.wizard_power_system.chosen_spell != src)
+	if(owner.wizard_power_system.chosen_spell != src)
 		set_spell(owner)
 	else
 		unset_spell(owner)
@@ -47,7 +47,7 @@
 		return
 
 	if(delay)		//Multicast delay spells
-		if(owner.current.busy_with_action == TRUE)
+		if(owner.current.busy_with_action)
 			return
 		to_chat(owner.current, "<font color='purple'><i>I start to cast [name]!</i></font>")		//proc for delay stuff
 		if(!do_after(owner.current,delay, needhand = FALSE, target = spell_target))

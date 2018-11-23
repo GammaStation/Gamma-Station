@@ -5,7 +5,6 @@
 	mana_cost = POLYMORPH_MANACOST
 	types_to_click = list("mobs")
 
-// Taking damage in space
 
 /obj/effect/proc_holder/magic/click_on/polymorph/check_mob_cast(mob/living/target)
 	. = ..()

@@ -2,7 +2,7 @@
 	name = "wizard"
 	config_tag = "wizard"
 	role_type = ROLE_WIZARD
-	required_players = 2
+	required_players = 1
 	required_players_secret = 10
 	required_enemies = 1
 	recommended_enemies = 1
@@ -19,24 +19,26 @@
 	to_chat(world, "<B>There is a \red SPACE WIZARD\black on the station. You can't let him achieve his objective!</B>")
 
 
-/datum/game_mode/wizard/can_start()//This could be better, will likely have to recode it later
+/datum/game_mode/wizard/can_start()
 	if(!..())
-		return 0
-	var/datum/mind/wizard = pick(antag_candidates)
-	wizards += wizard
-	modePlayer += wizard
-	wizard.assigned_role = "MODE" //So they aren't chosen for other jobs.
-	wizard.special_role = "Wizard"
-	wizard.original = wizard.current
+		return FALSE
+
 	if(!LAZYLEN(wizardstart))
-		to_chat(wizard.current, "<span class='danger'>A starting location for you could not be found, please report this bug!</span>")
-		return 0
-	return 1
+		to_chat(world, "<span class='danger'>A starting location for wizard could not be found, please report this bug!</span>")
+		return FALSE
+	return TRUE
 
 
 /datum/game_mode/wizard/pre_setup()
 	for(var/datum/mind/wizard in wizards)
 		wizard.current.loc = pick(wizardstart)
+
+	var/datum/mind/wizard = pick(antag_candidates)
+	wizard.assigned_role = "MODE"
+	wizard.original = wizard.current
+	wizard.make_wizard()
+	modePlayer += wizard
+	wizard.current.loc = pick(wizardstart)
 	return 1
 
 
@@ -47,6 +49,7 @@
 		equip_wizard(wizard.current)
 		name_wizard(wizard.current)
 		greet_wizard(wizard)
+		wizard.add_all_spells()
 
 	return ..()
 

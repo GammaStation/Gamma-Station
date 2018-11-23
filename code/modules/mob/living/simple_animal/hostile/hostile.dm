@@ -146,7 +146,8 @@
 				OpenFire(target)
 		if(retreat_distance != null)//If we have a retreat distance, check if we need to run from our target
 			if(target_distance <= retreat_distance)//If target's closer than our retreat distance, run
-				walk_away(src,target,retreat_distance,move_to_delay)
+				if(!anchored)
+					walk_away(src,target,retreat_distance,move_to_delay)
 			else
 				Goto(target,move_to_delay,minimum_distance)//Otherwise, get to our minimum distance so we chase them
 		else
@@ -166,7 +167,8 @@
 	LostTarget()
 
 /mob/living/simple_animal/hostile/proc/Goto(target, delay, minimum_distance)
-        walk_to(src, target, minimum_distance, delay)
+	if(!anchored)
+		walk_to(src, target, minimum_distance, delay)
 
 /mob/living/simple_animal/hostile/adjustBruteLoss(damage)
 	..(damage)

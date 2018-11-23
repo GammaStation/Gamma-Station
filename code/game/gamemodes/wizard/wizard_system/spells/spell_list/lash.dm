@@ -16,9 +16,11 @@
 /obj/item/projectile/lash/Move()
 	. = ..()
 	var/turf/T = get_turf(src)
-	// Delete on unsimulated/spess
 	if(T)
-		T.create_fire(4)
+		if(!istype(T,/turf/simulated))
+			qdel(src)			//Runtime in process
+		else
+			T.create_fire(4)
 
 
 /obj/item/projectile/lash/on_hit(atom/target)
@@ -37,7 +39,7 @@
 			L.adjust_fire_stacks(20)
 			L.IgniteMob()
 
-	else if(firer.a_intent == "help" || firer.a_intent == "disarm")
+	else if(firer.a_intent == "disarm")
 		var/atom/throwtarget = get_edge_target_turf(src, get_dir(src, get_step_away(target, src)))
 		if(istype(target, /atom/movable))
 			var/atom/movable/T = target
@@ -46,6 +48,9 @@
 				if(isliving(T))
 					var/mob/living/M = T
 					M.Weaken(2)
+
+	else if(firer.a_intent == "help")
+		firer.throw_at(target, get_dist(firer, target) - 1, 1, spin = FALSE)		//Crashing into the floor
 	return ..()
 
 
