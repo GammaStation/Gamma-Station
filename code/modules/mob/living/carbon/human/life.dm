@@ -122,6 +122,10 @@
 	//Updates the number of stored chemicals for powers and essentials
 	handle_changeling()
 
+	//Species-specific update.
+	if(species)
+		species.on_life(src)
+
 	pulse = handle_pulse()
 
 	// Grabbing
@@ -630,7 +634,7 @@
 
 		//Body temperature adjusts depending on surrounding atmosphere based on your thermal protection
 		var/temp_adj = 0
-		if(!on_fire || !(get_species() == IPC && is_damaged_organ(O_LUNGS))) //If you're on fire, you do not heat up or cool down based on surrounding gases
+		if(!on_fire && !(is_type_organ(O_LUNGS, /obj/item/organ/internal/lungs/ipc) && is_bruised_organ(O_LUNGS))) //If you're on fire, you do not heat up or cool down based on surrounding gases
 			if(loc_temp < bodytemperature)			//Place is colder than we are
 				var/thermal_protection = get_cold_protection(loc_temp) //This returns a 0 - 1 value, which corresponds to the percentage of protection based on what you're wearing and what you're exposed to.
 				if(thermal_protection < 1)
@@ -969,17 +973,17 @@
 			var/turf/T = loc
 			light_amount = round((T.get_lumcount()*10)-5)
 
-		if(get_species() == DIONA && !is_damaged_organ(O_LIVER)) // Specie may require light, but only plants, with chlorophyllic plasts can produce nutrition out of light!
+		if(is_type_organ(O_LIVER, /obj/item/organ/internal/liver/diona) && !is_bruised_organ(O_LIVER)) // Specie may require light, but only plants, with chlorophyllic plasts can produce nutrition out of light!
 			nutrition += light_amount
 
 		if(species.flags[IS_PLANT])
-			var/obj/item/organ/internal/kidneys/KS = organs_by_name[O_KIDNEYS]
-			if(!KS)
-				nutrition = 0
-			if(KS && get_species() == DIONA && (nutrition > 500 - KS.damage*5))
-				nutrition = 500 - KS.damage*5
-			var/obj/item/organ/external/External
-			species.regen(src, light_amount, External)
+			if(is_type_organ(O_KIDNEYS, /obj/item/organ/internal/kidneys/diona)) // Diona's kidneys contain all the nutritious elements. Damaging them means they aren't held.
+				var/obj/item/organ/internal/kidneys/KS = organs_by_name[O_KIDNEYS]
+				if(!KS)
+					nutrition = 0
+				else if(nutrition > (500 - KS.damage*5))
+					nutrition = 500 - KS.damage*5
+			species.regen(src, light_amount)
 
 	if(dna && dna.mutantrace == "shadow")
 		var/light_amount = 0
@@ -1569,9 +1573,9 @@
 	if(bodytemperature > 406)
 		for(var/datum/disease/D in viruses)
 			D.cure()
-		for (var/ID in virus2)
-			var/datum/disease2/disease/V = virus2[ID]
-			V.cure(src)
+		//for (var/ID in virus2) //disabled because of symptom that randomly ignites a mob, which triggers this
+		//	var/datum/disease2/disease/V = virus2[ID]
+		//	V.cure(src)
 	if(life_tick % 3) //don't spam checks over all objects in view every tick.
 		for(var/obj/effect/decal/cleanable/O in view(1,src))
 			if(istype(O,/obj/effect/decal/cleanable/blood))
@@ -1579,14 +1583,16 @@
 				if(B && B.virus2 && B.virus2.len)
 					for (var/ID in B.virus2)
 						var/datum/disease2/disease/V = B.virus2[ID]
-						infect_virus2(src,V.getcopy())
+						if(V.spreadtype == "Contact")
+							infect_virus2(src,V.getcopy())
 
 			else if(istype(O,/obj/effect/decal/cleanable/mucus))
 				var/obj/effect/decal/cleanable/mucus/M = O
 				if(M && M.virus2 && M.virus2.len)
 					for (var/ID in M.virus2)
 						var/datum/disease2/disease/V = M.virus2[ID]
-						infect_virus2(src,V.getcopy())
+						if(V.spreadtype == "Contact")
+							infect_virus2(src,V.getcopy())
 
 
 	if(virus2.len)
@@ -1779,7 +1785,7 @@
 		else if(status_flags & XENO_HOST)
 			holder.icon_state = "hudxeno"
 			holder2.icon_state = "hudxeno"
-		else if(foundVirus)
+		else if(foundVirus || iszombie(src))
 			holder.icon_state = "hudill"
 		else if(has_brain_worms())
 			var/mob/living/simple_animal/borer/B = has_brain_worms()

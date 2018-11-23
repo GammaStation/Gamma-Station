@@ -131,7 +131,7 @@
 	message += "[OX] | [TX] | [BU] | [BR]<br>"
 	if(istype(M, /mob/living/carbon))
 		var/mob/living/carbon/C = M
-		if(C.reagents.total_volume)
+		if(C.reagents.total_volume || C.is_infected_with_zombie_virus())
 			message += "<span class='warning'>Warning: Unknown substance detected in subject's blood.</span><br>"
 		if(C.virus2.len)
 			for (var/ID in C.virus2)
@@ -393,27 +393,8 @@
 		var/obj/item/weapon/storage/S = W
 		if(S.use_to_pickup)
 			if(S.collection_mode) //Mode is set to collect all items on a tile and we clicked on a valid one.
-				if(isturf(src.loc))
-					var/list/rejections = list()
-					var/success = 0
-					var/failure = 0
-
-					for(var/obj/item/I in src.loc)
-						if(I.type in rejections) // To limit bag spamming: any given type only complains once
-							continue
-						if(!S.can_be_inserted(I))	// Note can_be_inserted still makes noise when the answer is no
-							rejections += I.type	// therefore full bags are still a little spammy
-							failure = 1
-							continue
-						success = 1
-						S.handle_item_insertion(I, 1)	//The 1 stops the "You put the [src] into [S]" insertion message from being displayed.
-					if(success && !failure)
-						to_chat(user, "<span class='notice'>You put everything in [S].</span>")
-					else if(success)
-						to_chat(user, "<span class='notice'>You put some things in [S].</span>")
-					else
-						to_chat(user, "<span class='notice'>You fail to pick anything up with [S].</span>")
-
+				if(isturf(loc))
+					S.gather_all(loc, user)
 			else if(S.can_be_inserted(src))
 				S.handle_item_insertion(src)
 	return FALSE
@@ -465,14 +446,20 @@
 //If you are making custom procs but would like to retain partial or complete functionality of this one, include a 'return ..()' to where you want this to happen.
 //Set disable_warning to 1 if you wish it to not give you outputs.
 /obj/item/proc/mob_can_equip(M, slot, disable_warning = 0)
-	if(!slot) return 0
-	if(!M) return 0
+	if(!slot)
+		return FALSE
+	if(!M)
+		return FALSE
 
 	if(ishuman(M))
 		//START HUMAN
 		var/mob/living/carbon/human/H = M
 		if(!H.has_bodypart_for_slot(slot))
-			return 0
+			return FALSE
+		if(!H.specie_has_slot(slot))
+			if(!disable_warning)
+				to_chat(H, "<span class='warning'>Your species can not wear clothing of this type.</span>")
+			return FALSE
 		//fat mutation
 		if(istype(src, /obj/item/clothing/under) || istype(src, /obj/item/clothing/suit))
 			if(FAT in H.mutations)
@@ -631,7 +618,7 @@
 			if(slot_in_backpack)
 				if (H.back && istype(H.back, /obj/item/weapon/storage/backpack))
 					var/obj/item/weapon/storage/backpack/B = H.back
-					if(B.contents.len < B.storage_slots && w_class <= B.max_w_class)
+					if(B.can_be_inserted(src, M, 1))
 						return 1
 				return 0
 			if(slot_tie)
@@ -888,3 +875,67 @@ var/global/list/items_blood_overlay_by_type = list()
 	var/obj/item/I = get_active_hand()
 	if(I && !I.abstract)
 		I.showoff(src)
+
+// We put them here for clearance reasons. But we do know that these apply to any atom. Please, do excuse the stupidest of things.
+/atom/movable/proc/do_pickup_animation(atom/target)
+	set waitfor = FALSE
+
+	var/turf/old_loc = get_turf(src)
+	var/image/I = image(icon = src, loc = src.loc, layer = layer + 0.1)
+	I.plane = GAME_PLANE
+	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+
+	flick_overlay(I, clients, 7)
+
+	var/matrix/M = new
+	M.Turn(pick(30, -30))
+
+	animate(I, transform = M, time = 1)
+	sleep(1)
+	animate(I, transform = matrix(), time = 1)
+	sleep(1)
+
+	var/to_x = (target.x - old_loc.x) * 32
+	var/to_y = (target.y - old_loc.y) * 32
+
+	animate(I, pixel_x = to_x, pixel_y = to_y, time = 3, transform = matrix() * 0, easing = CUBIC_EASING)
+	sleep(3)
+
+/atom/movable/proc/do_putdown_animation(atom/target)
+	set waitfor = FALSE
+
+	var/old_invisibility = invisibility // I don't know, it may be used.
+	invisibility = 100
+	var/turf/old_loc = get_turf(src)
+	var/image/I = image(icon = src, loc = src.loc, layer = layer + 0.1)
+	I.plane = GAME_PLANE
+	I.transform = matrix() * 0
+	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+
+	flick_overlay(I, clients, 4)
+
+	var/to_x = (target.x - old_loc.x) * 32 + pixel_x
+	var/to_y = (target.y - old_loc.y) * 32 + pixel_y
+
+	animate(I, pixel_x = to_x, pixel_y = to_y, time = 3, transform = matrix(), easing = CUBIC_EASING)
+	sleep(3)
+	invisibility = old_invisibility
+
+/atom/movable/proc/simple_move_animation(atom/target)
+	set waitfor = FALSE
+
+	var/old_invisibility = invisibility // I don't know, it may be used.
+	invisibility = 100
+	var/turf/old_loc = get_turf(src)
+	var/image/I = image(icon = src, loc = src.loc, layer = layer + 0.1)
+	I.plane = GAME_PLANE
+	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+
+	flick_overlay(I, clients, 4)
+
+	var/to_x = (target.x - old_loc.x) * 32 + pixel_x
+	var/to_y = (target.y - old_loc.y) * 32 + pixel_y
+
+	animate(I, pixel_x = to_x, pixel_y = to_y, time = 3, easing = CUBIC_EASING)
+	sleep(3)
+	invisibility = old_invisibility

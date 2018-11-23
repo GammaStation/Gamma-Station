@@ -71,8 +71,11 @@
 	if(opened)
 		if(isrobot(user))
 			return
+		if(!W.canremove || W.flags & NODROP)
+			return
 		user.drop_item()
 		if(W)
+			W.do_putdown_animation(src)
 			W.forceMove(src.loc)
 	else if(istype(W, /obj/item/weapon/packageWrap) || istype(W, /obj/item/weapon/extraction_pack))	//OOP? Doesn't heard.
 		return

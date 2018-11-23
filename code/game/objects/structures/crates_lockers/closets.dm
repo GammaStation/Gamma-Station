@@ -54,6 +54,12 @@
 			return 0
 	return 1
 
+/obj/structure/closet/attack_ghost(mob/ghost)
+	if(ghost.client && ghost.client.inquisitive_ghost)
+		ghost.examinate(src)
+		if (!opened)
+			to_chat(ghost, "It contains: [english_list(contents)].")
+
 /obj/structure/closet/proc/dump_contents()
 	//Cham Projector Exception
 	for(var/obj/effect/dummy/chameleon/AD in src)
@@ -201,10 +207,11 @@
 			return
 		if(isrobot(user))
 			return
-		if(!W.canremove)
+		if(!W.canremove || W.flags & NODROP)
 			return
 		usr.drop_item()
 		if(W)
+			W.do_putdown_animation(src)
 			W.forceMove(src.loc)
 
 	else if(istype(W, /obj/item/weapon/packageWrap) || istype(W, /obj/item/weapon/extraction_pack))

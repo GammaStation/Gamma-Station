@@ -119,6 +119,17 @@
 	desc = "The syndicate revolver is a traditional handgun that fires .357 Magnum cartridges and has 7 chambers."
 	item = /obj/item/weapon/gun/projectile/revolver
 	cost = 8
+	gamemodes = list(/datum/game_mode/nuclear)
+	uplink_types = list("nuclear")
+	excludefrom_uplinks = list("traitor")
+
+/datum/uplink_item/dangerous/revolver_toy
+	name = "TR-7 Revolver"
+	desc = "The syndicate revolver is a traditional handgun that fires .357 Magnum cartridges and has 7 chambers."
+	item = /obj/item/weapon/gun/projectile/revolver/traitor
+	cost = 8
+	uplink_types = list("traitor")
+	excludefrom_uplinks = list("nuclear")
 
 /datum/uplink_item/dangerous/pistol
 	name = "Stechkin Pistol"
@@ -209,6 +220,17 @@
 	desc = "The energy sword is an edged weapon with a blade of pure energy. The sword is small enough to be pocketed when inactive. Activating it produces a loud, distinctive noise."
 	item = /obj/item/weapon/melee/energy/sword
 	cost = 7
+	gamemodes = list(/datum/game_mode/nuclear)
+	uplink_types = list("nuclear")
+	excludefrom_uplinks = list("traitor")
+
+/datum/uplink_item/dangerous/sword_toy
+	name = "Energy Sword"
+	desc = "The energy sword is an edged weapon with a blade of pure energy. The sword is small enough to be pocketed when inactive. Activating it produces a loud, distinctive noise."
+	item = /obj/item/weapon/melee/energy/sword/traitor
+	cost = 7
+	uplink_types = list("traitor")
+	excludefrom_uplinks = list("nuclear")
 
 /datum/uplink_item/dangerous/emp
 	name = "EMP Grenades"
@@ -623,6 +645,12 @@
 	desc = "Box of illegal posters"
 	item = /obj/item/weapon/storage/box/syndie_kit/posters
 	cost = 1
+
+/datum/uplink_item/device_tools/rev_poster_kit
+	name = "Revolutionary posters kit"
+	desc = "Box of revolutionary posters. (Useless unless it`s revolution)"
+	item = /obj/item/weapon/storage/box/syndie_kit/rev_posters
+	cost = 3
 
 /datum/uplink_item/device_tools/headcan
 	name = "Biogel can"
