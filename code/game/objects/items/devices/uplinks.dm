@@ -237,23 +237,13 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 /obj/item/device/uplink/hidden/vr_uplink/Topic(href, href_list)
 	..()
 
-	world.log << "active?"
-
 	if(!active)
 		return
 
-	world.log << "active!"
-
 	if (href_list["buy_item"])
-
-		world.log << "BUY!"
 
 		var/item = href_list["buy_item"]
 		var/list/split = splittext(item, ":")
-
-		for(var/string in split)
-			world.log << string
-		world.log << split.len
 
 		var/number = text2num(split[2])
 		var/list/uplink = thunderfield_items
