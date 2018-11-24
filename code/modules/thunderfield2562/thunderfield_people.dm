@@ -59,6 +59,10 @@
 		return
 	to_chat(src, "<span class='danger'>You are respawned! Respawns left: [vr_mind.thunder_respawns]</span>")
 
+/mob/living/carbon/human/vrhuman/updatehealth()
+	if(health < config.health_threshold_crit)
+		death()
+
 /mob/living/carbon/human/vrhuman/death()
 	if(died)                            //Dont know why this happen, but, in some cases (aka head torn off) death() is called multiple times, which causes ugly mess
 		return
@@ -125,7 +129,7 @@
 	vr_shop.trigger(src)
 
 /mob/living/carbon/human/vrhuman/verb/try_cleanup()
-	if(!world.time > (last_cleanup_time + CLEANUP_COOLDOWN))
+	if(world.time < (last_cleanup_time + CLEANUP_COOLDOWN))
 		to_chat(src, "<span class='danger'>Please wait!</span>")
 		return
 	last_cleanup_time = world.time

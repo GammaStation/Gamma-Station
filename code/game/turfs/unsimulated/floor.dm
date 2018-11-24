@@ -15,10 +15,9 @@
 	return src.attack_hand(user)
 
 /turf/unsimulated/floor/self_cleaning
-	light_range = 10
 	var/list/uncleanable_items = list(/mob/living, /obj/item/thunder_dog_tag, /mob/dead/observer, /obj/effect/landmark, /obj/item/weapon, /obj/structure) //We dont want this items to be deleted
 
-var/global/list/self_cleaning_list
+var/global/list/self_cleaning_list = list()
 
 /turf/unsimulated/floor/self_cleaning/atom_init()
 	..()
