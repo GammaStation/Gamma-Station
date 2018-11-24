@@ -24,15 +24,16 @@
 	V.vrhuman_main.layer = ABOVE_HUD_LAYER
 	V.vrhuman_main.plane = ABOVE_HUD_PLANE
 
-	V.vrhuman_cleanup = new /obj/screen/vrui_cleanup()
+	V.vrhuman_cleanup = new /obj/screen/vrhuman_cleanup()
 	V.vrhuman_cleanup.icon = 'icons/mob/screen_vrhuman.dmi'
 	V.vrhuman_cleanup.icon_state = "vrui_cleanup"
 	V.vrhuman_cleanup.screen_loc = ui_vrhuman_cleanup
 	V.vrhuman_cleanup.layer = ABOVE_HUD_LAYER
 	V.vrhuman_cleanup.plane = ABOVE_HUD_PLANE
+	V.vrhuman_cleanup.alpha = 0
 
 
-	V.client.screen += list(V.vrhuman_shop, V.vrhuman_exit, V.vrhuman_main)
+	V.client.screen += list(V.vrhuman_shop, V.vrhuman_exit, V.vrhuman_main, V.vrhuman_cleanup)
 	V.client.screen += mymob.client.void
 
 /obj/screen/vrhuman_shop/Click(location, control, params)

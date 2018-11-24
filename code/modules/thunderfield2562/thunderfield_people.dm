@@ -7,6 +7,7 @@
 	var/obj/screen/vrhuman_shop
 	var/obj/screen/vrhuman_exit
 	var/obj/screen/vrhuman_main
+	var/obj/screen/vrhuman_cleanup
 	var/datum/mind/vr_mind
 	var/died = FALSE                                    //Look death() proc here, for comments
 	var/obj/item/device/uplink/hidden/vr_uplink/vr_shop //To buy stuff
@@ -128,8 +129,8 @@
 		to_chat(src, "<span class='danger'>Please wait!</span>")
 		return
 	last_cleanup_time = world.time
-	for(var/a in self_cleaning_list)
-		a.cleaner()
+	for(var/turf/unsimulated/floor/self_cleaning/sc in self_cleaning_list)
+		sc.cleaner()
 
 #undef SPAWN_PROTECTION_TIME
 #undef DEAD_DELETE_COUNTDOWN

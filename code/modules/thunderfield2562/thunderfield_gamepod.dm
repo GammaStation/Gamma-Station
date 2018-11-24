@@ -173,7 +173,7 @@
 	move_outside()
 
 /obj/machinery/gamepod/proc/move_outside()
-	if(occupant.mind) //We need to get player back
+	if(occupant_mind) //We need to get player back
 		occupant_mind.transfer_to(occupant)
 		to_chat(occupant,"<span class='warning'><B> [bicon(src)]Temporary issues, VR aborted.</B></span>")
 		occupant_mind = null
