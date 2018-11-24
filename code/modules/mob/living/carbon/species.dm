@@ -1202,6 +1202,7 @@
 /obj/item/clothing/suit/space/rig/tycheon/equipped(mob/user)
 	if(ishuman(user))
 		user.pass_flags &= ~(PASSMOB | PASSGRILLE | PASSCRAWL)
+		user.status_flags |= CANPUSH
 
 /obj/item/clothing/suit/space/rig/tycheon/dropped(mob/user)
 	if(ishuman(user))
@@ -1210,18 +1211,18 @@
 		K.name = "circling metal"
 		new /obj/item/stack/sheet/metal(H.loc, 10, TRUE)
 		H.pass_flags |= PASSMOB | PASSGRILLE | PASSCRAWL
+		H.status_flags &= ~CANPUSH
 		H.update_body()
 	..()
 
 /datum/species/tycheon/on_gain(mob/living/carbon/human/H)
 	H.status_flags &= ~(CANSTUN | CANWEAKEN | CANPARALYSE | CANPUSH)
 	H.pass_flags |= PASSTABLE | PASSMOB | PASSGRILLE | PASSBLOB | PASSCRAWL
-	H.flags |= NOSLIP|NOBLOODY
+	H.flags |= NOSLIP | NOBLOODY
 	H.mutations.Add(TK)
 	H.mutations.Add(REMOTE_TALK)
 	H.update_mutations()
 	H.ventcrawler = TRUE
-	H.density = FALSE
 	H.verbs += /mob/living/carbon/human/proc/toggle_sphere
 	H.verbs += /mob/living/carbon/human/proc/metal_bend
 	H.verbs += /mob/living/carbon/human/proc/toggle_telepathy_hear
@@ -1242,12 +1243,11 @@
 /datum/species/tycheon/on_loose(mob/living/carbon/human/H)
 	H.status_flags |= MOB_STATUS_FLAGS_DEFAULT
 	H.pass_flags &= ~(PASSTABLE | PASSMOB | PASSGRILLE | PASSBLOB | PASSCRAWL)
-	H.flags &= ~(NOSLIP|NOBLOODY)
+	H.flags &= ~(NOSLIP | NOBLOODY)
 	H.mutations.Remove(TK)
 	H.mutations.Remove(REMOTE_TALK)
 	H.update_mutations()
 	H.ventcrawler = FALSE
-	H.density = TRUE
 	H.verbs -= /mob/living/carbon/human/proc/toggle_sphere
 	H.verbs -= /mob/living/carbon/human/proc/metal_bend
 	H.verbs -= /mob/living/carbon/human/proc/toggle_telepathy_hear
@@ -1264,7 +1264,7 @@
 		if(H.metal_bend_icon)
 			H.client.screen -= H.metal_bend_icon
 	QDEL_NULL(H.toggle_sphere_icon)
-	QDEL_NULL(H.toggle_sphere_icon)
+	QDEL_NULL(H.metal_bend_icon)
 	return ..()
 
 /mob/proc/telepathy_hear(verb, message, source) // Makes all those nosy telepathics hear what we hear. Also, please do see game\sound.dm, I have a little bootleg hidden there for you ;).
@@ -1341,14 +1341,31 @@
 	else
 		say = sanitize(say)
 
+	var/dist = get_dist(src, M)
+	if(!M.do_telepathy(dist))
+		return
+
+	if(dist > MAX_TELEPATHY_RANGE)
+		stars(say, dist)
+
 	if((REMOTE_TALK in M.mutations))
 		to_chat(M, "<span class='notice'>You hear <b>[real_name]'s voice</b>: [say]</span>")
 	else
 		to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room: [say]</span>")
 	to_chat(src, "<span class='notice'>You project your mind into <b>[M.real_name]</b>: [say]</span>")
 
+	var/speaker_name = name
+	var/to_name = M
+	var/mes = say
 	for(var/mob/dead/observer/G in dead_mob_list)
-		to_chat(G, "<span class='italics'>Telepathic message from <b>[src]</b> to <b>[M]</b>: [say]</span>")
+		var/track = "<a href='byond://?src=\ref[G];track=\ref[src]'>(F)</a>"
+		if(speaker_name != real_name)
+			speaker_name = "[real_name] ([speaker_name])"
+		if(to_name != M.real_name)
+			to_name = "[M.real_name] ([to_name])"
+		if((client.prefs.chat_toggles & CHAT_GHOSTEARS) && src in view(G))
+			mes = "<b>[say]</b>"
+		to_chat(G, "<span class='italics'>Telepathic message from <b>[speaker_name]</b> to <b>[to_name]</b>[track]: [mes]</span>")
 
 	log_say("Telepathic message from [key_name(src)] to [key_name(M)]: [say]")
 

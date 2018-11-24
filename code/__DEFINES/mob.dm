@@ -124,4 +124,4 @@
 #define MAX_FECES_COUNT 5
 
 // Telepathy, but for dummies.
-#define MAX_TELEPATHY_RANGE 20
+#define MAX_TELEPATHY_RANGE 30

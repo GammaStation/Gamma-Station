@@ -115,6 +115,10 @@ var/const/tk_maxrange = 15
 	var/atom/movable/focus = null
 	var/mob/living/host = null
 
+/obj/item/tk_grab/Destroy()
+	focus.is_focused = FALSE
+	return ..()
+
 /obj/item/tk_grab/dropped(mob/user)
 	if(focus && user && loc != user && loc != user.loc) // drop_item() gets called when you tk-attack a table/closet with an item
 		if(focus.Adjacent(loc))
@@ -255,7 +259,10 @@ var/const/tk_maxrange = 15
 /obj/item/tk_grab/proc/focus_object(atom/movable/target, mob/living/user)
 	if(!istype(target, /atom/movable))
 		return
+	if(focus)
+		focus.is_focused = FALSE
 	focus = target
+	focus.is_focused = TRUE
 	apply_focus_overlay()
 
 /obj/item/tk_grab/proc/apply_focus_overlay()
