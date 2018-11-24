@@ -10,6 +10,19 @@
 	anchored = TRUE
 	var/is_payed = FALSE
 	var/datum/mind/occupant_mind
+	var/list/datum/all_code_roles = list(
+	"Barber",
+	"Bartender",
+	"Botanist",
+	"Librarian",
+	"Quartermaster",
+	"Cargo Technician",
+	"Recycler",
+	"Chaplain",
+	"Test Subject",
+	"Clown",
+	"Mime"
+	)
 
 /obj/machinery/gamepod/atom_init()
 	. = ..()
@@ -133,6 +146,10 @@
 			to_chat(usr, "<span class='danger'>You're too busy getting your life sucked out of you.</span>")
 			return
 
+	if(!code_role_check())
+		to_chat(usr, "<span class='danger'>You can play only in green code.</span>")
+		return
+
 	close_machine(H)
 	icon_state = "gamepod"
 	create_body()
@@ -216,6 +233,15 @@
 		icon_state = "gamepodc_on"
 	else
 		icon_state = "gamepodc_off"
+
+/obj/machinery/gamepod/proc/code_role_check()
+	if(security_level != SEC_LEVEL_GREEN)
+		if(is_type_in_list(occupant_mind.assigned_role, all_code_roles))
+			return TRUE
+		else
+			return FALSE
+	else
+		return TRUE
 
 #undef RESPAWNS_FOR_PAYMENT
 #undef PRICE_PER_USE
