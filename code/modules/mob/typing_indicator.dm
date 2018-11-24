@@ -2,12 +2,12 @@
 
 /mob/var/obj/effect/decal/typing_indicator
 
-/mob/proc/set_typing_indicator(state)
+/mob/proc/set_typing_indicator(state, indi_icon = "typing")
 
 	if(!typing_indicator)
 		typing_indicator = new
 		typing_indicator.icon = 'icons/mob/talk.dmi'
-		typing_indicator.icon_state = "typing"
+		typing_indicator.icon_state = indi_icon
 		typing_indicator.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 
 	if(client && !stat)

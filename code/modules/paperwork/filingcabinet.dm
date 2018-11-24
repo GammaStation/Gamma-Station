@@ -146,7 +146,3 @@
 /obj/structure/filingcabinet/medical/attack_hand()
 	populate()
 	..()
-
-/obj/structure/filingcabinet/medical/attack_tk()
-	populate()
-	..()

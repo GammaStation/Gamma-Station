@@ -24,7 +24,10 @@
 	if(ismob(A) && species.flags[IS_IMMATERIAL])
 		return
 
-	A.attack_hand(src)
+	if(ishuman(A))
+		A.attack_hand(src)
+	else
+		A.attack_hand(src)
 
 /atom/proc/attack_hand(mob/user)
 	return
@@ -43,11 +46,11 @@
 /*
 	Monkeys
 */
-/mob/living/carbon/monkey/UnarmedAttack(atom/A)
+/mob/living/carbon/monkey/UnarmedAttack(atom/A, force_user = null)
 	..()
 	A.attack_paw(src)
 
-/atom/proc/attack_paw(mob/user)
+/atom/proc/attack_paw(mob/user, force_user = null)
 	return
 
 /*
@@ -80,11 +83,11 @@
 	Slimes
 	Nothing happening here
 */
-/mob/living/carbon/slime/UnarmedAttack(atom/A)
+/mob/living/carbon/slime/UnarmedAttack(atom/A, force_user = null)
 	..()
 	A.attack_slime(src)
 
-/atom/proc/attack_slime(mob/user)
+/atom/proc/attack_slime(mob/user, force_user = null)
 	return
 
 /*

@@ -83,8 +83,8 @@ RCD
 
 
 /obj/item/weapon/rcd/afterattack(atom/A, mob/user, proximity)
-	if(!proximity)
-		return
+	if(!Adjacent(A))
+		return FALSE
 	if(disabled && !isrobot(user))
 		return 0
 	if(istype(A, /area/shuttle)||istype(A,/turf/space/transit))

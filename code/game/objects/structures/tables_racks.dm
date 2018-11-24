@@ -354,8 +354,6 @@
 	user.drop_item()
 	if (O.loc != src.loc)
 		step(O, get_dir(O, src))
-	return
-
 
 /obj/structure/table/attackby(obj/item/W, mob/user, params)
 	. = TRUE
