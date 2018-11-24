@@ -1221,11 +1221,11 @@
 	H.flags |= NOSLIP | NOBLOODY
 	H.mutations.Add(TK)
 	H.mutations.Add(REMOTE_TALK)
-	H.update_mutations()
 	H.ventcrawler = TRUE
 	H.verbs += /mob/living/carbon/human/proc/toggle_sphere
 	H.verbs += /mob/living/carbon/human/proc/metal_bend
 	H.verbs += /mob/living/carbon/human/proc/toggle_telepathy_hear
+	H.verbs += /mob/living/carbon/human/proc/quick_telepathy_say
 	H.verbs += /mob/living/carbon/human/proc/force_telepathy_say
 	H.verbs += /mob/living/carbon/human/proc/breath_from_tank
 	H.toggle_sphere_icon = new /obj/screen/tycheon_ability/toggle_sphere(null, H)
@@ -1246,11 +1246,11 @@
 	H.flags &= ~(NOSLIP | NOBLOODY)
 	H.mutations.Remove(TK)
 	H.mutations.Remove(REMOTE_TALK)
-	H.update_mutations()
 	H.ventcrawler = FALSE
 	H.verbs -= /mob/living/carbon/human/proc/toggle_sphere
 	H.verbs -= /mob/living/carbon/human/proc/metal_bend
 	H.verbs -= /mob/living/carbon/human/proc/toggle_telepathy_hear
+	H.verbs -= /mob/living/carbon/human/proc/quick_telepathy_say
 	H.verbs -= /mob/living/carbon/human/proc/force_telepathy_say
 	H.verbs -= /mob/living/carbon/human/proc/breath_from_tank
 	if(H.hud_used)
@@ -1267,7 +1267,7 @@
 	QDEL_NULL(H.metal_bend_icon)
 	return ..()
 
-/mob/proc/telepathy_hear(verb, message, source) // Makes all those nosy telepathics hear what we hear. Also, please do see game\sound.dm, I have a little bootleg hidden there for you ;).
+/mob/proc/telepathy_hear(verb, message, source, datum/language/language = null) // Makes all those nosy telepathics hear what we hear. Also, please do see game\sound.dm, I have a little bootleg hidden there for you ;).
 	for(var/mob/M in remote_hearers)
 		var/dist = get_dist(src, M)
 		if(source)
@@ -1283,9 +1283,14 @@
 			stars(message, star_chance)
 		if(prob(MAX_TELEPATHY_RANGE - dist)) // The further they are, the lesser the chance to understand something.
 			to_chat(src, "<span class='warning'>You feel as if somebody is eavesdropping on you.</span>")
-		to_chat(M, "<span class='notice'><span class='bold'>[src]</span> [verb]:</span> [message]")
+		var/part_a = ""
+		var/part_b = ""
+		if(language)
+			part_a = language.colour
+			part_b = "</span>"
+		to_chat(M, "<span class='notice'><span class='bold'>[src]</span> [verb]:</span> [part_a][message][part_b]")
 
-/mob/living/carbon/human/proc/toggle_telepathy_hear(mob/M in view() + remote_hearing) // Makes us hear what they hear.
+/mob/living/carbon/human/proc/toggle_telepathy_hear((mob/M in (view() + remote_hearing))) // Makes us hear what they hear.
 	set name = "Toggle Telepathy Hear"
 	set desc = "Hear anything this mob hears."
 	set category = "Tycheon"
@@ -1316,30 +1321,49 @@
 		M.remote_hearers += src
 		to_chat(src, "<span class='notice'>You start telepathically eavesdropping on [M]")
 
-/mob/living/carbon/human/proc/force_telepathy_say(mob/living/M in view()) // Makes them hear what we want.
-	set name = "Project Mind"
-	set desc = "Make them hear what you desire."
+/mob/living/carbon/human/proc/quick_telepathy_say(mob/M in hearers())
+	set name = "Project Mind(Q)"
+	set desc = "Make them hear what you desire. Quickly."
 	set category = "Tycheon"
+	set hidden = TRUE
+
+	if(!M.client || M.stat)
+		to_chat(src, "<span class='notice'>[M.real_name] doesn't have a mind to project to.</span>")
+		return
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(H.species.flags[IS_SYNTHETIC])
-			to_chat(src, "<span class='notice'>They don't have a mind to project to.</span>")
+			to_chat(src, "<span class='notice'>[H.real_name] doesn't have a mind to project to.</span>")
 			return
 
 	if(isrobot(M))
-		to_chat(src, "<span class='notice'>They don't have a mind to project to.</span>")
+		to_chat(src, "<span class='notice'>[M.real_name] doesn't have a mind to project to.</span>")
 		return
 
-	if(!M.client || M.stat)
-		to_chat(src, "<span class='notice'>They don't have a mind to project to.</span>")
-		return
+	var/image/I = image('icons/mob/talk.dmi', src, "tele_typing[rand(1,6)]", MOB_LAYER + 1)
+	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+	INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, I, list(client, M.client), 3 SECONDS)
 
-	var/say = input ("What do you wish to say")
+	var/say = input("What do you wish to say", "Telepathic Message")
 	if(!say)
 		return
 	else
 		say = sanitize(say)
+		if(iszombie(src)) // In case of nearing feature.
+			say = zombie_talk(say)
+
+	var/datum/language/speaking = parse_language(say, M) // We can talk in languages they know, but we don't.
+	if(speaking)
+		say = copytext(say, 2 + length(speaking.key))
+
+	if(!M.say_understands(src, speaking) && speaking)
+		say = speaking.scramble(say)
+
+	if(speaking)
+		say = speaking.format_message(say) //, verb) Verb is actually unused.
+	else
+		say = capitalize(say)
 
 	var/dist = get_dist(src, M)
 	if(!M.do_telepathy(dist))
@@ -1354,25 +1378,127 @@
 		to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room: [say]</span>")
 	to_chat(src, "<span class='notice'>You project your mind into <b>[M.real_name]</b>: [say]</span>")
 
-	var/speaker_name = name
-	var/to_name = M
 	var/mes = say
 	for(var/mob/dead/observer/G in dead_mob_list)
 		var/track = "<a href='byond://?src=\ref[G];track=\ref[src]'>(F)</a>"
-		if(speaker_name != real_name)
-			speaker_name = "[real_name] ([speaker_name])"
-		if(to_name != M.real_name)
-			to_name = "[M.real_name] ([to_name])"
 		if((client.prefs.chat_toggles & CHAT_GHOSTEARS) && src in view(G))
 			mes = "<b>[say]</b>"
-		to_chat(G, "<span class='italics'>Telepathic message from <b>[speaker_name]</b> to <b>[to_name]</b>[track]: [mes]</span>")
+		to_chat(G, "<span class='italics'>Telepathic message from <b>[real_name]</b>[track]: [mes]</span>")
 
-	log_say("Telepathic message from [key_name(src)] to [key_name(M)]: [say]")
+	log_say("Telepathic message from [key_name(src)]: [say]")
+
+/mob/living/carbon/human/proc/force_telepathy_say() // Makes them hear what we want.
+	set name = "Project Mind"
+	set desc = "Make them hear what you desire."
+	set category = "Tycheon"
+
+	set waitfor = FALSE
+
+	var/quick_pick = null
+	var/list/chosen = list()
+	if(!quick_pick)
+		var/list/choices = remote_hearing.Copy()
+		for(var/mob/M in living_mob_list)
+			if(M in hearers())
+				choices |= M
+			else if(REMOTE_TALK in M.mutations)
+				choices |= M
+
+		while(chosen.len < 3)
+			var/input_ = input("Choose recipients", "Telepathic Message") as null|anything in choices
+			if(!input_)
+				break
+			if(input_ in chosen)
+				chosen -= input_
+				var/image/I = image('icons/mob/talk.dmi', input_, "telepathy_typed_to_not", MOB_LAYER + 1)
+				I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+				INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, I, list(client), 3 SECONDS)
+			else
+				chosen += input_
+				var/image/I = image('icons/mob/talk.dmi', input_, "telepathy_typed_to", MOB_LAYER + 1)
+				I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+				INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, I, list(client), 3 SECONDS)
+	else
+		chosen += quick_pick
+
+	var/list/pos_rec = chosen.Copy() + list(src)
+	var/list/bubble_recipients = list()
+	for(var/mob/M in pos_rec)
+		if(!M.client || M.stat)
+			to_chat(src, "<span class='notice'>[M.real_name] doesn't have a mind to project to.</span>")
+			continue
+
+		if(ishuman(M))
+			var/mob/living/carbon/human/H = M
+			if(H.species.flags[IS_SYNTHETIC])
+				to_chat(src, "<span class='notice'>[H.real_name] doesn't have a mind to project to.</span>")
+				continue
+
+		if(isrobot(M))
+			to_chat(src, "<span class='notice'>[M.real_name] doesn't have a mind to project to.</span>")
+			continue
+
+		bubble_recipients += M.client
+
+	if(!chosen.len)
+		return
+
+	var/image/I = image('icons/mob/talk.dmi', src, "tele_typing[rand(1,6)]", MOB_LAYER + 1)
+	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+	INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, I, bubble_recipients, 3 SECONDS)
+
+	var/say = input("What do you wish to say", "Telepathic Message")
+	if(!say)
+		return
+	else
+		say = sanitize(say)
+		if(iszombie(src)) // In case of nearing feature.
+			say = zombie_talk(say)
+
+	for(var/mob/M in chosen)
+		if(!M)
+			continue
+
+		var/datum/language/speaking = parse_language(say, M) // We can talk in languages they know, but we don't.
+		if(speaking)
+			say = copytext(say, 2 + length(speaking.key))
+
+		if(!M.say_understands(src, speaking) && speaking)
+			say = speaking.scramble(say)
+
+		if(speaking)
+			say = speaking.format_message(say) //, verb) Verb is actually unused.
+		else
+			say = capitalize(say)
+
+		var/dist = get_dist(src, M)
+		if(!M.do_telepathy(dist))
+			return
+
+		if(dist > MAX_TELEPATHY_RANGE)
+			stars(say, dist)
+
+		if((REMOTE_TALK in M.mutations))
+			to_chat(M, "<span class='notice'>You hear <b>[real_name]'s voice</b>: [say]</span>")
+		else
+			to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room: [say]</span>")
+		to_chat(src, "<span class='notice'>You project your mind into <b>[M.real_name]</b>: [say]</span>")
+
+	var/mes = say
+	for(var/mob/dead/observer/G in dead_mob_list)
+		var/track = "<a href='byond://?src=\ref[G];track=\ref[src]'>(F)</a>"
+		if((client.prefs.chat_toggles & CHAT_GHOSTEARS) && src in view(G))
+			mes = "<b>[say]</b>"
+		to_chat(G, "<span class='italics'>Telepathic message from <b>[real_name]</b>[track]: [mes]</span>")
+
+	log_say("Telepathic message from [key_name(src)]: [say]")
 
 /mob/living/carbon/human/proc/breath_from_tank(obj/item/weapon/tank/T in view(1, src))
 	set name = "Inhale From"
 	set desc = "Inhales a portion of gas from tank."
 	set category = "Tycheon"
+
+	set waitfor = FALSE
 
 	if(!istype(T))
 		return

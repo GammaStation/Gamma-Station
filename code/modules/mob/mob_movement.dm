@@ -3,10 +3,10 @@
 		return 1
 	if(istype(mover, /obj/item/projectile) || mover.throwing)
 		return (!density || lying)
-	if(mover.checkpass(PASSMOB))
+	if(mover.checkpass(PASSMOB) || checkpass(PASSMOB))
 		return 1
 	if(buckled == mover)
-		return 1
+		return TRUE
 	if(ismob(mover))
 		var/mob/moving_mob = mover
 		if ((other_mobs && moving_mob.other_mobs))

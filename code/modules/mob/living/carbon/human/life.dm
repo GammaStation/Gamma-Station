@@ -966,8 +966,9 @@
 		var/mix_color = mix_color_from_reagents(reagents.reagent_list)
 		if(!istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
 			var/list/range_mobs = orange(1, src)
-			for(var/mob/living/carbon/human/H in range_mobs) // Gas mixing color, AND reagents with each other.
-				if(H.get_species() == TYCHEON)
+			for(var/mob/living/carbon/C in range_mobs) // Gas mixing color, AND reagents with each other.
+				if(C.get_species() == TYCHEON && ishuman(C))
+					var/mob/living/carbon/human/H = C
 					for(var/datum/reagent/R in reagents.reagent_list) // They split it all by half, since they are gas and pass it to each other.
 						if(reagents.get_reagent_amount(R.id) > H.reagents.get_reagent_amount(R.id))
 							H.reagents.add_reagent(R.id, 1, R.data)
@@ -977,19 +978,22 @@
 						mix_color = other_tycheon_color
 				else
 					var/block = FALSE
-					if(wear_mask)
-						if(wear_mask.flags & BLOCK_GAS_SMOKE_EFFECT)
+					if(C.wear_mask)
+						if(C.wear_mask.flags & BLOCK_GAS_SMOKE_EFFECT)
 							block = TRUE
-					if(glasses)
-						if(glasses.flags & BLOCK_GAS_SMOKE_EFFECT)
-							block = TRUE
-					if(head)
-						if(head.flags & BLOCK_GAS_SMOKE_EFFECT)
-							block = TRUE
+					if(ishuman(C))
+						var/mob/living/carbon/human/H = C
+						if(H.glasses)
+							if(H.glasses.flags & BLOCK_GAS_SMOKE_EFFECT)
+								block = TRUE
+						if(H.head)
+							if(H.head.flags & BLOCK_GAS_SMOKE_EFFECT)
+								block = TRUE
 					if(!block)
 						for(var/datum/reagent/R in reagents.reagent_list) // They just give everything they have.
-							H.reagents.add_reagent(R.id, 1, R.data)
+							C.reagents.add_reagent(R.id, 1, R.data)
 							reagents.remove_reagent(R.id, 1)
+
 		if((mix_color != 0) && owner_color != mix_color) // Why change our color if we already achieved the result.
 			var/redcolor = hex2num(copytext(mix_color, 2, 4)) // "Complex" math. Trust me, it works.
 			var/greencolor = hex2num(copytext(mix_color, 4, 6))

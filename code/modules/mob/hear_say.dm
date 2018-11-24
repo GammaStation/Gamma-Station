@@ -70,7 +70,7 @@
 
 		to_chat(src, message)
 
-		telepathy_hear("has heard", message, speaker)
+		telepathy_hear("has heard", message, speaker, language)
 
 		if (speech_sound && (get_dist(speaker, src) <= world.view && src.z == speaker.z))
 			var/turf/source = speaker? get_turf(speaker) : get_turf(src)
@@ -195,7 +195,7 @@
 		to_chat(src, "[part_a][track][part_b][formatted]</span></span>")
 	else
 		to_chat(src, "[part_a][speaker_name][part_b][formatted]</span></span>")
-		telepathy_hear("has heard", "<b>[part_a][speaker_name]</span></span></b> [formatted]", speaker)
+		telepathy_hear("has heard", "<b>[part_a][speaker_name]</span></span></b> [formatted]", speaker, language)
 
 /mob/proc/hear_signlang(message, verb = "gestures", datum/language/language, mob/speaker = null)
 	if(!client)
