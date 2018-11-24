@@ -140,3 +140,10 @@
 #define ui_ian_head    "CENTER-3:14,SOUTH:5"
 #define ui_stamina     "EAST-1:28,CENTER:5"
 #define ui_ian_pselect "EAST-4:22,SOUTH:5"
+
+//Vrhuman
+#define ui_vrhuman_shop "WEST+2:-2,SOUTH+4:20"
+#define ui_vrhuman_exit "WEST+1:-2,SOUTH+4:20"
+#define ui_vrhuman_main "WEST:-2,SOUTH+4:20"
+#define ui_vrhuman_cleanup "WEST+3:-2,SOUTH+4:20"
+#define ui_vrhuman_dienow "WEST+4:-2,SOUTH+4:20"
