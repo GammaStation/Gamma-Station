@@ -101,8 +101,8 @@ var/const/FALLOFF_SOUNDS = 0.5
 		var/dist = get_dist(src, M)
 		if(dist > MAX_TELEPATHY_RANGE)
 			S.volume = max(S.volume - (dist - MAX_TELEPATHY_RANGE) * 2, 0)
-		if(M.remote_listen_count > 3)
-			S.volume = max(S.volume - (M.remote_listen_count * 2), 0)
+		if(M.remote_hearing.len > 3)
+			S.volume = max(S.volume - (M.remote_hearing.len * 2), 0)
 		if(S.volume <= 0)
 			continue // No volume - no sound.
  		M << S

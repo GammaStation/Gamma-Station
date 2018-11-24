@@ -3,6 +3,12 @@
 	dead_mob_list -= src
 	living_mob_list -= src
 	ghostize(bancheck = TRUE)
+
+	for(var/mob/hearer in remote_hearing)
+		hearer.remote_hearers -= src
+	for(var/mob/hearing in remote_hearers)
+		hearing.remote_hearing -= src
+
 	return ..()
 
 /mob/atom_init()

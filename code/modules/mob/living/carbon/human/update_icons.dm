@@ -527,6 +527,7 @@ Please contact me on #coderbus IRC. ~Carn x
 	update_bandage()
 	for(var/obj/item/organ/external/BP in bodyparts)
 		UpdateDamageIcon(BP)
+
 	update_icons()
 	update_transform()
 	//Hud Stuff

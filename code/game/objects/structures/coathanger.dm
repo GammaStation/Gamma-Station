@@ -10,19 +10,19 @@
 /obj/structure/coatrack/attack_hand(mob/user)
 	if(coat)
 		user.visible_message("[user] takes [coat] off \the [src].", "You take [coat] off the \the [src]")
-		if(!user.put_in_active_hand(coat))
+		if(!user.put_in_hands(coat))
 			coat.loc = get_turf(user)
 		coat = null
 		update_icon()
 		return
 	if(hat)
 		user.visible_message("[user] takes [hat] off \the [src].", "You take [hat] off the \the [src]")
-		if(!user.put_in_active_hand(hat))
+		if(!user.put_in_hands(hat))
 			hat.loc = get_turf(user)
 		hat = null
 		update_icon()
 		return
-	
+
 
 /obj/structure/coatrack/attackby(obj/item/weapon/W, mob/user)
 	var/can_hang = 0
@@ -70,10 +70,10 @@
 
 /obj/structure/coatrack/update_icon()
 	overlays.Cut()
-	
+
 	if (hat) icon_state = "coatrack1"
 	else icon_state = "coatrack0"
-	
+
 	if (istype(coat, /obj/item/clothing/suit/storage/labcoat))
 		overlays += image(icon, icon_state = "coat_lab")
 	if (istype(coat, /obj/item/clothing/suit/storage/labcoat/cmo))

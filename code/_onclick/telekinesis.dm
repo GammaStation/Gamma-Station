@@ -130,13 +130,13 @@ var/const/tk_maxrange = 15
 
 /obj/item/tk_grab/attack_self(mob/user)
 	if(focus && !QDELING(focus))
-		apply_focus_overlay()
 		focus.attack_self_tk(user)
+		apply_focus_overlay()
 
 /obj/item/tk_grab/attack_hand(mob/user)
 	if(focus && !QDELING(focus))
-		apply_focus_overlay()
 		focus.attack_hand(user)
+		apply_focus_overlay()
 
 // Since we ourselves can telekinetically do this, this is useless.
 /*
@@ -150,9 +150,7 @@ var/const/tk_maxrange = 15
 */
 
 /obj/item/tk_grab/afterattack(atom/target, mob/living/user, proximity, params)//TODO: go over this
-	if(!target || !user)
-		return
-	if(last_throw + 5 > world.time)
+	if(last_throw > world.time)
 		return
 	if(!host || host != user)
 		qdel(src)
@@ -232,7 +230,7 @@ var/const/tk_maxrange = 15
 					if(I)
 						I.afterattack(target, M, 0)
 				M.zone_sel = old_zone_sel
-		last_throw = world.time // So we don't allow them to spam.
+		last_throw = world.time + 5// So we don't allow them to spam.
 		return
 
 	else if(istype(focus, /obj/item))
@@ -244,7 +242,7 @@ var/const/tk_maxrange = 15
 					I.afterattack(target, user, 1)
 			else
 				I.afterattack(target, user, 0)
-			last_throw = world.time // So we don't allow them to spam.
+			last_throw = world.time + 5 // So we don't allow them to spam.
 			return
 
 	if(!focus.anchored)
@@ -258,12 +256,13 @@ var/const/tk_maxrange = 15
 	if(!istype(target, /atom/movable))
 		return
 	focus = target
-	update_icon()
 	apply_focus_overlay()
 
 /obj/item/tk_grab/proc/apply_focus_overlay()
-	if(!focus)
+	if(!focus || QDELING(focus))
+		qdel(src)
 		return
+	update_icon()
 	var/obj/effect/overlay/O = new /obj/effect/overlay(get_turf(focus))
 	O.name = "sparkles"
 	O.anchored = TRUE
@@ -287,9 +286,12 @@ var/const/tk_maxrange = 15
 
 /obj/item/tk_grab/update_icon()
 	overlays.Cut()
-	if(focus && focus.icon && focus.icon_state)
-		overlays += icon(focus.icon,focus.icon_state)
-	return
+	if(focus)
+		for(var/un in focus.underlays)
+			overlays += un
+		overlays += icon(focus.icon, focus.icon_state)
+		for(var/ov in focus.overlays)
+			overlays += ov
 
 /*Not quite done likely needs to use something thats not get_step_to
 	proc/check_path()

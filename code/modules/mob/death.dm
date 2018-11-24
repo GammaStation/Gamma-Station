@@ -58,5 +58,11 @@
 
 	living_mob_list -= src
 	dead_mob_list += src
+
+	for(var/mob/hearer in remote_hearing)
+		hearer.remote_hearers -= src
+	for(var/mob/hearing in remote_hearers)
+		hearing.remote_hearing -= src
+
 	clear_fullscreens()
-	return ..(gibbed)
+	return ..(gibbed) // what the fuck do we return we just announced the proc. ~Luduk.

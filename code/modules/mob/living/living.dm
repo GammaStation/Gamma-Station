@@ -65,6 +65,11 @@
 			if(A.density)
 				can_switch = FALSE
 				break
+		if(ishuman(M))
+			var/mob/living/carbon/human/H = M
+			if(H.species.flags[IS_IMMATERIAL])
+				can_switch = FALSE
+
 		if(can_switch && get_dist(M, src) <= 1)
 			now_pushing = 1
 			//TODO: Make this use Move(). we're pretty much recreating it here.

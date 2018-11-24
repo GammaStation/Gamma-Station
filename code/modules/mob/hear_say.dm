@@ -195,17 +195,16 @@
 		to_chat(src, "[part_a][track][part_b][formatted]</span></span>")
 	else
 		to_chat(src, "[part_a][speaker_name][part_b][formatted]</span></span>")
-
-	telepathy_hear("has heard", "[speaker_name][formatted]", speaker)
+		telepathy_hear("has heard", "<b>[part_a][speaker_name]</span></span></b> [formatted]", speaker)
 
 /mob/proc/hear_signlang(message, verb = "gestures", datum/language/language, mob/speaker = null)
 	if(!client)
 		return
 
 	if(say_understands(speaker, language))
-		message = "<B>[src]</B> [verb], \"[language.format_message(message)]\""
+		message = "<B>[speaker]</B> [verb], \"[language.format_message(message)]\""
 	else
-		message = "<B>[src]</B> [verb]."
+		message = "<B>[speaker]</B> [verb]."
 
 	if(src.status_flags & PASSEMOTES)
 		for(var/obj/item/weapon/holder/H in src.contents)

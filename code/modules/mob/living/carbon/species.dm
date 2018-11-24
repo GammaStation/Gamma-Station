@@ -1069,7 +1069,11 @@
 	return R.on_tycheon_digest(M)
 
 /datum/species/tycheon/on_emp_act(mob/living/carbon/human/H, emp_severity)
-	H.heal_overall_damage(emp_severity, emp_severity)
+	switch(emp_severity)
+		if(1.0)
+			H.heal_overall_damage(10.0, 10.0)
+		if(2.0)
+			H.heal_overall_damage(1.0, 1.0)
 
 /datum/species/tycheon/handle_death(mob/living/carbon/human/H)
 	new /obj/item/weapon/reagent_containers/food/snacks/tycheon_core(H.loc)
@@ -1210,13 +1214,14 @@
 	..()
 
 /datum/species/tycheon/on_gain(mob/living/carbon/human/H)
-	H.status_flags &= ~(CANSTUN | CANWEAKEN | CANPARALYSE)
+	H.status_flags &= ~(CANSTUN | CANWEAKEN | CANPARALYSE | CANPUSH)
 	H.pass_flags |= PASSTABLE | PASSMOB | PASSGRILLE | PASSBLOB | PASSCRAWL
-	H.flags |= NOSLIP
+	H.flags |= NOSLIP|NOBLOODY
 	H.mutations.Add(TK)
 	H.mutations.Add(REMOTE_TALK)
 	H.update_mutations()
 	H.ventcrawler = TRUE
+	H.density = FALSE
 	H.verbs += /mob/living/carbon/human/proc/toggle_sphere
 	H.verbs += /mob/living/carbon/human/proc/metal_bend
 	H.verbs += /mob/living/carbon/human/proc/toggle_telepathy_hear
@@ -1237,11 +1242,12 @@
 /datum/species/tycheon/on_loose(mob/living/carbon/human/H)
 	H.status_flags |= MOB_STATUS_FLAGS_DEFAULT
 	H.pass_flags &= ~(PASSTABLE | PASSMOB | PASSGRILLE | PASSBLOB | PASSCRAWL)
-	H.flags &= ~NOSLIP
+	H.flags &= ~(NOSLIP|NOBLOODY)
 	H.mutations.Remove(TK)
 	H.mutations.Remove(REMOTE_TALK)
 	H.update_mutations()
 	H.ventcrawler = FALSE
+	H.density = TRUE
 	H.verbs -= /mob/living/carbon/human/proc/toggle_sphere
 	H.verbs -= /mob/living/carbon/human/proc/metal_bend
 	H.verbs -= /mob/living/carbon/human/proc/toggle_telepathy_hear
@@ -1266,21 +1272,20 @@
 		var/dist = get_dist(src, M)
 		if(source)
 			dist = get_dist(src, source)
-		world.log << "[dist]"
 		if(!M.do_telepathy(dist))
 			continue
 		var/star_chance = 0 // A chance to censore some symbols.
 		if(dist > MAX_TELEPATHY_RANGE)
 			star_chance += dist
-		if(M.remote_listen_count > 3)
-			star_chance += M.remote_listen_count * 5
+		if(M.remote_hearing.len > 3)
+			star_chance += M.remote_hearing.len * 5
 		if(star_chance)
 			stars(message, star_chance)
 		if(prob(MAX_TELEPATHY_RANGE - dist)) // The further they are, the lesser the chance to understand something.
 			to_chat(src, "<span class='warning'>You feel as if somebody is eavesdropping on you.</span>")
-		to_chat(M, "<span class='bold'>[src]</span> [verb]: [message]")
+		to_chat(M, "<span class='notice'><span class='bold'>[src]</span> [verb]:</span> [message]")
 
-/mob/living/carbon/human/proc/toggle_telepathy_hear(mob/M in view()) // Makes us hear what they hear.
+/mob/living/carbon/human/proc/toggle_telepathy_hear(mob/M in view() + remote_hearing) // Makes us hear what they hear.
 	set name = "Toggle Telepathy Hear"
 	set desc = "Hear anything this mob hears."
 	set category = "Tycheon"
@@ -1288,20 +1293,28 @@
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(H.species.flags[IS_SYNTHETIC])
-			to_chat(src, "<span class='notice'>They don't have a mind for us to eavesdrop on.</span>")
+			to_chat(src, "<span class='notice'>They don't have a mind to eavesdrop on.</span>")
 			return
+
+	if(isrobot(M))
+		to_chat(src, "<span class='notice'>They don't have a mind to eavesdrop on.</span>")
+		return
+
+	if(!M.client || M.stat)
+		to_chat(src, "<span class='notice'>They don't have a mind to eavesdrop on.</span>")
+		return
 
 	if(src in M.remote_hearers)
 		M.remote_hearers -= src
+		remote_hearing -= M
 		to_chat(src, "<span class='notice'>You stop telepathically eavesdropping on [M]")
-		remote_listen_count--
 	else
-		if(remote_listen_count > 3)
+		if(remote_hearing.len > 3)
 			if(alert("Listening to more than three people may distort your perception, continue?", "Yes", "No") != "Yes")
 				return
+		remote_hearing += M
 		M.remote_hearers += src
 		to_chat(src, "<span class='notice'>You start telepathically eavesdropping on [M]")
-		remote_listen_count++
 
 /mob/living/carbon/human/proc/force_telepathy_say(mob/living/M in view()) // Makes them hear what we want.
 	set name = "Project Mind"
@@ -1314,7 +1327,11 @@
 			to_chat(src, "<span class='notice'>They don't have a mind to project to.</span>")
 			return
 
-	if(!M.client)
+	if(isrobot(M))
+		to_chat(src, "<span class='notice'>They don't have a mind to project to.</span>")
+		return
+
+	if(!M.client || M.stat)
 		to_chat(src, "<span class='notice'>They don't have a mind to project to.</span>")
 		return
 
@@ -1351,13 +1368,13 @@
 	while(TRUE)
 		if(do_after(src, 5, TRUE, T))
 			var/datum/gas_mixture/removed = T.air_contents.remove(T.distribute_pressure)
-			if(removed.gas["phoron"] < 5)
-				breathing = FALSE
-				return
 			if(wear_suit)
 				breathing = FALSE
 				return
-			if(!regenerating_bodypart)
-				regenerating_bodypart = find_damaged_bodypart()
-			if(regenerating_bodypart)
-				regen_bodyparts(0, FALSE)
+			if(removed.gas["phoron"] > 5)
+				if(!regenerating_bodypart)
+					regenerating_bodypart = find_damaged_bodypart()
+				if(regenerating_bodypart)
+					regen_bodyparts(0, FALSE)
+			if(removed.gas["nitrogen"] > 0)
+				heal_overall_damage(removed.gas["nitrogen"], removed.gas["nitrogen"])
