@@ -139,6 +139,7 @@
 	var/list/mapobjs = list()
 
 	var/in_throw_mode = 0
+	var/next_throw = 0
 
 	var/coughedtime = null
 
@@ -234,4 +235,4 @@
 
 	// Telepathy for dummies.
 	var/list/remote_hearers = list() // A list of people that are listening to you.
-	var/remote_listen_count = 0      // A number of people you are listening to.
+	var/list/remote_hearing = list() // A list of people you are listening to.

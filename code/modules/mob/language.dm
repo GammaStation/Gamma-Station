@@ -169,7 +169,7 @@
 /datum/language/void
 	name = "The Gaping Maw"
 	desc = "A series of thoughts that reverberate through the minds of the Tycheon, and all other Tycheons around."
-	allowed_species = list(TYCHEON)
+	allowed_species = list()
 	colour = "void"
 	key = list("d", "â")
 	signlang_verb = list("pulses his core")

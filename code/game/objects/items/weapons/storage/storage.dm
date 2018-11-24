@@ -65,7 +65,7 @@
 				if("mouth")
 					if(!M.unEquip(src))
 						return
-					M.put_in_active_hand(src)
+					M.put_in_hands(src)
 			src.add_fingerprint(usr)
 			return
 	return

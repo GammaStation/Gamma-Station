@@ -337,9 +337,10 @@
 	if(QDELETED(src) || freeze_movement) // remove_from_mob() may remove DROPDEL items, so...
 		return
 
-	src.pickup(user)
-	add_fingerprint(user)
-	user.put_in_active_hand(src)
+	if(Adjacent(user)) // Telekinesis is a bitch.
+		pickup(user)
+		add_fingerprint(user)
+		user.put_in_hands(src)
 
 /obj/item/attack_paw(mob/user)
 	if (!user || anchored)

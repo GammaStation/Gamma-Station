@@ -383,6 +383,8 @@
 	src.throw_mode_off()
 	if(usr.stat || !target)
 		return
+	if(next_throw > world.time)
+		return
 	if(target.type == /obj/screen) return
 
 	var/atom/movable/item = src.get_active_hand()
@@ -415,6 +417,7 @@
 
 		newtonian_move(get_dir(target, src))
 
+		next_throw = world.time + 1 SECOND
 		item.throw_at(target, item.throw_range, item.throw_speed, src)
 
 		if(ishuman(src))

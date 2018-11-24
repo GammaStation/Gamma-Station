@@ -45,7 +45,7 @@
 	var/obj/item/weapon/screwdriver/power/s_drill = new
 	to_chat(user, "<span class='notice'>You attach the screw driver bit to [src].</span>")
 	qdel(src)
-	user.put_in_active_hand(s_drill)
+	user.put_in_hands(s_drill)
 
 /*
  * Screwdriver
@@ -111,7 +111,7 @@
 	var/obj/item/weapon/wrench/power/b_drill = new
 	to_chat(user, "<span class='notice'>You attach the bolt driver bit to [src].</span>")
 	qdel(src)
-	user.put_in_active_hand(b_drill)
+	user.put_in_hands(b_drill)
 /*
  * Wirecutters
  */
@@ -168,7 +168,7 @@
 	var/obj/item/weapon/crowbar/power/pryjaws = new
 	to_chat(user, "<span class='notice'>You attach the pry jaws to [src].</span>")
 	qdel(src)
-	user.put_in_active_hand(pryjaws)
+	user.put_in_hands(pryjaws)
 
 /*
  * Welding Tool
@@ -534,7 +534,7 @@ var/next_refuel_tick = 0
 	var/obj/item/weapon/wirecutters/power/cutjaws = new
 	to_chat(user, "<span class='notice'>You attach the cutting jaws to [src].</span>")
 	qdel(src)
-	user.put_in_active_hand(cutjaws)
+	user.put_in_hands(cutjaws)
 
 /obj/item/weapon/weldingtool/attack(mob/M, mob/user, def_zone)
 

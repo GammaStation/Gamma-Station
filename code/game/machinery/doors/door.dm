@@ -116,11 +116,6 @@
 /obj/machinery/door/attack_hand(mob/user)
 	return attackby(user, user)
 
-/obj/machinery/door/attack_tk(mob/user)
-	if(requiresID() && !allowed(null))
-		return
-	..()
-
 /obj/machinery/door/attack_ghost(mob/user)
 	if(IsAdminGhost(user))
 		if(density)

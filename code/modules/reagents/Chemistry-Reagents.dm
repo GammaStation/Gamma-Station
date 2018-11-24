@@ -1588,9 +1588,8 @@ datum/reagent/nicotine
 	restrict_species = list(IPC, DIONA)
 	var/alert_time = 0
 
-datum/reagent/nicotine/on_mob_life(mob/living/M)
-	if(!..())
-		return
+datum/reagent/nicotine/on_general_digest(mob/living/M)
+	..()
 	if(volume >= 0.85)
 		if(world.time > (alert_time + 90 SECONDS))
 			to_chat(M, pick("<span class='danger'>You feel dizzy and weak</span>"))
@@ -1605,7 +1604,6 @@ datum/reagent/nicotine/on_mob_life(mob/living/M)
 		if(prob(80))
 			M.adjustOxyLoss(1)
 			M.drowsyness = min(40, (M.drowsyness + 2))
-	return TRUE
 
 datum/reagent/ammonia
 	name = "Ammonia"
@@ -3291,12 +3289,8 @@ datum/reagent/toxin/acid/polyacid
 	taste_message = "liquid fire"
 	restrict_species = list(IPC, DIONA)
 
-/datum/reagent/consumable/ethanol/on_mob_life(mob/living/M, alien) // There's a multiplier for Skrells, which can't be inbuilt in any other reasonable way.
-	if(!..())
-		return FALSE
-
-	world.log << alien
-
+/datum/reagent/consumable/ethanol/on_general_digest(mob/living/M) // There's a multiplier for Skrells, which can't be inbuilt in any other reasonable way.
+	..()
 	M.nutrition += nutriment_factor
 
 	if(adj_drowsy)
@@ -3315,7 +3309,7 @@ datum/reagent/toxin/acid/polyacid
 		if(isnum(A.data))
 			d += A.data
 
-	if(alien && alien == SKRELL) //Skrell get very drunk very quickly.
+	if(M.get_species() == SKRELL) //Skrell get very drunk very quickly.
 		d *= 5
 
 	M.dizziness += dizzy_adj
@@ -3339,7 +3333,6 @@ datum/reagent/toxin/acid/polyacid
 			if(istype(IO))
 				IO.take_damage(0.1, 1)
 			H.adjustToxLoss(0.1)
-	return TRUE
 
 /datum/reagent/consumable/ethanol/reaction_obj(var/obj/O, var/volume)
 	if(istype(O,/obj/item/weapon/paper))
@@ -4619,7 +4612,8 @@ datum/reagent/toxin/acid/polyacid
 	data = 1
 	color = "#FFA8E4" // rgb: 255, 168, 228
 
-/datum/reagent/ectoplasm/on_mob_life(mob/living/M)
+/datum/reagent/ectoplasm/on_general_digest(mob/living/M)
+	..()
 	M.hallucination += 1
 	M.make_jittery(2)
 	switch(data)
@@ -4664,9 +4658,8 @@ datum/reagent/toxin/acid/polyacid
 	color = "#C80064" // rgb: 200,0, 100
 	custom_metabolism = REAGENTS_METABOLISM * 10
 
-/datum/reagent/water/unholywater/on_mob_life(mob/living/M)
-	if(!..())
-		return
+/datum/reagent/water/unholywater/on_general_digest(mob/living/M)
+	..()
 	if(iscultist(M) && prob(10))
 		switch(data)
 			if(1 to 30)
