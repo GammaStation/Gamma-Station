@@ -956,7 +956,7 @@ var/global/list/thunderfield_items = list()
 	cost = 3
 
 /datum/thunderfield_item/medkit
-	name = "Combat belt"
+	name = "Combat medkit"
 	item = /obj/item/weapon/storage/firstaid/small_firstaid_kit/combat
 	cost = 4
 
@@ -970,11 +970,6 @@ var/global/list/thunderfield_items = list()
 	item = /obj/item/asteroid/hivelord_core
 	cost = 10
 
-/datum/thunderfield_item/hivelordcore
-	name = "Hivelord core"
-	item = /obj/item/asteroid/hivelord_core
-	cost = 10
-
 /datum/thunderfield_item/shield
 	name = "Riot shield"
 	item = /obj/item/weapon/shield/riot
@@ -982,7 +977,7 @@ var/global/list/thunderfield_items = list()
 
 /datum/thunderfield_item/armor
 	name = "Armor"
-	item = /obj/item/clothing/suit/storage/flak/bulletproof
+	item = /obj/item/clothing/suit/armor/vest
 	cost = 5
 
 /datum/thunderfield_item/helmet
@@ -992,7 +987,7 @@ var/global/list/thunderfield_items = list()
 
 /datum/thunderfield_item/barmor
 	name = "Bulletproof armor"
-	item = /obj/item/clothing/suit/armor/vest
+	item = /obj/item/clothing/suit/storage/flak/bulletproof
 	cost = 8
 
 /datum/thunderfield_item/bhelmet

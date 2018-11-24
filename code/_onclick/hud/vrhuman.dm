@@ -32,19 +32,13 @@
 	V.vrhuman_cleanup.plane = ABOVE_HUD_PLANE
 	V.vrhuman_cleanup.alpha = 0
 
-	V.vrhuman_dienow = new /obj/screen/vrhuman_cleanup()
-	V.vrhuman_dienow.icon = 'icons/mob/screen_vrhuman.dmi'
-	V.vrhuman_dienow.icon_state = "vrui_dienow"
-	V.vrhuman_dienow.screen_loc = ui_vrhuman_dienow
-	V.vrhuman_dienow.layer = ABOVE_HUD_LAYER
-	V.vrhuman_dienow.plane = ABOVE_HUD_PLANE
-	V.vrhuman_dienow.alpha = 0
-
-	V.client.screen += list(V.vrhuman_shop, V.vrhuman_exit, V.vrhuman_main, V.vrhuman_cleanup, V.vrhuman_dienow)
+	V.client.screen += list(V.vrhuman_shop, V.vrhuman_exit, V.vrhuman_main, V.vrhuman_cleanup)
 	V.client.screen += mymob.client.void
 
 /obj/screen/vrhuman_shop/Click(location, control, params)
 	var/mob/living/carbon/human/vrhuman/V = usr
+	if(!V.vr_shop.vr_mind)
+		V.vr_shop.vr_mind = V.mind
 	V.vr_shop.trigger(V)
 
 /obj/screen/vrhuman_exit/Click(location, control, params)
@@ -54,12 +48,6 @@
 /obj/screen/vrhuman_cleanup/Click(location, control, params)
 	var/mob/living/carbon/human/vrhuman/V = usr
 	V.try_cleanup()
-
-/obj/screen/vrhuman_dienow/Click(location, control, params)
-	var/mob/living/carbon/human/vrhuman/V = usr
-	var/choice = alert("Are you sure?","Yes","No")
-	if(choice == "Yes")
-		V.death()
 
 /obj/screen/vrhuman_main
 	var/hidden = TRUE
@@ -71,12 +59,10 @@
 		V.vrhuman_exit.alpha = 0
 		V.vrhuman_shop.alpha = 0
 		V.vrhuman_cleanup.alpha = 0
-		V.vrhuman_dienow.alpha = 0
 		icon_state = "vrui_main"
 	else
 		V.vrhuman_exit.alpha = 255
 		V.vrhuman_shop.alpha = 255
 		V.vrhuman_cleanup.alpha = 255
-		V.vrhuman_dienow.alpha = 255
 		icon_state = "vrui_main_open"
 

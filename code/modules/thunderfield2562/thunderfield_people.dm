@@ -8,7 +8,6 @@
 	var/obj/screen/vrhuman_exit
 	var/obj/screen/vrhuman_main
 	var/obj/screen/vrhuman_cleanup
-	var/obj/screen/vrhuman_dienow
 	var/datum/mind/vr_mind
 	var/died = FALSE                                    //Look death() proc here, for comments
 	var/obj/item/device/uplink/hidden/vr_uplink/vr_shop //To buy stuff
