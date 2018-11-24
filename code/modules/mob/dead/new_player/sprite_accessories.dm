@@ -410,9 +410,10 @@
 //	name = "Side Part"
 //	icon_state = "hair_part"
 
-//datum/sprite_accessory/hair/braided
-//	name = "Braided"
-//	icon_state = "hair_braided"
+//datum/sprite_accessory/hair/braided //Looks bad, trust me
+	//name = "Braided"
+	//icon_state = "hair_braided"
+	//gender = FEMALE
 
 /datum/sprite_accessory/hair/bun
 	name = "Bun Head"
@@ -689,6 +690,7 @@
 /datum/sprite_accessory/hair/gypsy
 	name = "Long Gypsy"
 	icon_state = "hair_gipsy"
+	gender = FEMALE
 
 /datum/sprite_accessory/hair/geisha
 	name = "Geisha"
@@ -697,10 +699,12 @@
 /datum/sprite_accessory/hair/fullovereye
 	name = "Hair Over Eye"
 	icon_state = "hair_baum"
+	gender = FEMALE
 
 /datum/sprite_accessory/hair/chub
 	name = "Chub"
 	icon_state = "hair_chub"
+	gender = MALE
 
 /datum/sprite_accessory/hair/ponytail6
 	name = "Ponytail female"
@@ -743,8 +747,8 @@
 /datum/sprite_accessory/hair/coffeehouse
 	name = "Coffee House Cut"
 	icon_state = "hair_coffeehouse"
-
 	gender = MALE
+
 /datum/sprite_accessory/hair/veryshortovereye
 	name = "Overeye Very Short"
 	icon_state = "hair_veryshortovereye"
@@ -756,6 +760,7 @@
 /datum/sprite_accessory/hair/zieglertail
 	name = "Zieglertail"
 	icon_state = "hair_ziegler"
+	gender = FEMALE
 
 /datum/sprite_accessory/hair/fringeemo
 	name = "Emo Fringe"
@@ -830,17 +835,32 @@
 	name = "Country"
 	icon_state = "hair_country"
 
-//datum/sprite_accessory/hair/modern
-//	name = "Modern"
-//	icon_state = "hair_modern"
-//	gender = FEMALE
+/datum/sprite_accessory/hair/widenlong
+	name = "Bulk Female Hair"
+	icon_state = "hair_widenlong"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/femfrizz
+	name = "Frizz"
+	icon_state = "hair_femalefrizz"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/overeyecurve
+	name = "Overeye Curve"
+	icon_state = "hair_overeyecurve"
+	gender = FEMALE
+
+datum/sprite_accessory/hair/modern
+	name = "Modern"
+	icon_state = "hair_modern"
+	gender = FEMALE
 
 //datum/sprite_accessory/hair/twincurl
 //	name = "Twincurl"
 //	icon_state = "hair_twincurl"
 //	gender = FEMALE
 
-//datum/sprite_accessory/hair/rapunzel
+//datum/sprite_accessory/hair/rapunzel //Please, don't
 //	name = "Rapunzel"
 //	icon_state = "hair_rapunzel"
 //	gender = FEMALE
@@ -850,18 +870,19 @@
 //	icon_state = "hair_quadcurls"
 //	gender = FEMALE
 
-//datum/sprite_accessory/hair/twincurl2
-//	name = "Twincurl 2"
-//	icon_state = "hair_twincurl2"
-//	gender = FEMALE
+datum/sprite_accessory/hair/twincurl2
+	name = "Twincurl 2"
+	icon_state = "hair_twincurl2"
+	gender = FEMALE
 
 //datum/sprite_accessory/hair/birdnest
 //	name = "Birdnest "
 //	icon_state = "hair_birdnest"
 
-//datum/sprite_accessory/hair/unkept
-//	name = "Unkept"
-//	icon_state = "hair_unkept"
+datum/sprite_accessory/hair/unkept
+	name = "Unkept"
+	icon_state = "hair_unkept"
+	gender = FEMALE
 
 //datum/sprite_accessory/hair/fastline
 //	name = "Fastline"
@@ -959,9 +980,9 @@
 	name = "Dwarf Beard"
 	icon_state = "facial_dwarf"
 
-//datum/sprite_accessory/facial_hair/fiveoclock
-//	name = "Five o Clock Shadow"
-//	icon_state = "facial_fiveoclock"
+datum/sprite_accessory/facial_hair/fiveoclock
+	name = "Five o Clock Shadow"
+	icon_state = "facial_fiveoclock"
 
 //datum/sprite_accessory/facial_hair/fu
 //	name = "Fu Manchu"
@@ -971,26 +992,29 @@
 	name = "Goat Beard"
 	icon_state = "facial_goatbeard"
 
-//datum/sprite_accessory/facial_hair/britstache
-//	name = "Britstache"
-//	icon_state = "facial_britstache"
+datum/sprite_accessory/facial_hair/britstache
+	name = "Britstache"
+	icon_state = "facial_britstache"
 
 //datum/sprite_accessory/facial_hair/martial_artist
 //	name = "Martial Artist"
 //	icon_state = "facial_martialartist"
 
-//datum/sprite_accessory/facial_hair/moonshiner
-//	name = "Moonshiner"
-//	icon_state = "facial_moonshiner"
+datum/sprite_accessory/facial_hair/moonshiner
+	name = "Moonshiner"
+	icon_state = "facial_moonshiner"
 
-//datum/sprite_accessory/facial_hair/tribeard
-//	name = "Tri-Beard"
-//	icon_state = "facial_tribeard"
+datum/sprite_accessory/facial_hair/tribeard
+	name = "Tri-Beard"
+	icon_state = "facial_tribeard"
 
-//datum/sprite_accessory/facial_hair/unshaven
-//	name = "Unshaven"
-//	icon_state = "facial_unshaven"
+datum/sprite_accessory/facial_hair/unshaven
+	name = "Unshaven"
+	icon_state = "facial_unshaven"
 
+/datum/sprite_accessory/facial_hair/gentleman
+	name = "Gentleman Moustache"
+	icon_state = "facial_gentleman"
 
 /*
 ///////////////////////////////////
