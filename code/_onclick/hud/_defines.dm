@@ -146,3 +146,4 @@
 #define ui_vrhuman_exit "WEST+1:-2,SOUTH+4:20"
 #define ui_vrhuman_main "WEST:-2,SOUTH+4:20"
 #define ui_vrhuman_cleanup "WEST+3:-2,SOUTH+4:20"
+#define ui_vrhuman_dienow "WEST+4:-2,SOUTH+4:20"

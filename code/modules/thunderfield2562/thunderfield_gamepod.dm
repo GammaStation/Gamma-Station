@@ -1,5 +1,5 @@
 #define RESPAWNS_FOR_PAYMENT 5
-#define PRICE_PER_USE 50
+#define PRICE_PER_USE 100
 #define POINTS_FOR_CHEATER 10
 /obj/machinery/gamepod
 	name = "\improper gamepod"

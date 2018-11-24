@@ -8,6 +8,7 @@
 	var/obj/screen/vrhuman_exit
 	var/obj/screen/vrhuman_main
 	var/obj/screen/vrhuman_cleanup
+	var/obj/screen/vrhuman_dienow
 	var/datum/mind/vr_mind
 	var/died = FALSE                                    //Look death() proc here, for comments
 	var/obj/item/device/uplink/hidden/vr_uplink/vr_shop //To buy stuff
@@ -60,6 +61,7 @@
 	to_chat(src, "<span class='danger'>You are respawned! Respawns left: [vr_mind.thunder_respawns]</span>")
 
 /mob/living/carbon/human/vrhuman/updatehealth()
+	..()
 	if(health < config.health_threshold_crit)
 		death()
 
@@ -84,7 +86,6 @@
 	var/obj/effect/landmark/spawnpoint = pick(thunderfield_spawns_list)
 	var/mob/living/carbon/human/vrhuman/vrbody = new /mob/living/carbon/human/vrhuman(spawnpoint.loc)
 	vrbody.vr_mind = vr_mind
-	vrbody.vr_shop = vr_shop
 	vr_mind.transfer_to(vrbody)
 	death_actions()
 	if(vr_mind.thunderfield_cheater)
