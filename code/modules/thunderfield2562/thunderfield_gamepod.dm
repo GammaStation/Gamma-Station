@@ -15,7 +15,6 @@
 	"Bartender",
 	"Botanist",
 	"Librarian",
-	"Quartermaster",
 	"Cargo Technician",
 	"Recycler",
 	"Chaplain",
@@ -193,8 +192,8 @@
 	if(occupant_mind) //We need to get player back
 		occupant_mind.transfer_to(occupant)
 		to_chat(occupant,"<span class='warning'><B> [bicon(src)]Temporary issues, VR aborted.</B></span>")
-		occupant_mind = null
 		occupant_mind.thunderfield_cheater = FALSE
+		occupant_mind = null
 	open_machine()
 	icon_state = "gamepod_open"
 
