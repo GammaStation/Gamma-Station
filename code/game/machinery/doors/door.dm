@@ -142,7 +142,7 @@
 	user.SetNextMove(CLICK_CD_INTERACT)
 	if(!src.requiresID())
 		user = null
-	if(src.allowed(user))
+	if(src.allowed(user) && Adjacent(I))
 		if(src.density)
 			open()
 		else
