@@ -830,6 +830,18 @@
 	name = "Country"
 	icon_state = "hair_country"
 
+/datum/sprite_accessory/hair/widenlong
+	name = "Bulk Female Hair"
+	icon_state = "hair_widenlong"
+
+/datum/sprite_accessory/hair/femfrizz
+	name = "Frizz"
+	icon_state = "hair_femalefrizz"
+
+/datum/sprite_accessory/hair/overeyecurve
+	name = "Overeye Curve"
+	icon_state = "hair_overeyecurve"
+
 //datum/sprite_accessory/hair/modern
 //	name = "Modern"
 //	icon_state = "hair_modern"
@@ -991,6 +1003,9 @@
 //	name = "Unshaven"
 //	icon_state = "facial_unshaven"
 
+/datum/sprite_accessory/facial_hair/gentleman
+	name = "Gentleman Moustache"
+	icon_state = "facial_gentleman"
 
 /*
 ///////////////////////////////////
