@@ -25,7 +25,10 @@
 var/global/list/self_cleaning_list
 
 /turf/unsimulated/floor/self_cleaning
-	var/list/uncleanable_items = list(/mob/living, /obj/item/thunder_dog_tag, /mob/dead/observer, /obj/effect/landmark, /obj/item/weapon) //We dont want this items to be deleted
+	luminosity = 4
+
+/turf/unsimulated/floor/self_cleaning
+	var/list/uncleanable_items = list(/mob/living, /obj/item/thunder_dog_tag, /mob/dead/observer, /obj/effect/landmark, /obj/item/weapon, /obj/structure) //We dont want this items to be deleted
 
 /turf/unsimulated/floor/self_cleaning/atom_init()
 	. = ..()
