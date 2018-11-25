@@ -31,14 +31,16 @@
 						visible_message("\red <B>[M] accidentally touched \himself with the stun gloves!</B>")
 						M.attack_log += text("\[[time_stamp()]\] <font color='red'>Attempted to touch [src.name] ([src.ckey]) with stungloves</font>")
 						src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been unsuccessfully touched with stungloves by [M.name] ([M.ckey])</font>")
-						msg_admin_attack("[M.name] ([M.ckey]) failed to stun [src.name] ([src.ckey]) with stungloves (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[M.x];Y=[M.y];Z=[M.z]'>JMP</a>)")
+						if(!isvrhuman(M))
+							msg_admin_attack("[M.name] ([M.ckey]) failed to stun [src.name] ([src.ckey]) with stungloves (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[M.x];Y=[M.y];Z=[M.z]'>JMP</a>)")
 						target = M
 						calc_power = 150 * get_siemens_coefficient_organ(BP)
 					else
 						visible_message("\red <B>[src] has been touched with the stun gloves by [M]!</B>")
 						M.attack_log += text("\[[time_stamp()]\] <font color='red'>Stungloved [src.name] ([src.ckey])</font>")
 						src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been stungloved by [M.name] ([M.ckey])</font>")
-						msg_admin_attack("[M.name] ([M.ckey]) stungloved [src.name] ([src.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[M.x];Y=[M.y];Z=[M.z]'>JMP</a>)")
+						if(!isvrhuman(M))
+							msg_admin_attack("[M.name] ([M.ckey]) stungloved [src.name] ([src.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[M.x];Y=[M.y];Z=[M.z]'>JMP</a>)")
 						calc_power = 100 * get_siemens_coefficient_organ(BP)
 					target.apply_effects(0,0,0,0,2,0,0,calc_power)
 					var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread()
@@ -145,12 +147,14 @@
 			if(force_user)
 				force_user.attack_log += text("\[[time_stamp()]\] <font color='red'>Forced [M.name] ([M.ckey]) to [pick(attack.attack_verb)] [src.name] ([src.ckey])</font>")
 				src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been [pick(attack.attack_verb)]ed by [M.name] ([M.ckey]), who was forced by [force_user.name] ([force_user.ckey])</font>")
-				msg_admin_attack("[key_name(force_user)] forced [key_name(M)] to [pick(attack.attack_verb)] [key_name(src)]")
+				if(!isvrhuman(M))
+					msg_admin_attack("[key_name(force_user)] forced [key_name(M)] to [pick(attack.attack_verb)] [key_name(src)]")
 
 			else
 				M.attack_log += text("\[[time_stamp()]\] <font color='red'>[pick(attack.attack_verb)]ed [src.name] ([src.ckey])</font>")
 				src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been [pick(attack.attack_verb)]ed by [M.name] ([M.ckey])</font>")
-				msg_admin_attack("[key_name(M)] [pick(attack.attack_verb)]ed [key_name(src)]")
+				if(!isvrhuman(M))
+					msg_admin_attack("[key_name(M)] [pick(attack.attack_verb)]ed [key_name(src)]")
 
 			var/damage = rand(0, 5)//BS12 EDIT
 			if(!damage)
@@ -184,11 +188,13 @@
 			if(force_user)
 				force_user.attack_log += text("\[[time_stamp()]\] <font color='red'>Forced [M.name] ([M.ckey]) to disarm [src.name] ([src.ckey])</font>")
 				attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been disarmed by [M.name] ([M.ckey]), who was forced by [force_user.name] ([force_user.ckey])</font>")
-				msg_admin_attack("[key_name(force_user)] forced [key_name(M)] to disarm [src.name] ([src.ckey])")
+				if(!isvrhuman(M))
+					msg_admin_attack("[key_name(force_user)] forced [key_name(M)] to disarm [src.name] ([src.ckey])")
 			else
 				M.attack_log += text("\[[time_stamp()]\] <font color='red'>Disarmed [src.name] ([src.ckey])</font>")
 				src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been disarmed by [M.name] ([M.ckey])</font>")
-				msg_admin_attack("[key_name(M)] disarmed [src.name] ([src.ckey])")
+				if(!isvrhuman(M))
+					msg_admin_attack("[key_name(M)] disarmed [src.name] ([src.ckey])")
 
 			if(w_uniform)
 				w_uniform.add_fingerprint(M)

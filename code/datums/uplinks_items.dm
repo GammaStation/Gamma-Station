@@ -833,7 +833,7 @@ var/global/list/thunderfield_items = list()
 /datum/thunderfield_item/thunderfield_pistol
 	name = ".22CB pistol"
 	item = /obj/item/weapon/gun/projectile/sec_pistol/thunderfield_pistol
-	cost = 1
+	cost = 2
 
 /datum/thunderfield_item/thunderfield_pistol_magazine
 	name = ".22CB magazine"
@@ -843,12 +843,12 @@ var/global/list/thunderfield_items = list()
 /datum/thunderfield_item/thunderfield_smg
 	name = "C-20r Submachine Gun"
 	item = /obj/item/weapon/gun/projectile/automatic/c20r
-	cost = 3
+	cost = 4
 
 /datum/thunderfield_item/thunderfield_smg_magazine
 	name = "C-20r magazine"
 	item = /obj/item/ammo_box/magazine/m12mm
-	cost = 2
+	cost = 1
 
 /datum/thunderfield_item/thunderfield_uzi
 	name = "UZI 9mm"
@@ -858,32 +858,32 @@ var/global/list/thunderfield_items = list()
 /datum/thunderfield_item/thunderfield_uzi_magazine
 	name = "UZI 9mm magazine"
 	item = /obj/item/ammo_box/magazine/uzim9mm
-	cost = 3
+	cost = 2
 
 /datum/thunderfield_item/thunderfield_shotgun
 	name = "Shotgun"
 	item = /obj/item/weapon/gun/projectile/shotgun
-	cost = 6
+	cost = 7
 
 /datum/thunderfield_item/thunderfield_shotgun_combat
 	name = "Combat shotgun"
 	item = /obj/item/weapon/gun/projectile/shotgun/combat
-	cost = 8
+	cost = 9
 
 /datum/thunderfield_item/thunderfield_shotgun_ammo
 	name = "Shotgun ammo"
 	item = /obj/item/ammo_box/magazine/internal/shotcom
-	cost = 4
+	cost = 1
 
 /datum/thunderfield_item/thunderfield_a74
 	name = "A74 "
 	item = /obj/item/weapon/gun/projectile/automatic/a74
-	cost = 11
+	cost = 12
 
 /datum/thunderfield_item/thunderfield_a74_magazine
 	name = "A74 magazine"
 	item = /obj/item/ammo_box/magazine/a74mm
-	cost = 5
+	cost = 1
 
 /datum/thunderfield_item/thunderfield_bulldog
 	name = "Bulldog"
@@ -893,12 +893,12 @@ var/global/list/thunderfield_items = list()
 /datum/thunderfield_item/thunderfield_bulldog_magazine
 	name = "Bulldog magazine"
 	item = /obj/item/ammo_box/magazine/m12g
-	cost = 7
+	cost = 2
 
 /datum/thunderfield_item/thunderfield_heavyrifle
 	name = "PTR"
 	item = /obj/item/weapon/gun/projectile/heavyrifle
-	cost = 17
+	cost = 15
 
 /datum/thunderfield_item/thunderfield_heavyrifle_ammo
 	name = "PTR ammo"
