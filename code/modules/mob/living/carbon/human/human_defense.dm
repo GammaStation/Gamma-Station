@@ -262,7 +262,7 @@
 	..()
 
 
-/mob/living/carbon/human/proc/attacked_by(obj/item/I, mob/living/user, def_zone, force_user = null)
+/mob/living/carbon/human/proc/attacked_by(obj/item/I, mob/living/user, def_zone)
 	if(!I || !user)
 		return FALSE
 
@@ -454,3 +454,10 @@
 	var/penetrated_dam = max(0, min(50, (damage * reduction_dam) / 1.5)) // - SS.damage)) - Consider uncommenting this if suits seem too hardy on dev.
 
 	if(penetrated_dam) SS.create_breaches(damtype, penetrated_dam)
+
+/mob/living/carbon/human/hitby(atom/movable/AM)
+	if(species.flags[IS_FLYING] && !falling)
+		if(prob((10 - movement_delay()) * 5)) // Tycheon's default dodge - 45%
+			visible_message("<span class='notice'>\The [AM] misses [src] narrowly!</span>")
+			return
+	return ..()

@@ -1378,17 +1378,17 @@
 		stars(say, dist)
 
 	if((REMOTE_TALK in M.mutations))
-		to_chat(M, "<span class='notice'>You hear <b>[real_name]'s voice</b>:</span> [say]")
+		to_chat(M, "<span class='notice'>You hear <b>[src]'s voice</b>:</span> [say]")
 	else
 		to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room:</span> [say]")
-	to_chat(src, "<span class='notice'>You project your mind into <b>[M.real_name]</b>:</span> [say]")
+	to_chat(src, "<span class='notice'>You project your mind into <b>[M]</b>:</span> [say]")
 
 	var/mes = say
 	for(var/mob/dead/observer/G in dead_mob_list)
 		var/track = "<a href='byond://?src=\ref[G];track=\ref[src]'>(F)</a>"
 		if((client.prefs.chat_toggles & CHAT_GHOSTEARS) && src in view(G))
 			mes = "<b>[say]</b>"
-		to_chat(G, "<span class='italics'>Telepathic message from <b>[real_name]</b>[track]: [mes]</span>")
+		to_chat(G, "<span class='italics'>Telepathic message from <b>[src]</b>[track]:</span> [mes]")
 
 	log_say("Telepathic message from [key_name(src)]: [say]")
 	set_typing_indicator(FALSE)
@@ -1488,17 +1488,17 @@
 			stars(say, dist)
 
 		if((REMOTE_TALK in M.mutations))
-			to_chat(M, "<span class='notice'>You hear <b>[src]'s voice</b>: [say]</span>")
+			to_chat(M, "<span class='notice'>You hear <b>[src]'s voice</b>:</span> [say]")
 		else
-			to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room: [say]</span>")
-		to_chat(src, "<span class='notice'>You project your mind into <b>[M]</b>: [say]</span>")
+			to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room:</span> [say]")
+		to_chat(src, "<span class='notice'>You project your mind into <b>[M]</b>:</span> [say]")
 
 	var/mes = say
 	for(var/mob/dead/observer/G in dead_mob_list)
 		var/track = "<a href='byond://?src=\ref[G];track=\ref[src]'>(F)</a>"
 		if((client.prefs.chat_toggles & CHAT_GHOSTEARS) && src in view(G))
 			mes = "<b>[say]</b>"
-		to_chat(G, "<span class='italics'>Telepathic message from <b>[real_name]</b>[track]: [mes]</span>")
+		to_chat(G, "<span class='italics'>Telepathic message from <b>[real_name]</b>[track]:</span> [mes]")
 
 	log_say("Telepathic message from [key_name(src)]: [say]")
 	set_typing_indicator(FALSE)
