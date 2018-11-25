@@ -1352,7 +1352,7 @@
 			say = zombie_talk(say)
 	set_typing_indicator(FALSE)
 
-	var/image/I = image('icons/mob/talk.dmi', src, "tele_typing[rand(1,6)]", MOB_LAYER + 1)
+	var/image/I = image('icons/mob/talk.dmi', src, "tele_typing", MOB_LAYER + 1)
 	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 	INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, I, list(client, M.client), 3 SECONDS)
 
@@ -1413,12 +1413,12 @@
 				break
 			if(input_ in chosen)
 				chosen -= input_
-				var/image/I = image('icons/mob/talk.dmi', input_, "telepathy_typed_to_not", MOB_LAYER + 1)
+				var/image/I = image('icons/mob/talk.dmi', input_, "telepathy_typed_to_not", MOB_LAYER + 0.9)
 				I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 				INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, I, list(client), 3 SECONDS)
 			else
 				chosen += input_
-				var/image/I = image('icons/mob/talk.dmi', input_, "telepathy_typed_to", MOB_LAYER + 1)
+				var/image/I = image('icons/mob/talk.dmi', input_, "telepathy_typed_to", MOB_LAYER + 0.9)
 				I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 				INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, I, list(client), 3 SECONDS)
 	else
@@ -1459,7 +1459,7 @@
 			say = zombie_talk(say)
 	set_typing_indicator(FALSE)
 
-	var/image/I = image('icons/mob/talk.dmi', src, "tele_typing[rand(1,6)]", MOB_LAYER + 1)
+	var/image/I = image('icons/mob/talk.dmi', src, "tele_typing", MOB_LAYER + 1)
 	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 	INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, I, bubble_recipients, 3 SECONDS)
 
