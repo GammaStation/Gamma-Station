@@ -15,7 +15,7 @@
 	return src.attack_hand(user)
 
 /turf/unsimulated/floor/self_cleaning
-	var/list/uncleanable_items = list(/mob/living, /obj/item/thunder_dog_tag, /mob/dead/observer, ./obj/effect/landmark, /obj/effect/light_emitter, /obj/effect/glowshroom, /obj/effect/decal/remains/human, /obj/effect/forcefield, /obj/item/weapon, /obj/structure, /obj/machinery) //We dont want this items to be deleted
+	var/list/uncleanable_items = list(/mob/living, /obj/item/thunder_dog_tag, /mob/dead/observer, /obj/effect/landmark, /obj/effect/light_emitter, /obj/effect/glowshroom, /obj/effect/decal/remains/human, /obj/effect/forcefield, /obj/item/weapon, /obj/structure, /obj/machinery) //We dont want this items to be deleted
 
 var/global/list/self_cleaning_list = list()
 

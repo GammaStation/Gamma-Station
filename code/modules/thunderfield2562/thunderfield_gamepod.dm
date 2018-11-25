@@ -10,18 +10,7 @@
 	anchored = TRUE
 	var/is_payed = FALSE
 	var/datum/mind/occupant_mind
-	var/list/datum/all_code_roles = list(
-	"Barber",
-	"Bartender",
-	"Botanist",
-	"Librarian",
-	"Cargo Technician",
-	"Recycler",
-	"Chaplain",
-	"Test Subject",
-	"Clown",
-	"Mime"
-	)
+	power_channel = EQUIP
 
 /obj/machinery/gamepod/atom_init()
 	. = ..()
@@ -235,10 +224,7 @@
 
 /obj/machinery/gamepod/proc/code_role_check()
 	if(security_level != SEC_LEVEL_GREEN)
-		if(is_type_in_list(occupant_mind.assigned_role, all_code_roles))
-			return TRUE
-		else
-			return FALSE
+		return FALSE
 	else
 		return TRUE
 
