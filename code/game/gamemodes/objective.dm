@@ -23,7 +23,7 @@ var/global/list/all_objectives = list()
 /datum/objective/proc/find_target()
 	var/list/possible_targets = list()
 	for(var/datum/mind/possible_target in ticker.minds)
-		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != DEAD) && isvrhuman(possible_target.current))
+		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != DEAD) && !isvrhuman(possible_target.current))
 			possible_targets += possible_target
 	if(possible_targets.len > 0)
 		target = pick(possible_targets)
