@@ -185,7 +185,6 @@ var/const/tk_maxrange = 15
 
 	apply_focus_overlay()
 
-
 	if(isliving(focus))
 		var/mob/living/M = focus
 		user.nutrition -= 10 // Manipulating living beings is TOUGH!
@@ -231,6 +230,7 @@ var/const/tk_maxrange = 15
 						I.afterattack(target, M, 0)
 				M.zone_sel = old_zone_sel
 		last_throw = world.time + 5// So we don't allow them to spam.
+		apply_focus_overlay()
 		return
 
 	else if(istype(focus, /obj/item))
@@ -243,7 +243,10 @@ var/const/tk_maxrange = 15
 			else
 				I.afterattack(target, user, 0)
 			last_throw = world.time + 5 // So we don't allow them to spam.
+			apply_focus_overlay()
 			return
+
+	apply_focus_overlay()
 
 	if(!focus.anchored)
 		focus.throw_at(target, 10, 1, user)
@@ -268,6 +271,8 @@ var/const/tk_maxrange = 15
 	update_icon()
 	var/obj/effect/overlay/O = new /obj/effect/overlay(get_turf(focus))
 	O.name = "sparkles"
+	O.pixel_x = focus.pixel_x
+	O.pixel_y = focus.pixel_y
 	O.anchored = TRUE
 	O.density = FALSE
 	O.layer = FLY_LAYER
@@ -278,6 +283,8 @@ var/const/tk_maxrange = 15
 	QDEL_IN(O, 5)
 	var/obj/effect/overlay/O2 = new /obj/effect/overlay(get_turf(host))
 	O2.name = "sparkles"
+	O2.pixel_x = host.pixel_x
+	O2.pixel_y = host.pixel_y
 	O2.anchored = TRUE
 	O2.density = FALSE
 	O2.layer = FLY_LAYER

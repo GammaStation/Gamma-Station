@@ -1283,12 +1283,8 @@
 			stars(message, star_chance)
 		if(prob(MAX_TELEPATHY_RANGE - dist)) // The further they are, the lesser the chance to understand something.
 			to_chat(src, "<span class='warning'>You feel as if somebody is eavesdropping on you.</span>")
-		var/part_a = ""
-		var/part_b = ""
-		if(language)
-			part_a = language.colour
-			part_b = "</span>"
-		to_chat(M, "<span class='notice'><span class='bold'>[src]</span> [verb]:</span> [part_a][message][part_b]")
+
+		to_chat(M, "<span class='notice'><span class='bold'>[src]</span> [verb]:</span> [message]")
 
 /mob/living/carbon/human/proc/toggle_telepathy_hear((mob/M in (view() + remote_hearing))) // Makes us hear what they hear.
 	set name = "Toggle Telepathy Hear"
@@ -1326,7 +1322,8 @@
 	set desc = "Make them hear what you desire. Quickly."
 	set category = "Tycheon"
 
-	set waitfor = FALSE
+	if(typing)
+		return
 
 	if(!M.client || M.stat)
 		to_chat(src, "<span class='notice'>[M] doesn't have a mind to project to.</span>")
@@ -1342,19 +1339,23 @@
 		to_chat(src, "<span class='notice'>[M] doesn't have a mind to project to.</span>")
 		return
 
+	var/image/I = image('icons/mob/talk.dmi', M, "telepathy_typed_to", MOB_LAYER + 0.9)
+	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+	INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, I, list(client), 3 SECONDS)
+
 	set_typing_indicator(TRUE, "tele_typing")
-	var/say = input("What do you wish to say", "Telepathic Message")
+	var/say = input("What do you wish to say", "Telepathic Message") as text|null
 	if(!say)
+		set_typing_indicator(FALSE)
 		return
 	else
 		say = sanitize(say)
 		if(iszombie(src)) // In case of nearing feature.
 			say = zombie_talk(say)
-	set_typing_indicator(FALSE)
 
-	var/image/I = image('icons/mob/talk.dmi', src, "tele_typing", MOB_LAYER + 1)
-	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
-	INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, I, list(client, M.client), 3 SECONDS)
+	var/image/II = image('icons/mob/talk.dmi', src, "tele_typing", MOB_LAYER + 1)
+	II.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+	INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, II, list(client, M.client), 3 SECONDS)
 
 	var/datum/language/speaking = parse_language(say, M) // We can talk in languages they know, but we don't.
 	if(speaking)
@@ -1370,16 +1371,17 @@
 
 	var/dist = get_dist(src, M)
 	if(!M.do_telepathy(dist))
+		set_typing_indicator(FALSE)
 		return
 
 	if(dist > MAX_TELEPATHY_RANGE)
 		stars(say, dist)
 
 	if((REMOTE_TALK in M.mutations))
-		to_chat(M, "<span class='notice'>You hear <b>[real_name]'s voice</b>: [say]</span>")
+		to_chat(M, "<span class='notice'>You hear <b>[real_name]'s voice</b>:</span> [say]")
 	else
-		to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room: [say]</span>")
-	to_chat(src, "<span class='notice'>You project your mind into <b>[M.real_name]</b>: [say]</span>")
+		to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room:</span> [say]")
+	to_chat(src, "<span class='notice'>You project your mind into <b>[M.real_name]</b>:</span> [say]")
 
 	var/mes = say
 	for(var/mob/dead/observer/G in dead_mob_list)
@@ -1389,13 +1391,15 @@
 		to_chat(G, "<span class='italics'>Telepathic message from <b>[real_name]</b>[track]: [mes]</span>")
 
 	log_say("Telepathic message from [key_name(src)]: [say]")
+	set_typing_indicator(FALSE)
 
 /mob/living/carbon/human/proc/force_telepathy_say() // Makes them hear what we want.
 	set name = "Project Mind"
 	set desc = "Make them hear what you desire."
 	set category = "Tycheon"
 
-	set waitfor = FALSE
+	if(typing)
+		return
 
 	var/quick_pick = null
 	var/list/chosen = list()
@@ -1450,14 +1454,14 @@
 		return
 
 	set_typing_indicator(TRUE, "tele_typing")
-	var/say = input("What do you wish to say", "Telepathic Message")
+	var/say = input("What do you wish to say", "Telepathic Message") as text|null
 	if(!say)
+		set_typing_indicator(0)
 		return
 	else
 		say = sanitize(say)
 		if(iszombie(src)) // In case of nearing feature.
 			say = zombie_talk(say)
-	set_typing_indicator(FALSE)
 
 	var/image/I = image('icons/mob/talk.dmi', src, "tele_typing", MOB_LAYER + 1)
 	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
@@ -1478,7 +1482,7 @@
 
 		var/dist = get_dist(src, M)
 		if(!M.do_telepathy(dist))
-			return
+			continue
 
 		if(dist > MAX_TELEPATHY_RANGE)
 			stars(say, dist)
@@ -1497,13 +1501,12 @@
 		to_chat(G, "<span class='italics'>Telepathic message from <b>[real_name]</b>[track]: [mes]</span>")
 
 	log_say("Telepathic message from [key_name(src)]: [say]")
+	set_typing_indicator(FALSE)
 
 /mob/living/carbon/human/proc/breath_from_tank(obj/item/weapon/tank/T in view(1, src))
 	set name = "Inhale From"
 	set desc = "Inhales a portion of gas from tank."
 	set category = "Tycheon"
-
-	set waitfor = FALSE
 
 	if(!istype(T))
 		return
