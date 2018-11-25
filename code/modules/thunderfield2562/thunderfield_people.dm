@@ -78,7 +78,7 @@
 		dog_tag.points = vr_mind.thunder_points
 	dog_tag = null
 	vr_mind.thunder_points = 0
-	if(vr_mind.thunder_respawns == 0)
+	if(vr_mind.thunder_respawns <= 0)
 		vr_mind.transfer_to(vr_mind.thunderfield_owner)
 		death_actions()
 		return ..()
