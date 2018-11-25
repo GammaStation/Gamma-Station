@@ -913,7 +913,7 @@ var/global/list/thunderfield_items = list()
 /datum/thunderfield_item/ballon
 	name = "BALLON"
 	item = /obj/item/weapon/extinguisher
-	cost = 2
+	cost = 1
 
 /datum/thunderfield_item/hatchet
 	name = "Small hatchet"
@@ -925,20 +925,15 @@ var/global/list/thunderfield_items = list()
 	item = /obj/item/weapon/melee/telebaton
 	cost = 4
 
-/datum/thunderfield_item/telescopic
-	name = "Telescopic baton"
-	item = /obj/item/weapon/melee/telebaton
-	cost = 4
-
 /datum/thunderfield_item/spear
 	name = "Spear"
 	item = /obj/item/weapon/twohanded/spear
-	cost = 6
+	cost = 4
 
 /datum/thunderfield_item/fireaxe
 	name = "Fire axe"
 	item = /obj/item/weapon/twohanded/fireaxe
-	cost = 9
+	cost = 6
 
 /datum/thunderfield_item/medkit
 	name = "Small medkit"
@@ -958,17 +953,12 @@ var/global/list/thunderfield_items = list()
 /datum/thunderfield_item/medkit
 	name = "Combat medkit"
 	item = /obj/item/weapon/storage/firstaid/small_firstaid_kit/combat
-	cost = 4
-
-/datum/thunderfield_item/thermal
-	name = "Thermal glasses"
-	item = /obj/item/clothing/glasses/thermal
-	cost = 9
+	cost = 3
 
 /datum/thunderfield_item/hivelordcore
 	name = "Hivelord core"
 	item = /obj/item/asteroid/hivelord_core
-	cost = 10
+	cost = 6
 
 /datum/thunderfield_item/shield
 	name = "Riot shield"
