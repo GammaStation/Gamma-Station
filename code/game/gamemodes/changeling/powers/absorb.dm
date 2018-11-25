@@ -123,6 +123,10 @@
 			to_chat(U, "<span class='warning'>[T] is too simple for absorption.</span>")
 			return FALSE
 
+		if(isvrhuman(T))
+			to_chat(U, "<span class='warning'>[T] ERP not allowed! To unlock this feature - pay 2 billion credits.</span>")
+			return FALSE
+
 		if((NOCLONE in T.mutations) || (HUSK in T.mutations))
 			to_chat(U, "<span class='warning'>DNA of [T] is ruined beyond usability!</span>")
 			return FALSE
