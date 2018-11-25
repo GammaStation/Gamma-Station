@@ -9,6 +9,7 @@
 		typing_indicator.icon = 'icons/mob/talk.dmi'
 		typing_indicator.icon_state = indi_icon
 		typing_indicator.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+		typing_indicator.layer = MOB_LAYER + 1
 
 	if(client && !stat)
 		typing_indicator.invisibility = invisibility
