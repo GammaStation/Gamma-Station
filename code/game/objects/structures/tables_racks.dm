@@ -384,8 +384,8 @@
 			qdel(W)
 			return
 
-	var/obj/item/tk_grab/put_me = user.get_active_hand(additional_checks = FALSE)
-	if(istype(put_me))
+	if(istype(W, /obj/item/tk_grab))
+		var/obj/item/tk_grab/put_me = W
 		if(put_me.focus.anchored || !Adjacent(put_me.focus))
 			return
 		if(istype(put_me.focus, /obj/item))

@@ -43,11 +43,11 @@
 /*
 	Monkeys
 */
-/mob/living/carbon/monkey/UnarmedAttack(atom/A, force_user = null)
+/mob/living/carbon/monkey/UnarmedAttack(atom/A)
 	..()
 	A.attack_paw(src)
 
-/atom/proc/attack_paw(mob/user, force_user = null)
+/atom/proc/attack_paw(mob/user)
 	return
 
 /*
@@ -80,11 +80,11 @@
 	Slimes
 	Nothing happening here
 */
-/mob/living/carbon/slime/UnarmedAttack(atom/A, force_user = null)
+/mob/living/carbon/slime/UnarmedAttack(atom/A)
 	..()
 	A.attack_slime(src)
 
-/atom/proc/attack_slime(mob/user, force_user = null)
+/atom/proc/attack_slime(mob/user)
 	return
 
 /*

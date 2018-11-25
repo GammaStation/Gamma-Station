@@ -54,6 +54,11 @@ var/const/tk_maxrange = 15
 	if(!prob(psy_resist_chance))
 		switch(user.a_intent)
 			if(I_DISARM)
+				to_chat(user, "<span class='warning'>You disarm [src]!</span>")
+				to_chat(src, "<span class='warning'>An immense force disarms you!</span>")
+				user.attack_log += text("\[[time_stamp()]\] <font color='red'>Disarmed [name] ([ckey])</font>")
+				attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been disarmeded by [user.name] ([user.ckey])</font>")
+				msg_admin_attack("[key_name(user)] disarmed [key_name(src)]")
 				drop_item(loc)
 			if(I_GRAB)
 				var/obj/item/tk_grab/O = new(src)
@@ -61,6 +66,11 @@ var/const/tk_maxrange = 15
 				O.host = user
 				O.focus_object(src)
 			if(I_HURT)
+				to_chat(user, "<span class='warning'>You lock [src] in place!</span>")
+				to_chat(src, "<span class='warning'>An immense force seems to lock you in place, paralyzing!</span>")
+				user.attack_log += text("\[[time_stamp()]\] <font color='red'>Paralyzed [name] ([ckey])</font>")
+				attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been paralyzed by [user.name] ([user.ckey])</font>")
+				msg_admin_attack("[key_name(user)] paralyzed [key_name(src)]")
 				apply_effect(3, PARALYZE)
 	else
 		to_chat(host, "<span class='notice'>[src] is resisting your efforts.</span>")
@@ -220,10 +230,20 @@ var/const/tk_maxrange = 15
 
 				if(target.Adjacent(M))
 					if(I)
+						if(ismob(target))
+							var/mob/log_M = target
+							host.attack_log += text("\[[time_stamp()]\] <font color='red'>Forced [M.name] ([M.ckey]) to hit [log_M.name] ([log_M.ckey]) with [I.name]</font>")
+							log_M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been hit with [I.name] by [user.name] ([user.ckey]), who was forcing [M.name] ([M.ckey])</font>")
+							msg_admin_attack("[key_name(host)] forced [key_name(M)] to hit [key_name(log_M)] with [I.name]")
 						var/resolved = target.attackby(I, M, params)
 						if(!resolved && target && I)
 							I.afterattack(target, M, 1)
 					else
+						if(ismob(target))
+							var/mob/log_M = target
+							host.attack_log += text("\[[time_stamp()]\] <font color='red'>Forced [M.name] ([M.ckey]) to punch [log_M.name] ([log_M.ckey])</font>")
+							log_M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been punched by [user.name] ([user.ckey]), who was forcing [M.name] ([M.ckey])</font>")
+							msg_admin_attack("[key_name(host)] forced [key_name(M)] to punch [key_name(log_M)]")
 						M.UnarmedAttack(target, 0)
 				else
 					if(I)

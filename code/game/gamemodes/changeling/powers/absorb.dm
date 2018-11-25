@@ -127,11 +127,12 @@
 			to_chat(U, "<span class='warning'>DNA of [T] is ruined beyond usability!</span>")
 			return FALSE
 
-		if(T:species.flags[IS_SYNTHETIC] || T:species.flags[IS_PLANT])
+		var/mob/living/carbon/human/H = T
+		if(H.species.flags[IS_SYNTHETIC] || H.species.flags[IS_PLANT] || H.species.flags[IS_IMMATERIAL])
 			to_chat(U, "<span class='warning'>[T] is not compatible with our biology.</span>")
 			return FALSE
 
-		if(T:species.flags[NO_SCAN])
+		if(H.species.flags[NO_SCAN])
 			to_chat(src, "<span class='warning'>We do not know how to parse this creature's DNA!</span>")
 			return FALSE
 
