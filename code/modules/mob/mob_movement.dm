@@ -5,6 +5,11 @@
 		return (!density || lying)
 	if(mover.checkpass(PASSMOB) || checkpass(PASSMOB))
 		return 1
+	if(ishuman(src))
+		var/mob/living/carbon/human/H = src
+		if(H.species.flags[IS_FLYING] && !H.falling)
+			if(prob((10 - H.movement_delay()) * 5))
+				return TRUE
 	if(buckled == mover)
 		return TRUE
 	if(ismob(mover))
