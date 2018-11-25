@@ -211,7 +211,6 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 	var/dat = "<body link='yellow' alink='white' bgcolor='#601414'><font color='white'>"
 	dat += "<B>Thunderfield shop</B><BR>"
 	dat += "Thunder-points left: [vr_mind.thunder_points]<BR>"
-	dat += "<A href='byond://?src=\ref[src];exit=1'>Exit VR body</a>"
 	dat += "<HR>"
 	dat += "<B>Request item:</B><BR>"
 	dat += "<I>Each item costs a number of thunder-points as indicated by the number following their name.</I><br><BR>"
@@ -257,7 +256,4 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 			if(!usr.put_in_any_hand_if_possible(O))
 				O.forceMove(get_turf(src.loc))
 			usr.mind.thunder_points -= I.cost
-	if (href_list["exit"])
-		var/mob/living/carbon/human/vrhuman/V = usr
-		V.exit_body()
 	interact(usr)
