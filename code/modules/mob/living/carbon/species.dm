@@ -1321,30 +1321,28 @@
 		M.remote_hearers += src
 		to_chat(src, "<span class='notice'>You start telepathically eavesdropping on [M]")
 
-/mob/living/carbon/human/proc/quick_telepathy_say(mob/M in hearers())
+/mob/living/carbon/human/proc/quick_telepathy_say(mob/M in view())
 	set name = "Project Mind(Q)"
 	set desc = "Make them hear what you desire. Quickly."
 	set category = "Tycheon"
-	set hidden = TRUE
+
+	set waitfor = FALSE
 
 	if(!M.client || M.stat)
-		to_chat(src, "<span class='notice'>[M.real_name] doesn't have a mind to project to.</span>")
+		to_chat(src, "<span class='notice'>[M] doesn't have a mind to project to.</span>")
 		return
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(H.species.flags[IS_SYNTHETIC])
-			to_chat(src, "<span class='notice'>[H.real_name] doesn't have a mind to project to.</span>")
+			to_chat(src, "<span class='notice'>[H] doesn't have a mind to project to.</span>")
 			return
 
 	if(isrobot(M))
-		to_chat(src, "<span class='notice'>[M.real_name] doesn't have a mind to project to.</span>")
+		to_chat(src, "<span class='notice'>[M] doesn't have a mind to project to.</span>")
 		return
 
-	var/image/I = image('icons/mob/talk.dmi', src, "tele_typing[rand(1,6)]", MOB_LAYER + 1)
-	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
-	INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, I, list(client, M.client), 3 SECONDS)
-
+	set_typing_indicator(TRUE, "tele_typing")
 	var/say = input("What do you wish to say", "Telepathic Message")
 	if(!say)
 		return
@@ -1352,6 +1350,11 @@
 		say = sanitize(say)
 		if(iszombie(src)) // In case of nearing feature.
 			say = zombie_talk(say)
+	set_typing_indicator(FALSE)
+
+	var/image/I = image('icons/mob/talk.dmi', src, "tele_typing[rand(1,6)]", MOB_LAYER + 1)
+	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+	INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, I, list(client, M.client), 3 SECONDS)
 
 	var/datum/language/speaking = parse_language(say, M) // We can talk in languages they know, but we don't.
 	if(speaking)
@@ -1425,17 +1428,20 @@
 	var/list/bubble_recipients = list()
 	for(var/mob/M in pos_rec)
 		if(!M.client || M.stat)
-			to_chat(src, "<span class='notice'>[M.real_name] doesn't have a mind to project to.</span>")
+			to_chat(src, "<span class='notice'>[M] doesn't have a mind to project to.</span>")
+			chosen -= M
 			continue
 
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
 			if(H.species.flags[IS_SYNTHETIC])
-				to_chat(src, "<span class='notice'>[H.real_name] doesn't have a mind to project to.</span>")
+				to_chat(src, "<span class='notice'>[H] doesn't have a mind to project to.</span>")
+				chosen -= M
 				continue
 
 		if(isrobot(M))
-			to_chat(src, "<span class='notice'>[M.real_name] doesn't have a mind to project to.</span>")
+			to_chat(src, "<span class='notice'>[M] doesn't have a mind to project to.</span>")
+			chosen -= M
 			continue
 
 		bubble_recipients += M.client
@@ -1443,10 +1449,7 @@
 	if(!chosen.len)
 		return
 
-	var/image/I = image('icons/mob/talk.dmi', src, "tele_typing[rand(1,6)]", MOB_LAYER + 1)
-	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
-	INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, I, bubble_recipients, 3 SECONDS)
-
+	set_typing_indicator(TRUE, "tele_typing")
 	var/say = input("What do you wish to say", "Telepathic Message")
 	if(!say)
 		return
@@ -1454,11 +1457,13 @@
 		say = sanitize(say)
 		if(iszombie(src)) // In case of nearing feature.
 			say = zombie_talk(say)
+	set_typing_indicator(FALSE)
+
+	var/image/I = image('icons/mob/talk.dmi', src, "tele_typing[rand(1,6)]", MOB_LAYER + 1)
+	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+	INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, I, bubble_recipients, 3 SECONDS)
 
 	for(var/mob/M in chosen)
-		if(!M)
-			continue
-
 		var/datum/language/speaking = parse_language(say, M) // We can talk in languages they know, but we don't.
 		if(speaking)
 			say = copytext(say, 2 + length(speaking.key))
@@ -1479,10 +1484,10 @@
 			stars(say, dist)
 
 		if((REMOTE_TALK in M.mutations))
-			to_chat(M, "<span class='notice'>You hear <b>[real_name]'s voice</b>: [say]</span>")
+			to_chat(M, "<span class='notice'>You hear <b>[src]'s voice</b>: [say]</span>")
 		else
 			to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room: [say]</span>")
-		to_chat(src, "<span class='notice'>You project your mind into <b>[M.real_name]</b>: [say]</span>")
+		to_chat(src, "<span class='notice'>You project your mind into <b>[M]</b>: [say]</span>")
 
 	var/mes = say
 	for(var/mob/dead/observer/G in dead_mob_list)

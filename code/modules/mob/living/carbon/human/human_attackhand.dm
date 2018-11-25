@@ -1,4 +1,4 @@
-/mob/living/carbon/human/attack_hand(mob/living/carbon/human/M)
+/mob/living/carbon/human/attack_hand(mob/living/carbon/human/M, mob/force_user = null)
 	if (istype(loc, /turf) && istype(loc.loc, /area/start))
 		to_chat(M, "No attacking people at spawn, you jackass.")
 		return
@@ -142,9 +142,14 @@
 			M.do_attack_animation(src)
 			var/datum/unarmed_attack/attack = M.species.unarmed
 
-			M.attack_log += text("\[[time_stamp()]\] <font color='red'>[pick(attack.attack_verb)]ed [src.name] ([src.ckey])</font>")
-			src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been [pick(attack.attack_verb)]ed by [M.name] ([M.ckey])</font>")
-			if(!isvrhuman(src))
+			if(force_user)
+				force_user.attack_log += text("\[[time_stamp()]\] <font color='red'>Forced [M.name] ([M.ckey]) to [pick(attack.attack_verb)] [src.name] ([src.ckey])</font>")
+				src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been [pick(attack.attack_verb)]ed by [M.name] ([M.ckey]), who was forced by [force_user.name] ([force_user.ckey])</font>")
+				msg_admin_attack("[key_name(force_user)] forced [key_name(M)] to [pick(attack.attack_verb)] [key_name(src)]")
+
+			else
+				M.attack_log += text("\[[time_stamp()]\] <font color='red'>[pick(attack.attack_verb)]ed [src.name] ([src.ckey])</font>")
+				src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been [pick(attack.attack_verb)]ed by [M.name] ([M.ckey])</font>")
 				msg_admin_attack("[key_name(M)] [pick(attack.attack_verb)]ed [key_name(src)]")
 
 			var/damage = rand(0, 5)//BS12 EDIT
@@ -175,9 +180,14 @@
 
 		if("disarm")
 			M.do_attack_animation(src)
-			M.attack_log += text("\[[time_stamp()]\] <font color='red'>Disarmed [src.name] ([src.ckey])</font>")
-			src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been disarmed by [M.name] ([M.ckey])</font>")
-			if(!isvrhuman(src))
+
+			if(force_user)
+				force_user.attack_log += text("\[[time_stamp()]\] <font color='red'>Forced [M.name] ([M.ckey]) to disarm [src.name] ([src.ckey])</font>")
+				attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been disarmed by [M.name] ([M.ckey]), who was forced by [force_user.name] ([force_user.ckey])</font>")
+				msg_admin_attack("[key_name(force_user)] forced [key_name(M)] to disarm [src.name] ([src.ckey])")
+			else
+				M.attack_log += text("\[[time_stamp()]\] <font color='red'>Disarmed [src.name] ([src.ckey])</font>")
+				src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been disarmed by [M.name] ([M.ckey])</font>")
 				msg_admin_attack("[key_name(M)] disarmed [src.name] ([src.ckey])")
 
 			if(w_uniform)

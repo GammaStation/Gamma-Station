@@ -116,7 +116,7 @@ var/const/tk_maxrange = 15
 	var/mob/living/host = null
 
 /obj/item/tk_grab/Destroy()
-	focus.is_focused = FALSE
+	focus.is_focused = FALSE // Currently if you focus one object with two hands it may lose it's is_focused status. ~Luduk
 	return ..()
 
 /obj/item/tk_grab/dropped(mob/user)

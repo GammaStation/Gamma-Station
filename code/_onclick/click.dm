@@ -266,8 +266,12 @@
 	// if(!incapacitated) This proc also checks for restrained. But we do want to be able to do telekinesis while restrained.
 	var/dist = get_dist(src, user)
 	if((TK in user.mutations) && user.do_telekinesis(dist))
-		user.SetNextMove(max(dist, CLICK_CD_MELEE))
-		attack_tk(user)
+		var/obj/item/item = user.get_active_hand(additional_checks = FALSE)
+		if(istype(item, /obj/item/tk_grab))
+			item.afterattack(src, user)
+		else
+			user.SetNextMove(max(dist, CLICK_CD_MELEE))
+			attack_tk(user)
 
 /*
 	Misc helpers

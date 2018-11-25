@@ -18,8 +18,8 @@
 	var/list/allowed_species	 // A name of species, Which can use this lang as secondary.
 
 
-/datum/language/proc/format_message(message, verb)
-	return "[verb], <span class='message'><span class='[colour]'>\"[capitalize(message)]\"</span></span>"
+/datum/language/proc/format_message(message, verb="") // Telepathy say formats message without the verb.
+	return "[verb ? "[verb], " : ""]<span class='message'><span class='[colour]'>\"[capitalize(message)]\"</span></span>"
 
 /datum/language/proc/format_message_radio(message, verb)
 	return "[verb], <span class='[colour]'>\"[capitalize(message)]\"</span>"
