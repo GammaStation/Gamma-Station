@@ -11,6 +11,8 @@
 	var/is_payed = FALSE
 	var/datum/mind/occupant_mind
 	power_channel = EQUIP
+	idle_power_usage = 80
+	active_power_usage = 1000
 
 /obj/machinery/gamepod/atom_init()
 	. = ..()
