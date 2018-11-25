@@ -262,7 +262,7 @@
 	..()
 
 
-/mob/living/carbon/human/proc/attacked_by(obj/item/I, mob/living/user, def_zone)
+/mob/living/carbon/human/proc/attacked_by(obj/item/I, mob/living/user, def_zone, force_user = null)
 	if(!I || !user)
 		return FALSE
 
