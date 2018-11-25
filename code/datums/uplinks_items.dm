@@ -907,7 +907,7 @@ var/global/list/thunderfield_items = list()
 
 /datum/thunderfield_item/toolbox
 	name = "Toolbox"
-	item = /obj/item/weapon/storage/toolbox
+	item = /obj/item/weapon/storage/toolbox/mechanical
 	cost = 1
 
 /datum/thunderfield_item/ballon
