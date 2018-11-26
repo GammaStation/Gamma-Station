@@ -87,8 +87,6 @@
 	vrbody.vr_mind = vr_mind
 	vr_mind.transfer_to(vrbody)
 	death_actions()
-	if(vr_mind.thunderfield_cheater)
-		vr_mind.thunder_points = POINTS_FOR_CHEATER
 	return ..()
 
 /mob/living/carbon/human/vrhuman/proc/death_actions()
