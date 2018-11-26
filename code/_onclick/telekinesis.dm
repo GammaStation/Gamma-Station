@@ -57,9 +57,9 @@ var/const/tk_maxrange = 15
 	if(!prob(psy_resist_chance))
 		switch(user.a_intent)
 			if(I_DISARM)
-				if(world.time <= M.next_click)
+				if(world.time <= next_click)
 					return
-				if(M.next_move > world.time)
+				if(next_move > world.time)
 					return
 
 				to_chat(user, "<span class='warning'>You disarm [src]!</span>")
@@ -74,9 +74,9 @@ var/const/tk_maxrange = 15
 				O.host = user
 				O.focus_object(src)
 			if(I_HURT)
-				if(world.time <= M.next_click)
+				if(world.time <= next_click)
 					return
-				if(M.next_move > world.time)
+				if(next_move > world.time)
 					return
 
 				to_chat(user, "<span class='warning'>You lock [src] in place!</span>")
@@ -211,7 +211,7 @@ var/const/tk_maxrange = 15
 
 		var/psy_resist_chance = 50 + (d * 2) // A chance that our poor mob might resist our efforts to make him beat something up.
 
-		if(get_species(user) != TYCHEON)
+		if(user.get_species() != TYCHEON)
 			psy_resist_chance += 10
 
 		if(target == M)
