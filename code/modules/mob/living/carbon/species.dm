@@ -1285,6 +1285,7 @@
 			to_chat(src, "<span class='warning'>You feel as if somebody is eavesdropping on you.</span>")
 
 		to_chat(M, "<span class='notice'><span class='bold'>[src]</span> [verb]:</span> [message]")
+		M.telepathy_hear(verb, message, source)
 
 /mob/living/carbon/human/proc/toggle_telepathy_hear((mob/M in (view() + remote_hearing))) // Makes us hear what they hear.
 	set name = "Toggle Telepathy Hear"
@@ -1371,6 +1372,9 @@
 	if(!M.say_understands(src, speaking) && speaking)
 		say = speaking.scramble(say)
 
+	if(!speaking)
+		say = ""[say]""
+
 	if(speaking)
 		say = speaking.format_message(say) //, verb) Verb is actually unused.
 	else
@@ -1398,6 +1402,7 @@
 			mes = "<b>[say]</b>"
 		to_chat(G, "<span class='italics'>Telepathic message from <b>[src]</b>[track]:</span> [mes]")
 
+	M.telepathy_hear("has heard a voice speak", say, src)
 	log_say("Telepathic message from [key_name(src)]: [say]")
 	for(var/client/C in show_to)
 		C.images -= II
@@ -1497,6 +1502,9 @@
 		if(!M.say_understands(src, speaking) && speaking)
 			say = speaking.scramble(say)
 
+		if(!speaking)
+			say = ""[say]""
+
 		if(speaking)
 			say = speaking.format_message(say) //, verb) Verb is actually unused.
 		else
@@ -1514,6 +1522,8 @@
 		else
 			to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room:</span> [say]")
 		to_chat(src, "<span class='notice'>You project your mind into <b>[M]</b>:</span> [say]")
+
+		M.telepathy_hear("has heard a voice speak", say, src)
 
 	var/mes = say
 	for(var/mob/dead/observer/G in dead_mob_list)
