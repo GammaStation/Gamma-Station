@@ -13,7 +13,7 @@ var/const/tk_maxrange = 15
 /atom/proc/attack_tk(mob/user)
 	if(user.stat)
 		return
-	user.UnarmedAttack(src,0) // attack_hand, attack_paw, etc
+	user.UnarmedAttack(src, 0) // attack_hand, attack_paw, etc
 
 /obj/attack_tk(mob/user)
 	if(user.stat)
@@ -155,6 +155,9 @@ var/const/tk_maxrange = 15
 
 /obj/item/tk_grab/attack_hand(mob/user)
 	if(focus && !QDELING(focus))
+		if(ismob(focus) && user.a_intent != I_HELP)
+			return
+		user.SetNextMove(CLICK_CD_MELEE)
 		focus.attack_hand(user)
 		apply_focus_overlay()
 
