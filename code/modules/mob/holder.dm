@@ -51,6 +51,8 @@
 /mob/living/proc/get_scooped(mob/living/carbon/grabber)
 	if(!holder_type || buckled || pinned.len)
 		return
+	if(!Adjacent(grabber))
+		return
 	var/obj/item/weapon/holder/H = new holder_type(loc)
 	forceMove(H)
 	H.name = src.name

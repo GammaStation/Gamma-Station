@@ -261,8 +261,8 @@
 	Control+Shift click
 	Unused except for AI
 */
-/mob/proc/CtrlShiftClickOn(atom/A)
-	A.CtrlShiftClick(src)
+/mob/proc/CtrlShiftClickOn(atom/A, params)
+	A.CtrlShiftClick(src, params)
 	return
 
 /atom/proc/CtrlShiftClick(mob/user, params)
