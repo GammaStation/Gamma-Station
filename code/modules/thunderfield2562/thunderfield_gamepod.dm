@@ -139,6 +139,8 @@
 	if(!powered())
 		return
 
+	to_chat(usr, "<font size=5><span class='shadowling'><b>\"Thunderfield is out of order! Go and report some bugs!\"</font></span>")
+
 	for(var/mob/living/carbon/slime/S in range(1, H))
 		if(S.Victim == H)
 			to_chat(usr, "<span class='danger'>You're too busy getting your life sucked out of you.</span>")
