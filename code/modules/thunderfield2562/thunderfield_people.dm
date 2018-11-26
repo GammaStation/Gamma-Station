@@ -113,6 +113,10 @@
 	else
 		return
 
+/mob/living/carbon/human/vrhuman/proc/force_return()
+	vr_mind.thunder_respawns = 0
+	death()
+
 /mob/living/carbon/human/vrhuman/proc/dienow()
 	var/answer = alert(src, "Would you like to respawn?", "Alert", "Yes", "No")
 	if(answer == "Yes")

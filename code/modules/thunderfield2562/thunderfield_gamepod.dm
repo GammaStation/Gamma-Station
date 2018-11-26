@@ -44,6 +44,7 @@
 	else if(istype(I, /obj/item/weapon/screwdriver))
 		if(occupant)
 			to_chat(usr, "<span class='notice'><B>[bicon(src)] Pod is in use.</B></span>")
+			return
 		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(!panel_open)
 			panel_open = 1
@@ -55,6 +56,7 @@
 	else if(istype(I, /obj/item/weapon/crowbar))
 		if(occupant)
 			to_chat(usr, "<span class='notice'><B>[bicon(src)] Pod is in use.</B></span>")
+			return
 		if(!panel_open)
 			to_chat(user, "<span class='notice'>[bicon(src)] You must open the maintenance hatch first.</span>")
 			return
@@ -187,9 +189,12 @@
 	icon_state = "gamepod_open"
 
 /obj/machinery/gamepod/proc/force_move_outside()
-	if(occupant_mind)
-		occupant_mind.thunder_respawns = 0
-		occupant_mind.current.death()
+	if(!occupant_mind)
+		return
+	if(isvrhuman(occupant_mind.current))
+		var/mob/living/carbon/human/vrhuman/vrbody = occupant_mind.current
+		vrbody.force_return()
+		vrbody = null
 		to_chat(occupant,"<span class='warning'><B> [bicon(src)]Temporary issues, VR aborted.</B></span>")
 		occupant_mind.thunderfield_cheater = FALSE
 		occupant_mind = null
