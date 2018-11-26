@@ -273,7 +273,7 @@
 	if((TK in user.mutations) && user.do_telekinesis(dist))
 		var/obj/item/item = user.get_active_hand(additional_checks = FALSE)
 		if(istype(item, /obj/item/tk_grab))
-			item.afterattack(src, user, params)
+			item.afterattack(src, user, Adjacent(user), params)
 		else
 			user.SetNextClick(max(dist, CLICK_CD_MELEE))
 			attack_tk(user)

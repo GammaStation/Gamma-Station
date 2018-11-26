@@ -462,7 +462,6 @@ var/const/INGEST = 2
 
 	var/datum/reagent/D = chemical_reagents_list[reagent]
 	if(D)
-
 		var/datum/reagent/R = new D.type()
 		reagent_list += R
 		R.holder = src

@@ -115,7 +115,7 @@ var/const/tk_maxrange = 15
 	desc = "Magic."
 	icon = 'icons/obj/magic.dmi'//Needs sprites
 	icon_state = "2"
-	flags = NOBLUDGEON | ABSTRACT
+	flags = NOBLUDGEON | ABSTRACT | DROPDEL
 	//item_state = null
 	w_class = 10.0
 	layer = ABOVE_HUD_LAYER
@@ -128,9 +128,6 @@ var/const/tk_maxrange = 15
 /obj/item/tk_grab/Destroy()
 	focus.is_focused = FALSE // Currently if you focus one object with two hands it may lose it's is_focused status. ~Luduk
 	return ..()
-
-/obj/item/tk_grab/dropped(mob/user)
-	qdel(src)
 
 	//stops TK grabs being equipped anywhere but into hands
 /obj/item/tk_grab/equipped(mob/user, slot)
@@ -227,6 +224,11 @@ var/const/tk_maxrange = 15
 
 				var/old_zone_sel = M.zone_sel
 				M.zone_sel = host.zone_sel
+
+				if(world.time <= M.next_click)
+					return
+				if(M.next_move > world.time)
+					return
 
 				if(target.Adjacent(M))
 					if(I)

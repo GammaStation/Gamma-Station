@@ -392,14 +392,14 @@
 			var/obj/item/II = put_me.focus
 			if(II.flags & NODROP || II.flags & ABSTRACT)
 				return
+			if(!istype(put_me.focus.loc, /turf))
+				user.drop_from_inventory(put_me.focus)
 			var/list/click_params = params2list(params)
 			//Center the icon where the user clicked.
 			if(!click_params || !click_params["icon-x"] || !click_params["icon-y"])
 				return
 			put_me.focus.pixel_x = Clamp(text2num(click_params["icon-x"]) - 16, -(world.icon_size/2), world.icon_size/2)
 			put_me.focus.pixel_y = Clamp(text2num(click_params["icon-y"]) - 16, -(world.icon_size/2), world.icon_size/2)
-		if(!istype(put_me.focus.loc, /turf))
-			user.drop_from_inventory(put_me.focus)
 		put_me.focus.forceMove(loc)
 		return
 
