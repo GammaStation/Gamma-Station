@@ -14,6 +14,7 @@
 	use_power = 1
 	idle_power_usage = 80
 	active_power_usage = 1000
+	var/list/prohibited_roles = list("Shadowling", "Ninja", "Revolutionary", "Operative", "Blob", "Abductor", "Mutineer", "Wizard", "Raider", "Cultist")
 
 /obj/machinery/gamepod/atom_init()
 	. = ..()
@@ -144,7 +145,11 @@
 			to_chat(usr, "<span class='danger'>You're too busy getting your life sucked out of you.</span>")
 			return
 
-	if(!code_role_check())
+	if(!role_check(H.mind))
+		to_chat(usr, "<span class='danger'>You have more important tasks than playing.</span>")
+		return
+
+	if(!code_check())
 		to_chat(usr, "<span class='danger'>You can play only in green code.</span>")
 		return
 
@@ -237,11 +242,17 @@
 	else
 		icon_state = "gamepodc_off"
 
-/obj/machinery/gamepod/proc/code_role_check()
+/obj/machinery/gamepod/proc/code_check()
 	if(security_level != SEC_LEVEL_GREEN)
 		return FALSE
 	else
 		return TRUE
+
+/obj/machinery/gamepod/proc/role_check(var/datum/mind/user_mind)
+	for(var/A in prohibited_roles)
+		if(user_mind.special_role == A)
+			return FALSE
+	return TRUE
 
 #undef RESPAWNS_FOR_PAYMENT
 #undef PRICE_PER_USE
