@@ -140,6 +140,7 @@
 		return
 
 	to_chat(usr, "<font size=5><span class='shadowling'><b>\"Thunderfield is out of order! Go and report some bugs!\"</font></span>")
+	return
 
 	for(var/mob/living/carbon/slime/S in range(1, H))
 		if(S.Victim == H)
