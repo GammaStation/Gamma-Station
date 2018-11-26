@@ -47,6 +47,9 @@ var/const/tk_maxrange = 15
 		return
 	var/psy_resist_chance = 50 + (get_dist(src, user) * 2)// A chance that our target will not be affected.
 
+	if(get_species(user) != TYCHEON)
+		psy_resist_chance += 10
+
 	if(a_intent == I_HELP)
 		psy_resist_chance = 0
 	else if(stat)
@@ -54,6 +57,11 @@ var/const/tk_maxrange = 15
 	if(!prob(psy_resist_chance))
 		switch(user.a_intent)
 			if(I_DISARM)
+				if(world.time <= M.next_click)
+					return
+				if(M.next_move > world.time)
+					return
+
 				to_chat(user, "<span class='warning'>You disarm [src]!</span>")
 				to_chat(src, "<span class='warning'>An immense force disarms you!</span>")
 				user.attack_log += text("\[[time_stamp()]\] <font color='red'>Disarmed [name] ([ckey])</font>")
@@ -66,6 +74,11 @@ var/const/tk_maxrange = 15
 				O.host = user
 				O.focus_object(src)
 			if(I_HURT)
+				if(world.time <= M.next_click)
+					return
+				if(M.next_move > world.time)
+					return
+
 				to_chat(user, "<span class='warning'>You lock [src] in place!</span>")
 				to_chat(src, "<span class='warning'>An immense force seems to lock you in place, paralyzing!</span>")
 				user.attack_log += text("\[[time_stamp()]\] <font color='red'>Paralyzed [name] ([ckey])</font>")
@@ -174,11 +187,11 @@ var/const/tk_maxrange = 15
 			;
 		if(1 to 5) // not adjacent may mean blocked by window
 			if(!proximity)
-				host.SetNextMove(2)
+				host.SetNextClick(2)
 		if(5 to 7)
-			host.SetNextMove(5)
+			host.SetNextClick(5)
 		if(8 to tk_maxrange)
-			host.SetNextMove(10)
+			host.SetNextClick(10)
 		else
 			to_chat(user, "<span class='notice'>Your mind won't reach that far.</span>")
 			return
@@ -197,6 +210,10 @@ var/const/tk_maxrange = 15
 		user.nutrition -= 10 // Manipulating living beings is TOUGH!
 
 		var/psy_resist_chance = 50 + (d * 2) // A chance that our poor mob might resist our efforts to make him beat something up.
+
+		if(get_species(user) != TYCHEON)
+			psy_resist_chance += 10
+
 		if(target == M)
 			psy_resist_chance += 30 // Resisting yourself being beaten up is kinda easier.
 		if(M.a_intent == I_HELP)
@@ -212,6 +229,11 @@ var/const/tk_maxrange = 15
 
 		switch(host.a_intent)
 			if(I_DISARM)
+				if(world.time <= M.next_click)
+					return
+				if(M.next_move > world.time)
+					return
+
 				M.drop_item()
 			if(I_GRAB)
 				step_towards(M, target)

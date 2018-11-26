@@ -11,14 +11,10 @@
 	if(!message)
 		message = sanitize(input(src,"Choose an emote to display.") as text|null)
 
-	var/clean_message = message
 	if(message)
 		message = "<B>[src]</B> [message]"
-	else
-		return
 
-
-	if (message)
+	if(message)
 		log_emote("[name]/[key] : [message]")
  //Hearing gasp and such every five seconds is not good emotes were not global for a reason.
  // Maybe some people are okay with that.
@@ -37,7 +33,7 @@
 					for(var/obj/item/weapon/holder/thing in O.contents)
 						thing.show_message(message, m_type)
 				O.show_message(message, m_type)
-				O.telepathy_hear("has seen", clean_message, src)
+				O.telepathy_hear("has seen", message, src)
 
 		// Type 2 (Audible) emotes are sent to anyone in hear range
 		// of the *LOCATION* -- this is important for pAIs to be heard
@@ -47,7 +43,7 @@
 					for(var/obj/item/weapon/holder/thing in O.contents)
 						thing.show_message(message, m_type)
 				O.show_message(message, m_type)
-				O.telepathy_hear("has heard", clean_message, src)
+				O.telepathy_hear("has heard", message, src)
 
 /mob/proc/emote_dead(message)
 
