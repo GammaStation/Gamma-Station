@@ -1269,6 +1269,8 @@
 
 /mob/proc/telepathy_hear(verb, message, source, datum/language/language = null) // Makes all those nosy telepathics hear what we hear. Also, please do see game\sound.dm, I have a little bootleg hidden there for you ;).
 	for(var/mob/M in remote_hearers)
+		if(source == M)
+			continue
 		var/dist = get_dist(src, M)
 		if(source)
 			dist = get_dist(src, source)
@@ -1366,6 +1368,9 @@
 	INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, III, list(client, M.client), 3 SECONDS)
 
 	var/datum/language/speaking = parse_language(say, M) // We can talk in languages they know, but we don't.
+	if(!speaking)
+		speaking = parse_language(say, src) // Or in languages we know, but they don't.
+
 	if(speaking)
 		say = copytext(say, 2 + length(speaking.key))
 
@@ -1373,7 +1378,7 @@
 		say = speaking.scramble(say)
 
 	if(!speaking)
-		say = ""[say]""
+		say = "\"[say]\""
 
 	if(speaking)
 		say = speaking.format_message(say) //, verb) Verb is actually unused.
@@ -1496,14 +1501,17 @@
 
 	for(var/mob/M in chosen)
 		var/datum/language/speaking = parse_language(say, M) // We can talk in languages they know, but we don't.
+		if(!speaking)
+			speaking = parse_language(say, src) // Or in languages we know, but they don't.
+
 		if(speaking)
 			say = copytext(say, 2 + length(speaking.key))
 
+		if(!speaking)
+			say = "\"[say]\""
+
 		if(!M.say_understands(src, speaking) && speaking)
 			say = speaking.scramble(say)
-
-		if(!speaking)
-			say = ""[say]""
 
 		if(speaking)
 			say = speaking.format_message(say) //, verb) Verb is actually unused.

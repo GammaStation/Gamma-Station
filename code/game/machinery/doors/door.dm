@@ -141,9 +141,15 @@
 	//	user = null
 	user.SetNextMove(CLICK_CD_INTERACT)
 	if(!src.requiresID())
+		if(!Adjacent(user)) // Telekinetic bull.
+			if(density)
+				open()
+			else
+				close()
+			return
 		user = null
-	if(src.allowed(user) && (!user || Adjacent(I)))
-		if(src.density)
+	if(src.allowed(user))
+		if(density)
 			open()
 		else
 			close()

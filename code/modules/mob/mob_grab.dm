@@ -27,6 +27,10 @@
 
 	if(affecting.anchored)
 		return INITIALIZE_HINT_QDEL
+	if(ishuman(affecting))
+		var/mob/living/carbon/human/H = affecting
+		if(H.species.flags[IS_IMMATERIAL])
+			return INITIALIZE_HINT_QDEL
 	last_action = world.time - 10
 
 	hud = new /obj/screen/grab(src)
