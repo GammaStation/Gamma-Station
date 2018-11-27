@@ -81,7 +81,7 @@
 	. = ..()
 
 /mob/living/carbon/MiddleClickOn(atom/A)
-	if(mind.wizard_power_system.chosen_spell)
+	if(iswizard(src) && mind.wizard_power_system.chosen_spell)
 		face_atom(A)
 		mind.wizard_power_system.chosen_spell.handle_targeted_cast(A)
 	else if(!src.stat && src.mind && src.mind.changeling && src.mind.changeling.chosen_sting && (istype(A, /mob/living/carbon)) && (A != src))
@@ -91,7 +91,7 @@
 		..()
 
 /mob/living/carbon/AltClickOn(atom/A)
-	if(mind.wizard_power_system.chosen_spell)
+	if(iswizard(src) && mind.wizard_power_system.chosen_spell)
 		face_atom(A)
 		mind.wizard_power_system.chosen_spell.handle_targeted_cast(A)
 	else if(!src.stat && src.mind && src.mind.changeling && src.mind.changeling.chosen_sting && (istype(A, /mob/living/carbon)) && (A != src))

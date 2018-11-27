@@ -43,7 +43,6 @@ proc/iswizard(mob/living/M)
 	for(var/spell in magic_spells)
 		add_spell(spell)
 
-
 /datum/mind/proc/remove_spell(var/obj/effect/proc_holder/magic/spell)
 	if(iswizard(current))
 		wizard_power_system.spells -= spell
