@@ -135,4 +135,3 @@
 	var/datum/browser/popup = new(E, "ling_abilities", "Host Abilities", 140)
 	popup.set_content(dat)
 	popup.open()
-

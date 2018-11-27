@@ -35,6 +35,8 @@
 					if(FA.z == ZLEVEL_STATION || FA.z == ZLEVEL_ASTEROID)
 						FA.overlays = list()
 						FA.overlays += image('icons/obj/monitors.dmi', "overlay_blue")
+
+				thunder_force_exit()
 			if(SEC_LEVEL_RED)
 				if(security_level < SEC_LEVEL_RED)
 					to_chat(world, "<font size=4 color='red'>Attention! Code red!</font>")
@@ -47,6 +49,8 @@
 				var/obj/machinery/computer/communications/CC = locate(/obj/machinery/computer/communications,world)
 				if(CC)
 					CC.post_status("alert", "redalert")
+
+				thunder_force_exit()
 
 				for(var/obj/machinery/firealarm/FA in machines)
 					if(FA.z == ZLEVEL_STATION || FA.z == ZLEVEL_ASTEROID)
@@ -61,8 +65,14 @@
 					if(FA.z == ZLEVEL_STATION || FA.z == ZLEVEL_ASTEROID)
 						FA.overlays = list()
 						FA.overlays += image('icons/obj/monitors.dmi', "overlay_delta")
+
+				thunder_force_exit()
 	else
 		return
+
+/proc/thunder_force_exit()
+	for(var/obj/machinery/gamepod/G in machines)
+		G.force_move_outside()
 
 /proc/get_security_level()
 	switch(security_level)

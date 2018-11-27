@@ -93,11 +93,6 @@
 	else
 		return ..()
 
-/mob/living/simple_animal/mouse/get_scooped(mob/living/carbon/grabber)
-	if (stat >= DEAD)
-		return
-	..()
-
 //copy paste from alien/larva, if that func is updated please update this one alsoghost
 /mob/living/simple_animal/mouse/verb/hide()
 	set name = "Hide"

@@ -20,6 +20,7 @@
 	var/inertia_next_move = 0
 	var/inertia_move_delay = 5
 
+	var/is_focused = FALSE // By telekinesis.
 	var/list/client_mobs_in_contents
 	var/freeze_movement = FALSE
 
@@ -115,7 +116,6 @@
 	if(A && non_native_bump)
 		A.last_bumped = world.time
 		A.Bumped(src)
-
 
 /atom/movable/proc/forceMove(atom/destination)
 	if(destination)

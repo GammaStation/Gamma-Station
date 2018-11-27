@@ -9,8 +9,7 @@
 //The reaction procs must ALWAYS set src = null, this detaches the proc from the object (the reagent)
 //so that it can continue working when the reagent is deleted while the proc is still active.
 
-
-datum/reagent
+/datum/reagent
 	var/name = "Reagent"
 	var/id = "reagent"
 	var/description = ""
@@ -25,12 +24,17 @@ datum/reagent
 	var/taste_message = "bitterness" //life's bitter by default. Cool points for using a span class for when you're tasting <span class='userdanger'>LIQUID FUCKING DEATH</span>
 	var/list/restrict_species = list(IPC) // Species that simply can not digest this reagent.
 
+	// Currently things below work only in Tycheons.
+	var/does_glow = FALSE
+	var/max_glow_power = 0
+	var/glow_increment = 0
+
 	var/overdose = 0
 	var/overdose_dam = 1
 	//var/list/viruses = list()
 	var/color = "#000000" // rgb: 0, 0, 0 (does not support alpha channels - yet!)
 
-datum/reagent/proc/reaction_mob(mob/M, method=TOUCH, volume) //By default we have a chance to transfer some
+/datum/reagent/proc/reaction_mob(mob/M, method=TOUCH, volume) //By default we have a chance to transfer some
 	if(!istype(M, /mob/living))	return 0
 	var/datum/reagent/self = src
 	src = null										  //of the reagent to the mob on TOUCHING it.
@@ -63,39 +67,37 @@ datum/reagent/proc/reaction_mob(mob/M, method=TOUCH, volume) //By default we hav
 						M.reagents.add_reagent(self.id,self.volume/2)
 	return 1
 
-datum/reagent/proc/reaction_obj(var/obj/O, var/volume) //By default we transfer a small part of the reagent to the object
+/datum/reagent/proc/reaction_obj(var/obj/O, var/volume) //By default we transfer a small part of the reagent to the object
 	src = null						//if it can hold reagents. nope!
 	//if(O.reagents)
 	//	O.reagents.add_reagent(id,volume/3)
 	return
 
-datum/reagent/proc/reaction_turf(var/turf/T, var/volume)
+/datum/reagent/proc/reaction_turf(var/turf/T, var/volume)
 	src = null
 	return
 
-datum/reagent/proc/on_mob_life(mob/living/M, alien)
-	if(!M || !holder)
-		return
+/datum/reagent/proc/on_mob_life(mob/living/M, alien)
 	if(!isliving(M))
 		return //Noticed runtime errors from pacid trying to damage ghosts, this should fix. --NEO
 	if(!check_digesting(M, alien)) // You can't overdose on what you can't digest
-		return
+		return FALSE
 	if((overdose > 0) && (volume >= overdose))//Overdosing, wooo
 		M.adjustToxLoss(overdose_dam)
 	return TRUE
 
-datum/reagent/proc/on_move(mob/M)
+/datum/reagent/proc/on_move(mob/M)
 	return
 
 // Called after add_reagents creates a new reagent.
-datum/reagent/proc/on_new(var/data)
+/datum/reagent/proc/on_new(var/data)
 	return
 
 // Called when two reagents of the same are mixing.
-datum/reagent/proc/on_merge(data)
+/datum/reagent/proc/on_merge(data)
 	return
 
-datum/reagent/proc/on_update(atom/A)
+/datum/reagent/proc/on_update(atom/A)
 	return
 
 /datum/reagent/proc/check_digesting(mob/living/M, alien)
@@ -108,10 +110,8 @@ datum/reagent/proc/on_update(atom/A)
 			var/mob/living/carbon/monkey/C = M
 			if(C.race in restrict_species)
 				return FALSE
-	var/should_general_digest = TRUE
 	var/datum/species/specimen = all_species[alien]
-	should_general_digest = specimen.call_digest_proc(M, src)
-	if(should_general_digest)
+	if(specimen.call_digest_proc(M, src)) // call_digest_proc returns TRUE if we need to do general digest.
 		on_general_digest(M)
 	return TRUE
 
@@ -144,6 +144,14 @@ datum/reagent/proc/on_update(atom/A)
 
 /datum/reagent/proc/on_golem_digest(mob/living/M)
 	return TRUE
+
+/datum/reagent/proc/on_tycheon_digest(mob/living/M)
+	if(ishuman(M) && does_glow)
+		var/mob/living/carbon/human/H = M
+		if(H.light_range_reagents < max_glow_power)
+			H.light_range_reagents = min(max_glow_power, H.light_range_reagents + glow_increment)
+		H.reagents_lit_on = TRUE
+	return FALSE // Do not call general digestion proc.
 
 datum/reagent/blood
 	data = new/list("donor"=null,"viruses"=null,"blood_DNA"=null,"blood_type"=null,"resistances"=null,"trace_chem"=null, "antibodies" = null)
@@ -732,6 +740,10 @@ datum/reagent/phosphorus
 	taste_message = "misguided choices"
 	custom_metabolism = 0.01
 
+	does_glow = TRUE
+	max_glow_power = 1
+	glow_increment = 0.2
+
 /datum/reagent/phosphorus/on_diona_digest(mob/living/M)
 	..()
 	M.adjustBruteLoss(-REM)
@@ -945,6 +957,16 @@ datum/reagent/iron
 	overdose = REAGENTS_OVERDOSE
 	taste_message = "metal"
 
+datum/reagent/iron/on_tycheon_digest(mob/living/M)
+	..()
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		var/obj/item/organ/internal/brain/tycheon/core = H.organs_by_name[O_BRAIN]
+		if(core)
+			core.damage -= 1
+		H.reagents.remove_reagent("iron", 1)
+	return FALSE
+
 datum/reagent/gold
 	name = "Gold"
 	id = "gold"
@@ -968,6 +990,10 @@ datum/reagent/uranium
 	reagent_state = SOLID
 	color = "#B8B8C0" // rgb: 184, 184, 192
 	taste_message = "bonehurting juice"
+
+	does_glow = TRUE
+	max_glow_power = 2
+	glow_increment = 0.3
 
 /datum/reagent/uranium/on_general_digest(mob/living/M)
 	..()
@@ -1578,9 +1604,8 @@ datum/reagent/nicotine
 	restrict_species = list(IPC, DIONA)
 	var/alert_time = 0
 
-datum/reagent/nicotine/on_mob_life(mob/living/M)
-	if(!..())
-		return
+datum/reagent/nicotine/on_general_digest(mob/living/M)
+	..()
 	if(volume >= 0.85)
 		if(world.time > (alert_time + 90 SECONDS))
 			to_chat(M, pick("<span class='danger'>You feel dizzy and weak</span>"))
@@ -1595,7 +1620,6 @@ datum/reagent/nicotine/on_mob_life(mob/living/M)
 		if(prob(80))
 			M.adjustOxyLoss(1)
 			M.drowsyness = min(40, (M.drowsyness + 2))
-	return TRUE
 
 datum/reagent/ammonia
 	name = "Ammonia"
@@ -1726,10 +1750,25 @@ datum/reagent/toxin/phoron
 	color = "#ef0097" // rgb: 231, 27, 0
 	toxpwr = 3
 
+	does_glow = TRUE
+	max_glow_power = 1
+	glow_increment = 0.2
+
 /datum/reagent/toxin/phoron/on_general_digest(mob/living/M)
 	..()
 	if(holder.has_reagent("inaprovaline"))
 		holder.remove_reagent("inaprovaline", 2 * REM)
+
+/datum/reagent/toxin/phoron/on_tycheon_digest(mob/living/M)
+	..()
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		if(!H.regenerating_bodypart)
+			H.reagents.remove_reagent("phoron", 1)
+			H.regenerating_bodypart = H.find_damaged_bodypart()
+		if(H.regenerating_bodypart)
+			H.regen_bodyparts(0, FALSE)
+	return FALSE
 
 datum/reagent/toxin/phoron/reaction_obj(var/obj/O, var/volume)
 	src = null
@@ -2959,6 +2998,10 @@ datum/reagent/toxin/acid/polyacid
 	adj_sleepy = -2
 	taste_message = "cola"
 
+	does_glow = TRUE
+	max_glow_power = 2
+	glow_increment = 0.3
+
 /datum/reagent/consumable/drink/cold/nuka_cola/on_general_digest(mob/living/M)
 	..()
 	M.make_jittery(20)
@@ -3121,6 +3164,10 @@ datum/reagent/toxin/acid/polyacid
 	taste_message = "fruity alcohol"
 	restrict_species = list(IPC, DIONA)
 
+	does_glow = TRUE
+	max_glow_power = 2
+	glow_increment = 0.3
+
 /datum/reagent/consumable/atomicbomb/on_general_digest(mob/living/M)
 	..()
 	M.druggy = max(M.druggy, 50)
@@ -3271,10 +3318,8 @@ datum/reagent/toxin/acid/polyacid
 	taste_message = "liquid fire"
 	restrict_species = list(IPC, DIONA)
 
-/datum/reagent/consumable/ethanol/on_mob_life(mob/living/M, alien) // There's a multiplier for Skrells, which can't be inbuilt in any other reasonable way.
-	if(!..())
-		return
-
+/datum/reagent/consumable/ethanol/on_general_digest(mob/living/M) // There's a multiplier for Skrells, which can't be inbuilt in any other reasonable way.
+	..()
 	M.nutrition += nutriment_factor
 
 	if(adj_drowsy)
@@ -3293,7 +3338,7 @@ datum/reagent/toxin/acid/polyacid
 		if(isnum(A.data))
 			d += A.data
 
-	if(alien && alien == SKRELL) //Skrell get very drunk very quickly.
+	if(M.get_species() == SKRELL) //Skrell get very drunk very quickly.
 		d *= 5
 
 	M.dizziness += dizzy_adj
@@ -3317,7 +3362,6 @@ datum/reagent/toxin/acid/polyacid
 			if(istype(IO))
 				IO.take_damage(0.1, 1)
 			H.adjustToxLoss(0.1)
-	return TRUE
 
 /datum/reagent/consumable/ethanol/reaction_obj(var/obj/O, var/volume)
 	if(istype(O,/obj/item/weapon/paper))
@@ -3431,6 +3475,10 @@ datum/reagent/toxin/acid/polyacid
 	color = "#666340" // rgb: 102, 99, 64
 	boozepwr = 5
 	taste_message = "fruity alcohol"
+
+	does_glow = TRUE
+	max_glow_power = 2
+	glow_increment = 0.3
 
 /datum/reagent/consumable/ethanol/threemileisland/on_general_digest(mob/living/M)
 	..()
@@ -3735,6 +3783,10 @@ datum/reagent/toxin/acid/polyacid
 	boozepwr = 5
 	taste_message = "FIRE"
 
+	does_glow = TRUE
+	max_glow_power = 1
+	glow_increment = 0.2
+
 /datum/reagent/consumable/ethanol/toxins_special/on_general_digest(mob/living/M)
 	..()
 	if (M.bodytemperature < 330)
@@ -3832,6 +3884,10 @@ datum/reagent/toxin/acid/polyacid
 	color = "#664300" // rgb: 102, 67, 0
 	boozepwr = 5
 	taste_message = "bitter alcohol"
+
+	does_glow = TRUE
+	max_glow_power = 2
+	glow_increment = 0.3
 
 /datum/reagent/consumable/ethanol/manhattan_proj/on_general_digest(mob/living/M)
 	..()
@@ -4152,16 +4208,6 @@ datum/reagent/toxin/acid/polyacid
 ////////////////////////////////////////////// Chemlights ///////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/datum/reagent/luminophore_temp //Temporary holder of vars used in mixing colors
-	name = "Luminophore"
-	id = "luminophore"
-	description = "Uh, some kind of drink."
-	reagent_state = LIQUID
-	nutriment_factor = 0.2
-	color = "#ffffff"
-	custom_metabolism = 0.2
-	taste_message = "bitterness"
-
 /datum/reagent/luminophore
 	name = "Luminophore"
 	id = "luminophore"
@@ -4170,6 +4216,10 @@ datum/reagent/toxin/acid/polyacid
 	color = "#ffffff"
 	custom_metabolism = 0.2
 	taste_message = "bitterness"
+
+	does_glow = TRUE
+	max_glow_power = 3
+	glow_increment = 0.5
 
 /datum/reagent/luminophore/on_general_digest(mob/living/M)
 	..()
@@ -4433,7 +4483,6 @@ datum/reagent/toxin/acid/polyacid
 	. = ..()
 	holder = null
 
-
 /datum/reagent/mulligan
 	name = "Mulligan Toxin"
 	id = "mulligan"
@@ -4597,7 +4646,8 @@ datum/reagent/toxin/acid/polyacid
 	data = 1
 	color = "#FFA8E4" // rgb: 255, 168, 228
 
-/datum/reagent/ectoplasm/on_mob_life(mob/living/M)
+/datum/reagent/ectoplasm/on_general_digest(mob/living/M)
+	..()
 	M.hallucination += 1
 	M.make_jittery(2)
 	switch(data)
@@ -4642,9 +4692,8 @@ datum/reagent/toxin/acid/polyacid
 	color = "#C80064" // rgb: 200,0, 100
 	custom_metabolism = REAGENTS_METABOLISM * 10
 
-/datum/reagent/water/unholywater/on_mob_life(mob/living/M)
-	if(!..())
-		return
+/datum/reagent/water/unholywater/on_general_digest(mob/living/M)
+	..()
 	if(iscultist(M) && prob(10))
 		switch(data)
 			if(1 to 30)

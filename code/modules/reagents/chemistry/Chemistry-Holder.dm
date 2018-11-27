@@ -350,7 +350,6 @@ var/const/INGEST = 2
 		if (R.id == reagent)
 			reagent_list -= R
 			qdel(R)
-			update_total()
 			if(my_atom)
 				my_atom.on_reagent_change()
 			return 0
@@ -455,7 +454,6 @@ var/const/INGEST = 2
 
 	var/datum/reagent/D = chemical_reagents_list[reagent]
 	if(D)
-
 		var/datum/reagent/R = new D.type()
 		reagent_list += R
 		R.holder = src

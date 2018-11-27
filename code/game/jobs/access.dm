@@ -109,7 +109,10 @@
 	else if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		//if they are holding or wearing a card that has access, that works
-		if(src.check_access(H.get_active_hand()) || src.check_access(H.wear_id))
+		if(src.check_access(H.wear_id))
+			return TRUE
+		var/atom/movable/what = H.get_active_hand()
+		if(src.check_access(what) && Adjacent(what))
 			return TRUE
 	else if(isIAN(M))
 		var/mob/living/carbon/ian/IAN = M

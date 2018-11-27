@@ -69,6 +69,8 @@
 
 	if(istype(mover) && mover.checkpass(PASSTABLE))
 		return 1
+	if(mover.is_focused)
+		return 1
 	else
 		return 0
 
@@ -132,17 +134,41 @@
 
 	take_victim(usr,usr)
 
-/obj/machinery/optable/attackby(obj/item/weapon/W, mob/living/carbon/user)
+/obj/machinery/optable/attackby(obj/item/weapon/W, mob/living/carbon/user, params)
 	if(isrobot(user))
 		return
 
-	if (istype(W, /obj/item/weapon/grab))
-		if(iscarbon(W:affecting))
-			take_victim(W:affecting,usr)
+	if(istype(W, /obj/item/weapon/grab))
+		var/obj/item/weapon/grab/G = W
+		if(iscarbon(G.affecting))
+			take_victim(G.affecting, user)
 			user.SetNextMove(CLICK_CD_MELEE)
 			qdel(W)
 			return
+
+	var/obj/item/tk_grab/put_me = user.get_active_hand(additional_checks = FALSE)
+	if(istype(put_me))
+		if(put_me.focus.anchored || !Adjacent(put_me.focus))
+			return
+		if(iscarbon(put_me.focus))
+			take_victim(put_me.focus, user)
+			user.SetNextMove(CLICK_CD_MELEE)
+			return
+		if(istype(put_me.focus, /obj/item))
+			var/obj/item/II = put_me.focus
+			if(II.flags & NODROP || II.flags & ABSTRACT)
+				return
+			var/list/click_params = params2list(params)
+			//Center the icon where the user clicked.
+			if(!click_params || !click_params["icon-x"] || !click_params["icon-y"])
+				return
+			put_me.focus.pixel_x = Clamp(text2num(click_params["icon-x"]) - 16, -(world.icon_size/2), world.icon_size/2)
+			put_me.focus.pixel_y = Clamp(text2num(click_params["icon-y"]) - 16, -(world.icon_size/2), world.icon_size/2)
+		if(!istype(put_me.focus.loc, /turf))
+			user.drop_from_inventory(put_me.focus)
+		put_me.focus.forceMove(loc)
+		return
+
 	user.drop_item()
 	if(W && W.loc)
 		W.loc = src.loc
-	return

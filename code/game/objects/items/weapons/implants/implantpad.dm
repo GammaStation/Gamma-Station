@@ -26,7 +26,7 @@
 
 	attack_hand(mob/user)
 		if ((src.case && (user.l_hand == src || user.r_hand == src)))
-			user.put_in_active_hand(case)
+			user.put_in_hands(case)
 
 			src.case.add_fingerprint(user)
 			src.case = null

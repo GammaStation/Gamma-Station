@@ -165,6 +165,8 @@ var/global/list/datum/dna/gene/dna_genes[0]
 	ASSERT(value<=4095)
 	UI[block]=value
 	dirtyUI=1
+	if(species == IPC || species == DIONA || species == TYCHEON)
+		return
 	if(!defer)
 		UpdateUI()
 
@@ -252,6 +254,8 @@ var/global/list/datum/dna/gene/dna_genes[0]
 	ASSERT(value<=4095)
 	SE[block]=value
 	dirtySE=1
+	if(species == IPC || species == DIONA || species == TYCHEON)
+		return
 	if(!defer)
 		UpdateSE()
 

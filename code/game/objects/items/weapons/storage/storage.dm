@@ -40,7 +40,7 @@
 		if (istype(usr.loc,/obj/mecha)) // stops inventory actions in a mech
 			return
 
-		if(over_object == usr && Adjacent(usr)) // this must come before the screen objects only block
+		if(over_object == usr && (Adjacent(M) || (TK in M.mutations))) // this must come before the screen objects only block
 			src.open(usr)
 			return
 
@@ -65,7 +65,7 @@
 				if("mouth")
 					if(!M.unEquip(src))
 						return
-					M.put_in_active_hand(src)
+					M.put_in_hands(src)
 			src.add_fingerprint(usr)
 			return
 	return

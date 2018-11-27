@@ -208,11 +208,18 @@ var/const/INGEST = 2
 	return amount
 
 /datum/reagents/proc/metabolize(mob/M, alien)
+	var/metabolism_factor = 1.0
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		metabolism_factor *= H.species.custom_metabolism
+	else if(ismonkey(M))
+		var/mob/living/carbon/monkey/MM = M
+		metabolism_factor *= all_species[MM.race].custom_metabolism
 	for(var/A in reagent_list)
 		var/datum/reagent/R = A
 		if(M && R)
 			R.on_mob_life(M, alien)
-			remove_reagent(R.id, R.custom_metabolism)
+			remove_reagent(R.id, R.custom_metabolism * metabolism_factor)
 	update_total()
 
 /datum/reagents/proc/conditional_update_move(atom/A, Running = 0)
@@ -455,7 +462,6 @@ var/const/INGEST = 2
 
 	var/datum/reagent/D = chemical_reagents_list[reagent]
 	if(D)
-
 		var/datum/reagent/R = new D.type()
 		reagent_list += R
 		R.holder = src

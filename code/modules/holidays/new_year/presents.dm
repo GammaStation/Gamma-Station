@@ -127,7 +127,7 @@
 	else
 		present = new giftselect(src.loc)
 
-	user.put_in_active_hand(present)
+	user.put_in_hands(present)
 	qdel(src)
 
 /obj/item/weapon/present/special
