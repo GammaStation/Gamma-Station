@@ -3,10 +3,15 @@
 		return 1
 	if(istype(mover, /obj/item/projectile) || mover.throwing)
 		return (!density || lying)
-	if(mover.checkpass(PASSMOB))
+	if(mover.checkpass(PASSMOB) || checkpass(PASSMOB))
 		return 1
+	if(ishuman(src))
+		var/mob/living/carbon/human/H = src
+		if(H.species.flags[IS_FLYING] && !H.falling)
+			if(prob((10 - H.movement_delay()) * 5))
+				return TRUE
 	if(buckled == mover)
-		return 1
+		return TRUE
 	if(ismob(mover))
 		var/mob/moving_mob = mover
 		if ((other_mobs && moving_mob.other_mobs))
@@ -271,6 +276,13 @@
 			G.adjust_position()
 		for (var/obj/item/weapon/grab/G in mob.grabbed_by)
 			G.adjust_position()
+
+		if(ishuman(mob))
+			var/mob/living/carbon/human/H = mob
+			if(H.species.flags[STATICALLY_CHARGED] && !istype(get_turf(mob), /turf/space)) // The only to use this is Voidan. And their nutrition is static charge.
+				if(prob(5))
+					new /obj/effect/effect/sparks(H.loc)
+				H.nutrition = max(500, H.nutrition + 1)
 
 		moving = 0
 		if(mob && .)

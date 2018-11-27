@@ -332,7 +332,7 @@
 	idtype = /obj/item/weapon/card/id/civ
 	access = list(access_lawyer, access_court, access_sec_doors)
 	minimal_player_ingame_minutes = 1560
-	restricted_species = list(UNATHI, TAJARAN, DIONA, IPC, SKRELL)
+	restricted_species = list(UNATHI, TAJARAN, DIONA, IPC, SKRELL, TYCHEON)
 
 /datum/job/lawyer/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0

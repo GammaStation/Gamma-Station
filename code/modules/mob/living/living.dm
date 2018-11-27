@@ -65,6 +65,11 @@
 			if(A.density)
 				can_switch = FALSE
 				break
+		if(ishuman(M))
+			var/mob/living/carbon/human/H = M
+			if(H.species.flags[IS_IMMATERIAL])
+				can_switch = FALSE
+
 		if(can_switch && get_dist(M, src) <= 1)
 			now_pushing = 1
 			//TODO: Make this use Move(). we're pretty much recreating it here.
@@ -541,7 +546,8 @@
 
 /mob/living/carbon/human/rejuvenate()
 	var/obj/item/organ/external/head/BP = bodyparts_by_name[BP_HEAD]
-	BP.disfigured = FALSE
+	if(BP)
+		BP.disfigured = FALSE
 
 	for (var/obj/item/weapon/organ/head/H in world) // damn son, where'd you get this?
 		if(H.brainmob)

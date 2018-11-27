@@ -100,7 +100,7 @@
 
 		if (user.get_inactive_hand()==src)
 			user.remove_from_mob(src)
-			user.put_in_inactive_hand(B)
+			user.put_in_hands(B)
 		qdel(src)
 		return
 

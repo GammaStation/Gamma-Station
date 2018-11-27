@@ -269,6 +269,11 @@
 	if (!user || anchored)
 		return
 
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.species.flags[IS_IMMATERIAL])
+			return
+
 	if(HULK in user.mutations)//#Z2 Hulk nerfz!
 		if(istype(src, /obj/item/weapon/melee/))
 			if(src.w_class < 4)
@@ -332,11 +337,10 @@
 	if(QDELETED(src) || freeze_movement) // remove_from_mob() may remove DROPDEL items, so...
 		return
 
-	src.pickup(user)
-	add_fingerprint(user)
-	user.put_in_active_hand(src)
-	return
-
+	if(Adjacent(user)) // Telekinesis is a bitch.
+		pickup(user)
+		add_fingerprint(user)
+		user.put_in_hands(src)
 
 /obj/item/attack_paw(mob/user)
 	if (!user || anchored)
@@ -559,7 +563,7 @@
 			if(slot_wear_id)
 				if(H.wear_id)
 					return 0
-				if(!H.w_uniform)
+				if(!H.w_uniform && !H.species.flags[IS_IMMATERIAL]) // Bootleg. Allows voidians to equip the ID card no matter what. Hue. Boot-leg.)
 					if(!disable_warning)
 						to_chat(H, "\red You need a jumpsuit before you can attach this [name].")
 					return 0
@@ -770,7 +774,8 @@
 
 	user.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>"
 	M.attack_log += "\[[time_stamp()]\]<font color='orange'> Attacked by [user.name] ([user.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>"
-	msg_admin_attack("[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)") //BS12 EDIT ALG
+	if(!isvrhuman(user))
+		msg_admin_attack("[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)") //BS12 EDIT ALG
 
 	src.add_fingerprint(user)
 	//if((CLUMSY in user.mutations) && prob(50))
@@ -794,6 +799,8 @@
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/obj/item/organ/internal/eyes/IO = H.organs_by_name[O_EYES]
+		if(!IO) // Can't damage what doesn't exist.
+			return
 		IO.damage += rand(3,4)
 		if(IO.damage >= IO.min_bruised_damage)
 			if(H.stat != DEAD)

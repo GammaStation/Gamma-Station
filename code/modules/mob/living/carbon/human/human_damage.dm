@@ -21,9 +21,12 @@
 	return
 
 /mob/living/carbon/human/apply_effect(effect = 0, effecttype = STUN, blocked = 0)
-	if((effecttype == AGONY || effecttype == STUTTER) && species && species.flags[NO_PAIN])
+	if((effecttype == AGONY || effecttype == STUTTER) && species.flags[NO_PAIN])
+		world.log << "test me daddy"
 		return FALSE
-	..()
+	else if(effecttype == IRRADIATE && species.flags[RAD_IMMUNE])
+		return FALSE
+	return ..()
 
 // =============================================
 
@@ -141,7 +144,7 @@
 /mob/living/carbon/human/adjustCloneLoss(amount)
 	..()
 
-	if(species.flags[IS_SYNTHETIC])
+	if(species.flags[IS_SYNTHETIC] || species.flags[IS_IMMATERIAL]) // Immaterial? What cloning?
 		return
 
 	var/heal_prob = max(0, 80 - getCloneLoss())

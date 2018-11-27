@@ -137,7 +137,7 @@
 /mob/living/carbon/human/proc/get_pressure_protection(pressure_check = STOPS_PRESSUREDMAGE)
 	var/pressure_adjustment_coefficient = 1	//Determins how much the clothing you are wearing protects you in percent.
 
-	if((head && (head.flags_pressure & pressure_check))&&(wear_suit && (wear_suit.flags_pressure & pressure_check)))
+	if(((head && (head.flags_pressure & pressure_check)) || !(BP_HEAD in species.has_bodypart)) && (wear_suit && (wear_suit.flags_pressure & pressure_check)))
 		pressure_adjustment_coefficient = 0
 
 		//Handles breaches in your space suit. 10 suit damage equals a 100% loss of pressure reduction.
@@ -735,10 +735,11 @@
 /mob/living/carbon/human/handle_fire()
 	if(..())
 		return
+	if(species.flags[IS_IMMATERIAL])
+		return
 	var/thermal_protection = get_heat_protection(30000) //If you don't have fire suit level protection, you get a temperature increase
 	if((1 - thermal_protection) > 0.0001)
 		bodytemperature += BODYTEMP_HEATING_MAX
-	return
 //END FIRE CODE
 
 
@@ -952,12 +953,95 @@
 */
 
 /mob/living/carbon/human/proc/handle_chemicals_in_body()
+	if(get_species() == TYCHEON && life_tick % 3 == 0)  // Shut up and truuuust thiiis! Come up with a flag if you ever need it elsewhere.
+		if(istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon)) // We spend charge to keep sphere going.
+			if(!istype(loc, /turf/space)) // Not in space though.
+				if(nutrition > 203)
+					nutrition -= 3
+				else
+					remove_from_mob(wear_suit, get_turf(src))
+
+		var/owner_color = uppertext_(rgb(r_skin, g_skin, b_skin))
+		var/mix_color = mix_color_from_reagents(reagents.reagent_list)
+		if(!istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
+			var/list/range_objs = orange(1, src)
+			for(var/atom/movable/AM in range_objs) // Gas mixing color, AND reagents with each other.
+				if(iscarbon(AM))
+					var/mob/living/carbon/C = AM
+					if(C.get_species() == TYCHEON && ishuman(C))
+						var/mob/living/carbon/human/H = C
+						for(var/datum/reagent/R in reagents.reagent_list) // They split it all by half, since they are gas and pass it to each other.
+							if(reagents.get_reagent_amount(R.id) > H.reagents.get_reagent_amount(R.id) && H.reagents.total_volume < H.reagents.maximum_volume)
+								H.reagents.add_reagent(R.id, 1, R.data)
+								reagents.remove_reagent(R.id, 1)
+						var/other_tycheon_color = uppertext_(rgb(H.r_skin, H.g_skin, H.b_skin))
+						if(mix_color != other_tycheon_color)
+							mix_color = other_tycheon_color
+					else
+						var/block = FALSE
+						if(C.wear_mask)
+							if(C.wear_mask.flags & BLOCK_GAS_SMOKE_EFFECT)
+								block = TRUE
+						if(ishuman(C))
+							var/mob/living/carbon/human/H = C
+							if(H.glasses)
+								if(H.glasses.flags & BLOCK_GAS_SMOKE_EFFECT)
+									block = TRUE
+							if(H.head)
+								if(H.head.flags & BLOCK_GAS_SMOKE_EFFECT)
+									block = TRUE
+						if(!block)
+							for(var/datum/reagent/R in reagents.reagent_list) // They just give everything they have.
+								if(C.reagents.total_volume < C.reagents.maximum_volume)
+									C.reagents.add_reagent(R.id, 1, R.data)
+									reagents.remove_reagent(R.id, 1)
+
+				else if(istype(AM, /obj/item/weapon/reagent_containers))
+					var/obj/item/weapon/reagent_containers/RC = AM
+					if(RC.flags & OPENCONTAINER)
+						for(var/datum/reagent/R in reagents.reagent_list)
+							if(RC.reagents.total_volume < RC.reagents.maximum_volume)
+								RC.reagents.add_reagent(R.id, 1, R.data)
+								reagents.remove_reagent(R.id, 1)
+
+		if((mix_color != 0) && owner_color != mix_color) // Why change our color if we already achieved the result.
+			var/redcolor = hex2num(copytext(mix_color, 2, 4)) // "Complex" math. Trust me, it works.
+			var/greencolor = hex2num(copytext(mix_color, 4, 6))
+			var/bluecolor = hex2num(copytext(mix_color, 6, 8))
+			var/r_tweak = 0.15
+			var/g_tweak = 0.15
+			var/b_tweak = 0.15
+			if(redcolor == 0)
+				if(r_skin <= 1)
+					r_tweak = 1
+			else
+				if(((r_skin / redcolor) >= 0.8) && ((r_skin / redcolor) <= 1.2))
+					r_tweak = 1
+			if(greencolor == 0)
+				if(g_skin <= 1)
+					g_tweak = 1
+			else
+				if(((g_skin / greencolor) >= 0.8) && ((g_skin / greencolor) <= 1.2))
+					g_tweak = 1
+			if(bluecolor == 0)
+				if(b_skin <= 1)
+					b_tweak = 1
+			else
+				if(((b_skin / bluecolor) >= 0.8) && ((b_skin / bluecolor) <= 1.2))
+					b_tweak = 1
+			var/r_base = 1 - r_tweak
+			var/g_base = 1 - g_tweak
+			var/b_base = 1 - b_tweak
+			r_skin = Clamp(round((r_skin * r_base) + (redcolor * r_tweak)), 0, 255)
+			g_skin = Clamp(round((g_skin * g_base) + (greencolor * g_tweak)), 0, 255)
+			b_skin = Clamp(round((b_skin * b_base) + (bluecolor * b_tweak)), 0, 255)
+			update_body()
 
 	if(reagents && !species.flags[IS_SYNTHETIC]) //Synths don't process reagents.
 		var/alien = null
 		if(species)
 			alien = species.name
-		reagents.metabolize(src,alien)
+		reagents.metabolize(src, alien)
 
 		var/total_phoronloss = 0
 		for(var/obj/item/I in src)
@@ -1027,7 +1111,7 @@
 			update_inv_w_uniform()
 			update_inv_wear_suit()
 	else
-		if(overeatduration > 500 && !species.flags[IS_SYNTHETIC] && !species.flags[IS_PLANT])
+		if(overeatduration > 500 && !species.flags[NO_FAT])
 			mutations.Add(FAT)
 			update_body()
 			update_mutantrace()
@@ -1070,6 +1154,17 @@
 
 	if(!species.flags[IS_SYNTHETIC])
 		handle_trace_chems()
+
+	if(reagents_lit_on)
+		var/r_c = num2hex(r_skin)
+		var/g_c = num2hex(g_skin)
+		var/b_c = num2hex(b_skin)
+		var/reg_hex_color = "#[r_c][g_c][b_c]"
+		set_light(light_range_reagents, light_range_reagents, reg_hex_color)
+		light_range_reagents -= 0.1
+		if(light_range_reagents <= 0)
+			reagents_lit_on = FALSE
+			set_light(0)
 
 	updatehealth()
 
@@ -1220,7 +1315,6 @@
 		// If you're dirty, your gloves will become dirty, too.
 		if(gloves && germ_level > gloves.germ_level && prob(10))
 			gloves.germ_level += 1
-
 	return 1
 
 /mob/living/carbon/human/handle_regular_hud_updates()

@@ -965,7 +965,7 @@ Owl & Griffin toys
 	H.parentdeck = src
 	src.cards -= choice
 	H.pickup(user)
-	user.put_in_active_hand(H)
+	user.put_in_hands(H)
 	src.visible_message("<span class='notice'>[user] draws a card from the deck.</span>", "<span class='notice'>You draw a card from the deck.</span>")
 	if(cards.len > 26)
 		src.icon_state = "deck_full"

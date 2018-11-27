@@ -135,26 +135,10 @@
 				to_chat(user, "<span class='warning'>This creature does not seem to have a mouth!</span>")
 				return
 
-		if(reagents)								//Handle ingestion of the reagent.
+		if(reagents) //Handle ingestion of the reagent.
 			playsound(M.loc,'sound/items/eatfood.ogg', rand(10,50), 1)
 			if(reagents.total_volume)
-				var/datum/reagent/my_reagent = locate(/datum/reagent/luminophore) in reagents.reagent_list
-				var/datum/reagents/list_regs = new /datum/reagents
-				var/datum/reagent/luminold = new /datum/reagent/luminophore_temp
-				luminold.volume = my_reagent.volume
-				luminold.color = my_reagent.color
-				list_regs.reagent_list += luminold
-
 				reagents.trans_to(M, reagents.total_volume)
-
-				var/datum/reagent/luminnew = locate(/datum/reagent/luminophore) in M.reagents.reagent_list
-				if(luminnew.color == "#ffffff")
-					luminnew.color = luminold.color
-				list_regs.reagent_list += luminnew
-				var/mixedcolor = mix_color_from_reagents(list_regs.reagent_list)
-				qdel(list_regs)
-				qdel(luminold)
-				luminnew.color = mixedcolor
 				On_Consume(M)
 			return 1
 
@@ -186,9 +170,7 @@
 		if(luminophore)
 			reagents.maximum_volume = luminophore.volume
 			liquid_fuel = luminophore
-
-	var/datum/reagent/lum = locate(/datum/reagent/luminophore) in R.reagent_list
-	lum.color = filling_color
+			luminophore.color = filling_color
 
 ////////////////G L O W S T I C K - C O L O R S////////////////
 /obj/item/weapon/reagent_containers/food/snacks/glowstick/green

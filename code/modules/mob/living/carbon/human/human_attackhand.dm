@@ -31,14 +31,16 @@
 						visible_message("\red <B>[M] accidentally touched \himself with the stun gloves!</B>")
 						M.attack_log += text("\[[time_stamp()]\] <font color='red'>Attempted to touch [src.name] ([src.ckey]) with stungloves</font>")
 						src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been unsuccessfully touched with stungloves by [M.name] ([M.ckey])</font>")
-						msg_admin_attack("[M.name] ([M.ckey]) failed to stun [src.name] ([src.ckey]) with stungloves (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[M.x];Y=[M.y];Z=[M.z]'>JMP</a>)")
+						if(!isvrhuman(M))
+							msg_admin_attack("[M.name] ([M.ckey]) failed to stun [src.name] ([src.ckey]) with stungloves (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[M.x];Y=[M.y];Z=[M.z]'>JMP</a>)")
 						target = M
 						calc_power = 150 * get_siemens_coefficient_organ(BP)
 					else
 						visible_message("\red <B>[src] has been touched with the stun gloves by [M]!</B>")
 						M.attack_log += text("\[[time_stamp()]\] <font color='red'>Stungloved [src.name] ([src.ckey])</font>")
 						src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been stungloved by [M.name] ([M.ckey])</font>")
-						msg_admin_attack("[M.name] ([M.ckey]) stungloved [src.name] ([src.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[M.x];Y=[M.y];Z=[M.z]'>JMP</a>)")
+						if(!isvrhuman(M))
+							msg_admin_attack("[M.name] ([M.ckey]) stungloved [src.name] ([src.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[M.x];Y=[M.y];Z=[M.z]'>JMP</a>)")
 						calc_power = 100 * get_siemens_coefficient_organ(BP)
 					target.apply_effects(0,0,0,0,2,0,0,calc_power)
 					var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread()
@@ -79,6 +81,10 @@
 //			log_debug("No gloves, [M] is truing to infect [src]")
 			M.spread_disease_to(src, "Contact")
 
+	if(species.flags[IS_FLYING] && !falling)
+		if(prob((10 - movement_delay()) * 5)) // Tycheon's default dodge - 45%
+			visible_message("<span class='notice'>[M] attempted to touch [src], missing narrowly.</span>")
+			return
 
 	switch(M.a_intent)
 		if("help")
@@ -170,9 +176,9 @@
 
 		if("disarm")
 			M.do_attack_animation(src)
+
 			M.attack_log += text("\[[time_stamp()]\] <font color='red'>Disarmed [src.name] ([src.ckey])</font>")
 			src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been disarmed by [M.name] ([M.ckey])</font>")
-
 			msg_admin_attack("[key_name(M)] disarmed [src.name] ([src.ckey])")
 
 			if(w_uniform)

@@ -241,7 +241,7 @@
 
 	if(nutrition < 100)
 		msg += "[t_He] [t_is] severely malnourished.\n"
-	else if(nutrition >= 500)
+	else if(nutrition >= 500 && !species.flags[NO_FAT])
 		msg += "[t_He] [t_is] quite chubby.\n"
 
 	msg += "</span>"

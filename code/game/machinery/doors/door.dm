@@ -116,11 +116,6 @@
 /obj/machinery/door/attack_hand(mob/user)
 	return attackby(user, user)
 
-/obj/machinery/door/attack_tk(mob/user)
-	if(requiresID() && !allowed(null))
-		return
-	..()
-
 /obj/machinery/door/attack_ghost(mob/user)
 	if(IsAdminGhost(user))
 		if(density)
@@ -142,20 +137,25 @@
 		return 1
 	if(isrobot(user))
 		return //borgs can't attack doors open because it conflicts with their AI-like interaction with them.
-	if(!Adjacent(user))
-		user = null
-	if(!src.requiresID())
-		user = null
+	//if(!Adjacent(user))
+	//	user = null
 	user.SetNextMove(CLICK_CD_INTERACT)
+	if(!src.requiresID())
+		if(!Adjacent(user)) // Telekinetic bull.
+			if(density)
+				open()
+			else
+				close()
+			return
+		user = null
 	if(src.allowed(user))
-		if(src.density)
+		if(density)
 			open()
 		else
 			close()
 		return
 	if(src.density)
 		do_animate("deny")
-	return
 
 
 /obj/machinery/door/blob_act()

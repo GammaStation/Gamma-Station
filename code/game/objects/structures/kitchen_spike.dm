@@ -4,7 +4,7 @@
 	name = "meatspike frame"
 	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "spikeframe"
-	desc = "The frame of a meat spike."
+	desc = "The frame of a meat spike. Needs some metal rods to be finished"
 	density = TRUE
 	anchored = FALSE
 
@@ -12,6 +12,8 @@
 	add_fingerprint(user)
 	if(default_unfasten_wrench(user, I))
 		return
+	else if(!anchored && istype(I, /obj/item/stack/rods))
+		to_chat(user, "<span class='warning'>Wrench it up first!</span>")
 	else if(anchored && istype(I, /obj/item/stack/rods))
 		var/obj/item/stack/rods/R = I
 		if(R.use(4))
@@ -19,6 +21,8 @@
 			var/obj/F = new /obj/structure/kitchenspike(src.loc)
 			transfer_fingerprints_to(F)
 			qdel(src)
+		else
+			to_chat(user, "<span class='warning'>You need at least four rods to do this.</span>")
 	else
 		..()
 

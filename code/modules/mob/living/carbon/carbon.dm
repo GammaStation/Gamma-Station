@@ -120,7 +120,11 @@
 			contract_disease(D, 0, 1, CONTACT_HANDS)
 
 /mob/living/carbon/electrocute_act(shock_damage, obj/source, siemens_coeff = 1.0, def_zone = null, tesla_shock = 0)
-	if(status_flags & GODMODE)	return 0	//godmode
+	if(status_flags & GODMODE)
+		return 0
+
+	if(!in_range(src, source)) // No telepathic electroctuion!
+		return 0
 
 	var/turf/T = get_turf(src)
 	var/obj/effect/fluid/F = locate() in T
@@ -379,6 +383,8 @@
 	src.throw_mode_off()
 	if(usr.stat || !target)
 		return
+	if(next_throw > world.time)
+		return
 	if(target.type == /obj/screen) return
 
 	var/atom/movable/item = src.get_active_hand()
@@ -399,11 +405,12 @@
 
 				M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been thrown by [usr.name] ([usr.ckey]) from [start_T_descriptor] with the target [end_T_descriptor]</font>")
 				usr.attack_log += text("\[[time_stamp()]\] <font color='red'>Has thrown [M.name] ([M.ckey]) from [start_T_descriptor] with the target [end_T_descriptor]</font>")
-				msg_admin_attack("[usr.name] ([usr.ckey]) has thrown [M.name] ([M.ckey]) from [start_T_descriptor] with the target [end_T_descriptor] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[usr.x];Y=[usr.y];Z=[usr.z]'>JMP</a>)")
+				if(!isvrhuman(M))
+					msg_admin_attack("[usr.name] ([usr.ckey]) has thrown [M.name] ([M.ckey]) from [start_T_descriptor] with the target [end_T_descriptor] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[usr.x];Y=[usr.y];Z=[usr.z]'>JMP</a>)")
 
 	if(!item) return //Grab processing has a chance of returning null
 
-	src.remove_from_mob(item)
+	src.remove_from_mob(item, get_turf(item))
 
 	//actually throw it!
 	if (item)
@@ -411,6 +418,7 @@
 
 		newtonian_move(get_dir(target, src))
 
+		next_throw = world.time + 1 SECOND
 		item.throw_at(target, item.throw_range, item.throw_speed, src)
 
 		if(ishuman(src))
