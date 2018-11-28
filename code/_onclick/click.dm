@@ -181,7 +181,6 @@
 	if(a_intent == I_HURT && (LASEREYES in mutations))
 		LaserEyes(A) // moved into a proc below
 	else if((TK in mutations) && do_telekinesis(dist))
-		SetNextClick(max(dist, CLICK_CD_MELEE))
 		A.attack_tk(src)
 
 /*
@@ -275,7 +274,6 @@
 		if(istype(item, /obj/item/tk_grab))
 			item.afterattack(src, user, Adjacent(user), params)
 		else
-			user.SetNextClick(max(dist, CLICK_CD_MELEE))
 			attack_tk(user)
 
 /*

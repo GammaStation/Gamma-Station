@@ -350,9 +350,9 @@ Please contact me on #coderbus IRC. ~Carn x
 
 	if(has_head)
 		//Eyes
-		var/image/img_eyes_s = image("icon"='icons/mob/human_face.dmi', "icon_state"=species.eyes, "layer"=-BODY_LAYER)
+		var/image/img_eyes_s = image("icon"='icons/mob/human_face.dmi', "icon_state"=eyes, "layer"=-BODY_LAYER)
 		img_eyes_s.color = rgb(r_eyes, g_eyes, b_eyes)
-		standing	+= img_eyes_s
+		standing += img_eyes_s
 
 		//Mouth	(lipstick!)
 		if(lip_style && (species && species.flags[HAS_LIPS]))	//skeletons are allowed to wear lipstick no matter what you think, agouri.

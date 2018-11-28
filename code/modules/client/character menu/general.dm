@@ -104,7 +104,8 @@
 			. += "<b>Facial</b>"
 			. += "<br><a href='?_src_=prefs;preference=facial;task=input'>Change Color</a> <font face='fixedsys' size='3' color='#[num2hex(r_facial, 2)][num2hex(g_facial, 2)][num2hex(b_facial, 2)]'><table border cellspacing='0' style='display:inline;' bgcolor='#[num2hex(r_facial, 2)][num2hex(g_facial, 2)][num2hex(b_facial)]'><tr><td width='20' height='15'></td></tr></table></font>"
 			. += " Style: <a href='?_src_=prefs;preference=f_style;task=input'>[f_style]</a><br>"
-			. += "<b>Eyes</b>"
+			. += "<b>Eye model:</b> <a href='?_src_=prefs;preference=eye_model;task=input'>[eye_name]</a><br>"
+			. += "<b>Eye color</b>"
 			. += "<br><a href='?_src_=prefs;preference=eyes;task=input'>Change Color</a> <font face='fixedsys' size='3' color='#[num2hex(r_eyes, 2)][num2hex(g_eyes, 2)][num2hex(b_eyes, 2)]'><table border cellspacing='0' style='display:inline;' bgcolor='#[num2hex(r_eyes, 2)][num2hex(g_eyes, 2)][num2hex(b_eyes)]'><tr><td width='20' height='15'></td></tr></table></font><br>"
 			. += "<b>Body Color</b>"
 			. += "<br><a href='?_src_=prefs;preference=skin;task=input'>Change Color</a> <font face='fixedsys' size='3' color='#[num2hex(r_skin, 2)][num2hex(g_skin, 2)][num2hex(b_skin, 2)]'><table border cellspacing='0' style='display:inline;' bgcolor='#[num2hex(r_skin, 2)][num2hex(g_skin, 2)][num2hex(b_skin)]'><tr><td width='20' height='15'></td></tr></table></font>"
@@ -123,7 +124,7 @@
 		//Gear
 		if("gear")
 			. += "<b>Gear:</b><br>"
-			if(gender == MALE)
+			if(gender != FEMALE)
 				. += "Underwear: <a href ='?_src_=prefs;preference=underwear;task=input'>[underwear_m[underwear]]</a><br>"
 			else
 				. += "Underwear: <a href ='?_src_=prefs;preference=underwear;task=input'>[underwear_f[underwear]]</a><br>"
@@ -281,6 +282,9 @@
 					if(prev_species != species)
 						f_style = random_facial_hair_style(gender, species)
 						h_style = random_hair_style(gender, species)
+						var/datum/species/S = all_species[species]
+						eye_name = "default"
+						gender = S.def_gender
 						ResetJobs()
 						if(language && language != "None")
 							var/datum/language/lang = all_languages[language]
@@ -354,7 +358,7 @@
 
 				if("underwear")
 					var/list/underwear_options
-					if(gender == MALE)
+					if(gender != FEMALE)
 						underwear_options = underwear_m
 					else
 						underwear_options = underwear_f
@@ -376,6 +380,12 @@
 					var/new_socks = input(user, "Choose your character's socks:", "Character Preference") as null|anything in socks_options
 					if(new_socks)
 						socks = socks_options.Find(new_socks)
+
+				if("eye_model")
+					var/datum/species/S = all_species[species]
+					var/new_eyes = input(user, "Choose your character's eye model:", "Character Preference") as null|anything in S.eyes
+					if(new_eyes)
+						eye_name = new_eyes
 
 				if("eyes")
 					var/new_eyes = input(user, "Choose your character's eye colour:", "Character Preference") as color|null
@@ -519,10 +529,11 @@
 		else
 			switch(href_list["preference"])
 				if("gender")
-					if(gender == MALE)
-						gender = FEMALE
-					else
-						gender = MALE
+					var/datum/species/S = all_species[species]
+					var/new_gender = input("Choose your gender!", "Options are...") as null|anything in S.genders
+					if(!new_gender)
+						return
+					gender = new_gender
 
 					f_style = random_facial_hair_style(gender, species)
 					h_style = random_hair_style(gender, species)

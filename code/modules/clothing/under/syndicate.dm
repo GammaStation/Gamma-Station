@@ -10,7 +10,7 @@
 	flags = ONESIZEFITSALL
 
 /obj/item/clothing/under/syndicate/equipped(mob/M)
-	if(M.gender == "male")
+	if(M.gender != FEMALE)
 		item_color = "syndicate"
 	else
 		item_color = "syndicate_f"

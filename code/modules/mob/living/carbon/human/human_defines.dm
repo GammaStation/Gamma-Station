@@ -11,6 +11,7 @@
 	var/b_facial = 0
 	var/f_style = "Shaved"
 
+	var/eyes // Eye icon which we overlay.
 	//Eye colour
 	var/r_eyes = 0
 	var/g_eyes = 0

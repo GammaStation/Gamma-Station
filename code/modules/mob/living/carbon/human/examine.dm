@@ -49,6 +49,10 @@
 				t_He = "She"
 				t_his = "her"
 				t_him = "her"
+			if(NEUTER)
+				t_He = "It"
+				t_his = "it's"
+				t_him = "it"
 
 	msg += "<EM>[src.name]</EM>"
 	var/species_name = "\improper "
