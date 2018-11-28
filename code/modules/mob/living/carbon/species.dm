@@ -10,6 +10,7 @@
 	var/damage_mask = TRUE
 	var/def_eye_icon = "eyes"
 	var/eyes = list("default" = "eyes")                                    // Possible icons for eyes.
+	var/eye_glow = FALSE
 
 	// Combat vars.
 	var/total_health = 100                               // Point at which the mob will enter crit.
@@ -1003,14 +1004,12 @@
 	deform = 'icons/mob/human_races/r_tycheon.dmi'
 	damage_mask = FALSE
 
-	darksight = 8
-	nighteyes = TRUE
-
 	def_eye_icon = "core" // It's also glowing.
 	eyes = list("default" = "core", "round" = "round_core", "angled" = "angle_core",
 	            "inner eye" = "inner_eye_core", "diplopia" = "duo_core", "quadruplopia" = "four_core",
 	            "spider" = "spider_core", "pentaplopia" = "navi_core", "moonman" = "r_n_m_core",
 	            "maw" = "maw_core")
+	eye_glow = TRUE
 
 	brute_mod = 3.0
 	burn_mod = 3.0
