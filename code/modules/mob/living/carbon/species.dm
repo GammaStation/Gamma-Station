@@ -8,7 +8,8 @@
 	var/icobase = 'icons/mob/human_races/r_human.dmi'    // Normal icon set.
 	var/deform = 'icons/mob/human_races/r_def_human.dmi' // Mutated icon set.
 	var/damage_mask = TRUE
-	var/eyes = "eyes"                                    // Icon for eyes.
+	var/def_eye_icon = "eyes"
+	var/eyes = list("default" = "eyes")                                    // Possible icons for eyes.
 
 	// Combat vars.
 	var/total_health = 100                               // Point at which the mob will enter crit.
@@ -114,6 +115,8 @@
 		,O_KIDNEYS = /obj/item/organ/internal/kidneys
 		)
 
+	var/def_gender = MALE // I'm sorry mate, but the default pawn looks male.
+	var/genders = list(MALE, FEMALE)
 	var/has_gendered_icons = TRUE // if TRUE = use icon_state with _f or _m for respective gender (see get_icon() external organ proc).
 
 /datum/species/New()
@@ -319,7 +322,8 @@
 		O_KIDNEYS = /obj/item/organ/internal/kidneys
 		)
 
-	eyes = "skrell_eyes"
+	def_eye_icon = "skrell_eyes"
+	eyes = list("default" = "skrell_eyes")
 	blood_color = /datum/dirt_cover/purple_blood
 	flesh_color = "#8CD7A3"
 
@@ -342,7 +346,8 @@
 	cold_level_2 = 50
 	cold_level_3 = 0
 
-	eyes = "vox_eyes"
+	def_eye_icon = "vox_eyes"
+	eyes = list("default" = "vox_eyes")
 
 	breath_type = "nitrogen"
 	poison_type = "oxygen"
@@ -427,7 +432,8 @@
 	brute_mod = 0.2
 	burn_mod = 0.2
 
-	eyes = "blank_eyes"
+	def_eye_icon = "blank_eyes"
+	eyes = list("default" = "blank_eyes")
 	breath_type = "nitrogen"
 	poison_type = "oxygen"
 
@@ -517,12 +523,10 @@
 	blood_color = /datum/dirt_cover/green_blood
 	flesh_color = "#907E4A"
 
+
+	def_gender = NEUTER
+	genders = list(NEUTER, PLURAL)
 	has_gendered_icons = FALSE
-
-/datum/species/diona/handle_post_spawn(mob/living/carbon/human/H)
-	H.gender = NEUTER
-
-	return ..()
 
 /datum/species/diona/regen(mob/living/carbon/human/H, light_amount)
 	if(light_amount >= 5) // If you can regen organs - do so.
@@ -578,7 +582,8 @@
 	dietflags = 0		//IPCs can't eat, so no diet
 	taste_sensitivity = TASTE_SENSITIVITY_NO_TASTE
 
-	eyes = "blank_eyes"
+	def_eye_icon = "blank_eyes"
+	eyes = list("default" = "blank_eyes")
 
 	warning_low_pressure = 50
 	hazard_low_pressure = 0
@@ -636,6 +641,9 @@
 	blood_color = /datum/dirt_cover/oil
 	flesh_color = "#575757"
 
+	def_gender = NEUTER
+	genders = list(MALE, FEMALE, NEUTER, PLURAL)
+
 /datum/species/machine/after_job_equip(mob/living/carbon/human/H, datum/job/J)
 	if(H.backbag == 1)
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/ipc_survival(H), slot_r_hand)
@@ -661,10 +669,8 @@
 
 	blood_color = /datum/dirt_cover/gray_blood
 
-/datum/species/abductor/handle_post_spawn(mob/living/carbon/human/H)
-	H.gender = NEUTER
-
-	return ..()
+	def_gender = NEUTER
+	genders = list(NEUTER)
 
 /datum/species/abductor/call_digest_proc(mob/living/M, datum/reagent/R)
 	return R.on_abductor_digest(M)
@@ -703,10 +709,9 @@
 	,NO_FINGERPRINT = TRUE
 	)
 
-/datum/species/skeleton/handle_post_spawn(mob/living/carbon/human/H)
-	H.gender = NEUTER
-
-	return ..()
+	has_gendered_icons = FALSE
+	def_gender = NEUTER
+	genders = list(NEUTER)
 
 /datum/species/skeleton/call_digest_proc(mob/living/M, datum/reagent/R)
 	return R.on_skeleton_digest(M)
@@ -789,12 +794,8 @@
 	brain_mod = 0
 
 	has_gendered_icons = FALSE
-
-
-/datum/species/shadowling/handle_post_spawn(mob/living/carbon/human/H)
-	H.gender = NEUTER
-
-	return ..()
+	def_gender = NEUTER
+	genders = list(NEUTER, PLURAL)
 
 /datum/species/shadowling/call_digest_proc(mob/living/M, datum/reagent/R)
 	return R.on_shadowling_digest(M)
@@ -965,7 +966,8 @@
 	icobase = 'icons/mob/human_races/r_zombie_skrell.dmi'
 	deform = 'icons/mob/human_races/r_zombie_skrell.dmi'
 
-	eyes = "skrell_eyes"
+	def_eye_icon = "skrell_eyes"
+	eyes = list("default" = "skrell_eyes")
 	blood_color = /datum/dirt_cover/purple_blood
 	flesh_color = "#8CD7A3"
 	base_color = "#000000"
@@ -1000,7 +1002,15 @@
 	icobase = 'icons/mob/human_races/r_tycheon.dmi'
 	deform = 'icons/mob/human_races/r_tycheon.dmi'
 	damage_mask = FALSE
-	eyes = "core"                              // Glowing core.
+
+	darksight = 8
+	nighteyes = TRUE
+
+	def_eye_icon = "core" // It's also glowing.
+	eyes = list("default" = "core", "round" = "round_core", "angled" = "angle_core",
+	            "inner eye" = "inner_eye_core", "diplopia" = "duo_core", "quadruplopia" = "four_core",
+	            "spider" = "spider_core", "pentaplopia" = "navi_core", "moonman" = "r_n_m_core",
+	            "maw" = "maw_core")
 
 	brute_mod = 3.0
 	burn_mod = 3.0
@@ -1015,9 +1025,7 @@
 
 	butcher_drops = list()
 	taste_sensitivity = 0
-
 	dietflags = 0
-	darksight = 8
 
 	flags = list(IS_WHITELISTED = TRUE,
 	             NO_BLOOD = TRUE,
@@ -1064,6 +1072,8 @@
 	restricted_inventory_slots = list(slot_back, slot_wear_mask, slot_handcuffed, slot_l_hand, slot_r_hand, slot_belt, slot_l_ear, slot_r_ear, slot_glasses, slot_glasses,
 	                                  slot_shoes, slot_w_uniform, slot_l_store, slot_r_store, slot_s_store, slot_in_backpack, slot_legcuffed, slot_legs, slot_tie, slot_head) // Still allows them to wear rigs, and ids.
 	has_gendered_icons = FALSE
+	def_gender = NEUTER
+	genders = list(NEUTER, PLURAL)
 
 /datum/species/tycheon/call_digest_proc(mob/living/M, datum/reagent/R)
 	return R.on_tycheon_digest(M)
@@ -1076,7 +1086,23 @@
 			H.heal_overall_damage(1.0, 1.0)
 
 /datum/species/tycheon/handle_death(mob/living/carbon/human/H)
-	new /obj/item/weapon/reagent_containers/food/snacks/tycheon_core(H.loc)
+	var/core_amount = 1
+	switch(eyes) // Depending on how many cores we got, we drop different stuff.
+		if("duo_core")
+			core_amount = 2
+		if("four_core")
+			core_amount = 4
+		if("spider_core")
+			core_amount = 4
+		if("r_n_m_core")
+			core_amount = 5
+		if("navi_core")
+			core_amount = 5
+		if("maw_core")
+			core_amount = 6
+	for(var/i in 1 to core_amount)
+		var/obj/item/core = new /obj/item/weapon/reagent_containers/food/snacks/tycheon_core(H.loc)
+		core.throw_at(get_edge_target_turf(H, pick(alldirs)), 1, core.throw_speed)
 	H.gib()
 
 /mob/living/carbon/human/proc/metal_bend()

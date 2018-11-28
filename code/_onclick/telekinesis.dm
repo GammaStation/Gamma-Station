@@ -45,7 +45,8 @@ var/const/tk_maxrange = 15
 /mob/living/attack_tk(mob/user)
 	if(user.stat)
 		return
-	var/psy_resist_chance = 50 + (get_dist(src, user) * 2)// A chance that our target will not be affected.
+	var/dist = get_dist(src, user)
+	var/psy_resist_chance = 50 + (dist * 2)// A chance that our target will not be affected.
 
 	if(get_species(user) != TYCHEON)
 		psy_resist_chance += 10
@@ -61,6 +62,7 @@ var/const/tk_maxrange = 15
 					return
 				if(next_move > world.time)
 					return
+				SetNextClick(max(dist, CLICK_CD_MELEE))
 
 				to_chat(user, "<span class='warning'>You disarm [src]!</span>")
 				to_chat(src, "<span class='warning'>An immense force disarms you!</span>")
@@ -78,13 +80,14 @@ var/const/tk_maxrange = 15
 					return
 				if(next_move > world.time)
 					return
+				SetNextClick(max(dist, CLICK_CD_MELEE))
 
 				to_chat(user, "<span class='warning'>You lock [src] in place!</span>")
 				to_chat(src, "<span class='warning'>An immense force seems to lock you in place, paralyzing!</span>")
 				user.attack_log += text("\[[time_stamp()]\] <font color='red'>Paralyzed [name] ([ckey])</font>")
 				attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been paralyzed by [user.name] ([user.ckey])</font>")
 				msg_admin_attack("[key_name(user)] paralyzed [key_name(src)]")
-				apply_effect(3, PARALYZE)
+				apply_effect(3, WEAKEN)
 	else
 		to_chat(host, "<span class='notice'>[src] is resisting your efforts.</span>")
 

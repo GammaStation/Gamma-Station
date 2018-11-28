@@ -95,6 +95,8 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 
 	if(species) // For safety, we put it seperately.
 		butcher_results = species.butcher_drops
+		eyes = species.def_eye_icon // Default eye icon is determined there.
+		gender = species.def_gender
 
 	dna.species = species.name
 
@@ -1092,12 +1094,10 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	if(new_style)
 		f_style = new_style
 
-	var/new_gender = alert(usr, "Please select gender.", "Character Generation", "Male", "Female")
-	if (new_gender)
-		if(new_gender == "Male")
-			gender = MALE
-		else
-			gender = FEMALE
+	var/new_gender = input(usr, "Please select gender.", "Character Generation") as null|anything in species.genders
+	if(new_gender)
+		gender = new_gender
+
 	regenerate_icons()
 	check_dna()
 
