@@ -337,7 +337,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/mob/M = loc
 	if(M.stat || M.restrained() || M.paralysis || M.stunned || M.weakened)
 		return 0
-	if((src in M.contents) || ( istype(loc, /turf) && in_range(src, M) ))
+	if((src in M.contents) || (istype(loc, /turf) && in_range(src, M)) || (TK in M.mutations))
 		return 1
 	else
 		return 0

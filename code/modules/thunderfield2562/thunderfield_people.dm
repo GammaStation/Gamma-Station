@@ -1,13 +1,15 @@
 #define SPAWN_PROTECTION_TIME 20 //Here we have some ugly sheet, which should be rewrited once
 #define DEAD_DELETE_COUNTDOWN 20 //Pause before dead body gets qdeld
 #define BRAINLOSS_PER_DEATH 20
-#define POINTS_FOR_CHEATER 10
-#define CLEANUP_COOLDOWN 600
+#define POINTS_FOR_CHEATER 30
+#define CLEANUP_COOLDOWN 800
+#define POINTS_PER_SPAWN 3
 /mob/living/carbon/human/vrhuman
 	var/obj/screen/vrhuman_shop
 	var/obj/screen/vrhuman_exit
 	var/obj/screen/vrhuman_main
 	var/obj/screen/vrhuman_cleanup
+	var/obj/screen/vrhuman_dienow
 	var/datum/mind/vr_mind
 	var/died = FALSE                                    //Look death() proc here, for comments
 	var/obj/item/device/uplink/hidden/vr_uplink/vr_shop //To buy stuff
@@ -57,12 +59,10 @@
 	revive()
 	if(!vr_mind)//In case somebody spawned an empty mob
 		return
+	if(vr_mind.thunderfield_cheater)
+		vr_mind.thunder_points += POINTS_FOR_CHEATER
+	vr_mind.thunder_points += POINTS_PER_SPAWN
 	to_chat(src, "<span class='danger'>You are respawned! Respawns left: [vr_mind.thunder_respawns]</span>")
-
-/mob/living/carbon/human/vrhuman/updatehealth()
-	..()
-	if(health < config.health_threshold_crit)
-		death()
 
 /mob/living/carbon/human/vrhuman/death()
 	if(died)                            //Dont know why this happen, but, in some cases (aka head torn off) death() is called multiple times, which causes ugly mess
@@ -87,8 +87,6 @@
 	vrbody.vr_mind = vr_mind
 	vr_mind.transfer_to(vrbody)
 	death_actions()
-	if(vr_mind.thunderfield_cheater)
-		vr_mind.thunder_points = POINTS_FOR_CHEATER
 	return ..()
 
 /mob/living/carbon/human/vrhuman/proc/death_actions()
@@ -113,11 +111,16 @@
 	else
 		return
 
-/mob/living/carbon/human/vrhuman/verb/quit()
-	set name = "Leave VR"
-	set category = "IC"
+/mob/living/carbon/human/vrhuman/proc/force_return()
+	vr_mind.thunder_respawns = 0
+	death()
 
-	exit_body()
+/mob/living/carbon/human/vrhuman/proc/dienow()
+	var/answer = alert(src, "Would you like to respawn?", "Alert", "Yes", "No")
+	if(answer == "Yes")
+		death()
+	else
+		return
 
 /mob/living/carbon/human/vrhuman/ghost()
 	return
@@ -140,3 +143,5 @@
 #undef DEAD_DELETE_COUNTDOWN
 #undef BRAINLOSS_PER_DEATH
 #undef POINTS_FOR_CHEATER
+#undef CLEANUP_COOLDOWN
+#undef POINTS_PER_SPAWN

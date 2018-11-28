@@ -498,6 +498,10 @@
 /mob/proc/start_pulling(atom/movable/AM)
 	if(!AM || !src || src == AM || !isturf(AM.loc))	//if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
 		return
+	if(ishuman(AM))
+		var/mob/living/carbon/human/H = AM
+		if(H.species.flags[IS_IMMATERIAL])
+			return
 	if(!AM.anchored)
 		AM.add_fingerprint(src)
 

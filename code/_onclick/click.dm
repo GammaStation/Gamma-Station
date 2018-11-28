@@ -42,7 +42,10 @@
 /mob/proc/SetNextMove(num)
 	next_move = world.time + num + next_move_modifier
 
-/mob/proc/ClickOn( atom/A, params )
+/mob/proc/SetNextClick(num) // next_click is checked before even modified(Shift/Ctrl) clicks, that's the difference.
+	next_click = world.time + num
+
+/mob/proc/ClickOn(atom/A, params)
 	if(world.time <= next_click)
 		return
 	next_click = world.time + 1
@@ -58,7 +61,7 @@
 		return
 
 	if(modifiers["shift"] && modifiers["ctrl"])
-		CtrlShiftClickOn(A)
+		CtrlShiftClickOn(A, params)
 		return
 	if(modifiers["middle"])
 		MiddleClickOn(A)
@@ -124,7 +127,7 @@
 		// No adjacency needed
 		if(W)
 
-			var/resolved = A.attackby(W,src,params)
+			var/resolved = A.attackby(W, src, params)
 			if(!resolved && A && W)
 				W.afterattack(A, src, 1, params) // 1 indicates adjacency
 		else
@@ -157,7 +160,7 @@
 	ClickOn(A,params)
 
 
-//	Translates into attack_hand, etc.
+// Translates into attack_hand, etc.
 
 /mob/proc/UnarmedAttack(atom/A)
 	if(ismob(A))
@@ -178,7 +181,7 @@
 	if(a_intent == I_HURT && (LASEREYES in mutations))
 		LaserEyes(A) // moved into a proc below
 	else if((TK in mutations) && do_telekinesis(dist))
-		SetNextMove(max(dist, CLICK_CD_MELEE))
+		SetNextClick(max(dist, CLICK_CD_MELEE))
 		A.attack_tk(src)
 
 /*
@@ -258,19 +261,21 @@
 	Control+Shift click
 	Unused except for AI
 */
-/mob/proc/CtrlShiftClickOn(atom/A)
-	A.CtrlShiftClick(src)
+/mob/proc/CtrlShiftClickOn(atom/A, params)
+	A.CtrlShiftClick(src, params)
 	return
 
-/atom/proc/CtrlShiftClick(mob/user)
+/atom/proc/CtrlShiftClick(mob/user, params)
 	// if(!incapacitated) This proc also checks for restrained. But we do want to be able to do telekinesis while restrained.
+	if(user.stat || user.paralysis || user.stunned || user.weakened)
+		return
 	var/dist = get_dist(src, user)
 	if((TK in user.mutations) && user.do_telekinesis(dist))
 		var/obj/item/item = user.get_active_hand(additional_checks = FALSE)
 		if(istype(item, /obj/item/tk_grab))
-			item.afterattack(src, user)
+			item.afterattack(src, user, Adjacent(user), params)
 		else
-			user.SetNextMove(max(dist, CLICK_CD_MELEE))
+			user.SetNextClick(max(dist, CLICK_CD_MELEE))
 			attack_tk(user)
 
 /*

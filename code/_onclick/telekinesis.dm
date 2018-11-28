@@ -13,7 +13,7 @@ var/const/tk_maxrange = 15
 /atom/proc/attack_tk(mob/user)
 	if(user.stat)
 		return
-	user.UnarmedAttack(src,0) // attack_hand, attack_paw, etc
+	user.UnarmedAttack(src, 0) // attack_hand, attack_paw, etc
 
 /obj/attack_tk(mob/user)
 	if(user.stat)
@@ -47,6 +47,9 @@ var/const/tk_maxrange = 15
 		return
 	var/psy_resist_chance = 50 + (get_dist(src, user) * 2)// A chance that our target will not be affected.
 
+	if(get_species(user) != TYCHEON)
+		psy_resist_chance += 10
+
 	if(a_intent == I_HELP)
 		psy_resist_chance = 0
 	else if(stat)
@@ -54,6 +57,16 @@ var/const/tk_maxrange = 15
 	if(!prob(psy_resist_chance))
 		switch(user.a_intent)
 			if(I_DISARM)
+				if(world.time <= next_click)
+					return
+				if(next_move > world.time)
+					return
+
+				to_chat(user, "<span class='warning'>You disarm [src]!</span>")
+				to_chat(src, "<span class='warning'>An immense force disarms you!</span>")
+				user.attack_log += text("\[[time_stamp()]\] <font color='red'>Disarmed [name] ([ckey])</font>")
+				attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been disarmeded by [user.name] ([user.ckey])</font>")
+				msg_admin_attack("[key_name(user)] disarmed [key_name(src)]")
 				drop_item(loc)
 			if(I_GRAB)
 				var/obj/item/tk_grab/O = new(src)
@@ -61,6 +74,16 @@ var/const/tk_maxrange = 15
 				O.host = user
 				O.focus_object(src)
 			if(I_HURT)
+				if(world.time <= next_click)
+					return
+				if(next_move > world.time)
+					return
+
+				to_chat(user, "<span class='warning'>You lock [src] in place!</span>")
+				to_chat(src, "<span class='warning'>An immense force seems to lock you in place, paralyzing!</span>")
+				user.attack_log += text("\[[time_stamp()]\] <font color='red'>Paralyzed [name] ([ckey])</font>")
+				attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been paralyzed by [user.name] ([user.ckey])</font>")
+				msg_admin_attack("[key_name(user)] paralyzed [key_name(src)]")
 				apply_effect(3, PARALYZE)
 	else
 		to_chat(host, "<span class='notice'>[src] is resisting your efforts.</span>")
@@ -105,7 +128,7 @@ var/const/tk_maxrange = 15
 	desc = "Magic."
 	icon = 'icons/obj/magic.dmi'//Needs sprites
 	icon_state = "2"
-	flags = NOBLUDGEON | ABSTRACT
+	flags = NOBLUDGEON | ABSTRACT | DROPDEL
 	//item_state = null
 	w_class = 10.0
 	layer = ABOVE_HUD_LAYER
@@ -118,9 +141,6 @@ var/const/tk_maxrange = 15
 /obj/item/tk_grab/Destroy()
 	focus.is_focused = FALSE // Currently if you focus one object with two hands it may lose it's is_focused status. ~Luduk
 	return ..()
-
-/obj/item/tk_grab/dropped(mob/user)
-	qdel(src)
 
 	//stops TK grabs being equipped anywhere but into hands
 /obj/item/tk_grab/equipped(mob/user, slot)
@@ -135,6 +155,9 @@ var/const/tk_maxrange = 15
 
 /obj/item/tk_grab/attack_hand(mob/user)
 	if(focus && !QDELING(focus))
+		if(ismob(focus) && user.a_intent != I_HELP)
+			return
+		user.SetNextMove(CLICK_CD_MELEE)
 		focus.attack_hand(user)
 		apply_focus_overlay()
 
@@ -167,11 +190,11 @@ var/const/tk_maxrange = 15
 			;
 		if(1 to 5) // not adjacent may mean blocked by window
 			if(!proximity)
-				host.SetNextMove(2)
+				host.SetNextClick(2)
 		if(5 to 7)
-			host.SetNextMove(5)
+			host.SetNextClick(5)
 		if(8 to tk_maxrange)
-			host.SetNextMove(10)
+			host.SetNextClick(10)
 		else
 			to_chat(user, "<span class='notice'>Your mind won't reach that far.</span>")
 			return
@@ -190,6 +213,10 @@ var/const/tk_maxrange = 15
 		user.nutrition -= 10 // Manipulating living beings is TOUGH!
 
 		var/psy_resist_chance = 50 + (d * 2) // A chance that our poor mob might resist our efforts to make him beat something up.
+
+		if(user.get_species() != TYCHEON)
+			psy_resist_chance += 10
+
 		if(target == M)
 			psy_resist_chance += 30 // Resisting yourself being beaten up is kinda easier.
 		if(M.a_intent == I_HELP)
@@ -205,6 +232,11 @@ var/const/tk_maxrange = 15
 
 		switch(host.a_intent)
 			if(I_DISARM)
+				if(world.time <= M.next_click)
+					return
+				if(M.next_move > world.time)
+					return
+
 				M.drop_item()
 			if(I_GRAB)
 				step_towards(M, target)
@@ -218,12 +250,27 @@ var/const/tk_maxrange = 15
 				var/old_zone_sel = M.zone_sel
 				M.zone_sel = host.zone_sel
 
+				if(world.time <= M.next_click)
+					return
+				if(M.next_move > world.time)
+					return
+
 				if(target.Adjacent(M))
 					if(I)
+						if(ismob(target))
+							var/mob/log_M = target
+							host.attack_log += text("\[[time_stamp()]\] <font color='red'>Forced [M.name] ([M.ckey]) to hit [log_M.name] ([log_M.ckey]) with [I.name]</font>")
+							log_M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been hit with [I.name] by [user.name] ([user.ckey]), who was forcing [M.name] ([M.ckey])</font>")
+							msg_admin_attack("[key_name(host)] forced [key_name(M)] to hit [key_name(log_M)] with [I.name]")
 						var/resolved = target.attackby(I, M, params)
 						if(!resolved && target && I)
 							I.afterattack(target, M, 1)
 					else
+						if(ismob(target))
+							var/mob/log_M = target
+							host.attack_log += text("\[[time_stamp()]\] <font color='red'>Forced [M.name] ([M.ckey]) to punch [log_M.name] ([log_M.ckey])</font>")
+							log_M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been punched by [user.name] ([user.ckey]), who was forcing [M.name] ([M.ckey])</font>")
+							msg_admin_attack("[key_name(host)] forced [key_name(M)] to punch [key_name(log_M)]")
 						M.UnarmedAttack(target, 0)
 				else
 					if(I)
