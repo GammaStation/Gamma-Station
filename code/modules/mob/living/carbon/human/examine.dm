@@ -33,7 +33,7 @@
 
 	var/msg = "<span class='info'>*---------*\nThis is "
 
-	if(!(skimpjumpsuit && skipface)) // big suits/masks/helmets make it hard to tell their gender
+	if(!(skipjumpsuit && skipface)) // big suits/masks/helmets make it hard to tell their gender
 		switch(gender)
 			if(MALE)
 				t_He = "He"
