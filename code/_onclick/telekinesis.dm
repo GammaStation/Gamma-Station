@@ -222,7 +222,7 @@ var/const/tk_maxrange = 15
 
 	if(isliving(focus))
 		var/mob/living/M = focus
-		user.nutrition -= dist // Manipulating living beings is TOUGH!
+		user.nutrition -= d // Manipulating living beings is TOUGH!
 
 		var/psy_resist_chance = 50 + (d * 2) // A chance that our poor mob might resist our efforts to make him beat something up.
 
