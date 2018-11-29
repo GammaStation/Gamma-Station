@@ -1,4 +1,12 @@
 /datum/preferences/proc/ShowGeneral(mob/user)
+	var/gender_text = "Plural"
+	switch(gender)
+		if(MALE)
+			gender_text = "Male"
+		if(FEMALE)
+			gender_text = "Female"
+		if(NEUTER)
+			gender_text = "Neuter"
 	. =  "<table cellspacing='0' width='100%'>"	//Main body table start
 	. += 	"<tr>"
 	. += 		"<td width='340px' height='320px' style='padding-left:25px'>"
@@ -16,7 +24,7 @@
 	. += 							"<img src=previewicon.png width=[preview_icon.Width()] height=[preview_icon.Height()]>"
 	. += 							"</td>"
 	. += 						"</table>"
-	. += 						"<b>Gender:</b> <a href='?_src_=prefs;preference=gender'><b>[gender == MALE ? "Male" : "Female"]</b></a>"
+	. += 						"<b>Gender:</b> <a href='?_src_=prefs;preference=gender'><b>[gender_text]</b></a>"
 	. += 						"<br><b>Age:</b> <a href='?_src_=prefs;preference=age;task=input'>[age]</a>"
 	. += 						"<br><b>Randomized Character Slot:</b> <a href='?_src_=prefs;preference=randomslot'><b>[randomslot ? "Yes" : "No"]</b></a>"
 	. += 						"<hr>"
