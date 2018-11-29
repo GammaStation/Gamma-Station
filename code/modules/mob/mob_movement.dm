@@ -279,10 +279,10 @@
 
 		if(ishuman(mob))
 			var/mob/living/carbon/human/H = mob
-			if(H.species.flags[STATICALLY_CHARGED] && !istype(get_turf(mob), /turf/space)) // The only to use this is Voidan. And their nutrition is static charge.
+			if(H.species.flags[STATICALLY_CHARGED] && !istype(get_turf(H), /turf/space)) // The only to use this is Voidan. And their nutrition is static charge.
 				if(prob(5))
 					new /obj/effect/effect/sparks(H.loc)
-				H.nutrition = max(500, H.nutrition + 1)
+				H.nutrition = min(500, H.nutrition + 5)
 
 		moving = 0
 		if(mob && .)

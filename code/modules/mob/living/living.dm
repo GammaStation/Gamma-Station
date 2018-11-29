@@ -764,6 +764,13 @@
 
 	//Getting out of someone's inventory.
 
+	if(focused_by.len)
+		for(var/obj/item/tk_grab/TK_G in focused_by)
+			if(prob(30 + get_dist(src, TK_G)))
+				to_chat(TK_G.host, "<span class='warning'>[src] resisted our telekinetic grab!</span>")
+				qdel(TK_G)
+		return
+
 	if(istype(src.loc,/obj/item/weapon/holder))
 		var/obj/item/weapon/holder/H = src.loc //Get our item holder.
 		var/mob/living/M = H.loc                      //Get our mob holder (if any).

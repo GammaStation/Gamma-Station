@@ -1015,7 +1015,7 @@
 	burn_mod = 3.0
 	brain_mod = 0.0
 	speed_mod =  -1.0
-	siemens_coefficient = 0
+	siemens_coefficient = 0.0
 
 	custom_metabolism = 0.0
 
@@ -1246,6 +1246,7 @@
 	H.flags |= NOSLIP | NOBLOODY
 	H.mutations.Add(TK)
 	H.mutations.Add(REMOTE_TALK)
+	H.tk_level |= TELEKINETIC_MOB_CONTROL | TELEKINETIC_HARM_WEAKEN
 	H.ventcrawler = TRUE
 	H.verbs += /mob/living/carbon/human/proc/toggle_sphere
 	H.verbs += /mob/living/carbon/human/proc/metal_bend
@@ -1271,6 +1272,7 @@
 	H.flags &= ~(NOSLIP | NOBLOODY)
 	H.mutations.Remove(TK)
 	H.mutations.Remove(REMOTE_TALK)
+	H.tk_level &= ~(TELEKINETIC_MOB_CONTROL | TELEKINETIC_HARM_WEAKEN)
 	H.ventcrawler = FALSE
 	H.verbs -= /mob/living/carbon/human/proc/toggle_sphere
 	H.verbs -= /mob/living/carbon/human/proc/metal_bend

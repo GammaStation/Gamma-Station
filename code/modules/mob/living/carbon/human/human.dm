@@ -1832,7 +1832,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		return 1
 
 /mob/living/carbon/human/start_pulling(atom/movable/AM)
-	if(species.flags[IS_IMMATERIAL])
+	if(species.flags[IS_IMMATERIAL] && !(TK in mutations))
 		return
 	..()
 
@@ -1852,8 +1852,8 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 				to_chat(src, "<span class='notice'>Your mind won't reach that far.</span>")
 				return
 		//if(species.flags[STATICALLY_CHARGED]) // Statically charged species use static electricity for telekinesis. Don't question it!
-			if(nutrition >= 200 + (dist * 2))
-				nutrition -= dist * 2 // DON'T QUESTION THIS EITHER. The only Statically Charged specie is Tycheon, and they use nutrition as static charge.
+			if(nutrition >= 200 + dist)
+				nutrition -= dist // DON'T QUESTION THIS EITHER. The only Statically Charged specie is Tycheon, and they use nutrition as static charge.
 			else
 				to_chat(src, "<span class='warning'>Not enough static charge.</span>")
 				return FALSE

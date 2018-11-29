@@ -4,6 +4,9 @@
 	This needs more thinking out, but I might as well.
 */
 var/const/tk_maxrange = 15
+#define TELEKINETIC_BASIC 0
+#define TELEKINETIC_MOB_CONTROL 1
+#define TELEKINETIC_HARM_WEAKEN 2
 
 /*
 	Telekinetic attack:
@@ -71,6 +74,9 @@ var/const/tk_maxrange = 15
 				msg_admin_attack("[key_name(user)] disarmed [key_name(src)]")
 				drop_item(loc)
 			if(I_GRAB)
+				if(!user.tk_level & TELEKINETIC_MOB_CONTROL)
+					to_chat(user, "<span class='notice'>You are too weak to control [src].</span>")
+					return
 				var/obj/item/tk_grab/O = new(src)
 				user.put_in_active_hand(O)
 				O.host = user
@@ -79,6 +85,9 @@ var/const/tk_maxrange = 15
 				if(world.time <= next_click)
 					return
 				if(next_move > world.time)
+					return
+				if(!user.tk_level & TELEKINETIC_HARM_WEAKEN)
+					to_chat(user, "<span class='notice'>You are too weak to lock [src] in place.</span>")
 					return
 				SetNextClick(max(dist, CLICK_CD_MELEE))
 
@@ -142,7 +151,7 @@ var/const/tk_maxrange = 15
 	var/mob/living/host = null
 
 /obj/item/tk_grab/Destroy()
-	focus.is_focused = FALSE // Currently if you focus one object with two hands it may lose it's is_focused status. ~Luduk
+	focus.focused_by -= src
 	return ..()
 
 	//stops TK grabs being equipped anywhere but into hands
@@ -213,7 +222,7 @@ var/const/tk_maxrange = 15
 
 	if(isliving(focus))
 		var/mob/living/M = focus
-		user.nutrition -= 10 // Manipulating living beings is TOUGH!
+		user.nutrition -= dist // Manipulating living beings is TOUGH!
 
 		var/psy_resist_chance = 50 + (d * 2) // A chance that our poor mob might resist our efforts to make him beat something up.
 
@@ -309,9 +318,9 @@ var/const/tk_maxrange = 15
 	if(!istype(target, /atom/movable))
 		return
 	if(focus)
-		focus.is_focused = FALSE
+		focus.focused_by -= src
 	focus = target
-	focus.is_focused = TRUE
+	focus.focused_by |= src
 	apply_focus_overlay()
 
 /obj/item/tk_grab/proc/apply_focus_overlay()
