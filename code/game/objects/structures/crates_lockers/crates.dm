@@ -17,6 +17,11 @@
 /obj/structure/closet/crate/can_close()
 	return 1
 
+/obj/structure/closet/crate/CanPass(atom/movable/A, turf/T)
+	if(A.checkpass(PASSTABLE))
+		return TRUE
+	return ..()
+
 /obj/structure/closet/crate/open()
 	if(src.opened)
 		return 0

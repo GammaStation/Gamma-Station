@@ -32,7 +32,8 @@
 	if(isrobot(user) || isalien(user))
 		return
 	if(has_extinguisher)
-		user.put_in_hands(has_extinguisher, FALSE)
+		if(!user.put_in_hands(has_extinguisher))
+			has_extinguisher.forceMove(get_turf(src))
 		to_chat(user, "<span class='notice'>You take [has_extinguisher] from [src].</span>")
 		has_extinguisher = null
 		opened = 1

@@ -519,6 +519,8 @@
 				M.show_message("\the [I] bounces off of \the [src]'s rim!.", 3)
 		return 0
 	else
+		if(mover.checkpass(PASSTABLE))
+			return TRUE
 		return ..(mover, target, height, air_group)
 
 // virtual disposal object
