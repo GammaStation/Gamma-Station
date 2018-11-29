@@ -18,7 +18,7 @@
 	return 1
 
 /obj/structure/closet/crate/CanPass(atom/movable/A, turf/T)
-	if(A.checkpass(PASSTABLE))
+	if(istype(A) && A.checkpass(PASSTABLE))
 		return TRUE
 	return ..()
 

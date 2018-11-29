@@ -67,7 +67,7 @@
 				break
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			if(H.species.flags[IS_IMMATERIAL])
+			if(H.species.flags[IS_IMMATERIAL] && !istype(H.wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
 				can_switch = FALSE
 
 		if(can_switch && get_dist(M, src) <= 1)

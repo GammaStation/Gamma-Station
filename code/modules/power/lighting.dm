@@ -549,7 +549,8 @@
 	L.update()
 	L.add_fingerprint(user)
 
-	user.put_in_hands(L) //puts it in our active hand (don't forget check)
+	if(!user.put_in_hands(L)) //puts it in our active hand (don't forget check)
+		L.forceMove(get_turf(src))
 
 	status = LIGHT_EMPTY
 	update()

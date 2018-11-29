@@ -1019,7 +1019,8 @@
 
 	custom_metabolism = 0.0
 
-	language = "The Gaping Maw"
+	language = "The Perfect Control"
+	additional_languages = list("The Gaping Maw")
 	force_racial_language = TRUE
 
 	butcher_drops = list()
@@ -1129,27 +1130,27 @@
 					K2.name = "circling metal"
 					switch(a_intent)
 						if(I_DISARM)
-							if(nutrition > 215)
+							if(nutrition > 207)
 								electrocuting:
 									for(var/mob/living/L in view(1, src))
-										if(nutrition <= 215)
+										if(nutrition <= 207)
 											break electrocuting
 										L.electrocute_act(1, src, 1.0)
-										nutrition--
+										nutrition -= 7
 							else
 								metal_bending = FALSE
 								return
 						if(I_GRAB)
 							var/obj/item/organ/internal/brain/tycheon/core = organs_by_name[O_BRAIN]
-							if(core && nutrition > 215)
+							if(core && nutrition > 207)
 								core.damage -= 1
-								nutrition -= 15
+								nutrition -= 7
 							else
 								metal_bending = FALSE
 								return
 						if(I_HURT)
-							if(nutrition > 215)
-								nutrition -= 15
+							if(nutrition > 207)
+								nutrition -= 7
 								empulse(src, 0, 1)
 							else
 								metal_bending = FALSE
@@ -1186,7 +1187,7 @@
 							return
 						if(!in_range(src, M))
 							break metal_retracting
-						if(nutrition < 205)
+						if(nutrition < 250)
 							to_chat(src, "<span class='warning'>Not enough static charge.</span>")
 							metal_bending = FALSE
 							return
@@ -1222,7 +1223,7 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|HEAD|FACE|EYES
 	max_heat_protection_temperature = 313 // See the tycheon species.
 	min_cold_protection_temperature = 273
-	armor = list(melee = 75, bullet = 10, laser = 10,energy = 100, bomb = 75, bio = 100, rad = 100)
+	armor = list(melee = 75, bullet = 10, laser = 10,energy = 100, bomb = 75, bio = 100, rad = 100, telepathy = 30)
 
 /obj/item/clothing/suit/space/rig/tycheon/equipped(mob/user)
 	if(ishuman(user))
@@ -1295,7 +1296,7 @@
 	return ..()
 
 /mob/proc/telepathy_hear(verb, message, source, datum/language/language = null) // Makes all those nosy telepathics hear what we hear. Also, please do see game\sound.dm, I have a little bootleg hidden there for you ;).
-	for(var/mob/M in remote_hearers)
+	for(var/mob/living/M in remote_hearers)
 		if(source == M)
 			continue
 		var/dist = get_dist(src, M)
@@ -1308,6 +1309,7 @@
 			star_chance += dist
 		if(M.remote_hearing.len > 3)
 			star_chance += M.remote_hearing.len * 5
+		star_chance += M.getarmor(BP_HEAD, "telepathy")
 		if(star_chance)
 			stars(message, star_chance)
 		if(prob(MAX_TELEPATHY_RANGE - dist)) // The further they are, the lesser the chance to understand something.
@@ -1347,7 +1349,7 @@
 		M.remote_hearers += src
 		to_chat(src, "<span class='notice'>You start telepathically eavesdropping on [M]")
 
-/mob/living/carbon/human/proc/quick_telepathy_say((mob/M in (view() + remote_hearing)))
+/mob/living/carbon/human/proc/quick_telepathy_say((mob/living/M in (view() + remote_hearing)))
 	set name = "Project Mind(Q)"
 	set desc = "Make them hear what you desire. Quickly."
 	set category = "Tycheon"
@@ -1404,13 +1406,10 @@
 	if(!M.say_understands(src, speaking) && speaking)
 		say = speaking.scramble(say)
 
-	if(!speaking)
-		say = "\"[say]\""
-
 	if(speaking)
 		say = speaking.format_message(say) //, verb) Verb is actually unused.
 	else
-		say = capitalize(say)
+		say = "\"[capitalize(say)]\""
 
 	var/dist = get_dist(src, M)
 	if(!M.do_telepathy(dist))
@@ -1418,7 +1417,11 @@
 			C.images -= II
 		return
 
+	var/star_chance = 0
 	if(dist > MAX_TELEPATHY_RANGE)
+		star_chance += dist
+	star_chance += M.getarmor(BP_HEAD, "telepathy")
+	if(star_chance)
 		stars(say, dist)
 
 	if((REMOTE_TALK in M.mutations))
@@ -1526,45 +1529,47 @@
 	II.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 	INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, II, bubble_recipients, 3 SECONDS)
 
-	for(var/mob/M in chosen)
+	for(var/mob/living/M in chosen)
+		var/cur_say = say
 		var/datum/language/speaking = parse_language(say, M) // We can talk in languages they know, but we don't.
 		if(!speaking)
 			speaking = parse_language(say, src) // Or in languages we know, but they don't.
 
 		if(speaking)
-			say = copytext(say, 2 + length(speaking.key))
-
-		if(!speaking)
-			say = "\"[say]\""
+			cur_say = copytext(cur_say, 2 + length(speaking.key))
 
 		if(!M.say_understands(src, speaking) && speaking)
-			say = speaking.scramble(say)
+			cur_say = speaking.scramble(say)
 
 		if(speaking)
-			say = speaking.format_message(say) //, verb) Verb is actually unused.
+			cur_say = speaking.format_message(cur_say) //, verb) Verb is actually unused.
 		else
-			say = capitalize(say)
+			cur_say = "\"[capitalize(say)]\""
 
 		var/dist = get_dist(src, M)
 		if(!M.do_telepathy(dist))
 			continue
 
+		var/star_chance = 0
 		if(dist > MAX_TELEPATHY_RANGE)
-			stars(say, dist)
+			star_chance += dist
+		star_chance += M.getarmor(BP_HEAD, "telepathy")
+		if(star_chance)
+			stars(cur_say, dist)
 
 		if((REMOTE_TALK in M.mutations))
-			to_chat(M, "<span class='notice'>You hear <b>[src]'s voice</b>:</span> [say]")
+			to_chat(M, "<span class='notice'>You hear <b>[src]'s voice</b>:</span> [cur_say]")
 		else
-			to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room:</span> [say]")
-		to_chat(src, "<span class='notice'>You project your mind into <b>[M]</b>:</span> [say]")
+			to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room:</span> [cur_say]")
+		to_chat(src, "<span class='notice'>You project your mind into <b>[M]</b>:</span> [cur_say]")
 
 		M.telepathy_hear("has heard a voice speak", say, src)
 
-	var/mes = say
 	for(var/mob/dead/observer/G in dead_mob_list)
+		var/mes = say
 		var/track = "<a href='byond://?src=\ref[G];track=\ref[src]'>(F)</a>"
 		if((client.prefs.chat_toggles & CHAT_GHOSTEARS) && src in view(G))
-			mes = "<b>[say]</b>"
+			mes = "<b>[mes]</b>"
 		to_chat(G, "<span class='italics'>Telepathic message from <b>[real_name]</b>[track]:</span> [mes]")
 
 	log_say("Telepathic message from [key_name(src)]: [say]")

@@ -3,6 +3,23 @@
 * GLOBAL STYLES
 *
 ******************************************/
+@font-face{
+	font-family:'Horror Font';
+	src:url('horror_font.eot');
+	src:url('horror_font.eot') format('embedded-opentype'), url('horror_font.otf') format('opentype');
+	font-weight:normal;
+	font-style:normal;
+	font-size:x-large;
+}
+
+@font-face{
+	font-family:'Balanced font';
+	src:url('balanced_font.eot');
+	src:url('balanced_font.eot') format('embedded-opentype'), url('balanced_font.ttf') format('truetype');
+	font-weight:normal;
+	font-style:normal;
+}
+
 html, body {
 	padding: 0;
 	margin: 0;
@@ -316,7 +333,8 @@ h1.alert, h2.alert		{color: #000000;}
 .rough					{font-family: "Trebuchet MS", cursive, sans-serif;}
 .say_quote				{font-family: Georgia, Verdana, sans-serif;}
 .ipc					{color: #505050;	font-weight: bold;	font-family: "Times New Roman", Times, serif;}
-.void                   {color: #1F1F1F;	font-weight: bold;	font-family: Palatino, serif;}
+.void                   {color: #1F1F1F;	font-family: "Horror Font", Palatino, serif; font-size: large;}
+.void_balance           {color: #1F1F1F;	font-family: "Balanced Font", Times, serif; font-size: large;}
 
 .interface				{color: #330033;}
 

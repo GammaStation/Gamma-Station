@@ -249,7 +249,7 @@
 	item_state = "hostrench"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	cold_protection = UPPER_TORSO|LOWER_TORSO
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 35, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 35, rad = 0, telepathy = 0)
 
 /obj/item/clothing/suit/jacket/puffer/vest
 	name = "puffer vest"
@@ -258,7 +258,7 @@
 	item_state = "armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	cold_protection = UPPER_TORSO|LOWER_TORSO
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 30, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 30, rad = 0, telepathy = 0)
 
 //Blue suit jacket toggle
 /obj/item/clothing/suit/suit/verb/toggle()
@@ -546,7 +546,7 @@
 	item_state = "cuirass"
 	blood_overlay_type = "armor"
 	flags = THICKMATERIAL
-	armor = list(melee = 50, bullet = 30, laser = 10, energy = 10, bomb = 25, bio = 0, rad = 0)
+	armor = list(melee = 50, bullet = 30, laser = 10, energy = 10, bomb = 25, bio = 0, rad = 0, telepathy = 10)
 
 /obj/item/clothing/suit/goodman_jacket
 	name = "brown jacket"
