@@ -282,7 +282,7 @@
 			if(H.species.flags[STATICALLY_CHARGED] && !istype(get_turf(H), /turf/space)) // The only to use this is Voidan. And their nutrition is static charge.
 				if(prob(5))
 					new /obj/effect/effect/sparks(H.loc)
-				H.nutrition = min(500, H.nutrition + 5)
+				H.nutrition = min(500, H.nutrition + 4)
 
 		moving = 0
 		if(mob && .)

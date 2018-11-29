@@ -385,7 +385,7 @@
 			return
 
 	var/obj/item/tk_grab/put_me = user.get_active_hand(additional_checks = FALSE)
-	if(istype(put_me))
+	if(istype(put_me) && user.a_intent != I_HURT)
 		if(put_me.focus.anchored || !Adjacent(put_me.focus))
 			return
 		if(istype(put_me.focus, /obj/item))

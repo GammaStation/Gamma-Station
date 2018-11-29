@@ -41,23 +41,26 @@ var/list/mechtoys = list(
 
 	if(isliving(caller))
 		var/mob/living/M = caller
-		if(!M.ventcrawler || !M.lying)
+		if(!M.ventcrawler || !M.lying || !M.checkpass(PASSCRAWL))
 			return FALSE
 
 	return TRUE
 
 /obj/structure/plasticflaps/CanPass(atom/A, turf/T)
-	if(istype(A) && A.checkpass(PASSGLASS))
-		return prob(60)
-
 	var/obj/structure/stool/bed/B = A
 	if (istype(A, /obj/structure/stool/bed) && B.buckled_mob)//if it's a bed/chair and someone is buckled, it will not pass
 		return 0
 
 	else if(istype(A, /mob/living)) // You Shall Not Pass!
 		var/mob/living/M = A
-		if(!M.lying && !istype(M, /mob/living/carbon/monkey) && !istype(M, /mob/living/carbon/slime) && !istype(M, /mob/living/simple_animal/mouse) && !istype(M, /mob/living/silicon/robot/drone))  //If your not laying down, or a small creature, no pass.
-			return 0
+		if(ismonkey(M) || isslime(M) || ismouse(M) || isdrone(M)) // If you're a small creature.
+			return TRUE
+		if(M.lying || M.checkpass(PASSCRAWL))
+			return TRUE
+
+	if(istype(A) && A.checkpass(PASSGLASS))
+		return prob(60)
+
 	return ..()
 
 /obj/structure/plasticflaps/ex_act(severity)
