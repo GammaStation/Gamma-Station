@@ -23,6 +23,11 @@
 	caliber = "38"
 	projectile_type = "/obj/item/projectile/bullet/weakbullet"
 
+/obj/item/ammo_casing/c22cb //Thunderfield stuff
+	desc = "A .22 CB bullet casing."
+	caliber = "22"
+	projectile_type = "/obj/item/projectile/bullet/midbullet/thunderfield_bullet"
+
 /obj/item/ammo_casing/c9mm
 	desc = "A 9mm bullet casing."
 	caliber = "9mm"

@@ -121,7 +121,8 @@
 			for (var/mob/V in viewers(usr))
 				V.show_message("<span class='red'>[usr] starts putting [GM.name] into the disposal.</span>", 3)
 			if(do_after(usr, 20, target = src))
-				GM.loc = src
+				GM.simple_move_animation(src)
+				GM.forceMove(src)
 				GM.instant_vision_update(1,src)
 				for (var/mob/C in viewers(src))
 					C.show_message("<span class='danger'>[GM.name] has been placed in the [src] by [user].</span>", 3)
@@ -131,11 +132,12 @@
 				msg_admin_attack("[usr.name] ([usr.ckey]) placed [GM.name] ([GM.ckey]) in a disposals unit. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[usr.x];Y=[usr.y];Z=[usr.z]'>JMP</a>)")
 		return
 
-	if(!I)	return
-
+	if(!I || !I.canremove || I.flags & NODROP)
+		return
 	user.drop_item()
 	if(I)
-		I.loc = src
+		I.do_putdown_animation(src)
+		I.forceMove(src)
 
 	to_chat(user, "<span class='notice'>You place \the [I] into the [src].</span>")
 	for(var/mob/M in viewers(src))
@@ -150,7 +152,7 @@
 /obj/machinery/disposal/proc/MouseDrop_T2(mob/target, mob/user)
 	if(user.stat || !user.canmove || !istype(target))
 		return
-	if(target.buckled || get_dist(user, src) > 1 || get_dist(user, target) > 1)
+	if(target.buckled)
 		return
 	//animals cannot put mobs other than themselves into disposal
 	if(isanimal(user) && target != user)
@@ -185,7 +187,8 @@
 	else
 		return
 
-	target.loc = src
+	target.simple_move_animation(src)
+	target.forceMove(src)
 	target.instant_vision_update(1,src)
 
 	for (var/mob/C in viewers(src))
@@ -227,7 +230,8 @@
 		//target.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been placed in disposals by [user.name] ([user.ckey])</font>")
 		//msg_admin_attack("[user] ([user.ckey]) placed [target] ([target.ckey]) in a disposals unit. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
-		target.loc = src
+		target.simple_move_animation(src)
+		target.forceMove(src)
 
 		for (var/mob/C in viewers(src))
 			if(C == user)
@@ -515,6 +519,8 @@
 				M.show_message("\the [I] bounces off of \the [src]'s rim!.", 3)
 		return 0
 	else
+		if(mover.checkpass(PASSTABLE))
+			return TRUE
 		return ..(mover, target, height, air_group)
 
 // virtual disposal object
@@ -1255,15 +1261,18 @@
 		var/obj/item/weapon/weldingtool/W = I
 		if(user.is_busy()) return
 		if(W.remove_fuel(0,user))
-			playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
-			// check if anything changed over 2 seconds
-			to_chat(user, "You start slicing the disposal pipe.")
-			if(do_after(user, 30, target = src))
-				if(!W.isOn()) return
-				to_chat(user, "<span class='notice'>You sliced the disposal pipe.</span>")
-				welded()
+			if(linked)
+				to_chat(user, "<span class='warning'> Something is attached on disposal pipe!</span>")
 			else
-				to_chat(user, "<span class='warning'>You must stay still while welding the pipe.</span>")
+				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
+				// check if anything changed over 2 seconds
+				to_chat(user, "You start slicing the disposal pipe.")
+				if(do_after(user, 30, target = src))
+					if(!W.isOn()) return
+					to_chat(user, "<span class='notice'>You sliced the disposal pipe.</span>")
+					welded()
+				else
+					to_chat(user, "<span class='warning'>You must stay still while welding the pipe.</span>")
 		else
 			to_chat(user, "<span class='warning'>You need more welding fuel to cut the pipe.</span>")
 			return
@@ -1333,6 +1342,12 @@
 /obj/structure/disposaloutlet/atom_init()
 	..()
 	return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/disposaloutlet/Destroy()
+
+	var/obj/structure/disposalpipe/trunk/T = locate() in loc
+	T.linked = null
+	return ..()
 
 /obj/structure/disposaloutlet/atom_init_late()
 	target = get_ranged_target_turf(src, dir, 10)

@@ -89,7 +89,7 @@
 		if(isturf(src.loc) && !resting && !buckled && canmove)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
 			turns_since_move++
 			if(turns_since_move >= turns_per_move)
-				if(!(stop_automated_movement_when_pulled && pulledby)) //Soma animals don't move when pulled
+				if(!(stop_automated_movement_when_pulled && (pulledby || focused_by.len))) //Soma animals don't move when pulled
 					var/anydir = pick(cardinal)
 					if(Process_Spacemove(anydir))
 						Move(get_step(src,anydir), anydir)
@@ -345,8 +345,6 @@
 		else
 			to_chat(user, "<span class='notice'> this [src] is dead, medical items won't bring it back to life.</span>")
 	user.SetNextMove(CLICK_CD_MELEE)
-	if(attempt_harvest(O, user))
-		return
 	..()
 
 

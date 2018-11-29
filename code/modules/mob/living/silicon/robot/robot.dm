@@ -354,7 +354,7 @@
 	newname = sanitize_safe(input(src,"You are a robot. Enter a name, or leave blank for the default name.", "Name change","") as text, MAX_NAME_LEN)
 	if (newname)
 		custom_name = newname
-		
+
 		updatename()
 		updateicon()
 
@@ -929,7 +929,7 @@
 		if(cell)
 			cell.updateicon()
 			cell.add_fingerprint(user)
-			user.put_in_active_hand(cell)
+			user.put_in_hands(cell)
 			to_chat(user, "You remove \the [cell].")
 			cell = null
 			cell_component.wrapped = null
@@ -939,7 +939,7 @@
 			cell_component.installed = 0
 			var/obj/item/broken_device = cell_component.wrapped
 			to_chat(user, "You remove \the [broken_device].")
-			user.put_in_active_hand(broken_device)
+			user.put_in_hands(broken_device)
 
 /mob/living/silicon/robot/proc/allowed(mob/M)
 	//check if it doesn't require any access at all

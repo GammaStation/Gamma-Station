@@ -42,7 +42,10 @@
 /mob/proc/SetNextMove(num)
 	next_move = world.time + num + next_move_modifier
 
-/mob/proc/ClickOn( atom/A, params )
+/mob/proc/SetNextClick(num) // next_click is checked before even modified(Shift/Ctrl) clicks, that's the difference.
+	next_click = world.time + num
+
+/mob/proc/ClickOn(atom/A, params)
 	if(world.time <= next_click)
 		return
 	next_click = world.time + 1
@@ -58,7 +61,7 @@
 		return
 
 	if(modifiers["shift"] && modifiers["ctrl"])
-		CtrlShiftClickOn(A)
+		CtrlShiftClickOn(A, params)
 		return
 	if(modifiers["middle"])
 		MiddleClickOn(A)
@@ -87,6 +90,12 @@
 		var/obj/mecha/M = loc
 		return M.click_action(A, src)
 
+	if(istype(loc,/obj/spacepod))
+		if(!locate(/turf) in list(A, A.loc))
+			return
+		var/obj/spacepod/M = loc
+		return M.click_action(A, src)
+
 	if(restrained())
 		RestrainedClickOn(A)
 		return
@@ -98,7 +107,10 @@
 	if(!istype(A,/obj/item/weapon/gun) && !isturf(A) && !istype(A,/obj/screen))
 		last_target_click = world.time
 
-	var/obj/item/W = get_active_hand()
+	// additional_checks is a parameter that determines whether we get ACTUAL hand item,
+	// or something else. per say, TK grabs with the checks return what is in TK focus, not
+	// the TK item itself.
+	var/obj/item/W = get_active_hand(additional_checks = FALSE)
 
 	if(W == A)
 		W.attack_self(src)
@@ -115,7 +127,7 @@
 		// No adjacency needed
 		if(W)
 
-			var/resolved = A.attackby(W,src,params)
+			var/resolved = A.attackby(W, src, params)
 			if(!resolved && A && W)
 				W.afterattack(A, src, 1, params) // 1 indicates adjacency
 		else
@@ -148,7 +160,7 @@
 	ClickOn(A,params)
 
 
-//	Translates into attack_hand, etc.
+// Translates into attack_hand, etc.
 
 /mob/proc/UnarmedAttack(atom/A)
 	if(ismob(A))
@@ -165,13 +177,10 @@
 /mob/proc/RangedAttack(atom/A, params)
 	if(!mutations.len)
 		return
-	if(a_intent == "hurt" && (LASEREYES in mutations))
+	var/dist = get_dist(src, A)
+	if(a_intent == I_HURT && (LASEREYES in mutations))
 		LaserEyes(A) // moved into a proc below
-	else if(TK in mutations)
-		var/dist = get_dist(src, A)
-		if(dist > tk_maxrange)
-			return
-		SetNextMove(max(dist, CLICK_CD_MELEE))
+	else if((TK in mutations) && do_telekinesis(dist))
 		A.attack_tk(src)
 
 /*
@@ -251,12 +260,21 @@
 	Control+Shift click
 	Unused except for AI
 */
-/mob/proc/CtrlShiftClickOn(atom/A)
-	A.CtrlShiftClick(src)
+/mob/proc/CtrlShiftClickOn(atom/A, params)
+	A.CtrlShiftClick(src, params)
 	return
 
-/atom/proc/CtrlShiftClick(mob/user)
-	return
+/atom/proc/CtrlShiftClick(mob/user, params)
+	// if(!incapacitated) This proc also checks for restrained. But we do want to be able to do telekinesis while restrained.
+	if(user.stat || user.paralysis || user.stunned || user.weakened)
+		return
+	var/dist = get_dist(src, user)
+	if((TK in user.mutations) && user.do_telekinesis(dist))
+		var/obj/item/item = user.get_active_hand(additional_checks = FALSE)
+		if(istype(item, /obj/item/tk_grab))
+			item.afterattack(src, user, Adjacent(user), params)
+		else
+			attack_tk(user)
 
 /*
 	Misc helpers

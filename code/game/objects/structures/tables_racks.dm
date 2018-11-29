@@ -284,14 +284,13 @@
 		user.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ))
 		destroy()
 
-/obj/structure/table/attack_tk() // no telehulk sorry
-	return
-
 /obj/structure/table/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	if(air_group || (height==0)) return 1
 	if(istype(mover,/obj/item/projectile))
 		return (check_cover(mover,target))
 	if(istype(mover) && mover.checkpass(PASSTABLE))
+		return 1
+	if(mover.focused_by.len)
 		return 1
 	if(iscarbon(mover) && mover.checkpass(PASSCRAWL))
 		mover.layer = 2.7
@@ -335,6 +334,8 @@
 /obj/structure/table/CheckExit(atom/movable/O, target)
 	if(istype(O) && O.checkpass(PASSTABLE))
 		return 1
+	if(O.focused_by.len)
+		return 1
 	if(istype(O) && O.checkpass(PASSCRAWL))
 		O.layer = 4.0
 		return 1
@@ -345,21 +346,22 @@
 			return 1
 	return 1
 
-/obj/structure/table/MouseDrop_T(obj/O as obj, mob/user as mob)
+/obj/structure/table/MouseDrop_T(obj/item/O, mob/user)
 	..()
-	if ((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
+	if (!istype(O) || user.get_active_hand() != O)
 		return
 	if(isessence(usr) || isrobot(usr))
 		return
-	user.drop_item()
+	if(!O.canremove || O.flags & NODROP || O.flags & ABSTRACT)
+		return
+	if(!istype(user.get_active_hand(additional_checks = FALSE), /obj/item/tk_grab))
+		user.drop_item()
 	if (O.loc != src.loc)
 		step(O, get_dir(O, src))
-	return
-
 
 /obj/structure/table/attackby(obj/item/W, mob/user, params)
 	. = TRUE
-	if (istype(W, /obj/item/weapon/grab) && get_dist(src,user) < 2)
+	if (istype(W, /obj/item/weapon/grab))
 		var/obj/item/weapon/grab/G = W
 		if(isliving(G.affecting))
 			var/mob/living/M = G.affecting
@@ -382,6 +384,25 @@
 			qdel(W)
 			return
 
+	var/obj/item/tk_grab/put_me = user.get_active_hand(additional_checks = FALSE)
+	if(istype(put_me) && user.a_intent != I_HURT)
+		if(put_me.focus.anchored || !Adjacent(put_me.focus))
+			return
+		if(istype(put_me.focus, /obj/item))
+			var/obj/item/II = put_me.focus
+			if(II.flags & NODROP || II.flags & ABSTRACT)
+				return
+			if(!istype(put_me.focus.loc, /turf))
+				user.drop_from_inventory(put_me.focus)
+			var/list/click_params = params2list(params)
+			//Center the icon where the user clicked.
+			if(!click_params || !click_params["icon-x"] || !click_params["icon-y"])
+				return
+			put_me.focus.pixel_x = Clamp(text2num(click_params["icon-x"]) - 16, -(world.icon_size/2), world.icon_size/2)
+			put_me.focus.pixel_y = Clamp(text2num(click_params["icon-y"]) - 16, -(world.icon_size/2), world.icon_size/2)
+		put_me.focus.forceMove(loc)
+		return
+
 	if (istype(W, /obj/item/weapon/wrench))
 		if(user.is_busy()) return
 		to_chat(user, "\blue Now disassembling table")
@@ -391,6 +412,8 @@
 		return
 
 	if(isrobot(user))
+		return
+	if(!W.canremove || W.flags & NODROP)
 		return
 
 	if(istype(W, /obj/item/weapon/melee/energy) || istype(W, /obj/item/weapon/pen/edagger) || istype(W,/obj/item/weapon/twohanded/dualsaber))
@@ -412,14 +435,14 @@
 
 	if(!(W.flags & ABSTRACT))
 		if(user.drop_item())
-			W.Move(loc)
 			var/list/click_params = params2list(params)
 			//Center the icon where the user clicked.
 			if(!click_params || !click_params["icon-x"] || !click_params["icon-y"])
 				return
 			W.pixel_x = Clamp(text2num(click_params["icon-x"]) - 16, -(world.icon_size/2), world.icon_size/2)
 			W.pixel_y = Clamp(text2num(click_params["icon-y"]) - 16, -(world.icon_size/2), world.icon_size/2)
-	return
+			W.do_putdown_animation(src)
+			W.forceMove(loc)
 
 /obj/structure/table/proc/slam(var/mob/living/A, var/mob/living/M, var/obj/item/weapon/grab/G)
 	if (prob(15))
@@ -666,6 +689,8 @@
 		return (check_cover(mover,target))
 	if(istype(mover) && mover.checkpass(PASSTABLE))
 		return 1
+	if(mover.focused_by.len)
+		return TRUE
 	if(locate(/obj/structure/table) in get_turf(mover))
 		return 1
 	if (flipped)
@@ -707,7 +732,7 @@
 		if(src.status == 2)
 			return TRUE
 
- return ..()
+	return ..()
 
 /*
  * Racks
@@ -722,6 +747,7 @@
 	layer = CONTAINER_STRUCTURE_LAYER
 	throwpass = 1	//You can throw objects over this, despite it's density.
 	var/parts = /obj/item/weapon/rack_parts
+	climbable = 1
 
 /obj/structure/rack/ex_act(severity)
 	switch(severity)
@@ -751,13 +777,18 @@
 		return 1
 	if(istype(mover) && mover.checkpass(PASSTABLE))
 		return 1
+	if(mover.focused_by.len)
+		return 1
 	else
 		return 0
 
 /obj/structure/rack/MouseDrop_T(obj/O, mob/user)
-	if ((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
+	if ((!(istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
 		return
 	if(isrobot(user) || isessence(user))
+		return
+	var/obj/item/weapon/W = O
+	if(!W.canremove || W.flags & NODROP)
 		return
 	user.drop_item()
 	if (O.loc != src.loc)
@@ -783,6 +814,8 @@
 			destroy()
 			return
 	if(isrobot(user))
+		return
+	if(!W.canremove || W.flags & NODROP || W.flags & ABSTRACT)
 		return
 	user.drop_item()
 	if(W && W.loc)	W.loc = src.loc
@@ -821,6 +854,3 @@
 		user.do_attack_animation(src)
 		visible_message("<span class='danger'>[user] smashes [src] apart!</span>")
 		destroy()
-
-/obj/structure/rack/attack_tk() // no telehulk sorry
-	return

@@ -1,5 +1,5 @@
 /datum/job/hos
-	title = "Head of Security"
+	title = "Star Vigil Commander"
 	flag = HOS
 	department_flag = ENGSEC
 	faction = "Station"
@@ -15,7 +15,7 @@
 		access_research, access_engine, access_mining, access_medical, access_construction, access_mailsorting,
 		access_heads, access_hos, access_RC_announce, access_keycard_auth, access_gateway, access_detective
 	)
-	minimal_player_age = 14
+	minimal_player_age = 30
 	minimal_player_ingame_minutes = 8000
 	restricted_species = list(TAJARAN, DIONA)
 
@@ -40,25 +40,23 @@
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/heads/hos(H), slot_l_ear)
 	H.equip_to_slot_or_del(new /obj/item/device/pda/heads/hos(H), slot_belt)
 	if(H.backbag == 1)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
 		H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_l_store)
 	else
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 		H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_in_backpack)
 	var/obj/item/weapon/implant/mindshield/loyalty/L = new(H)
 	L.inject(H)
 	START_PROCESSING(SSobj, L)
-	return 1
+	return TRUE
 
 
 /datum/job/warden
-	title = "Warden"
+	title = "Star Vigil Sergeant"
 	flag = WARDEN
 	department_flag = ENGSEC
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the head of security"
+	supervisors = "the Star Vigil Commander"
 	selection_color = "#ffeeee"
 	idtype = /obj/item/weapon/card/id/sec
 	access = list(access_security, access_sec_doors, access_brig, access_armory, access_court, access_maint_tunnels)
@@ -87,16 +85,14 @@
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/headset_sec(H), slot_l_ear)
 	H.equip_to_slot_or_del(new /obj/item/device/pda/warden(H), slot_belt)
 	if(H.backbag == 1)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
 		H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_l_hand)
 	else
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 		H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_in_backpack)
 
 	var/obj/item/weapon/implant/mindshield/L = new(H)
 	L.inject(H)
 
-	return 1
+	return TRUE
 
 
 /datum/job/detective
@@ -106,7 +102,7 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the head of security"
+	supervisors = "the Star Vigil Commander"
 	selection_color = "#ffeeee"
 	idtype = /obj/item/weapon/card/id/sec
 	access = list(access_security, access_sec_doors, access_detective, access_maint_tunnels, access_court)
@@ -133,25 +129,23 @@
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/headset_sec(H), slot_l_ear)
 	H.equip_to_slot_or_del(new /obj/item/device/pda/detective(H), slot_belt)
 	if(H.backbag == 1)//Why cant some of these things spawn in his office?
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/evidence(H), slot_l_hand)
 		H.equip_to_slot_or_del(new /obj/item/device/detective_scanner(H), slot_r_store)
 	else
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/evidence(H), slot_in_backpack)
 		H.equip_to_slot_or_del(new /obj/item/device/detective_scanner(H), slot_in_backpack)
 
-	return 1
+	return TRUE
 
 
 /datum/job/officer
-	title = "Security Officer"
+	title = "Star Vigil Officer"
 	flag = OFFICER
 	department_flag = ENGSEC
 	faction = "Station"
 	total_positions = 5
 	spawn_positions = 5
-	supervisors = "the head of security"
+	supervisors = "the Star Vigil Commander"
 	selection_color = "#ffeeee"
 	idtype = /obj/item/weapon/card/id/sec
 	access = list(access_security, access_sec_doors, access_brig, access_court, access_maint_tunnels)
@@ -176,16 +170,14 @@
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/headset_sec(H), slot_l_ear)
 	H.equip_to_slot_or_del(new /obj/item/device/pda/security(H), slot_belt)
 	if(H.backbag == 1)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
 		H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_l_hand)
 	else
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 		H.equip_to_slot_or_del(new /obj/item/weapon/handcuffs(H), slot_in_backpack)
 
 	var/obj/item/weapon/implant/mindshield/L = new(H)
 	L.inject(H)
 
-	return 1
+	return TRUE
 
 /datum/job/forensic
 	title = "Forensic Technician"
@@ -194,12 +186,12 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the head of security"
+	supervisors = "the Star Vigil Commander"
 	selection_color = "#ffeeee"
 	idtype = /obj/item/weapon/card/id/sec
 	access = list(access_sec_doors, access_forensics_lockers, access_morgue, access_maint_tunnels, access_court)
 	minimal_player_age = 3
-	minimal_player_ingame_minutes = 1560
+	minimal_player_ingame_minutes = 560
 
 /datum/job/forensic/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0
@@ -218,12 +210,10 @@
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/headset_sec(H), slot_l_ear)
 	H.equip_to_slot_or_del(new /obj/item/device/pda/forensic(H), slot_belt)
 	if(H.backbag == 1)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/evidence(H), slot_l_hand)
 		H.equip_to_slot_or_del(new /obj/item/device/detective_scanner(H), slot_r_store)
 	else
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/evidence(H), slot_in_backpack)
 		H.equip_to_slot_or_del(new /obj/item/device/detective_scanner(H), slot_in_backpack)
 
-	return 1
+	return TRUE

@@ -159,6 +159,9 @@
 	else if(isessence(mymob))
 		changeling_essence_hud()
 
+	if(isvrhuman(mymob))
+		vrhuman_hud()
+
 	if(istype(mymob.loc,/obj/mecha))
 		show_hud(HUD_STYLE_REDUCED)
 

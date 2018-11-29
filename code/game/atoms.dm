@@ -224,13 +224,18 @@
 	if(reagents && is_open_container()) //is_open_container() isn't really the right proc for this, but w/e
 		to_chat(user, "It contains:")
 		if(reagents.reagent_list.len)
-			if(istype(src, /obj/structure/reagent_dispensers)) //watertanks, fueltanks
+			if(istype(src, /obj/structure/reagent_dispensers) || hasHUD(user,"science")) //watertanks, fueltanks. Also, science goggles can scan reagents
 				for(var/datum/reagent/R in reagents.reagent_list)
 					to_chat(user, "<span class='info'>[R.volume] units of [R.name]</span>")
 			else
 				to_chat(user, "<span class='info'>[reagents.total_volume] units of liquid.</span>")
 		else
 			to_chat(user, "Nothing.")
+
+		return    //So you won't get useless atmos data of the turf, on which your scanned beaker is located
+
+	if(hasHUD(user,"science"))
+		print_atmos_analysis(user, atmosanalyzer_scan(src))
 
 	return distance == -1 || isobserver(user) || (get_dist(src, user) <= distance)
 
@@ -268,6 +273,10 @@
 
 /atom/proc/add_hiddenprint(mob/living/M)
 	if(!M || !M.key)
+		return
+	if(!in_range(M, src)) // No Telekinetic fingerprint leaving!
+		fingerprintshidden += text("\[[]\]Real name: [], Key: []",time_stamp(), M.real_name, M.key) // So we, adming still know the TRUTH.
+		fingerprintslast = M.key
 		return
 	if (ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -308,6 +317,12 @@
 			return 0		//Now, lets get to the dirty work.
 		//First, make sure their DNA makes sense.
 		var/mob/living/carbon/human/H = M
+
+		if(H.species.flags[NO_FINGERPRINT]) // They don't leave readable fingerprints, but admins gotta know.
+			fingerprintshidden += "(Specie has no fingerprints) Real name: [H.real_name], Key: [H.key]"
+			fingerprintslast = H.key
+			return 0
+
 		if (!istype(H.dna, /datum/dna) || !H.dna.uni_identity || (length(H.dna.uni_identity) != 32))
 			if(!istype(H.dna, /datum/dna))
 				H.dna = new /datum/dna(null)
@@ -415,10 +430,11 @@
 
 //returns 1 if made bloody, returns 0 otherwise
 /atom/proc/add_blood(mob/living/carbon/human/M,dirt_datum)
-	if(flags & NOBLOODY) return 0
-	.=1
+	if(flags & NOBLOODY)
+		return FALSE
+	. = TRUE
 	if (!( istype(M, /mob/living/carbon/human) ))
-		return 0
+		return FALSE
 	if (!istype(M.dna, /datum/dna))
 		M.dna = new /datum/dna(null)
 		M.dna.real_name = M.real_name
@@ -432,7 +448,6 @@
 //	blood_color = "#A10808"
 //	if (M.species)
 //		blood_color = M.species.blood_color
-	return
 
 /atom/proc/add_dirt_cover(dirt_datum)
 	if(flags & NOBLOODY) return 0

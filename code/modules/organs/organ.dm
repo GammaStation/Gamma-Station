@@ -128,6 +128,11 @@
 /mob/living/carbon/human/proc/handle_stance()
 	// Don't need to process any of this if they aren't standing anyways
 	// unless their stance is damaged, and we want to check if they should stay down
+	if(species.flags[IS_FLYING])
+		if(falling) // So they will be slowly restoring unless something is continiously making them fall.
+			falling = max(0, falling - 1)
+		return
+
 	if(!stance_damage && (lying || resting) && (life_tick % 4) != 0)
 		return
 
@@ -168,6 +173,24 @@
 
 	// standing is poor
 	if(stance_damage >= 4 || (stance_damage >= 2 && prob(5)))
+		if(iszombie(src)) //zombies crawl when they can't stand
+			if(!crawling && !lying && !resting)
+				if(crawl_can_use())
+					crawl()
+				else
+					emote("collapse")
+					Weaken(5)
+
+			var/has_arm = FALSE
+			for(var/limb_tag in list(BP_L_ARM, BP_R_ARM))
+				var/obj/item/organ/external/E = bodyparts_by_name[limb_tag]
+				if(E && E.is_usable())
+					has_arm = TRUE
+					break
+			if(!has_arm) //need atleast one hand to crawl
+				Weaken(5)
+			return
+
 		if(!(lying || resting))
 			if(species && !species.flags[NO_PAIN])
 				emote("scream", auto = TRUE)

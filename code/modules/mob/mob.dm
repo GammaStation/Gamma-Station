@@ -3,6 +3,12 @@
 	dead_mob_list -= src
 	living_mob_list -= src
 	ghostize(bancheck = TRUE)
+
+	for(var/mob/hearer in remote_hearing)
+		hearer.remote_hearers -= src
+	for(var/mob/hearing in remote_hearers)
+		hearing.remote_hearing -= src
+
 	return ..()
 
 /mob/atom_init()
@@ -34,7 +40,7 @@
 
 	usr.show_message(t, 1)
 
-/mob/proc/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
+/mob/proc/show_message(msg, type, alt, alt_type, flag)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
 
 	if(!client)
 		return FALSE
@@ -57,7 +63,7 @@
 	// Added voice muffling for Issue 41.
 	if(stat == UNCONSCIOUS || sleeping > 0)
 		msg = "<I>... You can almost hear someone talking ...</I>"
-	to_chat(src, msg)
+	to_chat(src, msg, flag)
 	return msg
 
 /mob/living/carbon/show_message(msg, type, alt, alt_type)
@@ -476,13 +482,13 @@
 						return 1
 		return 0
 
-/mob/MouseDrop(mob/M as mob)
+/mob/MouseDrop(mob/M)
 	..()
 	if(M != usr)
 		return
 	if(usr == src)
 		return
-	if(!Adjacent(usr))
+	if(!Adjacent(usr) && !(TK in M.mutations))
 		return
 	if(isAI(M))
 		return
@@ -492,6 +498,10 @@
 /mob/proc/start_pulling(atom/movable/AM)
 	if(!AM || !src || src == AM || !isturf(AM.loc))	//if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
 		return
+	if(ishuman(AM))
+		var/mob/living/carbon/human/H = AM
+		if(H.species.flags[IS_IMMATERIAL])
+			return
 	if(!AM.anchored)
 		AM.add_fingerprint(src)
 
@@ -1078,6 +1088,15 @@ mob/proc/yank_out_object()
 			if(A)
 				client.perspective = EYE_PERSPECTIVE
 				client.eye = A
+
+/mob/proc/do_telepathy(dist) // Handles telepathy in different mobs.
+	return TRUE
+
+/mob/proc/do_telekinesis(dist) // Handles telekinesis in different mobs. Hunger removal, etc, etc. Return TRUE if can do, FALSE if can't.
+	if(dist > tk_maxrange)
+		to_chat(src, "<span class='notice'>Your mind won't reach that far.</span>")
+		return FALSE
+	return TRUE
 
 //You can buckle on mobs if you're next to them since most are dense
 /mob/buckle_mob(mob/living/M)

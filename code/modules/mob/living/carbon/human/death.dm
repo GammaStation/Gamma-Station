@@ -67,20 +67,21 @@
 	var/obj/item/organ/external/BP = bodyparts_by_name[BP_HEAD]
 	var/mob/living/simple_animal/borer/B
 
-	for(var/I in BP.implants)
-		if(istype(I,/mob/living/simple_animal/borer))
-			B = I
-	if(B)
-		if(!B.ckey && ckey && B.controlling)
-			B.ckey = ckey
-			B.controlling = 0
-		if(B.host_brain.ckey)
-			ckey = B.host_brain.ckey
-			B.host_brain.ckey = null
-			B.host_brain.name = "host brain"
-			B.host_brain.real_name = "host brain"
+	if(BP)
+		for(var/I in BP.implants)
+			if(istype(I,/mob/living/simple_animal/borer))
+				B = I
+		if(B)
+			if(!B.ckey && ckey && B.controlling)
+				B.ckey = ckey
+				B.controlling = 0
+			if(B.host_brain.ckey)
+				ckey = B.host_brain.ckey
+				B.host_brain.ckey = null
+				B.host_brain.name = "host brain"
+				B.host_brain.real_name = "host brain"
 
-		verbs -= /mob/living/carbon/proc/release_control
+			verbs -= /mob/living/carbon/proc/release_control
 
 	var/datum/game_mode/mutiny/mode = get_mutiny_mode()
 	if(mode)
@@ -100,6 +101,9 @@
 		emote("deathgasp") //let the world KNOW WE ARE DEAD
 		overlays -= shadowling_eyes
 		update_canmove()
+
+		if(is_infected_with_zombie_virus())
+			handle_infected_death(src)
 
 	tod = worldtime2text()		//weasellos time of death patch
 	if(mind)	mind.store_memory("Time of death: [tod]", 0)

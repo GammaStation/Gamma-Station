@@ -57,6 +57,32 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 /mob/living/carbon/human/golem/atom_init(mapload)
 	. = ..(mapload, GOLEM)
 
+/mob/living/carbon/human/tycheon/atom_init(mapload)
+	. = ..(mapload, TYCHEON)
+
+/mob/living/carbon/human/shadowling/atom_init(mapload)
+	. = ..(mapload, SHADOWLING)
+	var/newNameId = pick(possibleShadowlingNames)
+	possibleShadowlingNames.Remove(newNameId)
+	real_name = newNameId
+	name = real_name
+
+	underwear = 0
+	undershirt = 0
+	faction = "faithless"
+	dna.mutantrace = "shadowling"
+	update_mutantrace()
+	regenerate_icons()
+
+	spell_list += new /obj/effect/proc_holder/spell/targeted/shadowling_hivemind
+	spell_list += new /obj/effect/proc_holder/spell/targeted/enthrall
+	spell_list += new /obj/effect/proc_holder/spell/targeted/glare
+	spell_list += new /obj/effect/proc_holder/spell/aoe_turf/veil
+	spell_list += new /obj/effect/proc_holder/spell/targeted/shadow_walk
+	spell_list += new /obj/effect/proc_holder/spell/aoe_turf/flashfreeze
+	spell_list += new /obj/effect/proc_holder/spell/targeted/collective_mind
+	spell_list += new /obj/effect/proc_holder/spell/targeted/shadowling_regenarmor
+
 /mob/living/carbon/human/atom_init(mapload, new_species)
 
 	dna = new
@@ -69,6 +95,8 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 
 	if(species) // For safety, we put it seperately.
 		butcher_results = species.butcher_drops
+		eyes = species.def_eye_icon // Default eye icon is determined there.
+		gender = species.def_gender
 
 	dna.species = species.name
 
@@ -356,7 +384,17 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	put_in_inactive_hand(O)
 	return TRUE
 
-/mob/living/carbon/human/proc/is_damaged_organ(organ)
+/mob/living/carbon/human/proc/is_type_organ(organ, o_type)
+	var/obj/item/organ/O
+	if(organ in organs_by_name)
+		O = organs_by_name[organ]
+	if(organ in bodyparts_by_name)
+		O = bodyparts_by_name[organ]
+	if(!O)
+		return FALSE
+	return istype(O, o_type)
+
+/mob/living/carbon/human/proc/is_bruised_organ(organ)
 	var/obj/item/organ/internal/IO = organs_by_name[organ]
 	if(!IO)
 		return TRUE
@@ -364,52 +402,50 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		return TRUE
 	return FALSE
 
-/mob/living/carbon/human/proc/find_damaged_bodypart(External = null)
-	if(!External)
-		for(var/obj/item/organ/external/BP in bodyparts) // find a broken/destroyed limb
-			if(BP.status & ORGAN_DESTROYED)
-				if(BP.parent && (BP.parent.status & ORGAN_DESTROYED))
-					continue
-				else
-					heal_time = 65
-					External = BP
-			else if(BP.status & (ORGAN_BROKEN | ORGAN_SPLINTED))
-				heal_time = 30
-				External = BP
-			if(External)
-				break
-	return External
+/mob/living/carbon/human/proc/find_damaged_bodypart()
+	for(var/obj/item/organ/external/BP in bodyparts) // find a broken/destroyed limb
+		if(BP.status & (ORGAN_DESTROYED | ORGAN_BROKEN | ORGAN_SPLINTED))
+			if(BP.parent && (BP.parent.status & ORGAN_DESTROYED))
+				continue
+			else
+				return BP
+	return FALSE // In case we didn't find anything.
 
-/mob/living/carbon/human/proc/regen_bodyparts(obj/item/organ/external/External = null, use_cost = FALSE)
-	if(bodytemperature >= 170 && vessel && External) // start fixing broken/destroyed limb
-		for(var/datum/reagent/blood/B in vessel.reagent_list)
-			B.volume -= 4
-		data++
-		switch(data)
+/mob/living/carbon/human/proc/regen_bodyparts(remove_blood_amount = 0, use_cost = FALSE)
+	if(vessel && regenerating_bodypart) // start fixing broken/destroyed limb
+		if(remove_blood_amount)
+			for(var/datum/reagent/blood/B in vessel.reagent_list)
+				B.volume -= remove_blood_amount
+		var/regenerating_capacity_penalty = 0 // Used as time till organ regeneration.
+		if(regenerating_bodypart.status & ORGAN_DESTROYED)
+			regenerating_capacity_penalty = regenerating_bodypart.regen_bodypart_penalty
+		else
+			regenerating_capacity_penalty = regenerating_bodypart.regen_bodypart_penalty/2
+		regenerating_organ_time++
+		switch(regenerating_organ_time)
 			if(1)
-				visible_message("<span class='notice'>You see odd movement in [src]'s [External.name]...</span>","<span class='notice'> You [species && species.flags[NO_PAIN] ? "notice" : "feel"] strange vibration on tips of your [External.name]... </span>")
+				visible_message("<span class='notice'>You see odd movement in [src]'s [regenerating_bodypart.name]...</span>","<span class='notice'> You [species && species.flags[NO_PAIN] ? "notice" : "feel"] strange vibration on tips of your [regenerating_bodypart.name]... </span>")
 			if(10)
-				visible_message("<span class='notice'>You hear sickening crunch In [src]'s [External.name]...</span>")
+				visible_message("<span class='notice'>You hear sickening crunch In [src]'s [regenerating_bodypart.name]...</span>")
 			if(20)
-				visible_message("<span class='notice'>[src]'s [External.name] shortly bends...</span>")
+				visible_message("<span class='notice'>[src]'s [regenerating_bodypart.name] shortly bends...</span>")
 			if(30)
-				if(heal_time == 30)
-					visible_message("<span class='notice'>[src] stirs his [External.name]...</span>","<span class='userdanger'>You [species && species.flags[NO_PAIN] ? "notice" : "feel"] freedom in moving your [External.name]</span>")
+				if(regenerating_capacity_penalty == regenerating_bodypart.regen_bodypart_penalty/2)
+					visible_message("<span class='notice'>[src] stirs his [regenerating_bodypart.name]...</span>","<span class='userdanger'>You [species && species.flags[NO_PAIN] ? "notice" : "feel"] freedom in moving your [regenerating_bodypart.name]</span>")
 				else
-					visible_message("<span class='notice'>From [src]'s [External.parent.name] grows a small meaty sprout...</span>")
+					visible_message("<span class='notice'>From [src]'s [regenerating_bodypart.parent.name] grows a small meaty sprout...</span>")
 			if(50)
-				visible_message("<span class='notice'>You see something resembling [External.name] at [src]'s [External.parent.name]...</span>")
+				visible_message("<span class='notice'>You see something resembling [regenerating_bodypart.name] at [src]'s [regenerating_bodypart.parent.name]...</span>")
 			if(65)
-				visible_message("<span class='userdanger'>A new [External.name] has grown from [src]'s [External.parent.name]!</span>","<span class='userdanger'>You [species && species.flags[NO_PAIN] ? "notice" : "feel"] your [External.name] again!</span>")
+				visible_message("<span class='userdanger'>A new [regenerating_bodypart.name] has grown from [src]'s [regenerating_bodypart.parent.name]!</span>","<span class='userdanger'>You [species && species.flags[NO_PAIN] ? "notice" : "feel"] your [regenerating_bodypart.name] again!</span>")
 		if(prob(50))
 			emote("scream",1,null,1)
-		if(data >= heal_time) // recover organ
-			External.rejuvenate()
-			data = 0
-			heal_time = 0
+		if(regenerating_organ_time >= regenerating_capacity_penalty) // recover organ
+			regenerating_bodypart.rejuvenate()
+			regenerating_organ_time = 0
 			if(use_cost)
-				nutrition -= External.repair_cost
-			External = null
+				nutrition -= regenerating_capacity_penalty
+			regenerating_bodypart = null
 			update_body()
 
 /mob/living/carbon/human/restrained(check_type = ARMS)
@@ -423,6 +459,19 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		return TRUE
 	return 0
 
+/mob/living/carbon/human/resist()
+	..()
+	if(usr && !usr.incapacitated())
+		var/mob/living/carbon/human/D = usr
+		if(D.get_species() == DIONA)
+			var/list/choices = list()
+			for(var/mob/living/carbon/monkey/diona/V in contents)
+				if(istype(V) && V.gestalt == src)
+					choices += V
+			var/mob/living/carbon/monkey/diona/V = input(D,"Who do wish you to expel from within?") in null|choices
+			if(V)
+				to_chat(D, "<span class='notice'>You wriggle [V] out of your insides.</span>")
+				V.splitting(D)
 
 /mob/living/carbon/human/show_inv(mob/user)
 	var/obj/item/clothing/under/suit = null
@@ -560,8 +609,10 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 //Removed the horrible safety parameter. It was only being used by ninja code anyways.
 //Now checks siemens_coefficient of the affected area by default
 /mob/living/carbon/human/electrocute_act(shock_damage, obj/source, siemens_coeff = 1.0, def_zone = null, tesla_shock = 0)
-	if(status_flags & GODMODE)	return 0	//godmode
-	if(NO_SHOCK in src.mutations)	return 0 //#Z2 no shock with that mutation.
+	if(status_flags & GODMODE)
+		return 0	//godmode
+	if(NO_SHOCK in src.mutations)
+		return 0 //#Z2 no shock with that mutation.
 
 	if(!def_zone)
 		def_zone = pick(BP_L_ARM , BP_R_ARM)
@@ -582,8 +633,15 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	else
 		siemens_coeff *= get_siemens_coefficient_organ(BP)
 
+	if(species)
+		siemens_coeff *= species.siemens_coefficient
+
 	. = ..(shock_damage, source, siemens_coeff, def_zone, tesla_shock)
 	if(.)
+		if(species && species.flags[IS_SYNTHETIC])
+			nutrition += . // Electrocute act returns it's shock_damage value.
+		if(species.flags[NO_PAIN]) // Because for all intents and purposes, if the mob feels no pain, he was not shocked.
+			. = 0
 		electrocution_animation(40)
 
 /mob/living/carbon/human/Topic(href, href_list)
@@ -596,8 +654,14 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		unset_machine()
 		src << browse(null, t1)
 
-	if ((href_list["item"] && !( usr.stat ) && usr.canmove && !( usr.restrained() ) && in_range(src, usr) && ticker)) //if game hasn't started, can't make an equip_e
-		var/obj/item/item = usr.get_active_hand()
+	var/range_check = in_range(src, usr)
+	var/obj/item/item = usr.get_active_hand()
+
+	if(TK in usr.mutations)
+		if(!item || in_range(item, src))
+			range_check = TRUE
+
+	if((href_list["item"] && !( usr.stat ) && usr.canmove && !( usr.restrained() ) && range_check && ticker)) //if game hasn't started, can't make an equip_e
 		if(item && (item.flags & (ABSTRACT | DROPDEL)))
 			return
 		var/obj/effect/equip_e/human/O = new /obj/effect/equip_e/human(  )
@@ -939,8 +1003,8 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 
 /mob/living/carbon/human/proc/vomit()
 
-	if(species.flags[IS_SYNTHETIC])
-		return //Machines don't throw up.
+	if(species.flags[IS_SYNTHETIC] || species.flags[IS_IMMATERIAL])
+		return //Machines don't throw up. Neither do beings out of this plane of existance... (If more flags seem to pile up here, add NO_VOMIT flag instead) ~Luduk.
 
 	if(!lastpuke)
 		lastpuke = 1
@@ -1030,12 +1094,10 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	if(new_style)
 		f_style = new_style
 
-	var/new_gender = alert(usr, "Please select gender.", "Character Generation", "Male", "Female")
-	if (new_gender)
-		if(new_gender == "Male")
-			gender = MALE
-		else
-			gender = FEMALE
+	var/new_gender = input(usr, "Please select gender.", "Character Generation") as null|anything in species.genders
+	if(new_gender)
+		gender = new_gender
+
 	regenerate_icons()
 	check_dna()
 
@@ -1213,6 +1275,8 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 /mob/living/carbon/human/add_blood(mob/living/carbon/human/M)
 	if (!..())
 		return 0
+	if(!species.flags[IS_IMMATERIAL]) // Can't touch this.
+		return 0
 	//if this blood isn't already in the list, add it
 	if(blood_DNA[M.dna.unique_enzymes])
 		return 0 //already bloodied with this blood. Cannot add more.
@@ -1323,6 +1387,10 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 
 	if(species.language)
 		add_language(species.language)
+
+	if(species.additional_languages)
+		for(var/A in species.additional_languages)
+			add_language(A)
 
 	if(species.base_color && default_colour)
 		//Apply colour.
@@ -1490,6 +1558,63 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 			to_chat(src, "<span class='warning'>You feel a tiny prick!</span>")
 
 	return TRUE
+
+/obj/screen/tycheon_ability
+	icon = 'icons/mob/screen1_action.dmi'
+	icon_state = "void_action"
+	var/clicked_on = FALSE
+	var/owner_metal_bending = FALSE
+
+/obj/screen/tycheon_ability/update_icon()
+	icon_state = "[initial(icon_state)]_[clicked_on ? "2" : !owner_metal_bending]" // 2 is for the "yellow button" which means that we are currently doing this ability.
+
+/obj/screen/tycheon_ability/Click()
+	if(ishuman(usr) && !owner_metal_bending)
+		var/mob/living/carbon/human/H = usr
+		clicked_on = TRUE
+		if(H.hud_used)
+			for(var/obj/screen/tycheon_ability/V in H.hud_used.adding)
+				V.owner_metal_bending = TRUE
+				V.update_icon()
+		Click_Action(H)
+		clicked_on = FALSE
+		if(H.hud_used)
+			for(var/obj/screen/tycheon_ability/V in H.hud_used.adding)
+				V.owner_metal_bending = FALSE
+				V.update_icon()
+
+	else if(ishuman(usr))
+		var/mob/living/carbon/human/H = usr
+		Click_Action(H) // We want to use our new ability god damn!!! The void abilities should be able to quit out of themselves on second call. All of them.
+		if(H.hud_used)
+			for(var/obj/screen/tycheon_ability/V in H.hud_used.adding)
+				V.owner_metal_bending = FALSE
+				V.update_icon()
+
+/obj/screen/tycheon_ability/proc/Click_Action(mob/living/carbon/human/user)
+	return
+
+/obj/screen/tycheon_ability/toggle_sphere
+	name = "toggle sphere"
+
+/obj/screen/tycheon_ability/toggle_sphere/atom_init()
+	. = ..()
+	overlays += image(icon, "sphere")
+	update_icon()
+
+/obj/screen/tycheon_ability/toggle_sphere/Click_Action(mob/living/carbon/human/user)
+	user.toggle_sphere()
+
+/obj/screen/tycheon_ability/bend_metal
+	name = "bend metal"
+
+/obj/screen/tycheon_ability/bend_metal/atom_init()
+	. = ..()
+	overlays += image(icon, "bend")
+	update_icon()
+
+/obj/screen/tycheon_ability/bend_metal/Click_Action(mob/living/carbon/human/user)
+	user.metal_bend()
 
 /obj/screen/leap
 	name = "toggle leap"
@@ -1705,3 +1830,30 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		return species.taste_sensitivity
 	else
 		return 1
+
+/mob/living/carbon/human/start_pulling(atom/movable/AM)
+	if(species.flags[IS_IMMATERIAL] && !(TK in mutations))
+		return
+	..()
+
+/mob/living/carbon/human/do_telekinesis(dist) // As a general reminder, do look where this is used, how, and when.
+	. = ..()
+	if(.)
+		if(get_species() == TYCHEON)
+			var/calc_max_tk_range = 0
+			for(var/BP_type in list(BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG))
+				var/obj/item/organ/external/EO = bodyparts_by_name[BP_type]
+				if(EO && EO.is_usable())
+					calc_max_tk_range += 2.5
+			if(istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
+				calc_max_tk_range *= 1.5
+			calc_max_tk_range = min(tk_maxrange, calc_max_tk_range)
+			if(dist > calc_max_tk_range)
+				to_chat(src, "<span class='notice'>Your mind won't reach that far.</span>")
+				return
+		//if(species.flags[STATICALLY_CHARGED]) // Statically charged species use static electricity for telekinesis. Don't question it!
+			if(nutrition >= 200 + dist)
+				nutrition -= dist // DON'T QUESTION THIS EITHER. The only Statically Charged specie is Tycheon, and they use nutrition as static charge.
+			else
+				to_chat(src, "<span class='warning'>Not enough static charge.</span>")
+				return FALSE

@@ -69,6 +69,12 @@
 	var/total_TC = 0
 	var/spent_TC = 0
 
+	//This is here for thunderfield (aka VR)
+	var/thunder_points = 0 //Points for buying stuff on thunderfield
+	var/thunder_respawns = 0 //Respawns left
+	var/mob/living/carbon/human/thunderfield_owner
+	var/thunderfield_cheater = FALSE
+
 /datum/mind/New(var/key)
 	src.key = key
 
@@ -1687,10 +1693,6 @@
 	..()
 	mind.assigned_role = "Armalis"
 	mind.special_role = "Vox Raider"
-
-mob/living/parasite/meme/mind_initialize() //Just in case
-	..()
-	mind.assigned_role = "meme"
 
 //BLOB
 /mob/camera/blob/mind_initialize()

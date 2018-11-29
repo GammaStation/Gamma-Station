@@ -62,6 +62,11 @@
 
 	return (BP && !(BP.status & ORGAN_DESTROYED) )
 
+/mob/living/carbon/human/proc/specie_has_slot(slot)
+	if(species && slot in species.restricted_inventory_slots)
+		return FALSE
+	return TRUE
+
 /mob/living/carbon/human/proc/has_bodypart_for_slot(slot)
 	switch(slot)
 		if(slot_back)
@@ -220,9 +225,14 @@
 //This is an UNSAFE proc. Use mob_can_equip() before calling this one! Or rather use equip_to_slot_if_possible() or advanced_equip_to_slot_if_possible()
 //set redraw_mob to 0 if you don't wish the hud to be updated - if you're doing it manually in your own proc.
 /mob/living/carbon/human/equip_to_slot(obj/item/W, slot, redraw_mob = 1)
-	if(!slot) return
-	if(!istype(W)) return
-	if(!has_bodypart_for_slot(slot)) return
+	if(!slot)
+		return
+	if(!istype(W))
+		return
+	if(!has_bodypart_for_slot(slot))
+		return
+	if(!specie_has_slot(slot))
+		return
 
 	W.screen_loc = null // will get moved if inventory is visible
 
@@ -666,7 +676,7 @@ It can still be worn/put on as normal.
 	if(!source || !target) return		//Target or source no longer exist
 	if(source.loc != s_loc) return		//source has moved
 	if(target.loc != t_loc) return		//target has moved
-	if(!in_range(s_loc, t_loc)) return	//Use a proxi!
+	if(!in_range(s_loc, t_loc) && !(TK in source.mutations)) return	//Use a proxi!
 	if(item && source.get_active_hand() != item) return	//Swapped hands / removed item from the active one
 	if ((source.restrained() || source.stat)) return //Source restrained or unconscious / dead
 
@@ -861,3 +871,23 @@ It can still be worn/put on as normal.
 		if(source.machine == target)
 			target.show_inv(source)
 	qdel(src)
+
+/mob/living/carbon/human/put_in_l_hand(obj/item/W)
+	if(species.flags[IS_IMMATERIAL] && !(W.flags & ABSTRACT))
+		W.forceMove(get_turf(src))
+		W.layer = initial(W.layer)
+		W.plane = initial(W.plane)
+		W.appearance_flags = initial(W.appearance_flags)
+		W.dropped()
+		return FALSE
+	return ..()
+
+/mob/living/carbon/human/put_in_r_hand(obj/item/W)
+	if(species.flags[IS_IMMATERIAL] && !(W.flags & ABSTRACT))
+		W.forceMove(get_turf(src))
+		W.layer = initial(W.layer)
+		W.plane = initial(W.plane)
+		W.appearance_flags = initial(W.appearance_flags)
+		W.dropped()
+		return FALSE
+	return ..()

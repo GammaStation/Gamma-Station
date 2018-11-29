@@ -512,6 +512,12 @@ obj/machinery/hydroponics/proc/mutatespecie() // Mutagent produced a new plant!
 			adjustWater(round(S.get_reagent_amount("holywater")*1))
 			adjustHealth(round(S.get_reagent_amount("holywater")*0.1))
 
+		// Unholy water, Mostly the same, but it also damages the plant.
+		if(S.has_reagent("unholywater", 1))
+			adjustWater(round(S.get_reagent_amount("unholywater")))
+			adjustToxic(round(S.get_reagent_amount("unholywater")*0.1))
+			adjustPests(rand(1,4))
+
 		// A variety of nutrients are dissolved in club soda, without sugar. These nutrients include carbon, oxygen, hydrogen, phosphorous, potassium, sulfur and sodium, all of which are needed for healthy plant growth.
 		if(S.has_reagent("sodawater", 1))
 			adjustWater(round(S.get_reagent_amount("sodawater")*1))
@@ -726,16 +732,6 @@ obj/machinery/hydroponics/proc/mutatespecie() // Mutagent produced a new plant!
 			A.hydrotray_type = src.type
 			qdel(src)
 	return
-
-/obj/machinery/hydroponics/attack_tk(mob/user)
-	if(harvest)
-		myseed.harvest(src)
-	else if(dead)
-		planted = FALSE
-		dead = FALSE
-		to_chat(user, text("You remove the dead plant from the [src]."))
-		qdel(myseed)
-		update_icon()
 
 /obj/machinery/hydroponics/attack_hand(mob/user)
 	. = ..()

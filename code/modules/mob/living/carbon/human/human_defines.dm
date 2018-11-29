@@ -11,6 +11,7 @@
 	var/b_facial = 0
 	var/f_style = "Shaved"
 
+	var/eyes // Eye icon which we overlay.
 	//Eye colour
 	var/r_eyes = 0
 	var/g_eyes = 0
@@ -74,6 +75,10 @@
 	var/mob/remoteview_target = null
 	var/datum/dirt_cover/hand_dirt_color
 
+	// Organs regenerating variables.
+	var/regenerating_organ_time = 0
+	var/obj/item/organ/external/regenerating_bodypart // A bodypart that is currently regenerating, so we don't have a random one picked each time.
+
 	//Golem stuff
 	var/my_master = 0
 	var/my_golems = list()
@@ -85,6 +90,10 @@
 	var/robolimb_count = 0 // Number of robot limbs.
 	var/sightglassesmod = null
 	var/datum/personal_crafting/handcrafting
-	//Diona stuff
-	var/data = 0
-	var/heal_time = 0
+
+	//Tycheon stuff.
+	var/breathing = FALSE // Checked to TRUE when breathing from tank verb is in use.
+	var/metal_bending = FALSE
+	var/falling = 0 // Their alternative to WEAKEN. Flying mob whose falling stat is higher than 0 is not counted as flying.
+	var/light_range_reagents = 0 // Meh.
+	var/reagents_lit_on = FALSE  // Are we currently lit by reagents?

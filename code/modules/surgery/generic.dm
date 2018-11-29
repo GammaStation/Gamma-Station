@@ -30,8 +30,9 @@
 	/obj/item/weapon/melee/energy/sword = 5
 	)
 
-	min_duration = 90
-	max_duration = 110
+	priority = 2
+	min_duration = 70
+	max_duration = 90
 
 /datum/surgery_step/generic/cut_with_laser/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -49,12 +50,10 @@
 	var/obj/item/organ/external/BP = target.get_bodypart(target_zone)
 	user.visible_message("\blue [user] has made a bloodless incision on [target]'s [BP.name] with \the [tool].", \
 	"\blue You have made a bloodless incision on [target]'s [BP.name] with \the [tool].",)
-	//Could be cleaner ...
 	BP.open = 1
-	BP.status |= ORGAN_BLEEDING
 	BP.createwound(CUT, 1)
+	BP.createwound(BURN, 1)
 	BP.clamp()
-	spread_germs_to_organ(BP, user)
 	if (target_zone == BP_HEAD)
 		target.brain_op_stage = 1
 
@@ -70,6 +69,7 @@
 	/obj/item/weapon/scalpel/manager = 100
 	)
 
+	priority = 2
 	min_duration = 80
 	max_duration = 120
 
@@ -354,7 +354,7 @@
 	var/obj/item/organ/external/BP = target.get_bodypart(target_zone)
 	user.visible_message("[user] starts to unscrew [target]'s [BP.name]'s maintenance hatch with \the [tool].",
 	"You start to unscrew [target]'s [BP.name]'s maintenance hatch with \the [tool].")
-	if(!target.is_damaged_organ(O_KIDNEYS))
+	if(!target.is_bruised_organ(O_KIDNEYS))
 		to_chat(target, "%[BP.name]'S MAINTENANCE HATCH% UNATHORISED ACCESS ATTEMPT DETECTED!")
 	..()
 
@@ -390,7 +390,7 @@
 	var/obj/item/organ/external/BP = target.get_bodypart(target_zone)
 	user.visible_message("[user] starts to pry open [target]'s [BP.name]'s maintenance hatch with \the [tool].",
 	"You start to pry open [target]'s [BP.name]'s maintenance hatch with \the [tool].")
-	if(!target.is_damaged_organ(O_KIDNEYS))
+	if(!target.is_bruised_organ(O_KIDNEYS))
 		to_chat(target, "%[BP.name]'s MAINTENANCE HATCH% DAMAGE DETECTED. CEASE APPLIED DAMAGE.")
 	..()
 

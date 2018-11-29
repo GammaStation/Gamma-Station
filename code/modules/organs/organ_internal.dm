@@ -76,7 +76,9 @@
 	if (!silent)
 		owner.custom_pain("Something inside your [BP.name] hurts a lot.", 1)
 
-/obj/item/organ/internal/emp_act(severity)
+/obj/item/organ/internal/emp_act(severity) // I am not criticizing people who coded this. But I feel like there is no way to get severity 3 emp_act.~Luduk.
+	if(severity == 3)
+		world.log << "It seems there has been an emp severity 3 act. Please contact Luduk personally and tell him it happened. [src]"
 	switch(robotic)
 		if(0)
 			return
@@ -122,11 +124,6 @@
 
 /obj/item/organ/internal/heart/ipc
 	name = "servomotor"
-
-/obj/item/organ/internal/heart/ipc/process()
-	..()
-	if(owner.is_damaged_organ(O_KIDNEYS) && prob(4))
-		to_chat(owner, "<span class='warning bold'>%SERVOMOTOR% INJURY DETECTED. CEASE DAMAGE TO %SERVOMOTOR%. REQUEST ASSISTANCE.</span>")
 
 /obj/item/organ/internal/lungs
 	name = "lungs"
@@ -190,10 +187,6 @@
 				if(istype(R, /datum/reagent/toxin))
 					owner.adjustToxLoss(0.3 * process_accuracy)
 
-/obj/item/organ/internal/lungs/ipc/process()
-	if(is_bruised() && owner.is_damaged_organ(O_KIDNEYS) && prob(4))
-		to_chat(owner, "<span class='warning bold'>%COOLING ELEMENT% INJURY DETECTED. CEASE DAMAGE TO %COOLING ELEMENT%. REQUEST ASSISTANCE.</span>")
-
 /obj/item/organ/internal/liver
 	name = "liver"
 	organ_tag = O_LIVER
@@ -254,11 +247,9 @@
 				if(owner.nutrition > (B.maxcharge - damage*5))
 					owner.nutrition = B.maxcharge - damage*5
 		else
-			if(owner.is_damaged_organ(O_KIDNEYS) && prob(2))
+			if(owner.is_bruised_organ(O_KIDNEYS) && prob(2))
 				to_chat(owner, "<span class='warning bold'>%ACCUMULATOR% DAMAGED BEYOND FUNCTION. SHUTTING DOWN.</span>")
 			owner.stat = UNCONSCIOUS
-	if(is_bruised() && owner.is_damaged_organ(O_KIDNEYS) && prob(4))
-		to_chat(owner, "<span class='warning bold'>%ACCUMULATOR% INJURY DETECTED. CEASE DAMAGE TO %ACCUMULATOR%. REQUEST ASSISTANCE.</span>")
 
 /obj/item/organ/internal/kidneys
 	name = "kidneys"
@@ -280,6 +271,11 @@
 		if(prob(2))
 			to_chat(owner, "<span class='warning'>You notice slight discomfort in your groin.</span>")
 
+/obj/item/organ/internal/kidneys/ipc/process()
+	for(var/obj/item/organ/internal/IO in owner.organs)
+		if(IO.is_bruised() && prob(4))
+			to_chat(owner, "<span class='warning bold'>%[uppertext_(IO)]% INJURY DETECTED. CEASE DAMAGE TO %ACCUMULATOR%. REQUEST ASSISTANCE.</span>")
+
 /obj/item/organ/internal/brain
 	name = "brain"
 	organ_tag = O_BRAIN
@@ -292,6 +288,17 @@
 /obj/item/organ/internal/brain/ipc
 	name = "positronic brain"
 	parent_bodypart = BP_CHEST
+
+/obj/item/organ/internal/brain/tycheon
+	name = "core"
+	parent_bodypart = BP_CHEST
+
+	min_bruised_damage = 20
+
+/obj/item/organ/internal/brain/tycheon/process()
+	if(owner.life_tick % 5 == 0) // Update once per 5 ticks.
+		if(is_bruised())
+			owner.falling = min(30, owner.falling + 5)
 
 /obj/item/organ/internal/eyes
 	name = "eyes"

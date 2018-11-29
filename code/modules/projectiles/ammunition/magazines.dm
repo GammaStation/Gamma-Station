@@ -358,6 +358,17 @@
 	caliber = "38"
 	max_ammo = 12
 
+/obj/item/ammo_box/magazine/c22cb //Thunderfield stuff
+	name = "magazine (.22 CB)"
+	icon = 'icons/obj/ammo.dmi'
+	icon_state = "38_mag"
+	ammo_type = /obj/item/ammo_casing/c22cb
+	caliber = "22"
+	max_ammo = 8
+
+/obj/item/ammo_box/magazine/c22cb/update_icon()
+	icon_state = "[initial(icon_state)][ammo_count() ? "" : "-0"]"
+
 /obj/item/ammo_box/magazine/acm38_38/update_icon()
 	icon_state = "[initial(icon_state)][ammo_count() ? "" : "-0"]"
 

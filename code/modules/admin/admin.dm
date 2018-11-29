@@ -164,7 +164,6 @@ var/global/BSACooldown = 0
 				<A href='?src=\ref[src];simplemake=constructbuilder;mob=\ref[M]'>Builder</A> ,
 				<A href='?src=\ref[src];simplemake=constructwraith;mob=\ref[M]'>Wraith</A> \]
 				<A href='?src=\ref[src];simplemake=shade;mob=\ref[M]'>Shade</A>
-				<A href='?src=\ref[src];simplemake=meme;mob=\ref[M]'>Meme</A>
 				<br>
 			"}
 
@@ -670,7 +669,7 @@ var/global/BSACooldown = 0
 			<BR>
 			<A href='?src=\ref[src];secretscoder=maint_access_engiebrig'>Change all maintenance doors to engie/brig access only</A><BR>
 			<A href='?src=\ref[src];secretscoder=maint_access_brig'>Change all maintenance doors to brig access only</A><BR>
-			<A href='?src=\ref[src];secretscoder=infinite_sec'>Remove cap on security officers</A><BR>
+			<A href='?src=\ref[src];secretscoder=infinite_sec'>Remove cap on Star Vigil Officers</A><BR>
 			<BR>
 			<B>Coder Secrets</B><BR>
 			<BR>

@@ -65,6 +65,11 @@
 			if(A.density)
 				can_switch = FALSE
 				break
+		if(ishuman(M))
+			var/mob/living/carbon/human/H = M
+			if(H.species.flags[IS_IMMATERIAL])
+				can_switch = FALSE
+
 		if(can_switch && get_dist(M, src) <= 1)
 			now_pushing = 1
 			//TODO: Make this use Move(). we're pretty much recreating it here.
@@ -541,7 +546,8 @@
 
 /mob/living/carbon/human/rejuvenate()
 	var/obj/item/organ/external/head/BP = bodyparts_by_name[BP_HEAD]
-	BP.disfigured = FALSE
+	if(BP)
+		BP.disfigured = FALSE
 
 	for (var/obj/item/weapon/organ/head/H in world) // damn son, where'd you get this?
 		if(H.brainmob)
@@ -758,6 +764,13 @@
 
 	//Getting out of someone's inventory.
 
+	if(focused_by.len)
+		for(var/obj/item/tk_grab/TK_G in focused_by)
+			if(prob(30 + get_dist(src, TK_G)))
+				to_chat(TK_G.host, "<span class='warning'>[src] resisted our telekinetic grab!</span>")
+				qdel(TK_G)
+		return
+
 	if(istype(src.loc,/obj/item/weapon/holder))
 		var/obj/item/weapon/holder/H = src.loc //Get our item holder.
 		var/mob/living/M = H.loc                      //Get our mob holder (if any).
@@ -770,17 +783,6 @@
 			to_chat(src, "<span class='notice'>You struggle free of [H.loc].</span>")
 			H.forceMove(get_turf(H))
 		return
-
-	if(ishuman(usr) && (!usr.incapacitated()))
-		var/mob/living/carbon/human/D = usr
-		if(D.get_species() == DIONA)
-			var/choices = list()
-			for(var/V in contents)
-				if(istype(V, /mob/living/carbon/monkey/diona))
-					choices += V
-			var/mob/living/carbon/monkey/diona/V = input(D,"Who do wish you to expel from within?") in null|choices
-			to_chat(D, "<span class='notice'>You wriggle [V] out of your insides.</span>")
-			V.splitting(D)
 
 	//Resisting control by an alien mind.
 	if(istype(src.loc,/mob/living/simple_animal/borer))
@@ -1125,14 +1127,14 @@
 	floating = 0
 
 /mob/living/proc/attempt_harvest(obj/item/I, mob/user)
-	if(stat == DEAD && !isnull(butcher_results) && !ishuman(src)) //can we butcher it?
-		if(istype(I, /obj/item/weapon/kitchenknife) || istype(I, /obj/item/weapon/butch))
-			if(user.is_busy()) return
-			to_chat(user, "<span class='notice'>You begin to butcher [src]...</span>")
-			playsound(loc, 'sound/weapons/slice.ogg', 50, 1, -1)
-			if(do_mob(user, src, 80))
-				harvest(user)
-			return TRUE
+	if(stat == DEAD && butcher_results && istype(buckled, /obj/structure/kitchenspike)) //can we butcher it? Mob must be buckled to a meatspike to butcher it
+		if(user.is_busy())
+			return
+		to_chat(user, "<span class='notice'>You begin to butcher [src]...</span>")
+		playsound(loc, 'sound/weapons/slice.ogg', 50, 1, -1)
+		if(do_mob(user, src, 80))
+			harvest(user)
+		return TRUE
 
 /mob/living/proc/harvest(mob/user)
 	if(QDELETED(src))

@@ -25,13 +25,10 @@
 	var/max_heat_protection_temperature //Set this variable to determine up to which temperature (IN KELVIN) the item protects against heat damage. Keep at null to disable protection. Only protects areas set by heat_protection flags
 	var/min_cold_protection_temperature //Set this variable to determine down to which temperature (IN KELVIN) the item protects against cold damage. 0 is NOT an acceptable number due to if(varname) tests!! Keep at null to disable protection. Only protects areas set by cold_protection flags
 
-	var/list/actions = list()
-	var/actions_types
-
-/*	var/datum/action/item_action/action = null
+	var/datum/action/item_action/action = null
 	var/action_button_name //It is also the text which gets displayed on the action button. If not set it defaults to 'Use [name]'. If it's not set, there'll be no button.
 	var/action_button_is_hands_free = 0 //If 1, bypass the restrained, lying, and stunned checks action buttons normally test for
-*/
+
 	//Since any item can now be a piece of clothing, this has to be put here so all items share it.
 	var/flags_inv //This flag is used to determine when items in someone's inventory cover others. IE helmets making it so you can't see glasses, etc.
 	var/item_color = null
@@ -75,14 +72,6 @@
 	Works similarly to worn sprite_sheets, except the alternate sprites are used when the clothing/refit_for_species() proc is called.
 	*/
 	var/list/sprite_sheets_obj = null
-
-/obj/item/atom_init()
-	. = ..()
-	if(islist(actions_types))
-		for(var/i in actions_types)
-			actions += new i(src)
-	else if(actions_types)
-		actions = new actions_types
 
 /obj/item/proc/check_allowed_items(atom/target, not_inside, target_self)
 	if(((src in target) && !target_self) || ((!istype(target.loc, /turf)) && (!istype(target, /turf)) && (not_inside)) || is_type_in_list(target, can_be_placed_into))
@@ -142,7 +131,7 @@
 	message += "[OX] | [TX] | [BU] | [BR]<br>"
 	if(istype(M, /mob/living/carbon))
 		var/mob/living/carbon/C = M
-		if(C.reagents.total_volume)
+		if(C.reagents.total_volume || C.is_infected_with_zombie_virus())
 			message += "<span class='warning'>Warning: Unknown substance detected in subject's blood.</span><br>"
 		if(C.virus2.len)
 			for (var/ID in C.virus2)
@@ -209,9 +198,6 @@
 	if(ismob(loc))
 		var/mob/m = loc
 		m.drop_from_inventory(src)
-	if(islist(actions))
-		QDEL_LIST(actions)
-	QDEL_NULL(actions)
 	return ..()
 
 /obj/item/ex_act(severity)
@@ -283,6 +269,11 @@
 	if (!user || anchored)
 		return
 
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.species.flags[IS_IMMATERIAL])
+			return
+
 	if(HULK in user.mutations)//#Z2 Hulk nerfz!
 		if(istype(src, /obj/item/weapon/melee/))
 			if(src.w_class < 4)
@@ -346,11 +337,10 @@
 	if(QDELETED(src) || freeze_movement) // remove_from_mob() may remove DROPDEL items, so...
 		return
 
-	src.pickup(user)
-	add_fingerprint(user)
-	user.put_in_active_hand(src)
-	return
-
+	if(Adjacent(user)) // Telekinesis is a bitch.
+		pickup(user)
+		add_fingerprint(user)
+		user.put_in_hands(src)
 
 /obj/item/attack_paw(mob/user)
 	if (!user || anchored)
@@ -407,27 +397,8 @@
 		var/obj/item/weapon/storage/S = W
 		if(S.use_to_pickup)
 			if(S.collection_mode) //Mode is set to collect all items on a tile and we clicked on a valid one.
-				if(isturf(src.loc))
-					var/list/rejections = list()
-					var/success = 0
-					var/failure = 0
-
-					for(var/obj/item/I in src.loc)
-						if(I.type in rejections) // To limit bag spamming: any given type only complains once
-							continue
-						if(!S.can_be_inserted(I))	// Note can_be_inserted still makes noise when the answer is no
-							rejections += I.type	// therefore full bags are still a little spammy
-							failure = 1
-							continue
-						success = 1
-						S.handle_item_insertion(I, 1)	//The 1 stops the "You put the [src] into [S]" insertion message from being displayed.
-					if(success && !failure)
-						to_chat(user, "<span class='notice'>You put everything in [S].</span>")
-					else if(success)
-						to_chat(user, "<span class='notice'>You put some things in [S].</span>")
-					else
-						to_chat(user, "<span class='notice'>You fail to pick anything up with [S].</span>")
-
+				if(isturf(loc))
+					S.gather_all(loc, user)
 			else if(S.can_be_inserted(src))
 				S.handle_item_insertion(src)
 	return FALSE
@@ -479,14 +450,20 @@
 //If you are making custom procs but would like to retain partial or complete functionality of this one, include a 'return ..()' to where you want this to happen.
 //Set disable_warning to 1 if you wish it to not give you outputs.
 /obj/item/proc/mob_can_equip(M, slot, disable_warning = 0)
-	if(!slot) return 0
-	if(!M) return 0
+	if(!slot)
+		return FALSE
+	if(!M)
+		return FALSE
 
 	if(ishuman(M))
 		//START HUMAN
 		var/mob/living/carbon/human/H = M
 		if(!H.has_bodypart_for_slot(slot))
-			return 0
+			return FALSE
+		if(!H.specie_has_slot(slot))
+			if(!disable_warning)
+				to_chat(H, "<span class='warning'>Your species can not wear clothing of this type.</span>")
+			return FALSE
 		//fat mutation
 		if(istype(src, /obj/item/clothing/under) || istype(src, /obj/item/clothing/suit))
 			if(FAT in H.mutations)
@@ -586,7 +563,7 @@
 			if(slot_wear_id)
 				if(H.wear_id)
 					return 0
-				if(!H.w_uniform)
+				if(!H.w_uniform && !H.species.flags[IS_IMMATERIAL]) // Bootleg. Allows voidians to equip the ID card no matter what. Hue. Boot-leg.)
 					if(!disable_warning)
 						to_chat(H, "\red You need a jumpsuit before you can attach this [name].")
 					return 0
@@ -645,7 +622,7 @@
 			if(slot_in_backpack)
 				if (H.back && istype(H.back, /obj/item/weapon/storage/backpack))
 					var/obj/item/weapon/storage/backpack/B = H.back
-					if(B.contents.len < B.storage_slots && w_class <= B.max_w_class)
+					if(B.can_be_inserted(src, M, 1))
 						return 1
 				return 0
 			if(slot_tie)
@@ -756,6 +733,8 @@
 	return
 
 
+//This proc is executed when someone clicks the on-screen UI button. To make the UI button show, set the 'icon_action_button' to the icon_state of the image of the button in screen1_action.dmi
+//The default action is attack_self().
 //Checks before we get to here are: mob is alive, mob is not restrained, paralyzed, asleep, resting, laying, item is on the mob.
 /obj/item/proc/ui_action_click()
 	attack_self(usr)
@@ -795,7 +774,8 @@
 
 	user.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>"
 	M.attack_log += "\[[time_stamp()]\]<font color='orange'> Attacked by [user.name] ([user.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>"
-	msg_admin_attack("[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)") //BS12 EDIT ALG
+	if(!isvrhuman(user))
+		msg_admin_attack("[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)") //BS12 EDIT ALG
 
 	src.add_fingerprint(user)
 	//if((CLUMSY in user.mutations) && prob(50))
@@ -819,6 +799,8 @@
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/obj/item/organ/internal/eyes/IO = H.organs_by_name[O_EYES]
+		if(!IO) // Can't damage what doesn't exist.
+			return
 		IO.damage += rand(3,4)
 		if(IO.damage >= IO.min_bruised_damage)
 			if(H.stat != DEAD)
@@ -900,3 +882,67 @@ var/global/list/items_blood_overlay_by_type = list()
 	var/obj/item/I = get_active_hand()
 	if(I && !I.abstract)
 		I.showoff(src)
+
+// We put them here for clearance reasons. But we do know that these apply to any atom. Please, do excuse the stupidest of things.
+/atom/movable/proc/do_pickup_animation(atom/target)
+	set waitfor = FALSE
+
+	var/turf/old_loc = get_turf(src)
+	var/image/I = image(icon = src, loc = src.loc, layer = layer + 0.1)
+	I.plane = GAME_PLANE
+	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+
+	flick_overlay(I, clients, 7)
+
+	var/matrix/M = new
+	M.Turn(pick(30, -30))
+
+	animate(I, transform = M, time = 1)
+	sleep(1)
+	animate(I, transform = matrix(), time = 1)
+	sleep(1)
+
+	var/to_x = (target.x - old_loc.x) * 32
+	var/to_y = (target.y - old_loc.y) * 32
+
+	animate(I, pixel_x = to_x, pixel_y = to_y, time = 3, transform = matrix() * 0, easing = CUBIC_EASING)
+	sleep(3)
+
+/atom/movable/proc/do_putdown_animation(atom/target)
+	set waitfor = FALSE
+
+	var/old_invisibility = invisibility // I don't know, it may be used.
+	invisibility = 100
+	var/turf/old_loc = get_turf(src)
+	var/image/I = image(icon = src, loc = src.loc, layer = layer + 0.1)
+	I.plane = GAME_PLANE
+	I.transform = matrix() * 0
+	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+
+	flick_overlay(I, clients, 4)
+
+	var/to_x = (target.x - old_loc.x) * 32 + pixel_x
+	var/to_y = (target.y - old_loc.y) * 32 + pixel_y
+
+	animate(I, pixel_x = to_x, pixel_y = to_y, time = 3, transform = matrix(), easing = CUBIC_EASING)
+	sleep(3)
+	invisibility = old_invisibility
+
+/atom/movable/proc/simple_move_animation(atom/target)
+	set waitfor = FALSE
+
+	var/old_invisibility = invisibility // I don't know, it may be used.
+	invisibility = 100
+	var/turf/old_loc = get_turf(src)
+	var/image/I = image(icon = src, loc = src.loc, layer = layer + 0.1)
+	I.plane = GAME_PLANE
+	I.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+
+	flick_overlay(I, clients, 4)
+
+	var/to_x = (target.x - old_loc.x) * 32 + pixel_x
+	var/to_y = (target.y - old_loc.y) * 32 + pixel_y
+
+	animate(I, pixel_x = to_x, pixel_y = to_y, time = 3, easing = CUBIC_EASING)
+	sleep(3)
+	invisibility = old_invisibility

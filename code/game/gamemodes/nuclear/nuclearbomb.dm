@@ -83,7 +83,7 @@ var/bomb_set
 			flick("nuclearbombc", src)
 
 		return
-	if (is_wire_tool(O) && opened)
+	if (is_wire_tool(O) && opened && removal_stage == 5)
 		if(wires.interact(user))
 			return
 
@@ -248,7 +248,7 @@ var/bomb_set
 		var/turf/current_location = get_turf(usr)//What turf is the user on?
 		if(current_location.z == ZLEVEL_CENTCOMM && user.mind.special_role == "Syndicate")//If turf was not found or they're on z level 2.
 			to_chat(user, "<span class = 'red'>It's not the best idea to plant a bomb on your own base</span>")
-			return
+			return 1
 	else if (deployable)
 		if(removal_stage < 5)
 			anchored = TRUE
@@ -293,6 +293,11 @@ var/bomb_set
 		return
 	if (!ishuman(usr))
 		to_chat(usr, "<span class = 'red'>You don't have the dexterity to do this!</span>")
+		return 1
+
+	var/turf/current_location = get_turf(usr)//What turf is the user on?
+	if(current_location.z == ZLEVEL_CENTCOMM && usr.mind.special_role == "Syndicate")//If turf was not found or they're on z level 2.
+		to_chat(usr, "<span class = 'red'>It's not the best idea to plant a bomb on your own base</span>")
 		return 1
 
 	if (src.deployable)
@@ -391,7 +396,7 @@ var/bomb_set
 			else
 				icon_state = "nuclearbomb1"
 				safety = 1.0
-				timing = -1.0
+				timing = 0
 				timeleft = TIMER_MAX
 				visible_message("<span class = 'red'>The anchoring bolts slide back into the depths of [src] and timer has stopped.</span>")
 

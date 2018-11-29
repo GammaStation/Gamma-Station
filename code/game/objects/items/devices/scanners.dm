@@ -80,7 +80,7 @@ REAGENT SCANNER
 /obj/item/device/healthanalyzer/attack(mob/living/M, mob/living/user)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		if(H.species.flags[IS_SYNTHETIC] || H.species.flags[IS_PLANT])
+		if(H.species.flags[IS_SYNTHETIC] || H.species.flags[IS_PLANT] || H.species.flags[IS_IMMATERIAL])
 			user.show_message("<span class = 'notice'>Analyzing Results for ERROR:\n&emsp; Overall Status: ERROR</span>")
 			user.show_message("&emsp; Key: <font color='blue'>Suffocation</font>/<font color='green'>Toxin</font>/<font color='#FFA500'>Burns</font>/<font color='red'>Brute</font>", 1)
 			user.show_message("&emsp; Damage Specifics: <font color='blue'>?</font> - <font color='green'>?</font> - <font color='#FFA500'>?</font> - <font color='red'>?</font>")
@@ -374,7 +374,7 @@ REAGENT SCANNER
 	throw_range = 20
 	m_amt = 500
 	var/target = null
-	var/target_type = /obj/item/weapon/ectoplasm
+	var/target_type = /obj/item/weapon/reagent_containers/food/snacks/ectoplasm
 	var/active = FALSE
 
 /obj/item/weapon/occult_pinpointer/attack_self()
@@ -424,11 +424,11 @@ REAGENT SCANNER
 	throw_speed = 4
 	throw_range = 20
 	m_amt = 500
-	var/scanned_type = /obj/item/weapon/ectoplasm
+	var/scanned_type = /obj/item/weapon/reagent_containers/food/snacks/ectoplasm
 
 /obj/item/device/occult_scanner/attack_self(mob/user)
-	if(!istype(scanned_type, /obj/item/weapon/ectoplasm))
-		scanned_type = /obj/item/weapon/ectoplasm
+	if(!istype(scanned_type, /obj/item/weapon/reagent_containers/food/snacks/ectoplasm))
+		scanned_type = /obj/item/weapon/reagent_containers/food/snacks/ectoplasm
 		to_chat(user, "<span class='notice'>You reset the scanned object of the scanner.</span>")
 
 /obj/item/device/occult_scanner/afterattack(mob/M, mob/user)

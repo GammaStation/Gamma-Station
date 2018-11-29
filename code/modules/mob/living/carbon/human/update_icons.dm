@@ -192,6 +192,9 @@ Please contact me on #coderbus IRC. ~Carn x
 	remove_overlay(BODY_LAYER)
 	var/list/standing	= list()
 
+	if(istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
+		return
+
 	var/husk_color_mod = rgb(96,88,80)
 	var/hulk_color_mod = rgb(48,224,40)
 	var/necrosis_color_mod = rgb(10,50,0)
@@ -203,7 +206,7 @@ Please contact me on #coderbus IRC. ~Carn x
 		fat = "fat"
 
 	var/g = (gender == FEMALE ? "f" : "m")
-	var/has_head = 0
+	var/has_head = !(BP_HEAD in species.has_bodypart) // Because Tycheons don't have heads, but have an eye. Bootleg.
 
 	//CACHING: Generate an index key from visible bodyparts.
 	//0 = destroyed, 1 = normal, 2 = robotic, 3 = necrotic.
@@ -347,9 +350,12 @@ Please contact me on #coderbus IRC. ~Carn x
 
 	if(has_head)
 		//Eyes
-		var/image/img_eyes_s = image("icon"='icons/mob/human_face.dmi', "icon_state"=species.eyes, "layer"=-BODY_LAYER)
+		var/image/img_eyes_s = image("icon"='icons/mob/human_face.dmi', "icon_state"=eyes, "layer"=-BODY_LAYER)
+		if(species.eye_glow)
+			img_eyes_s.layer = LIGHTING_LAYER + 1
+			img_eyes_s.plane = LIGHTING_PLANE + 1
 		img_eyes_s.color = rgb(r_eyes, g_eyes, b_eyes)
-		standing	+= img_eyes_s
+		standing += img_eyes_s
 
 		//Mouth	(lipstick!)
 		if(lip_style && (species && species.flags[HAS_LIPS]))	//skeletons are allowed to wear lipstick no matter what you think, agouri.
@@ -413,6 +419,8 @@ Please contact me on #coderbus IRC. ~Carn x
 	for(var/datum/dna/gene/gene in dna_genes)
 		if(!gene.block)
 			continue
+		if(species && (gene.name in species.ignore_gene_icons) || ("All" in species.ignore_gene_icons))
+			continue
 		if(gene.is_active(src))
 			var/image/underlay = image("icon"='icons/effects/genetics.dmi', "icon_state"=gene.OnDrawUnderlays(src,g,fat), "layer"=-MUTATIONS_LAYER)
 			if(underlay)
@@ -455,6 +463,11 @@ Please contact me on #coderbus IRC. ~Carn x
 
 	if(species.name == SHADOWLING && head)
 		standing += shadowling_eyes
+
+	if(iszombie(src) && stat != DEAD)
+		var/image/eyes = image(species.icobase, null, "zombie_ms_s", LIGHTING_LAYER + 1)
+		eyes.plane = LIGHTING_PLANE + 1
+		standing += eyes
 
 	if(!dna || !(dna.mutantrace == "golem"))
 		update_body()
@@ -517,6 +530,7 @@ Please contact me on #coderbus IRC. ~Carn x
 	update_bandage()
 	for(var/obj/item/organ/external/BP in bodyparts)
 		UpdateDamageIcon(BP)
+
 	update_icons()
 	update_transform()
 	//Hud Stuff
@@ -587,7 +601,7 @@ Please contact me on #coderbus IRC. ~Carn x
 		if(client && hud_used)
 			client.screen += wear_id
 
-		overlays_standing[ID_LAYER]	= image("icon"='icons/mob/mob.dmi', "icon_state"="id", "layer"=-ID_LAYER)
+		overlays_standing[ID_LAYER]	= image("icon"='icons/mob/mob.dmi', "icon_state"= get_species() == TYCHEON ? "id_tycheon" : "id", "layer"=-ID_LAYER)
 
 	hud_updateflag |= 1 << ID_HUD
 	hud_updateflag |= 1 << WANTED_HUD
@@ -745,6 +759,11 @@ Please contact me on #coderbus IRC. ~Carn x
 		standing.color = head.color
 		overlays_standing[HEAD_LAYER]	= standing
 
+		if(istype(head, /obj/item/clothing/head/helmet/band))
+			var/obj/item/clothing/head/helmet/band/H = head
+			if(H.on_helmet_overlay)
+				standing.overlays += H.on_helmet_overlay
+
 		if(head.dirt_overlay)
 			var/image/bloodsies = image("icon"='icons/effects/blood.dmi', "icon_state"="helmetblood")
 			bloodsies.color = head.dirt_overlay.color
@@ -796,22 +815,25 @@ Please contact me on #coderbus IRC. ~Carn x
 		standing.color = wear_suit.color
 		overlays_standing[SUIT_LAYER] = standing
 
-		if(istype(wear_suit, /obj/item/clothing/suit/straight_jacket))
-			drop_from_inventory(handcuffed)
-			drop_l_hand()
-			drop_r_hand()
-
 		if(FAT in mutations)
 			if(!(wear_suit.flags & ONESIZEFITSALL))
 				to_chat(src, "\red You burst out of \the [wear_suit]!")
 				drop_from_inventory(wear_suit)
 				return
 
-		if(istype(wear_suit,/obj/item/clothing/suit/wintercoat))
+		if(istype(wear_suit, /obj/item/clothing/suit/straight_jacket))
+			drop_from_inventory(handcuffed)
+			drop_l_hand()
+			drop_r_hand()
+
+		else if(istype(wear_suit,/obj/item/clothing/suit/wintercoat))
 			var/obj/item/clothing/suit/wintercoat/W = wear_suit
 			if(W.hooded) //used for coat hood due to hair layer viewed over the suit
 				overlays_standing[HAIR_LAYER]   = null
 				overlays_standing[HEAD_LAYER]	= null
+
+		else if(istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
+			remove_overlay(BODY_LAYER)
 
 		update_inv_shoes()
 

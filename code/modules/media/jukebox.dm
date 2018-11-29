@@ -296,6 +296,29 @@ var/global/loopModeNames=list(
 		"zvukbanok" = "Sounds of beer cans",
 		"eurobeat" = "Eurobeat",
 		"finland" = "Suomi wave",
+		"dreamsofvenus" = "Dreams of Venus",
+		"grob" = "Ponosnie zvuchania",
+	)
+
+/obj/machinery/media/jukebox/thunderfield
+	playlist_id="bar"
+	// Must be defined on your server.
+	playlists=list(
+		"bar"  = "Bar Mix",
+		"mogesfm84"  = "Moges FM-84",
+		"moges" = "Moges Club Music",
+		"club" = "Club Mix",
+		"customs" = "Customs Music",
+		"japan" = "Banzai Radio",
+		"govnar" = "Soviet Radio",
+		"classic" = "Classical Music",
+		"ussr_disco" = "Disco USSR-89s",
+		"topreptilian" = "Top Reptillian",
+		"zvukbanok" = "Sounds of beer cans",
+		"eurobeat" = "Eurobeat",
+		"finland" = "Suomi wave",
+		"dreamsofvenus" = "Dreams of Venus",
+		"grob" = "Ponosnie zvuchania",
 	)
 
 // Relaxing elevator music~
@@ -321,6 +344,8 @@ var/global/loopModeNames=list(
 		"zvukbanok" = "Sounds of beer cans",
 		"eurobeat" = "Eurobeat",
 		"finland" = "Suomi wave",
+		"dreamsofvenus" = "Dreams of Venus",
+		"grob" = "Ponosnie zvuchania",
 	)
 
 /obj/machinery/media/jukebox/techno

@@ -102,6 +102,8 @@
 	if(istype(target, /obj/item/smallDelivery) || istype(target,/obj/structure/bigDelivery) \
 	|| istype(target, /obj/item/weapon/gift) || istype(target, /obj/item/weapon/evidencebag))
 		return
+	if(target.flags_2 & HOLOGRAM_2)
+		return
 	if(target.anchored)
 		return
 	if(target in user)
@@ -263,7 +265,6 @@
 	flick("intake-closing", src)
 	var/obj/structure/disposalholder/H = new()	// virtual holder object which actually
 												// travels through the pipes.
-	air_contents = new()		// new empty gas resv.
 
 	sleep(10)
 	playsound(src, 'sound/machines/disposalflush.ogg', 50, 0, 0)
