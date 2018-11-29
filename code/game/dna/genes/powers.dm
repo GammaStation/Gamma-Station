@@ -286,10 +286,10 @@
 	name="Telekenesis"
 	activation_messages=list("You feel smarter.")
 	mutation=TK
-	activation_prob=15
+	activation_prob=10
 
-	New()
-		block=TELEBLOCK
+/datum/dna/gene/basic/tk/New()
+	block=TELEBLOCK
 
-	OnDrawUnderlays(mob/M,g,fat)
-		return "telekinesishead[fat]_s"
+/datum/dna/gene/basic/tk/OnDrawUnderlays(mob/M,g,fat)
+	return "telekinesishead[fat]_s"

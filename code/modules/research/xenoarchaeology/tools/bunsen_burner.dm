@@ -42,8 +42,7 @@
 
 	underlays = null
 	to_chat(user, "\blue You remove the [held_container] from the [src].")
-	held_container.loc = src.loc
-	held_container.attack_hand(user)
+	user.put_in_hands(held_container)
 	held_container = null
 
 /obj/machinery/bunsen_burner/proc/try_heating()

@@ -233,6 +233,9 @@
 
 	var/list/weather_immunities = list()
 
+	// Telekinesis for grown up boys.
+	var/tk_level = 0
+
 	// Telepathy for dummies.
 	var/list/remote_hearers = list() // A list of people that are listening to you.
 	var/list/remote_hearing = list() // A list of people you are listening to.

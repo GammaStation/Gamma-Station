@@ -69,7 +69,7 @@
 
 	if(istype(mover) && mover.checkpass(PASSTABLE))
 		return 1
-	if(mover.is_focused)
+	if(mover.focused_by.len)
 		return 1
 	else
 		return 0
