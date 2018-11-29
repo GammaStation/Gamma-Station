@@ -1403,9 +1403,6 @@
 	if(speaking)
 		say = copytext(say, 2 + length(speaking.key))
 
-	if(!M.say_understands(src, speaking) && speaking)
-		say = speaking.scramble(say)
-
 	if(speaking)
 		say = speaking.format_message(say) //, verb) Verb is actually unused.
 	else
@@ -1537,9 +1534,6 @@
 
 		if(speaking)
 			cur_say = copytext(cur_say, 2 + length(speaking.key))
-
-		if(!M.say_understands(src, speaking) && speaking)
-			cur_say = speaking.scramble(say)
 
 		if(speaking)
 			cur_say = speaking.format_message(cur_say) //, verb) Verb is actually unused.
