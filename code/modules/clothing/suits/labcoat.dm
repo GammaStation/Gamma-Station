@@ -9,7 +9,7 @@
 	flags = ONESIZEFITSALL
 	body_parts_covered = UPPER_TORSO|ARMS
 	allowed = list(/obj/item/device/analyzer,/obj/item/stack/medical,/obj/item/weapon/dnainjector,/obj/item/weapon/reagent_containers/dropper,/obj/item/weapon/reagent_containers/syringe,/obj/item/weapon/reagent_containers/hypospray,/obj/item/device/healthanalyzer,/obj/item/device/flashlight/pen,/obj/item/weapon/reagent_containers/glass/bottle,/obj/item/weapon/reagent_containers/glass/beaker,/obj/item/weapon/reagent_containers/pill,/obj/item/weapon/storage/pill_bottle,/obj/item/weapon/paper)
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 50, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 50, rad = 0, telepathy = 0)
 
 /obj/item/clothing/suit/storage/labcoat/verb/toggle()
 	set name = "Toggle Labcoat Buttons"
@@ -67,13 +67,14 @@
 	desc = "Bluer than the standard model."
 	icon_state = "labcoat_cmo"
 	item_state = "labcoat_cmo"
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 70, rad = 10)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 70, rad = 10, telepathy = 0)
 
 /obj/item/clothing/suit/storage/labcoat/mad
 	name = "The Mad's labcoat"
 	desc = "It makes you look capable of konking someone on the noggin and shooting them into space."
 	icon_state = "labgreen"
 	item_state = "labgreen"
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 50, rad = 10, telepathy = 50)
 
 /obj/item/clothing/suit/storage/labcoat/genetics
 	name = "geneticist labcoat"
@@ -89,7 +90,7 @@
 	name = "virologist labcoat"
 	desc = "A suit that protects against minor chemical spills. Offers slightly more protection against biohazards than the standard model. Has a green stripe on the shoulder."
 	icon_state = "labcoat_vir"
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60, rad = 0, telepathy = 0)
 
 /obj/item/clothing/suit/storage/labcoat/science
 	name = "scientist labcoat"
@@ -100,4 +101,4 @@
 	name = "research director's labcoat"
 	desc = "It smells like weird science."
 	icon_state = "labcoat_rd"
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 20, bio = 50, rad = 50)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 20, bio = 50, rad = 50, telepathy = 0)

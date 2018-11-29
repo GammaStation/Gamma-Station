@@ -278,7 +278,7 @@ BLIND     // can't see anything
 	var/fire_resist = T0C+100
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 	allowed = list(/obj/item/weapon/tank/emergency_oxygen)
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	slot_flags = SLOT_OCLOTHING
 	var/blood_overlay_type = "suit"
 	siemens_coefficient = 0.9
@@ -299,7 +299,7 @@ BLIND     // can't see anything
 	flags_pressure = STOPS_PRESSUREDMAGE
 	item_state = "space"
 	permeability_coefficient = 0.01
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 50)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 50, telepathy = 15)
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE
 	body_parts_covered = HEAD|FACE|EYES
 	cold_protection = HEAD
@@ -323,7 +323,7 @@ BLIND     // can't see anything
 	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank/emergency_oxygen,/obj/item/device/suit_cooling_unit)
 	slowdown = 3
 	equip_time = 100 // Bone White - time to equip/unequip. see /obj/item/attack_hand (items.dm) and /obj/item/clothing/mob_can_equip (clothing.dm)
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 50)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 50, telepathy = 20)
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAIL
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | ARMS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
@@ -368,7 +368,7 @@ BLIND     // can't see anything
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	permeability_coefficient = 0.90
 	slot_flags = SLOT_ICLOTHING
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	w_class = 3
 	var/has_sensor = 1//For the crew computer 2 = unable to change mode
 	var/sensor_mode = 0

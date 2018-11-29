@@ -49,7 +49,7 @@ var/const/tk_maxrange = 15
 	if(user.stat)
 		return
 	var/dist = get_dist(src, user)
-	var/psy_resist_chance = 50 + (dist * 2)// A chance that our target will not be affected.
+	var/psy_resist_chance = 50 + (dist * 2) + getarmor(null, "telepathy") // A chance that our target will not be affected.
 
 	if(get_species(user) != TYCHEON)
 		psy_resist_chance += 10
@@ -58,6 +58,9 @@ var/const/tk_maxrange = 15
 		psy_resist_chance = 0
 	else if(stat)
 		psy_resist_chance = 0
+	else if(lying)
+		psy_resist_chance = 0
+
 	if(!prob(psy_resist_chance))
 		switch(user.a_intent)
 			if(I_DISARM)
@@ -196,7 +199,7 @@ var/const/tk_maxrange = 15
 
 	var/d = get_dist(user, target)
 	if(focus)
-		d = max(d, get_dist(user,focus) + get_dist(target, focus)) // whichever is further
+		d = max(d, get_dist(user, focus) + get_dist(target, focus)) // whichever is further
 	switch(d)
 		if(0)
 			;
@@ -224,7 +227,7 @@ var/const/tk_maxrange = 15
 		var/mob/living/M = focus
 		user.nutrition -= d * 2 // Manipulating living beings is TOUGH!
 
-		var/psy_resist_chance = 50 + (d * 2) // A chance that our poor mob might resist our efforts to make him beat something up.
+		var/psy_resist_chance = 50 + (d * 2) + M.getarmor(null, "telepathy") // A chance that our poor mob might resist our efforts to make him beat something up.
 
 		if(user.get_species() != TYCHEON)
 			psy_resist_chance += 10
@@ -237,6 +240,8 @@ var/const/tk_maxrange = 15
 			psy_resist_chance = 0
 		else if(M == host) // Tis' a feature.
 			psy_resist_chance = 0
+		else if(M.lying)
+			psy_resist_chance = 0
 
 		if(prob(psy_resist_chance))
 			to_chat(host, "<span class='notice'>[M] is resisting our efforts.</span>")
@@ -248,7 +253,6 @@ var/const/tk_maxrange = 15
 					return
 				if(M.next_move > world.time)
 					return
-
 				M.drop_item()
 			if(I_GRAB)
 				step_towards(M, target)

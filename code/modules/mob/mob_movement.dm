@@ -7,7 +7,7 @@
 		return 1
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
-		if(H.species.flags[IS_FLYING] && !H.falling)
+		if(!istype(H.wear_suit, /obj/item/clothing/suit/space/rig/tycheon) && H.species.flags[IS_FLYING] && !H.falling)
 			if(prob((10 - H.movement_delay()) * 5))
 				return TRUE
 	if(buckled == mover)
