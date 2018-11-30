@@ -27,6 +27,15 @@
 	siemens_coefficient = 0.9
 	body_parts_covered = 0
 
+/obj/item/clothing/head/conus
+	name = "Conus hat"
+	desc = "Oh no... This is... CONUS!"
+	icon_state = "conus"
+	item_state = "iconus"
+	flags = BLOCKHAIR
+	flags_inv = HIDEMASK|HIDEEARS|HIDEFACE
+	body_parts_covered = HEAD|FACE
+
 /obj/item/clothing/head/redcoat
 	name = "redcoat's hat"
 	icon_state = "redcoat"
