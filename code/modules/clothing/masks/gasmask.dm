@@ -23,7 +23,7 @@
 	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	flags_inv = (HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
 	origin_tech = "materials=2;engineering=2"
-	action_button_name = "Toggle Welding Mask"
+	actions_types = /datum/action/item_action/attack_self
 	siemens_coefficient = 0.9
 	body_parts_covered = FACE|EYES
 	w_class = 3
@@ -61,7 +61,7 @@
 /obj/item/clothing/mask/gas/sechailer
 	name = "security gas mask"
 	desc = "A standard issue Security gas mask with integrated 'Compli-o-nator 3000' device, plays over a dozen pre-recorded compliance phrases designed to get scumbags to stand still whilst you taze them. Do not tamper with the device."
-	action_button_name = "Toggle Mask"
+	actions_types = /datum/action/item_action/attack_self
 	icon_state = "secmask"
 	var/cooldown = 0
 	var/aggressiveness = 2

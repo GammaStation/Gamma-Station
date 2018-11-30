@@ -7,7 +7,7 @@
 	var/mode = "white"
 	var/visor = 0
 
-	action_button_name = "Toggle Helmet Visor"
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/clothing/head/helmet/space/globose/attack_self(mob/user)
 	visor = !visor
