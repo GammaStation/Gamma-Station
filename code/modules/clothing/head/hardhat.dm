@@ -6,7 +6,7 @@
 	item_color = "standard"
 	var/brightness_on = 4 //luminosity when on
 	var/on = 0
-	armor = list(melee = 30, bullet = 5, laser = 20,energy = 10, bomb = 20, bio = 10, rad = 20)
+	armor = list(melee = 30, bullet = 5, laser = 20,energy = 10, bomb = 20, bio = 10, rad = 20, telepathy = 10)
 	flags_inv = 0
 	action_button_name = "Toggle Hardhat"
 	siemens_coefficient = 0.9

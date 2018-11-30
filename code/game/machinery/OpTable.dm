@@ -69,7 +69,7 @@
 
 	if(istype(mover) && mover.checkpass(PASSTABLE))
 		return 1
-	if(mover.is_focused)
+	if(mover.focused_by.len)
 		return 1
 	else
 		return 0
@@ -147,7 +147,7 @@
 			return
 
 	var/obj/item/tk_grab/put_me = user.get_active_hand(additional_checks = FALSE)
-	if(istype(put_me))
+	if(istype(put_me) && user.a_intent != I_HURT)
 		if(put_me.focus.anchored || !Adjacent(put_me.focus))
 			return
 		if(iscarbon(put_me.focus))

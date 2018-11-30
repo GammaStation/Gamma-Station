@@ -500,7 +500,7 @@
 		return
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
-		if(H.species.flags[IS_IMMATERIAL])
+		if(H.species.flags[IS_IMMATERIAL] && !istype(H.wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
 			return
 	if(!AM.anchored)
 		AM.add_fingerprint(src)

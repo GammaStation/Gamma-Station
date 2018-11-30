@@ -148,6 +148,8 @@
 /datum/reagent/proc/on_tycheon_digest(mob/living/M)
 	if(ishuman(M) && does_glow)
 		var/mob/living/carbon/human/H = M
+		if(istype(H.wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
+			return FALSE
 		if(H.light_range_reagents < max_glow_power)
 			H.light_range_reagents = min(max_glow_power, H.light_range_reagents + glow_increment)
 		H.reagents_lit_on = TRUE
@@ -4497,8 +4499,8 @@ datum/reagent/toxin/acid/polyacid
 		return
 	to_chat(H,"<span class='warning'><b>You grit your teeth in pain as your body rapidly mutates!</b></span>")
 	H.visible_message("<b>[H]</b> suddenly transforms!")
-	H.gender = pick(MALE, FEMALE)
-	if(H.gender == MALE)
+	H.gender = pick(H.species.genders)
+	if(H.gender != FEMALE)
 		H.name = pick(first_names_male)
 	else
 		H.name = pick(first_names_female)

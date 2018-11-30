@@ -4,7 +4,7 @@
 	icon_state = "sk"
 	item_state = "sk"
 	flags_pressure = STOPS_LOWPRESSUREDMAGE
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 0, telepathy = 15)
 	siemens_coefficient = 0.65
 	flash_protection = 0
 	species_restricted = list("exclude" , DIONA , VOX , TYCHEON)
@@ -15,7 +15,7 @@
 	item_state = "sk"
 	desc = "SK-1 Spacesuit. The first spacesuit ever used. Reminds you of Vostok spaceflight and Yuri Gagarin"
 	flags_pressure = STOPS_LOWPRESSUREDMAGE
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 0, telepathy = 20)
 	slowdown = 4
 	siemens_coefficient = 0.65
 

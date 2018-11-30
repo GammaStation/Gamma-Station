@@ -25,21 +25,15 @@
 		skipface |= wear_mask.flags_inv & HIDEFACE
 
 	// crappy hacks because you can't do \his[src] etc. I'm sorry this proc is so unreadable, blame the text macros :<
-	var/t_He = "It" //capitalised for use at the start of each line.
-	var/t_his = "its"
-	var/t_him = "it"
-	var/t_has = "has"
-	var/t_is = "is"
+	var/t_He = "They" //capitalised for use at the start of each line.
+	var/t_his = "Their"
+	var/t_him = "them"
+	var/t_has = "have"
+	var/t_is = "are"
 
 	var/msg = "<span class='info'>*---------*\nThis is "
 
-	if( skipjumpsuit && skipface ) //big suits/masks/helmets make it hard to tell their gender
-		t_He = "They"
-		t_his = "their"
-		t_him = "them"
-		t_has = "have"
-		t_is = "are"
-	else
+	if(!(skipjumpsuit && skipface)) // big suits/masks/helmets make it hard to tell their gender
 		switch(gender)
 			if(MALE)
 				t_He = "He"
@@ -49,6 +43,10 @@
 				t_He = "She"
 				t_his = "her"
 				t_him = "her"
+			if(NEUTER)
+				t_He = "It"
+				t_his = "it's"
+				t_him = "it"
 
 	msg += "<EM>[src.name]</EM>"
 	var/species_name = "\improper "

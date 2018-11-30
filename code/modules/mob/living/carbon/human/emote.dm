@@ -560,7 +560,7 @@
 		if (("poo"))
 			if(!SHIT_TOGGLED) //Пока админ не разрешит - никто срать не будет
 				return
-			if(species.flags[IS_PLANT] || species.flags[IS_SYNTHETIC])
+			if(species.flags[IS_PLANT] || species.flags[IS_SYNTHETIC] || species.flags[IS_IMMATERIAL])
 				to_chat(src, "<span class='notice'>You are unable to poo, deal with it</span>")  //Если шаловливые ручки админов доберутся до переменных, этот трюк не позволит срать тем, кому это не положено.
 				return
 			if (feces_count < MAX_FECES_COUNT)

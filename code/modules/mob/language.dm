@@ -17,7 +17,6 @@
 	var/list/space_chance = 55 // Likelihood of getting a space in the random scramble string.
 	var/list/allowed_species	 // A name of species, Which can use this lang as secondary.
 
-
 /datum/language/proc/format_message(message, verb="") // Telepathy say formats message without the verb.
 	return "[verb ? "[verb], " : ""]<span class='message'><span class='[colour]'>\"[capitalize(message)]\"</span></span>"
 
@@ -161,9 +160,10 @@
 	ask_verb = "beeps"
 	exclaim_verb = "boops"
 	colour = "ipc"
-	key = list("x", "÷") //only "pz" left.
+	key = list("x", "÷")
 	//need to find a way to resolve possesive macros
 	allowed_species = list(IPC)
+	space_chance = 100
 	syllables = list("000", "111", "222", "001", "010", "100", "002", "020", "200", "011", "101", "110", "022", "202", "220", "112", "121", "211", "122", "212", "221", "012", "021", "120", "210", "102", "201")
 
 /datum/language/void
@@ -172,10 +172,22 @@
 	allowed_species = list()
 	colour = "void"
 	key = list("d", "â")
-	signlang_verb = list("pulses his core")
+	signlang_verb = list("chaotically pulses his core", "chaotically reverberates his core")
 	flags = SIGNLANG // For all intents and purposes, this is basically a sign language.
 
 /datum/language/void/format_message(message, verb)
+	return "<span class='[colour]'>[capitalize(message)]</span>"
+
+/datum/language/void_balance
+	name = "The Perfect Control"
+	desc = "A series of perfectly paused and controlled pulses through the minds of the Tycheon, and all other Tycheons around."
+	allowed_species = list()
+	colour = "void_balance"
+	key = list("p", "ç")
+	signlang_verb = list("pulses his core in perfect symphony", "reverberates with his core in perfect symphony")
+	flags = SIGNLANG // For all intents and purposes, this is basically a sign language.
+
+/datum/language/void_balance/format_message(message, verb)
 	return "<span class='[colour]'>[capitalize(message)]</span>"
 
 // Galactic common languages (systemwide accepted standards).
@@ -200,7 +212,7 @@
 	desc = "Much like Standard, this crude pidgin tongue descended from numerous languages and serves as Tradeband for criminal elements."
 	speech_verb = "growls"
 	colour = "rough"
-	key = list("3")
+	key = list("3") //only "z" left.
 	allowed_species = list(IPC, HUMAN, DIONA, SKRELL, UNATHI, TAJARAN)
 	syllables = list ("gra","ba","ba","breh","bra","rah","dur","ra","ro","gro","go","ber","bar","geh","heh", "gra")
 

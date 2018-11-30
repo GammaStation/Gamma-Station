@@ -7,7 +7,7 @@
 		return 1
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
-		if(H.species.flags[IS_FLYING] && !H.falling)
+		if(!istype(H.wear_suit, /obj/item/clothing/suit/space/rig/tycheon) && H.species.flags[IS_FLYING] && !H.falling)
 			if(prob((10 - H.movement_delay()) * 5))
 				return TRUE
 	if(buckled == mover)
@@ -279,10 +279,10 @@
 
 		if(ishuman(mob))
 			var/mob/living/carbon/human/H = mob
-			if(H.species.flags[STATICALLY_CHARGED] && !istype(get_turf(mob), /turf/space)) // The only to use this is Voidan. And their nutrition is static charge.
+			if(H.species.flags[STATICALLY_CHARGED] && !istype(get_turf(H), /turf/space)) // The only to use this is Voidan. And their nutrition is static charge.
 				if(prob(5))
 					new /obj/effect/effect/sparks(H.loc)
-				H.nutrition = max(500, H.nutrition + 1)
+				H.nutrition = min(500, H.nutrition + 4)
 
 		moving = 0
 		if(mob && .)

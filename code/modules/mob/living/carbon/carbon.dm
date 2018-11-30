@@ -199,10 +199,18 @@
 /mob/living/carbon/proc/help_shake_act(mob/living/carbon/M)
 	if (src.health >= config.health_threshold_crit)
 		if(src == M && istype(src, /mob/living/carbon/human))
+			var/gen_self = "themself"
+			switch(gender)
+				if(MALE)
+					gen_self = "himself"
+				if(FEMALE)
+					gen_self = "herself"
+				if(NEUTER)
+					gen_self = "itself"
 			var/mob/living/carbon/human/H = src
-			src.visible_message( \
-				text("<span class='notice'>[src] examines [].</span>",src.gender==MALE?"himself":"herself"), \
-				"<span class='notice'>You check yourself for injuries.</span>" \
+			src.visible_message(
+				"<span class='notice'>[src] examines [gen_self].</span>",
+				"<span class='notice'>You check yourself for injuries.</span>"
 				)
 
 			for(var/obj/item/organ/external/BP in H.bodyparts)
@@ -241,10 +249,13 @@
 				H.play_xylophone()
 		else
 			var/t_him = "it"
-			if (src.gender == MALE)
-				t_him = "him"
-			else if (src.gender == FEMALE)
-				t_him = "her"
+			switch(gender)
+				if(MALE)
+					t_him = "him"
+				if(FEMALE)
+					t_him = "her"
+				if(PLURAL)
+					t_him = "their"
 			if (istype(src,/mob/living/carbon/human) && src:w_uniform)
 				var/mob/living/carbon/human/H = src
 				H.w_uniform.add_fingerprint(M)
