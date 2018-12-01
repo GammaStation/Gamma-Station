@@ -17,7 +17,7 @@
 	for (var/i in 1 to 3)
 		new /obj/item/clothing/head/soft/sec(src)
 	for (var/i in 1 to 2)
-		new /obj/item/clothing/mask/bandana/red(src)
+		new /obj/item/clothing/mask/bandana/blue(src)
 	for (var/i in 1 to 3)
 		new /obj/item/clothing/head/beret/sec(src)
 	#ifdef NEWYEARCONTENT
@@ -402,6 +402,6 @@
 	new /obj/item/clothing/suit/storage/flak/marinad(src)
 	new /obj/item/clothing/under/tactical/marinad(src)
 	new /obj/item/clothing/mask/balaclava(src)
-	new /obj/item/clothing/glasses/sunglasses/sechud/tactical(src)
+	new /obj/item/clothing/glasses/hud/security/sun/tactical(src)
 	new /obj/item/weapon/storage/belt/security/tactical(src)
 	new /obj/item/clothing/shoes/workboots(src)

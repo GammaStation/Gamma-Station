@@ -3,7 +3,7 @@
 	desc = "A helmet worn by members of the NanoTrasen Emergency Response Team. Armoured and space ready."
 	icon_state = "rig0-ert_commander"
 	item_state = "helm-command"
-	armor = list(melee = 50, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 60)
+	armor = list(melee = 50, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 60, telepathy = 15)
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 	var/obj/machinery/camera/camera
 
@@ -37,7 +37,7 @@
 	/obj/item/weapon/melee/baton,/obj/item/weapon/melee/energy/sword,/obj/item/weapon/handcuffs,
 	/obj/item/weapon/tank,/obj/item/weapon/rcd)
 	slowdown = 1
-	armor = list(melee = 60, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 60)
+	armor = list(melee = 60, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 60, telepathy = 20)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 
 //Commander
@@ -47,14 +47,14 @@
 	icon_state = "rig0-ert_commander"
 	item_state = "helm-command"
 	item_color = "ert_commander"
-	armor = list(melee = 60, bullet = 65, laser = 55, energy = 45, bomb = 50, bio = 100, rad = 60)
+	armor = list(melee = 60, bullet = 65, laser = 55, energy = 45, bomb = 50, bio = 100, rad = 60, telepathy = 15)
 
 /obj/item/clothing/suit/space/rig/ert/commander
 	name = "emergency response team commander suit"
 	desc = "A suit worn by the commander of a NanoTrasen Emergency Response Team. Has blue highlights. Armoured, space ready, and fire resistant."
 	icon_state = "ert_commander"
 	item_state = "suit-command"
-	armor = list(melee = 60, bullet = 65, laser = 55, energy = 55, bomb = 50, bio = 100, rad = 60)
+	armor = list(melee = 60, bullet = 65, laser = 55, energy = 55, bomb = 50, bio = 100, rad = 60, telepathy = 20)
 	breach_threshold = 28
 
 //Security
@@ -64,7 +64,7 @@
 	icon_state = "rig0-ert_security"
 	item_state = "syndicate-helm-black-red"
 	item_color = "ert_security"
-	armor = list(melee = 60, bullet = 60, laser = 60, energy = 30, bomb = 65, bio = 100, rad = 10)
+	armor = list(melee = 60, bullet = 60, laser = 60, energy = 30, bomb = 65, bio = 100, rad = 10, telepathy = 15)
 
 /obj/item/clothing/head/helmet/space/rig/ert/security/atom_init()
 	. = ..()
@@ -76,7 +76,7 @@
 	desc = "A suit worn by security members of a NanoTrasen Emergency Response Team. Has red highlights. Armoured, space ready, and fire resistant."
 	icon_state = "ert_security"
 	item_state = "syndicate-black-red"
-	armor = list(melee = 60, bullet = 60, laser = 60, energy = 30, bomb = 65, bio = 100, rad = 10)
+	armor = list(melee = 60, bullet = 60, laser = 60, energy = 30, bomb = 65, bio = 100, rad = 10, telepathy = 20)
 	breach_threshold = 25
 	slowdown = 1.4
 
@@ -87,7 +87,7 @@
 	icon_state = "rig0-ert_engineer"
 	item_color = "ert_engineer"
 	siemens_coefficient = 0
-	armor = list(melee = 60, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 75)
+	armor = list(melee = 60, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 75, telepathy = 15)
 
 /obj/item/clothing/head/helmet/space/rig/ert/engineer/atom_init()
 	. = ..()
@@ -99,7 +99,7 @@
 	desc = "A suit worn by the engineering of a NanoTrasen Emergency Response Team. Has orange highlights. Armoured, space ready, and fire resistant."
 	icon_state = "ert_engineer"
 	siemens_coefficient = 0
-	armor = list(melee = 60, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 75)
+	armor = list(melee = 60, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 75, telepathy = 20)
 
 //Medical
 /obj/item/clothing/head/helmet/space/rig/ert/medical

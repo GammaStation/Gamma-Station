@@ -20,10 +20,10 @@
 	desc = "A gas mask with built-in welding goggles and a face shield. Looks like a skull - clearly designed by a nerd."
 	icon_state = "weldingmask"
 	item_state = "weldingmask"
-	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	flags_inv = (HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
 	origin_tech = "materials=2;engineering=2"
-	action_button_name = "Toggle Welding Mask"
+	actions_types = /datum/action/item_action/attack_self
 	siemens_coefficient = 0.9
 	body_parts_covered = FACE|EYES
 	w_class = 3
@@ -61,7 +61,7 @@
 /obj/item/clothing/mask/gas/sechailer
 	name = "security gas mask"
 	desc = "A standard issue Security gas mask with integrated 'Compli-o-nator 3000' device, plays over a dozen pre-recorded compliance phrases designed to get scumbags to stand still whilst you taze them. Do not tamper with the device."
-	action_button_name = "Toggle Mask"
+	actions_types = /datum/action/item_action/attack_self
 	icon_state = "secmask"
 	var/cooldown = 0
 	var/aggressiveness = 2
@@ -180,7 +180,7 @@
 	desc = "A modernised version of the classic design, this mask will not only filter out phoron but it can also be connected to an air supply."
 	icon_state = "plaguedoctor"
 	item_state = "gas_mask"
-	armor = list(melee = 0, bullet = 0, laser = 2,energy = 2, bomb = 0, bio = 75, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 2,energy = 2, bomb = 0, bio = 75, rad = 0, telepathy = 0)
 	body_parts_covered = HEAD|FACE
 
 /obj/item/clothing/mask/gas/swat
@@ -263,6 +263,30 @@
 	name = "owl mask"
 	desc = "Twoooo!"
 	icon_state = "owl"
+
+/obj/item/clothing/mask/gas/chains_mask
+	name = "chains mask"
+	desc = "Replica of the mask which used by legendary clown robbers team. «Asses are for kicking, not for sitting, now get up!»"
+	icon_state = "chains"
+	item_state = "chains_mask"
+
+/obj/item/clothing/mask/gas/hoxton_mask
+	name = "hoxton mask"
+	desc = "Replica of the mask which used by legendary clown robbers team. «Time to rock and roll...»"
+	icon_state = "hoxton"
+	item_state = "hoxton_mask"
+
+/obj/item/clothing/mask/gas/wolf_mask
+	name = "wolf mask"
+	desc = "Replica of the mask which used by legendary clown robbers team. «Alright, let's get rich.»"
+	icon_state = "wolf"
+	item_state = "wolf_mask"
+
+/obj/item/clothing/mask/gas/dallas_mask
+	name = "dallas mask"
+	desc = "Replica of the mask which used by legendary clown robbers team. «Let's make that money.»"
+	icon_state = "dallas"
+	item_state = "dallas_mask"
 
 /obj/item/clothing/mask/gas/coloured
 	icon_state = "gas_mask_orange"

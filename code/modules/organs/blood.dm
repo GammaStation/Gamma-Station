@@ -106,8 +106,9 @@ var/const/BLOOD_VOLUME_SURVIVE = 122
 			// There currently is a strange bug here. If the mob is not below -100 health
 			// when death() is called, apparently they will be just fine, and this way it'll
 			// spam deathgasp. Adjusting toxloss ensures the mob will stay dead.
-			toxloss += 300 // just to be safe!
-			death()
+			if(!iszombie(src)) //zombies dont care about blood
+				toxloss += 300 // just to be safe!
+				death()
 
 	// Without enough blood you slowly go hungry.
 	if(blood_volume < BLOOD_VOLUME_SAFE)
@@ -187,11 +188,11 @@ var/const/BLOOD_VOLUME_SURVIVE = 122
 //Makes a blood drop, leaking certain amount of blood from the mob
 /mob/living/carbon/human/proc/drip(amt, tar = src, ddir)
 	if(remove_blood(amt))
-		blood_splatter(tar, src, (ddir && ddir > 0), spray_dir = ddir, s_blood_color = species.blood_color)
+		blood_splatter(tar, src, (ddir && ddir > 0), spray_dir = ddir, basedatum = species.blood_color)
 		return amt
 	return 0
 
-/proc/blood_splatter(target, datum/reagent/blood/source, large, spray_dir, s_blood_color = "#C80000")
+/proc/blood_splatter(target, datum/reagent/blood/source, large, spray_dir, basedatum)
 	var/obj/effect/decal/cleanable/blood/B
 	var/decal_type = /obj/effect/decal/cleanable/blood/splatter
 	var/turf/T = get_turf(target)
@@ -224,7 +225,7 @@ var/const/BLOOD_VOLUME_SURVIVE = 122
 		return B
 
 	// Update appearance.
-	B.basecolor = s_blood_color // source.data["blood_colour"] <- leaving this pointer, could be important for later.
+	B.basedatum = new basedatum() // source.data["blood_colour"] <- leaving this pointer, could be important for later.
 	B.update_icon()
 	if(spray_dir)
 		B.icon_state = "squirt"

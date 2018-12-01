@@ -629,7 +629,7 @@ var/list/airlock_overlays = list()
 /obj/machinery/door/airlock/attack_hand(mob/user)
 	if(ishuman(user) && prob(40) && density)
 		var/mob/living/carbon/human/H = user
-		if(H.getBrainLoss() >= 60)
+		if(H.getBrainLoss() >= 60 && in_range(src, user)) // No telepathic brainloss headbanging!
 			playsound(src, 'sound/effects/bang.ogg', 25, 1)
 			if(!istype(H.head, /obj/item/clothing/head/helmet))
 				visible_message("<span class='userdanger'> [user] headbutts the airlock.</span>")
@@ -969,11 +969,6 @@ var/list/airlock_overlays = list()
 	else
 		..()
 	return
-
-/obj/machinery/door/airlock/phoron/attackby(C, mob/user)
-	if(C)
-		ignite(is_hot(C))
-	..()
 
 /obj/machinery/door/airlock/proc/close_unsafe(bolt_after = FALSE)
 	var/temp = safe

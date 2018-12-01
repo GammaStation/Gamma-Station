@@ -27,7 +27,7 @@
 	body_parts_covered = 0
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.01
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 25, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 25, rad = 0, telepathy = 0)
 
 /obj/item/clothing/mask/fakemoustache
 	name = "fake moustache"
@@ -42,6 +42,29 @@
 	icon_state = "fake_face"
 	flags_inv = HIDEFACE
 	body_parts_covered = 0
+
+/obj/item/clothing/mask/clownnose
+	name = "clown nose"
+	desc = "Take center ring at your carnival party with this red clown nose. These clown nose are made of lightweight foam and have a slit down the middle for a comfortable fit."
+	icon_state = "clownnose"
+	item_state = "clownnose"
+	actions_types = /datum/action/item_action/attack_self
+	var/cooldown = 0
+
+/obj/item/clothing/mask/clownnose/attack_self()
+	honk()
+
+/obj/item/clothing/mask/clownnose/verb/honk()
+	set category = "Object"
+	set name = "HONK!"
+	set src in usr
+
+	if(!istype(usr, /mob/living)) return
+	if(usr.stat) return
+	if(cooldown < world.time - 10)
+		playsound(src.loc, 'sound/items/bikehorn.ogg', 50, 1)
+		cooldown = world.time
+	return
 
 /obj/item/clothing/mask/snorkel
 	name = "snorkel"
@@ -60,7 +83,7 @@
 	flags = MASKCOVERSMOUTH
 	w_class = 2
 	gas_transfer_coefficient = 0.90
-	action_button_name = "Adjust scarf"
+	actions_types = "Adjust scarf"
 	var/hanging = 0
 
 /obj/item/clothing/mask/scarf/blue
@@ -178,9 +201,16 @@
 	desc = "A fine bandana with nanotech lining and a hydroponics pattern."
 	w_class = 1
 	flags = MASKCOVERSMOUTH
-	action_button_name = "Adjust Bandana"
+	actions_types = /datum/action/item_action/attack_self
 	icon_state = "bandbotany"
 	body_parts_covered = 0
+
+/obj/item/clothing/mask/dealwithit
+	name = "ultracool sunglasses"
+	desc = "This station is too easy for you, deal with it."
+	icon_state = "dealwithit"
+	flags_inv = HIDEFACE
+	body_parts_covered = FACE|EYES
 
 /obj/item/clothing/mask/chicken
 	name = "chicken suit head"

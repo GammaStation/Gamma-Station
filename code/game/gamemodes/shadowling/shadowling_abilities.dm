@@ -232,9 +232,29 @@
 			return
 		for(var/mob/M in mob_list)
 			if(is_shadow_or_thrall(M) || isobserver(M))
-				to_chat(M, "<span class='shadowling'><b>\[Hive Chat\]</b><i> [usr.real_name]</i>: [sanitize(text)]</span>")
+				to_chat(M, "<span class='shadowling'><b>\[Hive Chat\]</b><i> [usr.real_name]</i>: [text]</span>")
+				M.telepathy_hear("has heard", text, user)
+		log_say("Shadowling Hivemind: [key_name(usr)] : [text]")
 
+/obj/effect/proc_holder/spell/targeted/thrall_sight
+	name = "Dark Sight"
+	desc = "Allows you to see through the darkness."
+	panel = "Shadowling Abilities"
+	charge_max = 100
+	clothes_req = 0
+	range = -1
+	include_user = 1
+	var/activated = FALSE
 
+/obj/effect/proc_holder/spell/targeted/thrall_sight/cast(list/targets)
+	var/mob/living/carbon/human/user = usr
+	activated = !activated
+	if(activated)
+		user.overlays |= shadowling_eyes
+		user.seer = TRUE
+	else
+		user.overlays -= shadowling_eyes
+		user.seer = FALSE
 
 /obj/effect/proc_holder/spell/targeted/shadowling_regenarmor
 	name = "Regenerate Chitin"
@@ -362,7 +382,7 @@
 		S.set_up(reagents, 10, 0, location, 15, 5)
 		S.start()
 
-datum/reagent/shadowling_blindness_smoke //Blinds non-shadowlings, heals shadowlings/thralls
+/datum/reagent/shadowling_blindness_smoke //Blinds non-shadowlings, heals shadowlings/thralls
 	name = "Odd Black Liquid"
 	id = "blindness_smoke"
 	description = "<::ERROR::> CANNOT ANALYZE REAGENT <::ERROR::>"
@@ -370,23 +390,19 @@ datum/reagent/shadowling_blindness_smoke //Blinds non-shadowlings, heals shadowl
 	//metabolization_rate = 100 //lel
 	custom_metabolism = 100
 
-datum/reagent/shadowling_blindness_smoke/on_mob_life(var/mob/living/M as mob)
-	if(!M) M = holder.my_atom
+/datum/reagent/shadowling_blindness_smoke/on_general_digest(mob/living/M)
+	..()
 	if(!is_shadow_or_thrall(M))
-		to_chat(M, "<span class='warning'><b>You breathe in the black smoke, and your eyes burn horribly!</b></span>")
+		to_chat(M, "<span class='warning bold'>You breathe in the black smoke, and your eyes burn horribly!</span>")
 		M.eye_blind = 5
 		if(prob(25))
 			M.visible_message("<b>[M]</b> claws at their eyes!")
 			M.Stun(3)
 	else
-		to_chat(M, "<span class='notice'><b>You breathe in the black smoke, and you feel revitalized!</b></span>")
+		to_chat(M, "<span class='notice bold'>You breathe in the black smoke, and you feel revitalized!</span>")
 		M.heal_bodypart_damage(2, 2)
 		M.adjustOxyLoss(-2)
 		M.adjustToxLoss(-2)
-	..()
-	return
-
-
 
 /obj/effect/proc_holder/spell/aoe_turf/unearthly_screech
 	name = "Sonic Screech"
@@ -665,7 +681,7 @@ datum/reagent/shadowling_blindness_smoke/on_mob_life(var/mob/living/M as mob)
 		for(var/mob/M in mob_list)
 			if(is_shadow_or_thrall(M) || (M in dead_mob_list))
 				to_chat(M, "<font size=4><span class='shadowling'><b>\[Hive Chat\]<i> [usr.real_name] (ASCENDANT)</i>: [sanitize(text)]</b></font></span>")//Bigger text for ascendants.
-
+				M.telepathy_hear("has heard", text, user)
 
 
 /obj/effect/proc_holder/spell/targeted/shadowlingAscendantTransmit
@@ -679,7 +695,7 @@ datum/reagent/shadowling_blindness_smoke/on_mob_life(var/mob/living/M as mob)
 
 /obj/effect/proc_holder/spell/targeted/shadowlingAscendantTransmit/cast(list/targets)
 	for(var/mob/living/user in targets)
-		var/text = sanitize(input(user, "What do you want to say to everything on and near [world.name]?.", "Transmit to World", ""))
+		var/text = sanitize(input(user, "What do you want to say to everything on and near [station_name]?.", "Transmit to World", ""))
 		if(!text)
 			return
 		to_chat(world, "<font size=4><span class='shadowling'><b>\"[sanitize(text)]\"</font></span>")

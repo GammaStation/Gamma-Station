@@ -174,6 +174,10 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"fontawesome-webfont.svg" = 'code/modules/goonchat/browserassets/css/fonts/fontawesome-webfont.svg',
 		"fontawesome-webfont.ttf" = 'code/modules/goonchat/browserassets/css/fonts/fontawesome-webfont.ttf',
 		"fontawesome-webfont.woff" = 'code/modules/goonchat/browserassets/css/fonts/fontawesome-webfont.woff',
+		"horror_font.otf" = 'code/modules/goonchat/browserassets/css/fonts/horror_font.otf',
+		"horror_font.eot" = 'code/modules/goonchat/browserassets/css/fonts/horror_font.eot',
+		"balanced_font.otf" = 'code/modules/goonchat/browserassets/css/fonts/balanced_font.ttf',
+		"balanced_font.eot" = 'code/modules/goonchat/browserassets/css/fonts/balanced_font.eot',
 		"font-awesome.css" = 'code/modules/goonchat/browserassets/css/font-awesome.css',
 		"emojib64.css" = 'code/modules/goonchat/browserassets/css/emojib64.css',
 		"browserOutput.css" = 'code/modules/goonchat/browserassets/css/browserOutput.css'

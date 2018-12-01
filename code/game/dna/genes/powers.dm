@@ -222,15 +222,18 @@
 			return 0
 		return ..(M,flags)*/
 
-/datum/dna/gene/basic/hulk/activate(mob/M, connected, flags)
+/datum/dna/gene/basic/hulk/can_activate(mob/M, flags)
 	if(!M.mind)
-		return
+		return FALSE
 	if(M.mind.hulkizing)
-		return
+		return FALSE
+	if(config.disallow_gene_hulks && !(flags & MUTATION_FORCED))
+		return FALSE
+	return TRUE
+
+/datum/dna/gene/basic/hulk/activate(mob/M, connected, flags)
 	M.mind.hulkizing = 1
-
-	..(M,connected,flags)
-
+	..()
 	addtimer(CALLBACK(src, .proc/mutate_user, M), rand(600, 900), TIMER_UNIQUE)
 
 /datum/dna/gene/basic/hulk/proc/mutate_user(mob/M)
@@ -255,14 +258,15 @@
 		else
 			Monster = new /mob/living/simple_animal/hulk/human(get_turf(M))
 
-	var/datum/effect/effect/system/smoke_spread/bad/smoke = new /datum/effect/effect/system/smoke_spread/bad()
-	smoke.set_up(10, 0, M.loc)
-	smoke.start()
 	playsound(M.loc, 'sound/effects/bamf.ogg', 50, 2)
+
+	for(var/obj/item/W in M)
+		M.drop_from_inventory(W)
 
 	Monster.original_body = M
 	M.forceMove(Monster)
 	M.mind.transfer_to(Monster)
+	Monster.name = M.name
 
 	Monster.attack_log = M.attack_log
 	Monster.attack_log += "\[[time_stamp()]\]<font color='blue'> ======MONSTER LIFE======</font>"
@@ -282,10 +286,10 @@
 	name="Telekenesis"
 	activation_messages=list("You feel smarter.")
 	mutation=TK
-	activation_prob=15
+	activation_prob=10
 
-	New()
-		block=TELEBLOCK
+/datum/dna/gene/basic/tk/New()
+	block=TELEBLOCK
 
-	OnDrawUnderlays(mob/M,g,fat)
-		return "telekinesishead[fat]_s"
+/datum/dna/gene/basic/tk/OnDrawUnderlays(mob/M,g,fat)
+	return "telekinesishead[fat]_s"

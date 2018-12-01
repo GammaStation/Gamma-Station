@@ -120,7 +120,11 @@
 			contract_disease(D, 0, 1, CONTACT_HANDS)
 
 /mob/living/carbon/electrocute_act(shock_damage, obj/source, siemens_coeff = 1.0, def_zone = null, tesla_shock = 0)
-	if(status_flags & GODMODE)	return 0	//godmode
+	if(status_flags & GODMODE)
+		return 0
+
+	if(!in_range(src, source)) // No telepathic electroctuion!
+		return 0
 
 	var/turf/T = get_turf(src)
 	var/obj/effect/fluid/F = locate() in T
@@ -195,10 +199,18 @@
 /mob/living/carbon/proc/help_shake_act(mob/living/carbon/M)
 	if (src.health >= config.health_threshold_crit)
 		if(src == M && istype(src, /mob/living/carbon/human))
+			var/gen_self = "themself"
+			switch(gender)
+				if(MALE)
+					gen_self = "himself"
+				if(FEMALE)
+					gen_self = "herself"
+				if(NEUTER)
+					gen_self = "itself"
 			var/mob/living/carbon/human/H = src
-			src.visible_message( \
-				text("<span class='notice'>[src] examines [].</span>",src.gender==MALE?"himself":"herself"), \
-				"<span class='notice'>You check yourself for injuries.</span>" \
+			src.visible_message(
+				"<span class='notice'>[src] examines [gen_self].</span>",
+				"<span class='notice'>You check yourself for injuries.</span>"
 				)
 
 			for(var/obj/item/organ/external/BP in H.bodyparts)
@@ -237,10 +249,13 @@
 				H.play_xylophone()
 		else
 			var/t_him = "it"
-			if (src.gender == MALE)
-				t_him = "him"
-			else if (src.gender == FEMALE)
-				t_him = "her"
+			switch(gender)
+				if(MALE)
+					t_him = "him"
+				if(FEMALE)
+					t_him = "her"
+				if(PLURAL)
+					t_him = "their"
 			if (istype(src,/mob/living/carbon/human) && src:w_uniform)
 				var/mob/living/carbon/human/H = src
 				H.w_uniform.add_fingerprint(M)
@@ -379,6 +394,8 @@
 	src.throw_mode_off()
 	if(usr.stat || !target)
 		return
+	if(next_throw > world.time)
+		return
 	if(target.type == /obj/screen) return
 
 	var/atom/movable/item = src.get_active_hand()
@@ -399,11 +416,12 @@
 
 				M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been thrown by [usr.name] ([usr.ckey]) from [start_T_descriptor] with the target [end_T_descriptor]</font>")
 				usr.attack_log += text("\[[time_stamp()]\] <font color='red'>Has thrown [M.name] ([M.ckey]) from [start_T_descriptor] with the target [end_T_descriptor]</font>")
-				msg_admin_attack("[usr.name] ([usr.ckey]) has thrown [M.name] ([M.ckey]) from [start_T_descriptor] with the target [end_T_descriptor] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[usr.x];Y=[usr.y];Z=[usr.z]'>JMP</a>)")
+				if(!isvrhuman(M))
+					msg_admin_attack("[usr.name] ([usr.ckey]) has thrown [M.name] ([M.ckey]) from [start_T_descriptor] with the target [end_T_descriptor] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[usr.x];Y=[usr.y];Z=[usr.z]'>JMP</a>)")
 
 	if(!item) return //Grab processing has a chance of returning null
 
-	src.remove_from_mob(item)
+	src.remove_from_mob(item, get_turf(item))
 
 	//actually throw it!
 	if (item)
@@ -411,6 +429,7 @@
 
 		newtonian_move(get_dir(target, src))
 
+		next_throw = world.time + 1 SECOND
 		item.throw_at(target, item.throw_range, item.throw_speed, src)
 
 		if(ishuman(src))
@@ -664,3 +683,7 @@
 
 /mob/living/carbon/proc/can_eat(flags = 255) //I don't know how and why does it work
 	return TRUE
+
+/mob/living/carbon/proc/crawl_in_blood(obj/effect/decal/cleanable/blood/floor_blood,amount)
+	return
+

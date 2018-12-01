@@ -136,6 +136,9 @@ Frequency:
 	origin_tech = "magnets=1;bluespace=3"
 
 /obj/item/weapon/hand_tele/attack_self(mob/user)
+	if(!user.IsAdvancedToolUser())
+		to_chat(user, "<span class='red'>You don't have the dexterity to do this!</span>")
+		return
 	var/turf/current_location = get_turf(user)//What turf is the user on?
 	if(!current_location||current_location.z==2||current_location.z>=7)//If turf was not found or they're on z level 2 or >7 which does not currently exist.
 		to_chat(user, "<span class='notice'>\The [src] is malfunctioning.</span>")
@@ -143,6 +146,8 @@ Frequency:
 	var/list/L = list(  )
 	for(var/obj/machinery/computer/teleporter/com in machines)
 		if(com.target)
+			if(com.target.z == ZLEVEL_CENTCOMM || com.target.z > 7)
+				continue
 			if(com.power_station && com.power_station.teleporter_hub && com.power_station.engaged)
 				L["[com.id] (Active)"] = com.target
 			else

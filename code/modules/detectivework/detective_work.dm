@@ -6,10 +6,10 @@ atom/proc/add_fibers(mob/living/carbon/human/M)
 	if(M.gloves && istype(M.gloves,/obj/item/clothing/))
 		var/obj/item/clothing/gloves/G = M.gloves
 		if(G.transfer_blood) //bloodied gloves transfer blood to touched objects
-			if(add_blood(G.bloody_hands_mob)) //only reduces the bloodiness of our gloves if the item wasn't already bloody
+			if(add_blood(G.bloody_hands_mob,G.dirt_overlay)) //only reduces the bloodiness of our gloves if the item wasn't already bloody
 				G.transfer_blood--
 	else if(M.bloody_hands)
-		if(add_blood(M.bloody_hands_mob))
+		if(add_blood(M.bloody_hands_mob,M.hand_dirt_color))
 			M.bloody_hands--
 	if(!suit_fibers) suit_fibers = list()
 	var/fibertext
@@ -54,7 +54,7 @@ var/const/FINGERPRINT_COMPLETE = 6	//This is the output of the stringpercent(pri
 /obj/machinery/computer/forensic_scanning
 	name = "\improper High-Res Forensic Scanning Computer"
 	icon_state = "forensic"
-	light_color = "#a91515"
+	light_color = "#00008b"
 	allowed_checks = ALLOWED_CHECK_NONE
 	var/obj/item/scanning
 	var/temp = ""

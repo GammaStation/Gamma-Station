@@ -116,7 +116,7 @@
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
-	armor = list(melee = 100, bullet = 100, laser = 100,energy = 100, bomb = 100, bio = 100, rad = 100)
+	armor = list(melee = 100, bullet = 100, laser = 100,energy = 100, bomb = 100, bio = 100, rad = 100, telepathy = 100)
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | ARMS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0
@@ -194,7 +194,7 @@
 	item_state = "bl_suit"
 	item_color = "black_suit"
 	body_parts_covered = UPPER_TORSO|ARMS
-	armor = list(melee = 18, bullet = 12, laser = 5, energy = 5, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 18, bullet = 12, laser = 5, energy = 5, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 
 /obj/item/clothing/under/suit_jacket/really_black
 	name = "executive suit"
@@ -260,7 +260,7 @@
 	item_state = "white_suit"
 	item_color = "white_suit"
 
-/obj/item/clothing/under/suit_jacket/rouge
+/obj/item/clothing/under/suit_jacket/rogue
 	name = "rogue jacket"
 	desc = "A  suit and jacket with a jeans. For the bad guy!"
 	icon_state = "rogue_jacket"
@@ -516,7 +516,7 @@
 	icon_state = "forensicsred"
 	item_state = "r_suit"
 	item_color = "forensicsred"
-	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	flags = ONESIZEFITSALL
 	siemens_coefficient = 0.9
 
@@ -528,21 +528,21 @@
 	item_color = "qm_f"
 
 /obj/item/clothing/under/rank/head_of_security_fem
-	desc = "It's a jumpsuit worn by those few with the dedication to achieve the position of \"Head of Security\". It has additional armor to protect the wearer."
-	name = "head of security's dress"
+	desc = "It's a jumpsuit worn by those few with the dedication to achieve the position of \"Star Vigil Commander\". It has additional armor to protect the wearer."
+	name = "Star Vigil Commander's dress"
 	icon_state = "hos_f"
 	item_state = "r_suit"
 	item_color = "hos_f"
-	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	siemens_coefficient = 0.8
 
 /obj/item/clothing/under/rank/warden_fem
-	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for more robust protection. It has the word \"Warden\" written on the shoulders."
+	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for more robust protection. It has the words \"Star Vigil Sergeant\" written on the shoulders."
 	name = "warden's dress"
 	icon_state = "warden_f"
 	item_state = "r_suit"
 	item_color = "warden_f"
-	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/under/rank/roboticist_fem

@@ -164,7 +164,6 @@ var/global/BSACooldown = 0
 				<A href='?src=\ref[src];simplemake=constructbuilder;mob=\ref[M]'>Builder</A> ,
 				<A href='?src=\ref[src];simplemake=constructwraith;mob=\ref[M]'>Wraith</A> \]
 				<A href='?src=\ref[src];simplemake=shade;mob=\ref[M]'>Shade</A>
-				<A href='?src=\ref[src];simplemake=meme;mob=\ref[M]'>Meme</A>
 				<br>
 			"}
 
@@ -630,6 +629,7 @@ var/global/BSACooldown = 0
 			<BR>
 			<B>Fun Secrets</B><BR>
 			<BR>
+			<A href='?src=\ref[src];secretsfun=toggle_shit'>Toggle hot stuff(shit,piss,etc) (by default is off)</A><BR>
 			<A href='?src=\ref[src];secretsfun=sec_clothes'>Remove 'internal' clothing</A><BR>
 			<A href='?src=\ref[src];secretsfun=sec_all_clothes'>Remove ALL clothing</A><BR>
 			<A href='?src=\ref[src];secretsfun=monkey'>Turn all humans into monkeys</A><BR>
@@ -659,6 +659,7 @@ var/global/BSACooldown = 0
 
 	if(check_rights(R_SERVER,0))
 		dat += "<A href='?src=\ref[src];secretsfun=togglebombcap'>Toggle bomb cap</A><BR>"
+		dat += "<A href='?src=\ref[src];secretsfun=togglehulks'>Toggle Hulks</A><BR>"
 
 	dat += "<BR>"
 
@@ -668,7 +669,7 @@ var/global/BSACooldown = 0
 			<BR>
 			<A href='?src=\ref[src];secretscoder=maint_access_engiebrig'>Change all maintenance doors to engie/brig access only</A><BR>
 			<A href='?src=\ref[src];secretscoder=maint_access_brig'>Change all maintenance doors to brig access only</A><BR>
-			<A href='?src=\ref[src];secretscoder=infinite_sec'>Remove cap on security officers</A><BR>
+			<A href='?src=\ref[src];secretscoder=infinite_sec'>Remove cap on Star Vigil Officers</A><BR>
 			<BR>
 			<B>Coder Secrets</B><BR>
 			<BR>

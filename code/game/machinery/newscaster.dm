@@ -753,7 +753,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 	if(photo)
 		if(!issilicon(user))
 			photo.loc = src.loc
-			user.put_in_inactive_hand(photo)
+			user.put_in_hands(photo)
 		photo = null
 	if(istype(user.get_active_hand(), /obj/item/weapon/photo))
 		photo = user.get_active_hand()

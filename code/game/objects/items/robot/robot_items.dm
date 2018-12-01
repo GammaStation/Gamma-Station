@@ -63,6 +63,11 @@
 	icon_state = "night"
 	icon = 'icons/obj/clothing/glasses.dmi'
 
+/obj/item/borg/sight/science
+	name = "\proper reagent vision"
+	icon_state = "purple"
+	icon = 'icons/obj/clothing/glasses.dmi'
+
 /obj/item/borg/sight/hud
 	name = "hud"
 	var/obj/item/clothing/glasses/hud/hud = null
@@ -85,7 +90,7 @@
 
 /obj/item/borg/sight/hud/sec/atom_init()
 	. = ..()
-	hud = new /obj/item/clothing/glasses/hud/security(src)
+	hud = new /obj/item/clothing/glasses/hud/security/sun(src)
 
 
 /obj/item/borg/sight/hud/miner

@@ -138,8 +138,8 @@ datum/supply_pack/New()
 
 /datum/supply_pack/armor
 	name = "Armor crate"
-	contains = list(/obj/item/clothing/head/helmet,
-					/obj/item/clothing/head/helmet,
+	contains = list(/obj/item/clothing/head/helmet/band,
+					/obj/item/clothing/head/helmet/band,
 					/obj/item/clothing/suit/storage/flak,
 					/obj/item/clothing/suit/storage/flak)
 	cost = 1500
@@ -162,11 +162,11 @@ datum/supply_pack/New()
 					/obj/item/weapon/handcuffs,
 					/obj/item/weapon/handcuffs,
 					/obj/item/weapon/handcuffs,
-					/obj/item/clothing/head/helmet/riot,
+					/obj/item/clothing/head/helmet/band/riot,
 					/obj/item/clothing/suit/armor/riot,
-					/obj/item/clothing/head/helmet/riot,
+					/obj/item/clothing/head/helmet/band/riot,
 					/obj/item/clothing/suit/armor/riot,
-					/obj/item/clothing/head/helmet/riot,
+					/obj/item/clothing/head/helmet/band/riot,
 					/obj/item/clothing/suit/armor/riot)
 	cost = 6000
 	crate_type = /obj/structure/closet/crate/secure
@@ -286,7 +286,7 @@ datum/supply_pack/New()
 					/obj/item/clothing/head/helmet/laserproof,
 					/obj/item/clothing/suit/storage/flak/bulletproof,
 					/obj/item/clothing/head/helmet/bulletproof,
-					/obj/item/clothing/head/helmet/riot,
+					/obj/item/clothing/head/helmet/band/riot,
 					/obj/item/clothing/suit/armor/riot)
 	cost = 3500
 	crate_type = /obj/structure/closet/crate/secure
@@ -386,7 +386,7 @@ datum/supply_pack/New()
 					/obj/item/weapon/reagent_containers/food/drinks/flask/barflask,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/patron,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/goldschlager,
-					/obj/item/weapon/storage/fancy/cigarettes/dromedaryco,
+					/obj/item/weapon/storage/fancy/cigarettes/odetoviceroy_red,
 					/obj/item/weapon/lipstick/random,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/ale,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/ale,
@@ -1231,7 +1231,7 @@ datum/supply_pack/New()
 					/obj/item/weapon/caution,
 					/obj/item/weapon/caution,
 					/obj/item/weapon/caution,
-					/obj/item/weapon/watertank/janitor,
+					/obj/item/weapon/reagent_containers/watertank_backpack/janitor,
 					/obj/item/weapon/storage/bag/trash,
 					/obj/item/weapon/reagent_containers/spray/cleaner,
 					/obj/item/weapon/reagent_containers/glass/rag,

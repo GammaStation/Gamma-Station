@@ -38,14 +38,14 @@
 	force = 8 //might or might not be too high, subject to change
 	throwforce = 8
 	attack_verb = list("drilled", "screwed", "jabbed")
-	action_button_name = "Change mode"
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/weapon/wrench/power/attack_self(mob/user)
 	playsound(user, 'sound/items/change_drill.ogg', 50, 1)
 	var/obj/item/weapon/screwdriver/power/s_drill = new
 	to_chat(user, "<span class='notice'>You attach the screw driver bit to [src].</span>")
 	qdel(src)
-	user.put_in_active_hand(s_drill)
+	user.put_in_hands(s_drill)
 
 /*
  * Screwdriver
@@ -104,14 +104,14 @@
 	throw_range = 3//it's heavier than a screw driver/wrench, so it does more damage, but can't be thrown as far
 	attack_verb = list("drilled", "screwed", "jabbed","whacked")
 	hitsound = 'sound/items/drill_hit.ogg'
-	action_button_name = "Change mode"
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/weapon/screwdriver/power/attack_self(mob/user)
 	playsound(user, 'sound/items/change_drill.ogg', 50, 1)
 	var/obj/item/weapon/wrench/power/b_drill = new
 	to_chat(user, "<span class='notice'>You attach the bolt driver bit to [src].</span>")
 	qdel(src)
-	user.put_in_active_hand(b_drill)
+	user.put_in_hands(b_drill)
 /*
  * Wirecutters
  */
@@ -161,14 +161,14 @@
 	item_state = "jawsoflife"
 	origin_tech = "materials=2;engineering=2"
 	materials = list(MAT_METAL=150, MAT_SILVER=50)
-	action_button_name = "Change mode"
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/weapon/wirecutters/power/attack_self(mob/user)
 	playsound(user, 'sound/items/change_jaws.ogg', 50, 1)
 	var/obj/item/weapon/crowbar/power/pryjaws = new
 	to_chat(user, "<span class='notice'>You attach the pry jaws to [src].</span>")
 	qdel(src)
-	user.put_in_active_hand(pryjaws)
+	user.put_in_hands(pryjaws)
 
 /*
  * Welding Tool
@@ -179,7 +179,7 @@
 	icon_state = "welder"
 	flags = CONDUCT
 	slot_flags = SLOT_BELT
-	action_button_name = "Switch Welding tool"
+	actions_types = /datum/action/item_action/attack_self
 
 	//Amount of OUCH when it's thrown
 	force = 3.0
@@ -264,7 +264,8 @@
 				src.icon_state = initial(src.icon_state)
 				src.welding = 0
 			set_light(0)
-			STOP_PROCESSING(SSobj, src)
+			if (!istype(src, /obj/item/weapon/weldingtool/experimental))
+				STOP_PROCESSING(SSobj, src)
 			return
 		//Welders left on now use up fuel, but lets not have them run out quite that fast
 		if(1)
@@ -422,44 +423,38 @@
 //Decides whether or not to damage a player's eyes based on what they're wearing as protection
 //Note: This should probably be moved to mob
 /obj/item/weapon/weldingtool/proc/eyecheck(mob/user)
-	if(!iscarbon(user))	return 1
-	var/safety = user:eyecheck()
-	if(istype(user, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = user
-		var/obj/item/organ/internal/eyes/IO = H.organs_by_name[O_EYES]
-		if(H.species.flags[IS_SYNTHETIC])
+	if(!ishuman(user))
+		return
+	var/mob/living/carbon/human/H = user
+	if(H.species.flags[IS_SYNTHETIC])
+		return
+	if(istype(H.wear_mask, /obj/item/clothing/mask/gas/welding))
+		var/obj/item/clothing/mask/gas/welding/W = H.wear_mask
+		if(!W.up)
 			return
-		switch(safety)
-			if(1)
-				to_chat(usr, "<span class='warning'>Your eyes sting a little.</span>")
-				IO.damage += rand(1, 2)
-				if(IO.damage > 12)
-					user.eye_blurry += rand(3,6)
-			if(0)
-				to_chat(usr, "<span class='warning'>Your eyes burn.</span>")
-				IO.damage += rand(2, 4)
-				if(IO.damage > 10)
-					IO.damage += rand(4,10)
-			if(-1)
-				to_chat(usr, "<span class='danger'>Your thermals intensify the welder's glow. Your eyes itch and burn severely.</span>")
-				user.eye_blurry += rand(12,20)
-				IO.damage += rand(12, 16)
-		if(safety<2)
-
-			if(IO.damage > 10)
-				to_chat(user, "<span class='warning'>Your eyes are really starting to hurt. This can't be good for you!</span>")
-
-			if (IO.damage >= IO.min_broken_damage)
-				to_chat(user, "<span class='danger'>You go blind!</span>")
-				user.sdisabilities |= BLIND
-			else if (IO.damage >= IO.min_bruised_damage)
-				to_chat(user, "<span class='danger'>You go blind!</span>")
-				user.eye_blind = 5
-				user.eye_blurry = 5
-				user.disabilities |= NEARSIGHTED
-				spawn(100)
-					user.disabilities &= ~NEARSIGHTED
-	return
+	if(istype(H.head, /obj/item/clothing/head/welding))
+		var/obj/item/clothing/head/welding/W = H.head
+		if(!W.up)
+			return
+	if(istype(H.head, /obj/item/clothing/head/helmet/space/rig))
+		return
+	if(istype(H.glasses, /obj/item/clothing/glasses/welding))
+		var/obj/item/clothing/glasses/welding/W = H.glasses
+		if(!W.up)
+			return
+	to_chat(user, "<span class='warning'>Your eyes burn.</span>")
+	var/obj/item/organ/internal/eyes/IO = H.organs_by_name[O_EYES]
+	IO.damage += rand(2, 4)
+	if(IO.damage > 10)
+		IO.damage += rand(4,10)
+		to_chat(user, "<span class='warning'>Your eyes are really starting to hurt. This can't be good for you!</span>")
+		if (IO.damage >= IO.min_broken_damage)
+			to_chat(user, "<span class='danger'>You go blind!</span>")
+			user.sdisabilities |= BLIND
+		else if (IO.damage >= IO.min_bruised_damage)
+			to_chat(user, "<span class='danger'>You go blind!</span>")
+			user.eye_blind = 5
+			user.eye_blurry = 5
 
 
 /obj/item/weapon/weldingtool/largetank
@@ -490,15 +485,15 @@
 	m_amt = 70
 	g_amt = 120
 	origin_tech = "materials=4;engineering=4;bluespace=2;phorontech=3"
-	var/last_gen = 0
+var/next_refuel_tick = 0
 
-
-
-/obj/item/weapon/weldingtool/experimental/proc/fuel_gen()//Proc to make the experimental welder generate fuel, optimized as fuck -Sieve
-	var/gen_amount = ((world.time-last_gen)/25)
-	reagents += (gen_amount)
-	if(reagents > max_fuel)
-		reagents = max_fuel
+/obj/item/weapon/weldingtool/experimental/process()
+	..()
+	if((get_fuel() < max_fuel) && (next_refuel_tick < world.time) && !welding)
+		next_refuel_tick = world.time + 2.5 SECONDS
+		reagents.add_reagent("fuel", 1)
+	if(!welding && (get_fuel() == max_fuel))
+		STOP_PROCESSING(SSobj, src)
 
 /*
  * Crowbar
@@ -532,14 +527,14 @@
 	materials = list(MAT_METAL=150, MAT_SILVER=50)
 	origin_tech = "materials=2;engineering=2"
 	force = 15
-	action_button_name = "Change mode"
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/weapon/crowbar/power/attack_self(mob/user)
 	playsound(user, 'sound/items/change_jaws.ogg', 50, 1)
 	var/obj/item/weapon/wirecutters/power/cutjaws = new
 	to_chat(user, "<span class='notice'>You attach the cutting jaws to [src].</span>")
 	qdel(src)
-	user.put_in_active_hand(cutjaws)
+	user.put_in_hands(cutjaws)
 
 /obj/item/weapon/weldingtool/attack(mob/M, mob/user, def_zone)
 

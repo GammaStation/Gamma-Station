@@ -17,7 +17,7 @@
 	//Creates a shattering noise and replaces the bottle with a broken_bottle
 	user.drop_item()
 	var/obj/item/weapon/broken_bottle/B = new /obj/item/weapon/broken_bottle(user.loc)
-	user.put_in_active_hand(B)
+	user.put_in_hands(B)
 	if(prob(33))
 		new/obj/item/weapon/shard(target.loc) // Create a glass shard at the target's location!
 	B.icon_state = src.icon_state
@@ -28,7 +28,7 @@
 	B.icon = I
 
 	playsound(src, "shatter", 70, 1)
-	user.put_in_active_hand(B)
+	user.put_in_hands(B)
 	src.transfer_fingerprints_to(B)
 
 	qdel(src)

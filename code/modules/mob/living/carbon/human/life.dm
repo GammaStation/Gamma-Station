@@ -33,14 +33,6 @@
 
 	..()
 
-	/*
-	//This code is here to try to determine what causes the gender switch to plural error. Once the error is tracked down and fixed, this code should be deleted
-	//Also delete var/prev_gender once this is removed.
-	if(prev_gender != gender)
-		prev_gender = gender
-		if(gender in list(PLURAL, NEUTER))
-			message_admins("[src] ([ckey]) gender has been changed to plural or neuter. Please record what has happened recently to the person and then notify coders. (<A HREF='?_src_=holder;adminmoreinfo=\ref[src]'>?</A>)  (<A HREF='?_src_=vars;Vars=\ref[src]'>VV</A>) (<A HREF='?priv_msg=\ref[src]'>PM</A>) (<A HREF='?_src_=holder;adminplayerobservejump=\ref[src]'>JMP</A>)")
-	*/
 	//Apparently, the person who wrote this code designed it so that
 	//blinded get reset each cycle and then get activated later in the
 	//code. Very ugly. I dont care. Moving this stuff here so its easy
@@ -96,6 +88,9 @@
 
 		handle_heart_beat()
 
+		if(SHIT_TOGGLED)
+			handle_feces()
+
 	handle_stasis_bag()
 
 	if(life_tick > 5 && timeofdeath && (timeofdeath < 5 || world.time - timeofdeath > 6000))	//We are long dead, or we're junk mobs spawned like the clowns on the clown shuttle
@@ -116,10 +111,12 @@
 	//Update our name based on whether our face is obscured/disfigured
 	name = get_visible_name()
 
-	handle_regular_hud_updates()
-
 	//Updates the number of stored chemicals for powers and essentials
 	handle_changeling()
+
+	//Species-specific update.
+	if(species)
+		species.on_life(src)
 
 	pulse = handle_pulse()
 
@@ -132,7 +129,7 @@
 /mob/living/carbon/human/proc/get_pressure_protection(pressure_check = STOPS_PRESSUREDMAGE)
 	var/pressure_adjustment_coefficient = 1	//Determins how much the clothing you are wearing protects you in percent.
 
-	if((head && (head.flags_pressure & pressure_check))&&(wear_suit && (wear_suit.flags_pressure & pressure_check)))
+	if(((head && (head.flags_pressure & pressure_check)) || !(BP_HEAD in species.has_bodypart)) && (wear_suit && (wear_suit.flags_pressure & pressure_check)))
 		pressure_adjustment_coefficient = 0
 
 		//Handles breaches in your space suit. 10 suit damage equals a 100% loss of pressure reduction.
@@ -617,8 +614,9 @@
 	//Moved pressure calculations here for use in skip-processing check.
 	var/pressure = environment.return_pressure()
 	var/adjusted_pressure = calculate_affecting_pressure(pressure)
+	var/is_in_space = istype(get_turf(src), /turf/space)
 
-	if(!istype(get_turf(src), /turf/space)) //space is not meant to change your body temperature.
+	if(!is_in_space) //space is not meant to change your body temperature.
 		var/loc_temp = get_temperature(environment)
 
 		if(adjusted_pressure < species.warning_high_pressure && adjusted_pressure > species.warning_low_pressure && abs(loc_temp - bodytemperature) < 20 && bodytemperature < species.heat_level_1 && bodytemperature > species.cold_level_1)
@@ -628,7 +626,7 @@
 
 		//Body temperature adjusts depending on surrounding atmosphere based on your thermal protection
 		var/temp_adj = 0
-		if(!on_fire || !(get_species() == IPC && is_damaged_organ(O_LUNGS))) //If you're on fire, you do not heat up or cool down based on surrounding gases
+		if(!on_fire && !(is_type_organ(O_LUNGS, /obj/item/organ/internal/lungs/ipc) && is_bruised_organ(O_LUNGS))) //If you're on fire, you do not heat up or cool down based on surrounding gases
 			if(loc_temp < bodytemperature)			//Place is colder than we are
 				var/thermal_protection = get_cold_protection(loc_temp) //This returns a 0 - 1 value, which corresponds to the percentage of protection based on what you're wearing and what you're exposed to.
 				if(thermal_protection < 1)
@@ -647,7 +645,7 @@
 			//world << "Environment: [loc_temp], [src]: [bodytemperature], Adjusting: [temp_adj]"
 			bodytemperature += temp_adj
 
-	else if(istype(get_turf(src), /turf/space) && !species.flags[IS_SYNTHETIC] && !species.flags[IS_PLANT])
+	else if(!species.flags[IS_SYNTHETIC] && !species.flags[IS_PLANT])
 		if(istype(loc, /obj/mecha))
 			return
 		if(istype(loc, /obj/structure/transit_tube_pod))
@@ -708,7 +706,7 @@
 		throw_alert("pressure","lowpressure",1)
 	else
 		throw_alert("pressure","lowpressure",2)
-		apply_effect(15, AGONY, 0)
+		apply_effect(is_in_space ? 15 : 7, AGONY, 0)
 		take_overall_damage(burn=LOW_PRESSURE_DAMAGE, used_weapon = "Low Pressure")
 
 
@@ -729,10 +727,11 @@
 /mob/living/carbon/human/handle_fire()
 	if(..())
 		return
+	if(species.flags[IS_IMMATERIAL])
+		return
 	var/thermal_protection = get_heat_protection(30000) //If you don't have fire suit level protection, you get a temperature increase
 	if((1 - thermal_protection) > 0.0001)
 		bodytemperature += BODYTEMP_HEATING_MAX
-	return
 //END FIRE CODE
 
 
@@ -946,12 +945,114 @@
 */
 
 /mob/living/carbon/human/proc/handle_chemicals_in_body()
+	if(get_species() == TYCHEON && life_tick % 3 == 0)  // Shut up and truuuust thiiis! Come up with a flag if you ever need it elsewhere.
+		if(!istype(get_turf(src), /turf/space)) // The only to use this is Voidan. And their nutrition is static charge.
+			if(prob(5))
+				new /obj/effect/effect/sparks(loc)
+			nutrition = min(500, nutrition + 1)
+
+		if(istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon)) // We spend charge to keep sphere going.
+			if(!istype(loc, /turf/space)) // Not in space though.
+				if(nutrition < 250 && life_tick % 12 == 0)
+					to_chat(src, "<span class='warning'>Your sphere is becoming unstable due to lack of charge!</span>")
+				if(nutrition > 203)
+					nutrition -= 3
+				else
+					remove_from_mob(wear_suit, get_turf(src))
+
+		var/owner_color = uppertext_(rgb(r_skin, g_skin, b_skin))
+		var/mix_color = mix_color_from_reagents(reagents.reagent_list)
+		if(!istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
+			var/list/range_objs = orange(1, src)
+			for(var/atom/AM in range_objs) // Gas mixing color, AND reagents with each other.
+				if(iscarbon(AM))
+					var/mob/living/carbon/C = AM
+					if(C.get_species() == TYCHEON && ishuman(C))
+						var/mob/living/carbon/human/H = C
+						for(var/datum/reagent/R in reagents.reagent_list) // They split it all by half, since they are gas and pass it to each other.
+							if(reagents.get_reagent_amount(R.id) > H.reagents.get_reagent_amount(R.id) && H.reagents.total_volume < H.reagents.maximum_volume)
+								H.reagents.add_reagent(R.id, 1, R.data)
+								reagents.remove_reagent(R.id, 1)
+						var/other_tycheon_color = uppertext_(rgb(H.r_skin, H.g_skin, H.b_skin))
+						if(mix_color != other_tycheon_color)
+							mix_color = other_tycheon_color
+					else
+						var/block = FALSE
+						if(C.wear_mask)
+							if(C.wear_mask.flags & BLOCK_GAS_SMOKE_EFFECT)
+								block = TRUE
+						if(ishuman(C))
+							var/mob/living/carbon/human/H = C
+							if(H.glasses)
+								if(H.glasses.flags & BLOCK_GAS_SMOKE_EFFECT)
+									block = TRUE
+							if(H.head)
+								if(H.head.flags & BLOCK_GAS_SMOKE_EFFECT)
+									block = TRUE
+						if(!block)
+							for(var/datum/reagent/R in reagents.reagent_list) // They just give everything they have.
+								if(C.reagents.total_volume < C.reagents.maximum_volume)
+									C.reagents.add_reagent(R.id, 1, R.data)
+									reagents.remove_reagent(R.id, 1)
+
+				else if(istype(AM, /obj/item/weapon/reagent_containers))
+					var/obj/item/weapon/reagent_containers/RC = AM
+					if(RC.flags & OPENCONTAINER)
+						for(var/datum/reagent/R in reagents.reagent_list)
+							if(RC.reagents.total_volume < RC.reagents.maximum_volume)
+								RC.reagents.add_reagent(R.id, 1, R.data)
+								reagents.remove_reagent(R.id, 1)
+
+				else if(istype(AM, /obj))
+					if(prob(10))
+						for(var/datum/reagent/R in reagents.reagent_list)
+							R.reaction_obj(AM, 1)
+							reagents.remove_reagent(R.id, 1)
+
+				else if(istype(AM, /turf))
+					if(prob(5))
+						for(var/datum/reagent/R in reagents.reagent_list)
+							R.reaction_turf(AM, 1)
+							reagents.remove_reagent(R.id, 1)
+
+		if((mix_color != 0) && owner_color != mix_color) // Why change our color if we already achieved the result.
+			var/redcolor = hex2num(copytext(mix_color, 2, 4)) // "Complex" math. Trust me, it works.
+			var/greencolor = hex2num(copytext(mix_color, 4, 6))
+			var/bluecolor = hex2num(copytext(mix_color, 6, 8))
+			var/r_tweak = 0.15
+			var/g_tweak = 0.15
+			var/b_tweak = 0.15
+			if(redcolor == 0)
+				if(r_skin <= 1)
+					r_tweak = 1
+			else
+				if(((r_skin / redcolor) >= 0.8) && ((r_skin / redcolor) <= 1.2))
+					r_tweak = 1
+			if(greencolor == 0)
+				if(g_skin <= 1)
+					g_tweak = 1
+			else
+				if(((g_skin / greencolor) >= 0.8) && ((g_skin / greencolor) <= 1.2))
+					g_tweak = 1
+			if(bluecolor == 0)
+				if(b_skin <= 1)
+					b_tweak = 1
+			else
+				if(((b_skin / bluecolor) >= 0.8) && ((b_skin / bluecolor) <= 1.2))
+					b_tweak = 1
+			var/r_base = 1 - r_tweak
+			var/g_base = 1 - g_tweak
+			var/b_base = 1 - b_tweak
+			r_skin = Clamp(round((r_skin * r_base) + (redcolor * r_tweak)), 0, 255)
+			g_skin = Clamp(round((g_skin * g_base) + (greencolor * g_tweak)), 0, 255)
+			b_skin = Clamp(round((b_skin * b_base) + (bluecolor * b_tweak)), 0, 255)
+			update_body()
 
 	if(reagents && !species.flags[IS_SYNTHETIC]) //Synths don't process reagents.
 		var/alien = null
 		if(species)
 			alien = species.name
-		reagents.metabolize(src,alien)
+		reagents.metabolize(src, alien)
 
 		var/total_phoronloss = 0
 		for(var/obj/item/I in src)
@@ -967,17 +1068,17 @@
 			var/turf/T = loc
 			light_amount = round((T.get_lumcount()*10)-5)
 
-		if(get_species() == DIONA && !is_damaged_organ(O_LIVER)) // Specie may require light, but only plants, with chlorophyllic plasts can produce nutrition out of light!
+		if(is_type_organ(O_LIVER, /obj/item/organ/internal/liver/diona) && !is_bruised_organ(O_LIVER)) // Specie may require light, but only plants, with chlorophyllic plasts can produce nutrition out of light!
 			nutrition += light_amount
 
 		if(species.flags[IS_PLANT])
-			var/obj/item/organ/internal/kidneys/KS = organs_by_name[O_KIDNEYS]
-			if(!KS)
-				nutrition = 0
-			if(KS && get_species() == DIONA && (nutrition > 500 - KS.damage*5))
-				nutrition = 500 - KS.damage*5
-			var/obj/item/organ/external/External
-			species.regen(src, light_amount, External)
+			if(is_type_organ(O_KIDNEYS, /obj/item/organ/internal/kidneys/diona)) // Diona's kidneys contain all the nutritious elements. Damaging them means they aren't held.
+				var/obj/item/organ/internal/kidneys/KS = organs_by_name[O_KIDNEYS]
+				if(!KS)
+					nutrition = 0
+				else if(nutrition > (500 - KS.damage*5))
+					nutrition = 500 - KS.damage*5
+			species.regen(src, light_amount)
 
 	if(dna && dna.mutantrace == "shadow")
 		var/light_amount = 0
@@ -1021,7 +1122,7 @@
 			update_inv_w_uniform()
 			update_inv_wear_suit()
 	else
-		if(overeatduration > 500 && !species.flags[IS_SYNTHETIC] && !species.flags[IS_PLANT])
+		if(overeatduration > 500 && !species.flags[NO_FAT])
 			mutations.Add(FAT)
 			update_body()
 			update_mutantrace()
@@ -1032,7 +1133,7 @@
 
 	// nutrition decrease
 	if (nutrition > 0 && stat != DEAD)
-		nutrition = max (0, nutrition - HUNGER_FACTOR)
+		nutrition = max(0, nutrition - HUNGER_FACTOR * species.custom_metabolism)
 
 	if (nutrition > 450)
 		if(overeatduration < 600) //capped so people don't take forever to unfat
@@ -1064,6 +1165,20 @@
 
 	if(!species.flags[IS_SYNTHETIC])
 		handle_trace_chems()
+
+	if(reagents_lit_on)
+		if(get_species() == TYCHEON && istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon)) // We don't glow in the sphere that completely covers ourselves.
+			reagents_lit_on = FALSE
+			set_light(0)
+		var/r_c = num2hex(r_skin)
+		var/g_c = num2hex(g_skin)
+		var/b_c = num2hex(b_skin)
+		var/reg_hex_color = "#[r_c][g_c][b_c]"
+		set_light(light_range_reagents, light_range_reagents, reg_hex_color)
+		light_range_reagents -= 0.1
+		if(light_range_reagents <= 0)
+			reagents_lit_on = FALSE
+			set_light(0)
 
 	updatehealth()
 
@@ -1214,18 +1329,13 @@
 		// If you're dirty, your gloves will become dirty, too.
 		if(gloves && germ_level > gloves.germ_level && prob(10))
 			gloves.germ_level += 1
-
 	return 1
 
 /mob/living/carbon/human/handle_regular_hud_updates()
-	if(hud_updateflag)//? Below ?
+	if(hud_updateflag)
 		handle_hud_list()
-
 	if(!client)
 		return 0
-
-	if(hud_updateflag)//Is there any reason for 2nd check? ~Zve
-		handle_hud_list()
 
 	for(var/image/hud in client.images)
 		if(copytext(hud.icon_state,1,4) == "hud") //ugly, but icon comparison is worse, I believe
@@ -1279,11 +1389,13 @@
 		else
 			clear_fullscreen("brute")
 
-	if( stat == DEAD )
+	if(stat == DEAD )
 		sight |= (SEE_TURFS|SEE_MOBS|SEE_OBJS)
 		see_in_dark = 8
-		if(!druggy)		see_invisible = SEE_INVISIBLE_LEVEL_TWO
-		if(healths)		healths.icon_state = "health7"	//DEAD healthmeter
+		if(!druggy)
+			see_invisible = SEE_INVISIBLE_LEVEL_TWO
+		if(healths)
+			healths.icon_state = "health7"	//DEAD healthmeter
 		if(client)
 			if(client.view != world.view)
 				if(locate(/obj/item/weapon/gun/energy/sniperrifle, contents))
@@ -1294,7 +1406,7 @@
 	else
 		sight &= ~(SEE_TURFS|SEE_MOBS|SEE_OBJS)
 		see_in_dark = species.darksight
-		see_invisible = see_in_dark>2 ? SEE_INVISIBLE_LEVEL_ONE : SEE_INVISIBLE_LIVING
+		see_invisible = see_in_dark > 2 ? SEE_INVISIBLE_LEVEL_ONE : SEE_INVISIBLE_LIVING
 		if(dna)
 			switch(dna.mutantrace)
 				if("slime")
@@ -1307,50 +1419,44 @@
 		if(XRAY in mutations)
 			sight |= SEE_TURFS|SEE_MOBS|SEE_OBJS
 			see_in_dark = 8
-			if(!druggy)		see_invisible = SEE_INVISIBLE_LEVEL_TWO
+			if(!druggy)
+				see_invisible = SEE_INVISIBLE_LEVEL_TWO
 
 		if(seer)
-			var/obj/effect/rune/R = locate() in loc
-			if(R && istype(R.power, /datum/cult/seer))
-				see_invisible = SEE_INVISIBLE_CULT
+			var/obj/effect/proc_holder/spell/targeted/thrall_sight/T = locate() in mind.spell_list
+			if(T && T.activated)
+				see_invisible = SEE_INVISIBLE_MINIMUM
+				see_in_dark += 2
 			else
-				see_invisible = SEE_INVISIBLE_LIVING
-				seer = FALSE
+				var/obj/effect/rune/R = locate() in loc
+				if(R && istype(R.power, /datum/cult/seer))
+					see_invisible = SEE_INVISIBLE_CULT
+				else
+					see_invisible = SEE_INVISIBLE_LIVING
+					seer = FALSE
 
 		if(glasses)
 			var/obj/item/clothing/glasses/G = glasses
 			if(istype(G))
 				see_in_dark += G.darkness_view
-				if(G.vision_flags)		// MESONS
+				if(G.vision_flags)
 					sight |= G.vision_flags
 					if(!druggy)
 						see_invisible = SEE_INVISIBLE_MINIMUM
-			if(istype(G,/obj/item/clothing/glasses/night/shadowling))
-				var/obj/item/clothing/glasses/night/shadowling/S = G
-				if(S.vision)
-					see_invisible = SEE_INVISIBLE_LIVING
-				else
-					see_invisible = SEE_INVISIBLE_MINIMUM
+				if(istype(G,/obj/item/clothing/glasses/night/shadowling))
+					var/obj/item/clothing/glasses/night/shadowling/S = G
+					if(S.vision)
+						see_invisible = SEE_INVISIBLE_LIVING
+					else
+						see_invisible = SEE_INVISIBLE_MINIMUM
 
 /* HUD shit goes here, as long as it doesn't modify sight flags */
 // The purpose of this is to stop xray and w/e from preventing you from using huds -- Love, Doohl
-
-			if(istype(glasses, /obj/item/clothing/glasses/sunglasses/sechud))
-				var/obj/item/clothing/glasses/sunglasses/sechud/O = glasses
-				if(O.hud)
-					O.hud.process_hud(src)
-				if(!druggy)
-					see_invisible = SEE_INVISIBLE_LIVING
-			else if(istype(glasses, /obj/item/clothing/glasses/hud))
-				var/obj/item/clothing/glasses/hud/O = glasses
-				O.process_hud(src)
-				if(!druggy)
-					see_invisible = SEE_INVISIBLE_LIVING
-			else if(istype(glasses, /obj/item/clothing/glasses/sunglasses/hud/secmed))
-				var/obj/item/clothing/glasses/sunglasses/hud/secmed/O = glasses
-				O.process_hud(src)
-				if(!druggy)
-					see_invisible = SEE_INVISIBLE_LIVING
+				if(istype(glasses, /obj/item/clothing/glasses/hud))
+					var/obj/item/clothing/glasses/hud/O = glasses
+					O.process_hud(src)
+					if(!druggy)
+						see_invisible = SEE_INVISIBLE_LIVING
 
 		else if(!seer)
 			see_invisible = SEE_INVISIBLE_LIVING
@@ -1575,9 +1681,9 @@
 	if(bodytemperature > 406)
 		for(var/datum/disease/D in viruses)
 			D.cure()
-		for (var/ID in virus2)
-			var/datum/disease2/disease/V = virus2[ID]
-			V.cure(src)
+		//for (var/ID in virus2) //disabled because of symptom that randomly ignites a mob, which triggers this
+		//	var/datum/disease2/disease/V = virus2[ID]
+		//	V.cure(src)
 	if(life_tick % 3) //don't spam checks over all objects in view every tick.
 		for(var/obj/effect/decal/cleanable/O in view(1,src))
 			if(istype(O,/obj/effect/decal/cleanable/blood))
@@ -1585,14 +1691,16 @@
 				if(B && B.virus2 && B.virus2.len)
 					for (var/ID in B.virus2)
 						var/datum/disease2/disease/V = B.virus2[ID]
-						infect_virus2(src,V.getcopy())
+						if(V.spreadtype == "Contact")
+							infect_virus2(src,V.getcopy())
 
 			else if(istype(O,/obj/effect/decal/cleanable/mucus))
 				var/obj/effect/decal/cleanable/mucus/M = O
 				if(M && M.virus2 && M.virus2.len)
 					for (var/ID in M.virus2)
 						var/datum/disease2/disease/V = M.virus2[ID]
-						infect_virus2(src,V.getcopy())
+						if(V.spreadtype == "Contact")
+							infect_virus2(src,V.getcopy())
 
 
 	if(virus2.len)
@@ -1732,6 +1840,23 @@
 
 	return temp
 
+/mob/living/carbon/human/proc/handle_feces()
+	if(prob(5) && feces_count <= MAX_FECES_COUNT && nutrition >= NUTRITION_LEVEL_FED && !species.flags[IS_PLANT] && !species.flags[IS_SYNTHETIC]  )
+		switch(nutrition)
+			if(NUTRITION_LEVEL_FED to NUTRITION_LEVEL_FULL)
+				feces_count += 0.1
+			if(NUTRITION_LEVEL_FULL to INFINITY)
+				feces_count += 0.5
+
+	if(feces_count > MAX_FECES_COUNT)
+		feces_count = MAX_FECES_COUNT
+
+	//антиспам сервис
+	if(feces_count == MAX_FECES_COUNT && world.time >= next_feces_message_time && prob(10))
+		to_chat(src, "<span class='notice'>You're wanna to poo.</span>")
+		next_feces_message_time = world.time + 1000
+
+
 /*
 	Called by life(), instead of having the individual hud items update icons each tick and check for status changes
 	we only set those statuses and icons upon changes.  Then those HUD items will simply add those pre-made images.
@@ -1768,7 +1893,7 @@
 		else if(status_flags & XENO_HOST)
 			holder.icon_state = "hudxeno"
 			holder2.icon_state = "hudxeno"
-		else if(foundVirus)
+		else if(foundVirus || iszombie(src))
 			holder.icon_state = "hudill"
 		else if(has_brain_worms())
 			var/mob/living/simple_animal/borer/B = has_brain_worms()

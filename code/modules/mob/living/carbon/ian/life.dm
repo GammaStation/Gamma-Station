@@ -56,7 +56,7 @@
 		if(isturf(src.loc) && !resting && !buckled && canmove)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
 			turns_since_move++
 			if(turns_since_move >= turns_per_move)
-				if(!(stop_automated_movement_when_pulled && pulledby)) //Soma animals don't move when pulled
+				if(!(stop_automated_movement_when_pulled && (pulledby || focused_by.len))) //Soma animals don't move when pulled
 					var/anydir = pick(cardinal)
 					if(Process_Spacemove(anydir))
 						Move(get_step(src,anydir), anydir)
@@ -121,8 +121,6 @@
 
 	handle_regular_status_updates()
 	update_canmove()
-
-	//handle_regular_hud_updates() mob/living/Life() handles this already. i'l leave this as reminder. need to fix for human, monkey and maybe aliens also.
 
 /mob/living/carbon/ian/handle_regular_hud_updates()
 	if(!..())

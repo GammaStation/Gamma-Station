@@ -26,7 +26,7 @@
 /obj/item/weapon/gift/attack_self(mob/user)
 	user.drop_item()
 	if(src.gift)
-		user.put_in_active_hand(gift)
+		user.put_in_hands(gift)
 		src.gift.add_fingerprint(user)
 	else
 		to_chat(user, "\blue The gift was empty!")
@@ -139,6 +139,8 @@
 				return
 			else
 				if(istype(W, /obj/item/smallDelivery) || istype(W, /obj/item/weapon/gift)) //No gift wrapping gifts!
+					return
+				if(W.flags_2 & HOLOGRAM_2)
 					return
 
 				src.amount -= a_used

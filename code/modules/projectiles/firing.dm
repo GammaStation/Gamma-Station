@@ -24,7 +24,7 @@
 	return
 
 /obj/item/ammo_casing/proc/throw_proj(atom/target, turf/targloc, mob/living/user, params)
-	var/turf/curloc = user.loc
+	var/turf/curloc = get_turf(src)
 	if (!istype(targloc) || !istype(curloc) || !BB)
 		return 0
 	if(targloc == curloc)
@@ -33,8 +33,8 @@
 		qdel(BB)
 		BB = null
 		return 1
-	BB.loc = get_turf(user)
-	BB.starting = get_turf(user)
+	BB.forceMove(get_turf(src))
+	BB.starting = get_turf(src)
 	BB.current = curloc
 	BB.yo = targloc.y - curloc.y
 	BB.xo = targloc.x - curloc.x
@@ -46,7 +46,10 @@
 		if(mouse_control["icon-y"])
 			BB.p_y = text2num(mouse_control["icon-y"])
 	if(BB)
-		BB.process()
+		if(targloc != get_turf(target))
+			BB.process(targloc)
+		else
+			BB.process()
 	BB = null
 	return 1
 

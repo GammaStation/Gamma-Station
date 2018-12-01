@@ -10,7 +10,7 @@
 	flags = CONDUCT
 	origin_tech = "magnets=2;combat=1"
 
-	action_button_name = "Toggle Flash"
+	actions_types = /datum/action/item_action/attack_self
 
 	var/times_used = 0 //Number of times it's been used.
 	var/broken = 0     //Is the flash burnt out?
@@ -36,6 +36,10 @@
 
 /obj/item/device/flash/attack(mob/living/M, mob/user)
 	if(!user || !M)	return	//sanity
+
+	if(!user.IsAdvancedToolUser())
+		to_chat(user, "<span class='red'>You don't have the dexterity to do this!</span>")
+		return
 
 	M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been flashed (attempt) with [src.name]  by [user.name] ([user.ckey])</font>")
 	user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to flash [M.name] ([M.ckey])</font>")
@@ -66,7 +70,8 @@
 	var/flashfail = 0
 
 	if(iscarbon(M))
-		var/safety = M:eyecheck()
+		var/mob/living/carbon/C = M
+		var/safety = C.eyecheck()
 		if(safety <= 0)
 			M.Weaken(10)
 			M.flash_eyes()
@@ -128,7 +133,7 @@
 
 
 /obj/item/device/flash/attack_self(mob/living/carbon/user, flag = 0, emp = 0)
-	if(!user || !clown_check(user)) 	return
+	if(!user || !clown_check(user) || !user.IsAdvancedToolUser()) 	return
 	if(broken)
 		user.show_message("<span class='warning'>The [src.name] is broken</span>", 2)
 		return
@@ -162,10 +167,9 @@
 			qdel(animation)
 
 	for(var/mob/living/carbon/M in oviewers(3, null))
-		var/safety = M:eyecheck()
-		if(!safety)
-			if(!M.blinded)
-				M.flash_eyes()
+		var/safety = M.eyecheck()
+		if(safety <= 0 && !M.blinded)
+			M.flash_eyes()
 
 	return
 

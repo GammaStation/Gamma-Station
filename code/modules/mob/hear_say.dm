@@ -32,6 +32,16 @@
 		var/mob/living/carbon/human/H = speaker
 		speaker_name = H.GetVoice()
 
+	if(ishuman(src)) //zombie logic
+		var/mob/living/carbon/human/ME = src
+		if(iszombie(ME))
+			if(!ishuman(speaker))
+				message = stars(message, 40)
+			else
+				var/mob/living/carbon/human/H = speaker
+				if(!iszombie(H))
+					message = stars(message, 40)
+
 	if(italics)
 		message = "<i>[message]</i>"
 
@@ -54,9 +64,14 @@
 			to_chat(src, "<span class='name'>[speaker_name]</span>[alt_name] talks but you cannot hear \him.")
 	else
 		if(language)
-			to_chat(src, "<span class='game say'><span class='name'>[speaker_name]</span>[alt_name] [track][language.format_message(message, verb)]</span>")
+			message = "<span class='game say'><span class='name'>[speaker_name]</span>[alt_name] [track][language.format_message(message, verb)]</span>"
 		else
-			to_chat(src, "<span class='game say'><span class='name'>[speaker_name]</span>[alt_name] [track][verb], <span class='message'><span class='body'>\"[message]\"</span></span></span>")
+			message = "<span class='game say'><span class='name'>[speaker_name]</span>[alt_name] [track][verb], <span class='message'><span class='body'>\"[message]\"</span></span></span>"
+
+		to_chat(src, message)
+
+		telepathy_hear("has heard", message, speaker, language)
+
 		if (speech_sound && (get_dist(speaker, src) <= world.view && src.z == speaker.z))
 			var/turf/source = speaker? get_turf(speaker) : get_turf(src)
 			src.playsound_local(source, speech_sound, sound_vol, 1)
@@ -73,9 +88,11 @@
 	var/track = null
 
 	//non-verbal languages are garbled if you can't see the speaker. Yes, this includes if they are inside a closet.
-	if (language && (language.flags & NONVERBAL))
-		if (!speaker || (src.sdisabilities & BLIND || src.blinded) || !(speaker in view(src)))
+	if(language)
+		if(language.flags & NONVERBAL && (!speaker || (sdisabilities & BLIND || blinded) || !(speaker in view(src))))
 			message = stars(message)
+		else if(language.flags & SIGNLANG)
+			return
 
 	if(!say_understands(speaker,language))
 		if(isanimal(speaker))
@@ -102,6 +119,16 @@
 		var/mob/living/carbon/human/H = speaker
 		if(H.voice)
 			speaker_name = H.voice
+
+	if(ishuman(src)) //zombie logic
+		var/mob/living/carbon/human/ME = src
+		if(iszombie(ME))
+			if(!ishuman(speaker))
+				message = stars(message, 40)
+			else
+				var/mob/living/carbon/human/H = speaker
+				if(!iszombie(H))
+					message = stars(message, 40)
 
 	if(hard_to_hear)
 		speaker_name = "unknown"
@@ -168,20 +195,23 @@
 		to_chat(src, "[part_a][track][part_b][formatted]</span></span>")
 	else
 		to_chat(src, "[part_a][speaker_name][part_b][formatted]</span></span>")
+		telepathy_hear("has heard", "<b>[part_a][speaker_name]</span></span></b> [formatted]", speaker, language)
 
 /mob/proc/hear_signlang(message, verb = "gestures", datum/language/language, mob/speaker = null)
 	if(!client)
 		return
 
 	if(say_understands(speaker, language))
-		message = "<B>[src]</B> [verb], \"[message]\""
+		message = "<B>[speaker]</B> [verb], \"[language.format_message(message)]\""
 	else
-		message = "<B>[src]</B> [verb]."
+		message = "<B>[speaker]</B> [verb]."
 
 	if(src.status_flags & PASSEMOTES)
 		for(var/obj/item/weapon/holder/H in src.contents)
 			H.show_message(message)
-	src.show_message(message)
+	show_message(message)
+
+	telepathy_hear("has seen", message, speaker)
 
 /mob/proc/hear_sleep(message)
 	var/heard = ""
@@ -200,3 +230,5 @@
 		heard = "<span class = 'game_say'>...<i>You almost hear someone talking</i>...</span>"
 
 	to_chat(src, heard)
+
+	telepathy_hear(pick("has seen", "has heard"), heard)

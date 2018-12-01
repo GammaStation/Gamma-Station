@@ -6,9 +6,9 @@
 	item_color = "standard"
 	var/brightness_on = 4 //luminosity when on
 	var/on = 0
-	armor = list(melee = 30, bullet = 5, laser = 20,energy = 10, bomb = 20, bio = 10, rad = 20)
+	armor = list(melee = 30, bullet = 5, laser = 20,energy = 10, bomb = 20, bio = 10, rad = 20, telepathy = 10)
 	flags_inv = 0
-	action_button_name = "Toggle Hardhat"
+	actions_types = /datum/action/item_action/attack_self
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/head/hardhat/atom_init()
@@ -18,7 +18,7 @@
 /obj/item/clothing/head/hardhat/attack_self(mob/user)
 	if(!isturf(user.loc))
 		to_chat(user, "You cannot turn the light on while in this [user.loc]")//To prevent some lighting anomalities.
-		return
+		return FALSE
 
 	on = !on
 	update_icon()
@@ -27,8 +27,8 @@
 		set_light(brightness_on)
 	else
 		set_light(0)
-
 	user.update_inv_head()
+	return TRUE
 
 /obj/item/clothing/head/hardhat/update_icon()
 	icon_state = "[initial(icon_state)][on]_[item_color]"
@@ -43,6 +43,12 @@
 	item_color = "yellow_visor"
 	body_parts_covered = HEAD|FACE|EYES
 	flags = MASKCOVERSEYES
+	flash_protection = 2
+
+/obj/item/clothing/head/hardhat/yellow/visor/attack_self(mob/user)
+	if(!..())
+		return
+	flash_protection = on ? 2 : 0
 
 /obj/item/clothing/head/hardhat/orange
 	item_color = "orange"

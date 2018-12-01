@@ -162,8 +162,8 @@
 					icon_state = "tequillasunriseglass"
 					name = "Tequilla Sunrise"
 					desc = "Oh great, now you feel nostalgic about sunrises back on Terra..."
-				if("phoronspecial")
-					icon_state = "phoronspecialglass"
+				if("toxins_special")
+					icon_state = "toxinsspecialglass"
 					name = "Toxins Special"
 					desc = "Whoah, this thing is on FIRE"
 				if("beepskysmash")
@@ -494,6 +494,18 @@
 					icon_state = "pwineglass"
 					name = "Glass of ???"
 					desc = "A black ichor with an oily purple sheer on top. Are you sure you should drink this?"
+				if("bacardi")
+					icon_state = "bacardiglass"
+					name = "Bacardi"
+					desc = "A soft light drink made of rum."
+				if("bacardialoha")
+					icon_state = "bacardialohaglass"
+					name = "Bacardi Aloha"
+					desc = "Sweet mixture of rum, martini and lime soda."
+				if("bacardilemonade")
+					icon_state = "bacardilemonadeglass"
+					name = "Bacardi Lemonade"
+					desc = "Mixture of refreshing lemonade and sweet rum."
 				else
 					icon_state ="glass_brown"
 					name = "Glass of ..what?"
@@ -535,7 +547,13 @@
 		..()
 		return
 
-
+/obj/item/weapon/reagent_containers/food/drinks/drinkingglass/after_throw(datum/callback/callback)
+	..()
+	playsound(src, "shatter", 70, 1)
+	new /obj/item/weapon/shard(loc)
+	if(reagents.total_volume)
+		spawn_fluid(loc, reagents.total_volume)
+	qdel(src)
 
 // for /obj/machinery/vending/sovietsoda
 /obj/item/weapon/reagent_containers/food/drinks/drinkingglass/soda

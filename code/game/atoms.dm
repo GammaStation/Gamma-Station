@@ -7,8 +7,10 @@
 	var/list/fingerprints
 	var/list/fingerprintshidden
 	var/fingerprintslast = null
-	var/list/blood_DNA
-	var/blood_color
+
+	var/list/blood_DNA      //forensic reasons
+	var/datum/dirt_cover/dirt_overlay  //style reasons
+
 	var/last_bumped = 0
 	var/pass_flags = 0
 	var/throwpass = 0
@@ -212,33 +214,17 @@
 /atom/proc/examine(mob/user, distance = -1)
 	//This reformat names to get a/an properly working on item descriptions when they are bloody
 	var/f_name = "\a [src]."
-	if(src.blood_DNA)
-		if(gender == PLURAL)
-			f_name = "some "
-		else
-			f_name = "a "
-		if(!src.blood_color) //Oil and blood puddles got 'blood_color = NULL', however they got 'color' instead
-			if(src.color == "#030303")
-				f_name += "<span class='warning'>[name]</span>!"
-			else
-				f_name += "<span class='danger'>[name]</span>!"
-		else
-			if(src.blood_color == "#030303")	//TODO: Define blood colors or make oil != blood
-				f_name += "<span class='warning'>oil-stained</span> [name]!"
-			else
-				f_name += "<span class='danger'>blood-stained</span> [name]!"
-
+	if(dirt_overlay) //Oil and blood puddles got 'blood_color = NULL', however they got 'color' instead
+		f_name = "<span class='danger'>\a [dirt_description()]!</span>"
 	to_chat(user, "[bicon(src)] That's [f_name]")
-
 	if(desc)
 		to_chat(user, desc)
 	// *****RM
 	//user << "[name]: Dn:[density] dir:[dir] cont:[contents] icon:[icon] is:[icon_state] loc:[loc]"
-
 	if(reagents && is_open_container()) //is_open_container() isn't really the right proc for this, but w/e
 		to_chat(user, "It contains:")
 		if(reagents.reagent_list.len)
-			if(istype(src, /obj/structure/reagent_dispensers)) //watertanks, fueltanks
+			if(istype(src, /obj/structure/reagent_dispensers) || hasHUD(user,"science")) //watertanks, fueltanks. Also, science goggles can scan reagents
 				for(var/datum/reagent/R in reagents.reagent_list)
 					to_chat(user, "<span class='info'>[R.volume] units of [R.name]</span>")
 			else
@@ -246,7 +232,18 @@
 		else
 			to_chat(user, "Nothing.")
 
+		return    //So you won't get useless atmos data of the turf, on which your scanned beaker is located
+
+	if(hasHUD(user,"science"))
+		print_atmos_analysis(user, atmosanalyzer_scan(src))
+
 	return distance == -1 || isobserver(user) || (get_dist(src, user) <= distance)
+
+/atom/proc/dirt_description()
+	if(dirt_overlay)
+		return "[dirt_overlay.name]-covered [name]"
+	else
+		return name
 
 //called to set the atom's dir and used to add behaviour to dir-changes
 /atom/proc/set_dir(new_dir)
@@ -276,6 +273,10 @@
 
 /atom/proc/add_hiddenprint(mob/living/M)
 	if(!M || !M.key)
+		return
+	if(!in_range(M, src)) // No Telekinetic fingerprint leaving!
+		fingerprintshidden += text("\[[]\]Real name: [], Key: []",time_stamp(), M.real_name, M.key) // So we, adming still know the TRUTH.
+		fingerprintslast = M.key
 		return
 	if (ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -316,6 +317,12 @@
 			return 0		//Now, lets get to the dirty work.
 		//First, make sure their DNA makes sense.
 		var/mob/living/carbon/human/H = M
+
+		if(H.species.flags[NO_FINGERPRINT]) // They don't leave readable fingerprints, but admins gotta know.
+			fingerprintshidden += "(Specie has no fingerprints) Real name: [H.real_name], Key: [H.key]"
+			fingerprintslast = H.key
+			return 0
+
 		if (!istype(H.dna, /datum/dna) || !H.dna.uni_identity || (length(H.dna.uni_identity) != 32))
 			if(!istype(H.dna, /datum/dna))
 				H.dna = new /datum/dna(null)
@@ -422,21 +429,34 @@
 
 
 //returns 1 if made bloody, returns 0 otherwise
-/atom/proc/add_blood(mob/living/carbon/human/M)
-	if(flags & NOBLOODY) return 0
-	.=1
+/atom/proc/add_blood(mob/living/carbon/human/M,dirt_datum)
+	if(flags & NOBLOODY)
+		return FALSE
+	. = TRUE
 	if (!( istype(M, /mob/living/carbon/human) ))
-		return 0
+		return FALSE
 	if (!istype(M.dna, /datum/dna))
 		M.dna = new /datum/dna(null)
 		M.dna.real_name = M.real_name
 	M.check_dna()
 	if(!blood_DNA || !istype(blood_DNA, /list))	//if our list of DNA doesn't exist yet (or isn't a list) initialise it.
 		blood_DNA = list()
-	blood_color = "#A10808"
-	if (M.species)
-		blood_color = M.species.blood_color
-	return
+	if(dirt_datum)
+		add_dirt_cover(dirt_datum)
+	else
+		add_dirt_cover(new M.species.blood_color)
+//	blood_color = "#A10808"
+//	if (M.species)
+//		blood_color = M.species.blood_color
+
+/atom/proc/add_dirt_cover(dirt_datum)
+	if(flags & NOBLOODY) return 0
+	if(!dirt_datum) return 0
+	if(!dirt_overlay)
+		dirt_overlay = new/datum/dirt_cover(dirt_datum)
+	else
+		dirt_overlay.add_dirt(dirt_datum)
+	return 1
 
 /atom/proc/add_vomit_floor(mob/living/carbon/M, toxvomit = 0)
 	if( istype(src, /turf/simulated) )
@@ -459,10 +479,12 @@
 
 /atom/proc/clean_blood()
 	src.germ_level = 0
+	if(dirt_overlay)
+		dirt_overlay = null
 	if(istype(blood_DNA, /list))
 		blood_DNA = null
 		return 1
-
+	return 0
 
 /atom/proc/get_global_map_pos()
 	if(!islist(global_map) || isemptylist(global_map)) return

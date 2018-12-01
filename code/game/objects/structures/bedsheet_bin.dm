@@ -90,7 +90,7 @@ LINEN BINS
 	item_color = "medical"
 
 /obj/item/weapon/bedsheet/hos
-	name = "head of security's bedsheet"
+	name = "Star Vigil Commander's bedsheet"
 	desc = "It is decorated with a shield emblem.  While crime doesn't sleep, you do, but you are still THE LAW!"
 	icon_state = "sheethos"
 	item_color = "hosred"
@@ -216,29 +216,5 @@ LINEN BINS
 			hidden.loc = user.loc
 			to_chat(user, "<span class='notice'>[hidden] falls out of [B]!</span>")
 			hidden = null
-
-
-	add_fingerprint(user)
-
-/obj/structure/bedsheetbin/attack_tk(mob/user)
-	if(amount >= 1)
-		amount--
-
-		var/obj/item/weapon/bedsheet/B
-		if(sheets.len > 0)
-			B = sheets[sheets.len]
-			sheets.Remove(B)
-
-		else
-			B = new /obj/item/weapon/bedsheet(loc)
-
-		B.loc = loc
-		to_chat(user, "<span class='notice'>You telekinetically remove [B] from [src].</span>")
-		update_icon()
-
-		if(hidden)
-			hidden.loc = loc
-			hidden = null
-
 
 	add_fingerprint(user)

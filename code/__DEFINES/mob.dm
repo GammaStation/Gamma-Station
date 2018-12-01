@@ -58,19 +58,24 @@
 #define GETPULSE_TOOL	1	//more accurate (med scanner, sleeper, etc)
 
 // Species Names (keep in mind, that whitelist and preferences DB depends on this names too, and if anything is renamed, update MYSQL tables or is_alien_whitelisted() proc and preferences).
-#define HUMAN       "Human"
-#define UNATHI      "Unathi"
-#define TAJARAN     "Tajaran"
-#define SKRELL      "Skrell"
-#define DIONA       "Diona"
-#define IPC         "Machine"
-#define VOX         "Vox"
-#define VOX_ARMALIS "Vox Armalis"
-#define ABDUCTOR    "Abductor"
-#define SKELETON    "Skeleton"
-#define SHADOWLING  "Shadowling"
-#define MONKEY      "Monkey"
-#define GOLEM       "Adamantine Golem"
+#define HUMAN          "Human"
+#define UNATHI         "Unathi"
+#define TAJARAN        "Tajaran"
+#define SKRELL         "Skrell"
+#define DIONA          "Diona"
+#define IPC            "Machine"
+#define VOX            "Vox"
+#define VOX_ARMALIS    "Vox Armalis"
+#define ABDUCTOR       "Abductor"
+#define SKELETON       "Skeleton"
+#define SHADOWLING     "Shadowling"
+#define MONKEY         "Monkey"
+#define GOLEM          "Adamantine Golem"
+#define ZOMBIE         "Zombie"
+#define ZOMBIE_TAJARAN "Zombie Tajaran"
+#define ZOMBIE_SKRELL  "Zombie Skrell"
+#define ZOMBIE_UNATHI  "Zombie Unathi"
+#define TYCHEON        "Tycheon"
 
 #define HUMAN_STRIP_DELAY 40 //takes 40ds = 4s to strip someone.
 
@@ -115,3 +120,8 @@
 #define CLICK_CD_INTERACT 4
 #define CLICK_CD_RAPID 2
 #define CLICK_CD_AI 9
+
+#define MAX_FECES_COUNT 5
+
+// Telepathy, but for dummies.
+#define MAX_TELEPATHY_RANGE 30

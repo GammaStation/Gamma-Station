@@ -25,21 +25,15 @@
 		skipface |= wear_mask.flags_inv & HIDEFACE
 
 	// crappy hacks because you can't do \his[src] etc. I'm sorry this proc is so unreadable, blame the text macros :<
-	var/t_He = "It" //capitalised for use at the start of each line.
-	var/t_his = "its"
-	var/t_him = "it"
-	var/t_has = "has"
-	var/t_is = "is"
+	var/t_He = "They" //capitalised for use at the start of each line.
+	var/t_his = "Their"
+	var/t_him = "them"
+	var/t_has = "have"
+	var/t_is = "are"
 
 	var/msg = "<span class='info'>*---------*\nThis is "
 
-	if( skipjumpsuit && skipface ) //big suits/masks/helmets make it hard to tell their gender
-		t_He = "They"
-		t_his = "their"
-		t_him = "them"
-		t_has = "have"
-		t_is = "are"
-	else
+	if(!(skipjumpsuit && skipface)) // big suits/masks/helmets make it hard to tell their gender
 		switch(gender)
 			if(MALE)
 				t_He = "He"
@@ -49,8 +43,18 @@
 				t_He = "She"
 				t_his = "her"
 				t_him = "her"
+			if(NEUTER)
+				t_He = "It"
+				t_his = "it's"
+				t_him = "it"
 
-	msg += "<EM>[src.name]</EM>!\n"
+	msg += "<EM>[src.name]</EM>"
+	var/species_name = "\improper "
+	species_name += "[get_species()]"
+	if(!skipface || !skipjumpsuit)
+		msg += "<span class='bold'>, <font color='[species.flesh_color]'>\a [species_name]</font></span>"
+	msg += "!\n"
+
 
 	//uniform
 	if(w_uniform && !skipjumpsuit)
@@ -62,8 +66,8 @@
 				ties += "[bicon(accessory)] \a [accessory]"
 		var/tie_msg = ties.len ? ". Attached to it is [english_list(ties)]" : ""
 
-		if(w_uniform.blood_DNA)
-			msg += "<span class='warning'>[t_He] [t_is] wearing [bicon(w_uniform)] [w_uniform.gender==PLURAL?"some":"a"] [(w_uniform.blood_color != "#030303") ? "blood" : "oil"]-stained [w_uniform.name][tie_msg]!</span>\n"
+		if(w_uniform.dirt_overlay)
+			msg += "<span class='warning'>[t_He] [t_is] wearing [bicon(w_uniform)] [w_uniform.gender==PLURAL?"some":"a"] [w_uniform.dirt_description()][tie_msg]!</span>\n"
 		else if(w_uniform.wet)
 			msg += "<span class='wet'>[t_He] [t_is] wearing [bicon(w_uniform)] [w_uniform.gender==PLURAL?"some":"a"] wet [w_uniform.name][tie_msg]!</span>\n"
 		else
@@ -71,8 +75,8 @@
 
 	//head
 	if(head)
-		if(head.blood_DNA)
-			msg += "<span class='warning'>[t_He] [t_is] wearing [bicon(head)] [head.gender==PLURAL?"some":"a"] [(head.blood_color != "#030303") ? "blood" : "oil"]-stained [head.name] on [t_his] head!</span>\n"
+		if(head.dirt_overlay)
+			msg += "<span class='warning'>[t_He] [t_is] wearing [bicon(head)] [head.gender==PLURAL?"some":"a"] [head.dirt_description()] on [t_his] head!</span>\n"
 		else if(head.wet)
 			msg += "<span class='wet'>[t_He] [t_is] wearing [bicon(head)] [head.gender==PLURAL?"some":"a"] wet [head.name] on [t_his] head!</span>\n"
 		else
@@ -80,8 +84,8 @@
 
 	//suit/armour
 	if(wear_suit)
-		if(wear_suit.blood_DNA)
-			msg += "<span class='warning'>[t_He] [t_is] wearing [bicon(wear_suit)] [wear_suit.gender==PLURAL?"some":"a"] [(wear_suit.blood_color != "#030303") ? "blood" : "oil"]-stained [wear_suit.name]!</span>\n"
+		if(wear_suit.dirt_overlay)
+			msg += "<span class='warning'>[t_He] [t_is] wearing [bicon(wear_suit)] [wear_suit.gender==PLURAL?"some":"a"] [wear_suit.dirt_description()]!</span>\n"
 		else if(wear_suit.wet)
 			msg += "<span class='wet'>[t_He] [t_is] wearing [bicon(wear_suit)] [wear_suit.gender==PLURAL?"some":"a"] wet [wear_suit.name]!</span>\n"
 		else
@@ -89,15 +93,15 @@
 
 		//suit/armour storage
 		if(s_store && !skipsuitstorage)
-			if(s_store.blood_DNA)
-				msg += "<span class='warning'>[t_He] [t_is] carrying [bicon(s_store)] [s_store.gender==PLURAL?"some":"a"] [(s_store.blood_color != "#030303") ? "blood" : "oil"]-stained [s_store.name] on [t_his] [wear_suit.name]!</span>\n"
+			if(s_store.dirt_overlay)
+				msg += "<span class='warning'>[t_He] [t_is] carrying [bicon(s_store)] [s_store.gender==PLURAL?"some":"a"] [s_store.dirt_description()] on [t_his] [wear_suit.name]!</span>\n"
 			else
 				msg += "[t_He] [t_is] carrying [bicon(s_store)] \a [s_store] on [t_his] [wear_suit.name].\n"
 
 	//back
 	if(back)
-		if(back.blood_DNA)
-			msg += "<span class='warning'>[t_He] [t_has] [bicon(back)] [back.gender==PLURAL?"some":"a"] [(back.blood_color != "#030303") ? "blood" : "oil"]-stained [back] on [t_his] back.</span>\n"
+		if(back.dirt_overlay)
+			msg += "<span class='warning'>[t_He] [t_has] [bicon(back)] [back.gender==PLURAL?"some":"a"] [back.dirt_description()] on [t_his] back.</span>\n"
 		else if(back.wet)
 			msg += "<span class='wet'>[t_He] [t_has] [bicon(back)] [back.gender==PLURAL?"some":"a"] wet [back] on [t_his] back.</span>\n"
 		else
@@ -105,8 +109,8 @@
 
 	//left hand
 	if(l_hand && !(l_hand.flags&ABSTRACT))
-		if(l_hand.blood_DNA)
-			msg += "<span class='warning'>[t_He] [t_is] holding [bicon(l_hand)] [l_hand.gender==PLURAL?"some":"a"] [(l_hand.blood_color != "#030303") ? "blood" : "oil"]-stained [l_hand.name] in [t_his] left hand!</span>\n"
+		if(l_hand.dirt_overlay)
+			msg += "<span class='warning'>[t_He] [t_is] holding [bicon(l_hand)] [l_hand.gender==PLURAL?"some":"a"] [l_hand.dirt_description()] in [t_his] left hand!</span>\n"
 		else if(l_hand.wet)
 			msg += "<span class='wet'>[t_He] [t_is] holding [bicon(l_hand)] [l_hand.gender==PLURAL?"some":"a"] wet [l_hand.name] in [t_his] left hand!</span>\n"
 		else
@@ -114,8 +118,8 @@
 
 	//right hand
 	if(r_hand && !(r_hand.flags&ABSTRACT))
-		if(r_hand.blood_DNA)
-			msg += "<span class='warning'>[t_He] [t_is] holding [bicon(r_hand)] [r_hand.gender==PLURAL?"some":"a"] [(r_hand.blood_color != "#030303") ? "blood" : "oil"]-stained [r_hand.name] in [t_his] right hand!</span>\n"
+		if(r_hand.dirt_overlay)
+			msg += "<span class='warning'>[t_He] [t_is] holding [bicon(r_hand)] [r_hand.gender==PLURAL?"some":"a"] [r_hand.dirt_description()] in [t_his] right hand!</span>\n"
 		else if(r_hand.wet)
 			msg += "<span class='wet'>[t_He] [t_is] holding [bicon(r_hand)] [r_hand.gender==PLURAL?"some":"a"] wet [r_hand.name] in [t_his] right hand!</span>\n"
 		else
@@ -123,14 +127,14 @@
 
 	//gloves
 	if(gloves && !skipgloves)
-		if(gloves.blood_DNA)
-			msg += "<span class='warning'>[t_He] [t_has] [bicon(gloves)] [gloves.gender==PLURAL?"some":"a"] [(gloves.blood_color != "#030303") ? "blood" : "oil"]-stained [gloves.name] on [t_his] hands!</span>\n"
+		if(gloves.dirt_overlay)
+			msg += "<span class='warning'>[t_He] [t_has] [bicon(gloves)] [gloves.gender==PLURAL?"some":"a"] [gloves.dirt_description()] on [t_his] hands!</span>\n"
 		else if(gloves.wet)
 			msg += "<span class='wet'>[t_He] [t_has] [bicon(gloves)] [gloves.gender==PLURAL?"some":"a"] wet [gloves.name] on [t_his] hands!</span>\n"
 		else
 			msg += "[t_He] [t_has] [bicon(gloves)] \a [gloves] on [t_his] hands.\n"
-	else if(blood_DNA)
-		msg += "<span class='warning'>[t_He] [t_has] [(hand_blood_color != "#030303") ? "blood" : "oil"]-stained hands!</span>\n"
+	else if(hand_dirt_color)
+		msg += "<span class='warning'>[t_He] [t_has] [hand_dirt_color.name]-stained hands!</span>\n"
 
 	//handcuffed?
 	if(handcuffed)
@@ -145,8 +149,8 @@
 
 	//belt
 	if(belt)
-		if(belt.blood_DNA)
-			msg += "<span class='warning'>[t_He] [t_has] [bicon(belt)] [belt.gender==PLURAL?"some":"a"] [(belt.blood_color != "#030303") ? "blood" : "oil"]-stained [belt.name] about [t_his] waist!</span>\n"
+		if(belt.dirt_overlay)
+			msg += "<span class='warning'>[t_He] [t_has] [bicon(belt)] [belt.gender==PLURAL?"some":"a"] [belt.dirt_description()] about [t_his] waist!</span>\n"
 		else if(belt.wet)
 			msg += "<span class='wet'>[t_He] [t_has] [bicon(belt)] [belt.gender==PLURAL?"some":"a"] wet [belt.name] about [t_his] waist!</span>\n"
 		else
@@ -154,19 +158,19 @@
 
 	//shoes
 	if(shoes && !skipshoes)
-		if(shoes.blood_DNA)
-			msg += "<span class='warning'>[t_He] [t_is] wearing [bicon(shoes)] [shoes.gender==PLURAL?"some":"a"] [(shoes.blood_color != "#030303") ? "blood" : "oil"]-stained [shoes.name] on [t_his] feet!</span>\n"
+		if(shoes.dirt_overlay)
+			msg += "<span class='warning'>[t_He] [t_is] wearing [bicon(shoes)] [shoes.gender==PLURAL?"some":"a"] [shoes.dirt_description()] on [t_his] feet!</span>\n"
 		else if(shoes.wet)
 			msg += "<span class='wet'>[t_He] [t_is] wearing [bicon(shoes)] [shoes.gender==PLURAL?"some":"a"] wet [shoes.name] on [t_his] feet!</span>\n"
 		else
 			msg += "[t_He] [t_is] wearing [bicon(shoes)] \a [shoes] on [t_his] feet.\n"
-	else if(feet_blood_DNA)
-		msg += "<span class='warning'>[t_He] [t_has] [(feet_blood_color != "#030303") ? "blood" : "oil"]-stained feet!</span>\n"
+	else if(feet_dirt_color)
+		msg += "<span class='warning'>[t_He] [t_has] [feet_dirt_color.name]-stained feet!</span>\n"
 
 	//mask
 	if(wear_mask && !skipmask)
-		if(wear_mask.blood_DNA)
-			msg += "<span class='warning'>[t_He] [t_has] [bicon(wear_mask)] [wear_mask.gender==PLURAL?"some":"a"] [(wear_mask.blood_color != "#030303") ? "blood" : "oil"]-stained [wear_mask.name] on [t_his] face!</span>\n"
+		if(wear_mask.dirt_overlay)
+			msg += "<span class='warning'>[t_He] [t_has] [bicon(wear_mask)] [wear_mask.gender==PLURAL?"some":"a"] [wear_mask.dirt_description()] on [t_his] face!</span>\n"
 		else if(wear_mask.wet)
 			msg += "<span class='wet'>[t_He] [t_has] [bicon(wear_mask)] [wear_mask.gender==PLURAL?"some":"a"] wet [wear_mask.name] on [t_his] face!</span>\n"
 		else
@@ -174,8 +178,8 @@
 
 	//eyes
 	if(glasses && !skipeyes)
-		if(glasses.blood_DNA)
-			msg += "<span class='warning'>[t_He] [t_has] [bicon(glasses)] [glasses.gender==PLURAL?"some":"a"] [(glasses.blood_color != "#030303") ? "blood" : "oil"]-stained [glasses] covering [t_his] eyes!</span>\n"
+		if(glasses.dirt_overlay)
+			msg += "<span class='warning'>[t_He] [t_has] [bicon(glasses)] [glasses.gender==PLURAL?"some":"a"] [glasses.dirt_description()] covering [t_his] eyes!</span>\n"
 		else if(glasses.wet)
 			msg += "<span class='wet'>[t_He] [t_has] [bicon(glasses)] [glasses.gender==PLURAL?"some":"a"] wet [glasses] covering [t_his] eyes!</span>\n"
 		else
@@ -217,9 +221,9 @@
 	var/distance = get_dist(user,src)
 	if(istype(user, /mob/dead/observer) || user.stat == DEAD) // ghosts can see anything
 		distance = 1
-	if (src.stat)
+	if (src.stat || (iszombie(src) && (crawling || lying || resting)))
 		msg += "<span class='warning'>[t_He] [t_is]n't responding to anything around [t_him] and seems to be asleep.</span>\n"
-		if((stat == DEAD || src.losebreath) && distance <= 3)
+		if((stat == DEAD || src.losebreath || iszombie(src)) && distance <= 3)
 			msg += "<span class='warning'>[t_He] does not appear to be breathing.</span>\n"
 		if(istype(user, /mob/living/carbon/human) && !user.stat && distance <= 1)
 			for(var/mob/O in viewers(user.loc, null))
@@ -235,7 +239,7 @@
 
 	if(nutrition < 100)
 		msg += "[t_He] [t_is] severely malnourished.\n"
-	else if(nutrition >= 500)
+	else if(nutrition >= 500 && !species.flags[NO_FAT])
 		msg += "[t_He] [t_is] quite chubby.\n"
 
 	msg += "</span>"
@@ -482,22 +486,33 @@
 
 //Helper procedure. Called by /mob/living/carbon/human/examine() and /mob/living/carbon/human/Topic() to determine HUD access to security and medical records.
 /proc/hasHUD(mob/M, hudtype)
-	if(istype(M, /mob/living/carbon/human))
+	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		switch(hudtype)
 			if("security")
-				return istype(H.glasses, /obj/item/clothing/glasses/hud/security) || istype(H.glasses, /obj/item/clothing/glasses/sunglasses/sechud) || istype(H.glasses, /obj/item/clothing/glasses/sunglasses/hud/secmed)
+				return istype(H.glasses, /obj/item/clothing/glasses/hud/security) || istype(H.glasses, /obj/item/clothing/glasses/hud/secmed)
 			if("medical")
-				return istype(H.glasses, /obj/item/clothing/glasses/hud/health) || istype(H.glasses, /obj/item/clothing/glasses/sunglasses/hud/secmed)
+				return istype(H.glasses, /obj/item/clothing/glasses/hud/health) || istype(H.glasses, /obj/item/clothing/glasses/hud/secmed)
+			if("science")
+				if(istype(H.glasses, /obj/item/clothing/glasses/science))
+					var/obj/item/clothing/glasses/science/S = H.glasses
+					if(S.active)
+						return 1
+				else if(istype(H.glasses, /obj/item/clothing/glasses/welding/superior))
+					var/obj/item/clothing/glasses/welding/superior/S = H.glasses
+					if(!S.up)
+						return 1
 			else
 				return 0
-	else if(istype(M, /mob/living/silicon/robot))
+	else if(isrobot(M))
 		var/mob/living/silicon/robot/R = M
 		switch(hudtype)
 			if("security")
 				return istype(R.module_state_1, /obj/item/borg/sight/hud/sec) || istype(R.module_state_2, /obj/item/borg/sight/hud/sec) || istype(R.module_state_3, /obj/item/borg/sight/hud/sec)
 			if("medical")
 				return istype(R.module_state_1, /obj/item/borg/sight/hud/med) || istype(R.module_state_2, /obj/item/borg/sight/hud/med) || istype(R.module_state_3, /obj/item/borg/sight/hud/med)
+			if("science")
+				return istype(R.module_state_1, /obj/item/borg/sight/science) || istype(R.module_state_2, /obj/item/borg/sight/science) || istype(R.module_state_3, /obj/item/borg/sight/science)
 			else
 				return 0
 	else

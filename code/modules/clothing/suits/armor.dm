@@ -1,5 +1,5 @@
 /obj/item/clothing/suit/armor
-	allowed = list(/obj/item/weapon/gun/energy,/obj/item/weapon/reagent_containers/spray/pepper,/obj/item/weapon/gun/projectile,/obj/item/ammo_box/magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs)
+	allowed = list(/obj/item/weapon/gun/energy,/obj/item/weapon/reagent_containers/spray/pepper,/obj/item/weapon/gun/projectile,/obj/item/ammo_box/magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs, /obj/item/weapon/gun/grenadelauncher)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	flags = THICKMATERIAL
 	cold_protection = UPPER_TORSO|LOWER_TORSO
@@ -16,7 +16,7 @@
 	item_state = "armor"
 	blood_overlay_type = "armor"
 	flags = THICKMATERIAL
-	armor = list(melee = 50, bullet = 45, laser = 40, energy = 25, bomb = 35, bio = 0, rad = 0)
+	armor = list(melee = 50, bullet = 45, laser = 40, energy = 25, bomb = 35, bio = 0, rad = 0, telepathy = 10)
 
 /obj/item/clothing/suit/armor/vest/security
 	name = "security armor"
@@ -38,12 +38,12 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO
 	max_heat_protection_temperature = ARMOR_MAX_HEAT_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.4
-	armor = list(melee = 50, bullet = 45, laser = 40, energy = 25, bomb = 35, bio = 0, rad = 0)
+	armor = list(melee = 50, bullet = 45, laser = 40, energy = 25, bomb = 35, bio = 0, rad = 0, telepathy = 10)
 
 /obj/item/clothing/suit/storage/flak/atom_init()
 	. = ..()
 	pockets = new/obj/item/weapon/storage/internal(src)
-	pockets.storage_slots = 4
+	pockets.set_slots(slots = 4, slot_size = ITEM_SIZE_SMALL)
 
 /obj/item/clothing/suit/storage/flak/marinad
 	name = "marine armor"
@@ -52,16 +52,16 @@
 	item_state = "marinad_armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	slowdown = 1
-	armor = list(melee = 60, bullet = 65, laser = 55, energy = 60, bomb = 40, bio = 0, rad = 0)
+	armor = list(melee = 60, bullet = 65, laser = 55, energy = 60, bomb = 40, bio = 0, rad = 0, telepathy = 10)
 /obj/item/clothing/suit/armor/vest/warden
-	name = "Warden's jacket"
+	name = "Star Vigil Sergeant's jacket"
 	desc = "An armoured jacket with gold rank pips and livery."
 	icon_state = "warden_jacket"
 	item_state = "armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
 /obj/item/clothing/suit/storage/flak/warden
-	name = "Warden's jacket"
+	name = "Star Vigil Sergeant's jacket"
 	desc = "An armoured jacket with gold rank pips and livery."
 	icon_state = "warden_jacket"
 	item_state = "armor"
@@ -82,7 +82,7 @@
 	icon_state = "hos"
 	item_state = "hos"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
-	armor = list(melee = 80, bullet = 60, laser = 55, energy = 35, bomb = 50, bio = 0, rad = 0)
+	armor = list(melee = 80, bullet = 60, laser = 55, energy = 35, bomb = 50, bio = 0, rad = 0, telepathy = 10)
 	flags_inv = HIDEJUMPSUIT
 	siemens_coefficient = 0.6
 
@@ -93,7 +93,7 @@
 	item_state = "swat_suit"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	slowdown = 1
-	armor = list(melee = 70, bullet = 10, laser = 5, energy = 10, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 70, bullet = 10, laser = 5, energy = 10, bomb = 0, bio = 0, rad = 0, telepathy = 10)
 	flags_inv = HIDEJUMPSUIT
 
 /obj/item/clothing/suit/armor/bulletproof
@@ -102,7 +102,7 @@
 	icon_state = "bulletproof"
 	item_state = "armor"
 	blood_overlay_type = "armor"
-	armor = list(melee = 10, bullet = 80, laser = 25, energy = 20, bomb = 35, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 80, laser = 25, energy = 20, bomb = 35, bio = 0, rad = 0, telepathy = 10)
 
 /obj/item/clothing/suit/storage/flak/bulletproof
 	name = "bulletproof Vest"
@@ -110,12 +110,12 @@
 	icon_state = "bulletproof"
 	item_state = "armor"
 	blood_overlay_type = "armor"
-	armor = list(melee = 10, bullet = 80, laser = 25, energy = 20, bomb = 35, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 80, laser = 25, energy = 20, bomb = 35, bio = 0, rad = 0, telepathy = 10)
 
 /obj/item/clothing/suit/storage/flak/bulletproof/atom_init()
 	. = ..()
 	pockets = new/obj/item/weapon/storage/internal(src)
-	pockets.storage_slots = 5
+	pockets.set_slots(slots = 5, slot_size = ITEM_SIZE_SMALL)
 
 /obj/item/clothing/suit/armor/laserproof
 	name = "ablative armor vest"
@@ -123,7 +123,7 @@
 	icon_state = "armor_reflec"
 	item_state = "armor_reflec"
 	blood_overlay_type = "armor"
-	armor = list(melee = 10, bullet = 10, laser = 65, energy = 75, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 10, laser = 65, energy = 75, bomb = 0, bio = 0, rad = 0, telepathy = 10)
 	siemens_coefficient = 0
 	var/hit_reflect_chance = 40
 
@@ -144,7 +144,7 @@
 	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_box/magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/tank/emergency_oxygen)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	slowdown = 1
-	armor = list(melee = 80, bullet = 70, laser = 70,energy = 70, bomb = 70, bio = 0, rad = 0)
+	armor = list(melee = 80, bullet = 70, laser = 70,energy = 70, bomb = 70, bio = 0, rad = 0, telepathy = 10)
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAIL
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | ARMS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
@@ -168,7 +168,7 @@
 	blood_overlay_type = "armor"
 	flags = ONESIZEFITSALL
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
-	armor = list(melee = 50, bullet = 55, laser = 25, energy = 20, bomb = 35, bio = 0, rad = 0)
+	armor = list(melee = 50, bullet = 55, laser = 25, energy = 20, bomb = 35, bio = 0, rad = 0, telepathy = 10)
 
 
 //Reactive armor
@@ -181,7 +181,7 @@
 	item_state = "reactiveoff"
 	blood_overlay_type = "armor"
 	slowdown = 1
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 
 /obj/item/clothing/suit/armor/reactive/Get_shield_chance()
 	if(active)
@@ -262,7 +262,7 @@
 	var/obj/item/weapon/gun/holstered = null
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	slowdown = 1
-	armor = list(melee = 60, bullet = 65, laser = 50, energy = 60, bomb = 40, bio = 0, rad = 0)
+	armor = list(melee = 60, bullet = 65, laser = 50, energy = 60, bomb = 40, bio = 0, rad = 0, telepathy = 10)
 
 /obj/item/clothing/suit/armor/tactical/verb/holster()
 	set name = "Holster"
@@ -298,13 +298,61 @@
 
 /obj/item/clothing/suit/armor/syndiassault
 	name = "assault armor"
+	desc = "Standard Security gear. Protects body from impacts."
 	icon_state = "assaultarmor"
 	item_state = "assaultarmor"
 	flags = THICKMATERIAL
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	slowdown = 0.5
-	armor = list(melee = 50, bullet = 60, laser = 40, energy = 70, bomb = 50, bio = 0, rad = 50)
+	armor = list(melee = 50, bullet = 60, laser = 40, energy = 70, bomb = 50, bio = 0, rad = 50, telepathy = 10)
 	siemens_coefficient = 0.2
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAIL
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | ARMS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
+
+/obj/item/clothing/suit/armor/ertarmor_cmd
+	name = "emergency response team commander armor"
+	desc = "A armor worn by the commander of a NanoTrasen Emergency Response Team. Has blue highlights."
+	icon_state = "ertarmor_cmd"
+	item_state = "ertarmor_cmd"
+	flags = THICKMATERIAL
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+	slowdown = 0.5
+	armor = list(melee = 60, bullet = 65, laser = 55, energy = 30, bomb = 50, bio = 0, rad = 30, telepathy = 10)
+	siemens_coefficient = 0.2
+	flags_inv = HIDEJUMPSUIT
+
+/obj/item/clothing/suit/armor/ertarmor_sec
+	name = "emergency response team security armor"
+	desc = "A armor worn by security members of a NanoTrasen Emergency Response Team. Has red highlights."
+	icon_state = "ertarmor_sec"
+	item_state = "ertarmor_sec"
+	flags = THICKMATERIAL
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+	slowdown = 0.5
+	armor = list(melee = 65, bullet = 55, laser = 55, energy = 25, bomb = 50, bio = 0, rad = 20, telepathy = 10)
+	siemens_coefficient = 0.2
+	flags_inv = HIDEJUMPSUIT
+
+/obj/item/clothing/suit/armor/ertarmor_med
+	name = "emergency response team medical armor"
+	desc = "A armor worn by medical members of a NanoTrasen Emergency Response Team. Has white highlights."
+	icon_state = "ertarmor_med"
+	item_state = "ertarmor_med"
+	flags = THICKMATERIAL
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+	armor = list(melee = 55, bullet = 45, laser = 40, energy = 20, bomb = 50, bio = 20, rad = 50, telepathy = 10)
+	siemens_coefficient = 0.2
+	flags_inv = HIDEJUMPSUIT
+
+/obj/item/clothing/suit/armor/ertarmor_eng
+	name = "emergency response team engineer armor"
+	desc = "A suit worn by the engineering of a NanoTrasen Emergency Response Team. Has orange highlights."
+	icon_state = "ertarmor_eng"
+	item_state = "ertarmor_eng"
+	flags = THICKMATERIAL
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+	slowdown = 0.5
+	armor = list(melee = 55, bullet = 45, laser = 45, energy = 35, bomb = 50, bio = 0, rad = 80, telepathy = 10)
+	siemens_coefficient = 0.2
+	flags_inv = HIDEJUMPSUIT

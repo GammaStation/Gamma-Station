@@ -73,6 +73,8 @@
 				return ""
 
 	message = capitalize(trim(message))
+	if(iszombie(src))
+		message = zombie_talk(message)
 
 	var/ending = copytext(message, length(message))
 	if (speaking)
@@ -147,25 +149,27 @@
 			return
 		if("changeling")
 			if(mind && mind.changeling)
-				var/n_message = message
+				var/n_message = "<span class='changeling'><b>[mind.changeling.changelingID]:</b> [message]</span>"
+				log_say("Changeling Mind: [mind.changeling.changelingID]/[mind.name]/[key] : [message]")
 				for(var/mob/Changeling in mob_list)
 					if(Changeling.mind && Changeling.mind.changeling)
-						to_chat(Changeling, "<span class='changeling'><b>[mind.changeling.changelingID]:</b> [n_message]</span>")
+						to_chat(Changeling, n_message)
 						for(var/M in Changeling.mind.changeling.essences)
-							to_chat(M, "<span class='changeling'><b>[mind.changeling.changelingID]:</b> [n_message]</span>")
-
+							to_chat(M, n_message)
+						Changeling.telepathy_hear("has heard", message, src)
 					else if(isobserver(Changeling))
-						to_chat(Changeling, "<span class='changeling'><b>[mind.changeling.changelingID]:</b> [n_message]</span>")
+						to_chat(Changeling, n_message)
 			return
 		if("alientalk")
 			if(mind && mind.changeling)
-				var/n_message = message
+				var/n_message = "<span class='shadowling'><b>[mind.changeling.changelingID]:</b> [message]</span>"
 				for(var/M in mind.changeling.essences)
-					to_chat(M, "<span class='shadowling'><b>[mind.changeling.changelingID]:</b> [n_message]</span>")
+					to_chat(M, n_message)
 				for(var/datum/orbit/O in orbiters)
-					to_chat(O.orbiter, "<span class='shadowling'><b>[mind.changeling.changelingID]:</b> [n_message]</span>")
-				to_chat(src, "<span class='shadowling'><b>[mind.changeling.changelingID]:</b> [n_message]</span>")
-				log_say("Changeling Mind: [mind.name]/[key] : [n_message]")
+					to_chat(O.orbiter, n_message)
+				to_chat(src, n_message)
+				telepathy_hear("has heard", message, src)
+				log_say("Changeling Mind: [mind.changeling.changelingID]/[mind.name]/[key] : [message]")
 			return
 		else
 			if(message_mode)
@@ -183,7 +187,7 @@
 		speech_sound = sound('sound/voice/shriek1.ogg')
 		sound_vol = 50
 
-	..(message, speaking, verb, alt_name, italics, message_range, used_radios, speech_sound, sound_vol, sanitize = 0)	//ohgod we should really be passing a datum here.
+	..(message, speaking, verb, alt_name, italics, message_range, used_radios, speech_sound, sound_vol, sanitize = FALSE, message_mode = message_mode)	//ohgod we should really be passing a datum here.
 
 /mob/living/carbon/human/say_understands(mob/other,datum/language/speaking = null)
 

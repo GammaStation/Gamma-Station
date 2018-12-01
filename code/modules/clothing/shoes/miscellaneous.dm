@@ -8,7 +8,7 @@
 	origin_tech = "syndicate=3"
 	var/list/clothing_choices = list()
 	siemens_coefficient = 0.8
-	species_restricted = null
+	species_restricted = list("exclude", TYCHEON)
 
 /obj/item/clothing/shoes/mime
 	name = "mime shoes"
@@ -39,6 +39,20 @@
 	heat_protection = LEGS
 	max_heat_protection_temperature = SHOE_MAX_HEAT_PROTECTION_TEMPERATURE
 
+/obj/item/clothing/shoes/combat/cut //Basically combat shoes but for xenos.
+	name = "mangled combat boots"
+	desc = "When you REALLY want to turn up the heat. They have the toe caps cut off of them."
+	icon_state = "swat_cut"
+	item_state = "wjboots"
+	flags = NOSLIP
+	siemens_coefficient = 0.6
+	species_restricted = list("exclude", TYCHEON)
+
+	cold_protection = LEGS
+	min_cold_protection_temperature = SHOE_MIN_COLD_PROTECTION_TEMPERATURE
+	heat_protection = LEGS
+	max_heat_protection_temperature = SHOE_MAX_HEAT_PROTECTION_TEMPERATURE
+
 /obj/item/clothing/shoes/space_ninja
 	name = "ninja shoes"
 	desc = "A pair of running shoes. Excellent for running and even better for smashing skulls."
@@ -51,21 +65,21 @@
 	min_cold_protection_temperature = SHOE_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = LEGS
 	max_heat_protection_temperature = SHOE_MAX_HEAT_PROTECTION_TEMPERATURE
-	species_restricted = null
+	species_restricted = list("exclude", TYCHEON)
 
 /obj/item/clothing/shoes/tourist
 	name = "flip-flops"
 	desc = "These cheap sandals don't look very comfortable."
 	icon_state = "tourist"
 	permeability_coefficient = 1
-	species_restricted = null
+	species_restricted = list("exclude", TYCHEON)
 	w_class = 2
 
 /obj/item/clothing/shoes/sandal
 	desc = "A pair of rather plain, wooden sandals."
 	name = "sandals"
 	icon_state = "wizard"
-	species_restricted = null
+	species_restricted = list("exclude", TYCHEON)
 	body_parts_covered = 0
 
 /obj/item/clothing/shoes/sandal/marisa
@@ -81,7 +95,7 @@
 	permeability_coefficient = 0.05
 	flags = NOSLIP
 	slowdown = SHOES_SLOWDOWN+1
-	species_restricted = null
+	species_restricted = list("exclude", TYCHEON)
 
 /obj/item/clothing/shoes/clown_shoes
 	desc = "The prankster's standard-issue clowning shoes. Damn they're huge!"
@@ -91,7 +105,7 @@
 	slowdown = SHOES_SLOWDOWN+1
 	item_color = "clown"
 //	var/footstep = 1	//used for squeeks whilst walking
-	species_restricted = null
+	species_restricted = list("exclude", TYCHEON)
 
 /obj/item/clothing/shoes/jackboots
 	name = "jackboots"
@@ -114,7 +128,7 @@
 	min_cold_protection_temperature = SHOE_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = LEGS
 	max_heat_protection_temperature = SHOE_MAX_HEAT_PROTECTION_TEMPERATURE
-	species_restricted = null
+	species_restricted = list("exclude", TYCHEON)
 
 /obj/item/clothing/shoes/cyborg
 	name = "cyborg boots"
@@ -126,7 +140,7 @@
 	desc = "Fluffy!"
 	icon_state = "slippers"
 	item_state = "slippers"
-	species_restricted = null
+	species_restricted = list("exclude", TYCHEON)
 	w_class = 2
 
 /obj/item/clothing/shoes/slippers_worn
@@ -148,7 +162,7 @@
 	icon_state = "flippers"
 	flags = NOSLIP
 	slowdown = SHOES_SLOWDOWN+1
-	species_restricted = null
+	species_restricted = list("exclude", TYCHEON)
 
 /obj/item/clothing/shoes/centcom
 	name = "dress shoes"

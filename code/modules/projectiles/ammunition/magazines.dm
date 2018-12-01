@@ -175,6 +175,18 @@
 	caliber = ".45"
 	max_ammo = 20
 
+/obj/item/ammo_box/magazine/type76_rubber
+	name = "magazine (9mm rubber)"
+	icon_state = "mag-76"
+	origin_tech = "combat=2"
+	ammo_type = /obj/item/ammo_casing/c9mmr
+	caliber = "9mm"
+	max_ammo = 36
+
+/obj/item/ammo_box/magazine/type76_rubber/update_icon()
+	..()
+	icon_state = "[initial(icon_state)]-[ammo_count() > 0 ? "full" : "empty"]"
+
 /obj/item/ammo_box/magazine/m12mm/update_icon()
 	..()
 	icon_state = "[initial(icon_state)]-[round(ammo_count(),2)]"
@@ -357,6 +369,17 @@
 	ammo_type = /obj/item/ammo_casing/c38
 	caliber = "38"
 	max_ammo = 12
+
+/obj/item/ammo_box/magazine/c22cb //Thunderfield stuff
+	name = "magazine (.22 CB)"
+	icon = 'icons/obj/ammo.dmi'
+	icon_state = "38_mag"
+	ammo_type = /obj/item/ammo_casing/c22cb
+	caliber = "22"
+	max_ammo = 8
+
+/obj/item/ammo_box/magazine/c22cb/update_icon()
+	icon_state = "[initial(icon_state)][ammo_count() ? "" : "-0"]"
 
 /obj/item/ammo_box/magazine/acm38_38/update_icon()
 	icon_state = "[initial(icon_state)][ammo_count() ? "" : "-0"]"

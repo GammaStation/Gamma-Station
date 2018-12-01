@@ -291,31 +291,6 @@
 			if("constructbuilder")	M.change_mob_type( /mob/living/simple_animal/construct/builder , null, null, delmob )
 			if("constructwraith")	M.change_mob_type( /mob/living/simple_animal/construct/wraith , null, null, delmob )
 			if("shade")				M.change_mob_type( /mob/living/simple_animal/shade , null, null, delmob )
-			if("meme")
-				var/mob/living/parasite/meme/newmeme = new
-				M.mind.transfer_to(newmeme)
-				newmeme.clearHUD()
-
-				var/found = 0
-				for(var/mob/living/carbon/human/H in mob_list) if(H.client && !H.parasites.len)
-					found = 1
-					newmeme.enter_host(H)
-
-					message_admins("[H] has become [newmeme.key]'s host")
-
-					break
-
-				// if there was no host, abort
-				if(!found)
-					newmeme.mind.transfer_to(M)
-					message_admins("Failed to find host for meme [M.key]. Aborting.")
-
-				ticker.mode.memes += newmeme
-
-				if(delmob)
-					qdel(M)
-
-
 	/////////////////////////////////////new ban stuff
 	else if(href_list["unbanf"])
 		if(!check_rights(R_BAN))	return
@@ -662,12 +637,6 @@
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=[ROLE_ERT];jobban4=\ref[M]'><font color=red>[ROLE_ERT]</font></a></td>"
 		else
 			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=[ROLE_ERT];jobban4=\ref[M]'>[ROLE_ERT]</a></td>"
-
-		//Meme
-		if(jobban_isbanned(M, ROLE_MEME) || isbanned_dept)
-			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=[ROLE_MEME];jobban4=\ref[M]'><font color=red>[ROLE_MEME]</font></a></td>"
-		else
-			jobs += "<td width='20%'><a href='?src=\ref[src];jobban3=[ROLE_MEME];jobban4=\ref[M]'>[ROLE_MEME]</a></td>"
 
 		//Mutineer
 		if(jobban_isbanned(M, ROLE_MUTINEER) || isbanned_dept)
@@ -1020,7 +989,7 @@
 					return
 				AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
 				ban_unban_log_save("[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.")
-				to_chat(M, "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>")
+				to_chat(M, "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>","emojiAllowed")
 				to_chat(M, "\red This is a temporary ban, it will be removed in [mins] minutes.")
 				feedback_inc("ban_tmp",1)
 				DB_ban_record(BANTYPE_TEMP, M, mins, reason)
@@ -1045,7 +1014,7 @@
 						AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0, M.lastKnownIP)
 					if("No")
 						AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0)
-				to_chat(M, "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>")
+				to_chat(M, "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>","emojiAllowed")
 				to_chat(M, "\red This is a permanent ban.")
 				if(config.banappeals)
 					to_chat(M, "\red To try to resolve this matter head to [config.banappeals]")
@@ -1854,6 +1823,12 @@
 
 		var/ok = 0
 		switch(href_list["secretsfun"])
+			if("toggle_shit")
+				SHIT_TOGGLED = !SHIT_TOGGLED
+				feedback_inc("admin_secrets_fun_used",1)
+				feedback_add_details("admin_secrets_fun_used","Shit")
+				log_admin("[key_name(usr)] toggled shit [(SHIT_TOGGLED != 0) ? "on" : "off"]")
+				message_admins("\blue [key_name_admin(usr)] toggled shit [(SHIT_TOGGLED != 0) ? "on" : "off"].")
 			if("sec_clothes")
 				feedback_inc("admin_secrets_fun_used",1)
 				feedback_add_details("admin_secrets_fun_used","SC")
@@ -2070,6 +2045,14 @@
 				var/range_low = MAX_EXPLOSION_RANGE
 				message_admins("\red <b> [key_name_admin(usr)] changed the bomb cap to [range_dev], [range_high], [range_low]</b>")
 				log_admin("[key_name_admin(usr)] changed the bomb cap to [MAX_EXPLOSION_RANGE]")
+			if("togglehulks")
+				feedback_inc("admin_secrets_fun_used",1)
+				feedback_add_details("admin_secrets_fun_used","TH")
+
+				config.disallow_gene_hulks = !config.disallow_gene_hulks
+				var/mes = "[config.disallow_gene_hulks ? "dis" : null]allowed hulks in this round"
+				message_admins("\red <b> [key_name_admin(usr)] [mes]</b>")
+				log_admin("[key_name_admin(usr)] [mes]")
 
 			if("flicklights")
 				feedback_inc("admin_secrets_fun_used",1)
@@ -2476,11 +2459,11 @@
 						M.req_one_access = list(access_brig,access_engine)
 				message_admins("[key_name_admin(usr)] made all maint doors engineering and brig access-only.")
 			if("infinite_sec")
-				var/datum/job/J = SSjob.GetJob("Security Officer")
+				var/datum/job/J = SSjob.GetJob("Star Vigil Officer")
 				if(!J) return
 				J.total_positions = -1
 				J.spawn_positions = -1
-				message_admins("[key_name_admin(usr)] has removed the cap on security officers.")
+				message_admins("[key_name_admin(usr)] has removed the cap on Star Vigil Officer.")
 
 	else if(href_list["ac_view_wanted"])            //Admin newscaster Topic() stuff be here
 		src.admincaster_screen = 18                 //The ac_ prefix before the hrefs stands for AdminCaster.

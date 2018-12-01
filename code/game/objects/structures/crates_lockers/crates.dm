@@ -17,6 +17,11 @@
 /obj/structure/closet/crate/can_close()
 	return 1
 
+/obj/structure/closet/crate/CanPass(atom/movable/A, turf/T)
+	if(istype(A) && A.checkpass(PASSGRILLE))
+		return TRUE
+	return ..()
+
 /obj/structure/closet/crate/open()
 	if(src.opened)
 		return 0
@@ -71,8 +76,11 @@
 	if(opened)
 		if(isrobot(user))
 			return
+		if(!W.canremove || W.flags & NODROP)
+			return
 		user.drop_item()
 		if(W)
+			W.do_putdown_animation(src)
 			W.forceMove(src.loc)
 	else if(istype(W, /obj/item/weapon/packageWrap) || istype(W, /obj/item/weapon/extraction_pack))	//OOP? Doesn't heard.
 		return

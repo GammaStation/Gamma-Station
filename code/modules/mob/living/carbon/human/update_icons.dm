@@ -181,7 +181,8 @@ Please contact me on #coderbus IRC. ~Carn x
 	remove_damage_overlay(BP.limb_layer)
 	if(species.damage_mask && !(BP.status & ORGAN_DESTROYED))
 		var/image/standing = image("icon" = 'icons/mob/human_races/damage_overlays.dmi', "icon_state" = "[BP.body_zone]_[BP.damage_state]", "layer" = -DAMAGE_LAYER)
-		standing.color = species.blood_color
+		var/datum/dirt_cover/mob = new species.blood_color()
+		standing.color = mob.color
 		overlays_damage[BP.limb_layer] = standing
 		apply_damage_overlay(BP.limb_layer)
 
@@ -190,6 +191,9 @@ Please contact me on #coderbus IRC. ~Carn x
 /mob/living/carbon/human/proc/update_body()
 	remove_overlay(BODY_LAYER)
 	var/list/standing	= list()
+
+	if(istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
+		return
 
 	var/husk_color_mod = rgb(96,88,80)
 	var/hulk_color_mod = rgb(48,224,40)
@@ -202,7 +206,7 @@ Please contact me on #coderbus IRC. ~Carn x
 		fat = "fat"
 
 	var/g = (gender == FEMALE ? "f" : "m")
-	var/has_head = 0
+	var/has_head = !(BP_HEAD in species.has_bodypart) // Because Tycheons don't have heads, but have an eye. Bootleg.
 
 	//CACHING: Generate an index key from visible bodyparts.
 	//0 = destroyed, 1 = normal, 2 = robotic, 3 = necrotic.
@@ -346,9 +350,12 @@ Please contact me on #coderbus IRC. ~Carn x
 
 	if(has_head)
 		//Eyes
-		var/image/img_eyes_s = image("icon"='icons/mob/human_face.dmi', "icon_state"=species.eyes, "layer"=-BODY_LAYER)
+		var/image/img_eyes_s = image("icon"='icons/mob/human_face.dmi', "icon_state"=eyes, "layer"=-BODY_LAYER)
+		if(species.eye_glow)
+			img_eyes_s.layer = LIGHTING_LAYER + 1
+			img_eyes_s.plane = LIGHTING_PLANE + 1
 		img_eyes_s.color = rgb(r_eyes, g_eyes, b_eyes)
-		standing	+= img_eyes_s
+		standing += img_eyes_s
 
 		//Mouth	(lipstick!)
 		if(lip_style && (species && species.flags[HAS_LIPS]))	//skeletons are allowed to wear lipstick no matter what you think, agouri.
@@ -412,6 +419,8 @@ Please contact me on #coderbus IRC. ~Carn x
 	for(var/datum/dna/gene/gene in dna_genes)
 		if(!gene.block)
 			continue
+		if(species && (gene.name in species.ignore_gene_icons) || ("All" in species.ignore_gene_icons))
+			continue
 		if(gene.is_active(src))
 			var/image/underlay = image("icon"='icons/effects/genetics.dmi', "icon_state"=gene.OnDrawUnderlays(src,g,fat), "layer"=-MUTATIONS_LAYER)
 			if(underlay)
@@ -453,7 +462,10 @@ Please contact me on #coderbus IRC. ~Carn x
 				standing += image('icons/effects/genetics.dmi', null, "[dna.mutantrace][fat]_[gender]_s", -MUTANTRACE_LAYER)
 
 	if(species.name == SHADOWLING && head)
-		var/image/eyes = image('icons/mob/shadowling.dmi', null, "[dna.mutantrace]_ms_s", LIGHTING_LAYER + 1)
+		standing += shadowling_eyes
+
+	if(iszombie(src) && stat != DEAD)
+		var/image/eyes = image(species.icobase, null, "zombie_ms_s", LIGHTING_LAYER + 1)
 		eyes.plane = LIGHTING_PLANE + 1
 		standing += eyes
 
@@ -518,6 +530,7 @@ Please contact me on #coderbus IRC. ~Carn x
 	update_bandage()
 	for(var/obj/item/organ/external/BP in bodyparts)
 		UpdateDamageIcon(BP)
+
 	update_icons()
 	update_transform()
 	//Hud Stuff
@@ -547,9 +560,9 @@ Please contact me on #coderbus IRC. ~Carn x
 		standing.color = U.color
 		overlays_standing[UNIFORM_LAYER] = standing
 
-		if(U.blood_DNA)
+		if(U.dirt_overlay)
 			var/image/bloodsies	= image("icon"='icons/effects/blood.dmi', "icon_state"="uniformblood")
-			bloodsies.color		= U.blood_color
+			bloodsies.color		= U.dirt_overlay.color
 			standing.overlays	+= bloodsies
 
 		if(U.accessories.len)
@@ -588,7 +601,7 @@ Please contact me on #coderbus IRC. ~Carn x
 		if(client && hud_used)
 			client.screen += wear_id
 
-		overlays_standing[ID_LAYER]	= image("icon"='icons/mob/mob.dmi', "icon_state"="id", "layer"=-ID_LAYER)
+		overlays_standing[ID_LAYER]	= image("icon"='icons/mob/mob.dmi', "icon_state"= get_species() == TYCHEON ? "id_tycheon" : "id", "layer"=-ID_LAYER)
 
 	hud_updateflag |= 1 << ID_HUD
 	hud_updateflag |= 1 << WANTED_HUD
@@ -614,14 +627,14 @@ Please contact me on #coderbus IRC. ~Carn x
 		standing.color = gloves.color
 		overlays_standing[GLOVES_LAYER]	= standing
 
-		if(gloves.blood_DNA)
+		if(gloves.dirt_overlay)
 			var/image/bloodsies	= image("icon"='icons/effects/blood.dmi', "icon_state"="bloodyhands")
-			bloodsies.color = gloves.blood_color
+			bloodsies.color = gloves.dirt_overlay.color
 			standing.overlays	+= bloodsies
 	else
 		if(blood_DNA)
 			var/image/bloodsies	= image("icon"='icons/effects/blood.dmi', "icon_state"="bloodyhands")
-			bloodsies.color = hand_blood_color
+			bloodsies.color = hand_dirt_color.color
 			overlays_standing[GLOVES_LAYER]	= bloodsies
 
 	apply_overlay(GLOVES_LAYER)
@@ -695,14 +708,14 @@ Please contact me on #coderbus IRC. ~Carn x
 		standing.color = shoes.color
 		overlays_standing[SHOES_LAYER] = standing
 
-		if(shoes.blood_DNA)
+		if(shoes.dirt_overlay)
 			var/image/bloodsies = image("icon"='icons/effects/blood.dmi', "icon_state"="shoeblood")
-			bloodsies.color = shoes.blood_color
+			bloodsies.color = shoes.dirt_overlay.color
 			standing.overlays += bloodsies
 	else
 		if(feet_blood_DNA)
 			var/image/bloodsies = image("icon"='icons/effects/blood.dmi', "icon_state"="shoeblood")
-			bloodsies.color = feet_blood_color
+			bloodsies.color = feet_dirt_color.color
 			overlays_standing[SHOES_LAYER] = bloodsies
 
 	apply_overlay(SHOES_LAYER)
@@ -746,9 +759,14 @@ Please contact me on #coderbus IRC. ~Carn x
 		standing.color = head.color
 		overlays_standing[HEAD_LAYER]	= standing
 
-		if(head.blood_DNA)
+		if(istype(head, /obj/item/clothing/head/helmet/band))
+			var/obj/item/clothing/head/helmet/band/H = head
+			if(H.on_helmet_overlay)
+				standing.overlays += H.on_helmet_overlay
+
+		if(head.dirt_overlay)
 			var/image/bloodsies = image("icon"='icons/effects/blood.dmi', "icon_state"="helmetblood")
-			bloodsies.color = head.blood_color
+			bloodsies.color = head.dirt_overlay.color
 			standing.overlays	+= bloodsies
 
 	apply_overlay(HEAD_LAYER)
@@ -788,19 +806,14 @@ Please contact me on #coderbus IRC. ~Carn x
 			standing = image("icon"=((wear_suit.icon_override) ? wear_suit.icon_override : (species.sprite_sheets["suit"] ? species.sprite_sheets["suit"] : 'icons/mob/suit.dmi')), "icon_state"="[wear_suit.icon_state]", "layer"=-SUIT_LAYER)
 		else
 			standing = image("icon"=wear_suit:icon_custom, "icon_state"="[wear_suit.icon_state]_mob", "layer"=-SUIT_LAYER)
-		standing.color = wear_suit.color
-		overlays_standing[SUIT_LAYER]	= standing
 
-		if(istype(wear_suit, /obj/item/clothing/suit/straight_jacket))
-			drop_from_inventory(handcuffed)
-			drop_l_hand()
-			drop_r_hand()
-
-		if(wear_suit.blood_DNA)
+		if(wear_suit.dirt_overlay)
 			var/obj/item/clothing/suit/S = wear_suit
 			var/image/bloodsies = image("icon"='icons/effects/blood.dmi', "icon_state"="[S.blood_overlay_type]blood")
-			bloodsies.color = wear_suit.blood_color
-			standing.overlays	+= bloodsies
+			bloodsies.color = wear_suit.dirt_overlay.color
+			standing.overlays += bloodsies
+		standing.color = wear_suit.color
+		overlays_standing[SUIT_LAYER] = standing
 
 		if(FAT in mutations)
 			if(!(wear_suit.flags & ONESIZEFITSALL))
@@ -808,11 +821,19 @@ Please contact me on #coderbus IRC. ~Carn x
 				drop_from_inventory(wear_suit)
 				return
 
-		if(istype(wear_suit,/obj/item/clothing/suit/wintercoat))
+		if(istype(wear_suit, /obj/item/clothing/suit/straight_jacket))
+			drop_from_inventory(handcuffed)
+			drop_l_hand()
+			drop_r_hand()
+
+		else if(istype(wear_suit,/obj/item/clothing/suit/wintercoat))
 			var/obj/item/clothing/suit/wintercoat/W = wear_suit
 			if(W.hooded) //used for coat hood due to hair layer viewed over the suit
 				overlays_standing[HAIR_LAYER]   = null
 				overlays_standing[HEAD_LAYER]	= null
+
+		else if(istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
+			remove_overlay(BODY_LAYER)
 
 		update_inv_shoes()
 
@@ -850,9 +871,9 @@ Please contact me on #coderbus IRC. ~Carn x
 		standing.color = wear_mask.color
 		overlays_standing[FACEMASK_LAYER]	= standing
 
-		if(wear_mask.blood_DNA && !istype(wear_mask, /obj/item/clothing/mask/cigarette))
+		if(wear_mask.dirt_overlay && !istype(wear_mask, /obj/item/clothing/mask/cigarette))
 			var/image/bloodsies = image("icon"='icons/effects/blood.dmi', "icon_state"="maskblood")
-			bloodsies.color = wear_mask.blood_color
+			bloodsies.color = wear_mask.dirt_overlay.color
 			standing.overlays	+= bloodsies
 
 	apply_overlay(FACEMASK_LAYER)

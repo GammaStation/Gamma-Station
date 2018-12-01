@@ -86,6 +86,7 @@
 	vision_flags = SEE_MOBS
 	alpha = 0
 	darkness_view = 3
+	flash_protection = -1
 	var/vision = 1
 	//invis_view = 2
 	//invisa_view = 2
@@ -93,7 +94,7 @@
 	unacidable = 1
 	flags = ABSTRACT | DROPDEL
 	canremove = 0
-	action_button_name = "Toggle Vision"
+	actions_types = /datum/action/item_action/attack_self
 	icon = 'icons/mob/shadowling_hud.dmi'
 	icon_state = "ling_vision_off"
 
@@ -106,17 +107,11 @@
 	set name = "Toggle Vision"
 	set src in usr
 
-	if(!usr.stat)
-		if(src.vision)
-			src.vision = !src.vision
-			src.icon_state = "ling_vision_on"
-			//usr << ""
-		else
-			src.vision = !src.vision
-			src.icon_state = "ling_vision_off"
-			//usr << ""
-
-		usr.update_inv_glasses()
+	if(usr.stat)
+		return
+	icon_state = "ling_vision_[vision ? "on" : "off"]"
+	vision = !vision
+	usr.update_inv_glasses()
 
 /obj/structure/shadow_vortex
 	name = "vortex"

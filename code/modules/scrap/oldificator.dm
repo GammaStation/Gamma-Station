@@ -35,7 +35,7 @@
 	if(prob(75))
 		storage_slots = max(contents.len, max(0, storage_slots - pick(2, 2, 2, 3, 3, 4)))
 	if(prob(75))
-		max_combined_w_class = max_combined_w_class / 2
+		max_storage_space = max_storage_space / 2
 	..()
 
 /obj/item/weapon/reagent_containers/make_old()
@@ -115,6 +115,7 @@
 		armor["bomb"] = armor["bomb"] / 2
 		armor["bio"] = armor["bio"] / 2
 		armor["rad"] = armor["rad"] / 2
+		armor["telepathy"] = armor["telepathy"] / 2
 	if(prob(50))
 		uncleanable = 1
 	if(prob(25))
@@ -126,11 +127,8 @@
 	if(prob(35))
 		contaminate()
 	if(prob(75))
-		generate_blood_overlay()
-		blood_overlay.color = pick("#030303", "#aa0000")
-		blood_color = blood_overlay.color
-		overlays += blood_overlay
-		blood_DNA = list()
+		generate_dirt_cover()
+		add_dirt_cover(pick(subtypesof(/datum/dirt_cover)))
 	..()
 
 
@@ -244,12 +242,6 @@
 		for(var/i = 1 to del_count)
 			var/removed_item = pick(product_records)
 			product_records -= removed_item
-
-
-/obj/item/clothing/glasses/sunglasses/sechud/make_old()
-	..()
-	if(hud && prob(75))
-		hud = new /obj/item/clothing/glasses/hud/broken
 
 /obj/effect/decal/mecha_wreckage/make_old()
 	salvage_num = 8

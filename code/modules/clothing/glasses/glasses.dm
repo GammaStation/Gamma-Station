@@ -13,6 +13,7 @@
 	var/toggleable = 0
 	var/off_state = "degoggles"
 	var/active = 1
+	var/flash_protection = 0
 	var/activation_sound = 'sound/items/buttonclick.ogg'
 
 /obj/item/clothing/glasses/attack_self(mob/user)
@@ -38,7 +39,7 @@
 	desc = "Used for seeing walls, floors, and stuff through anything."
 	icon_state = "meson"
 	item_state = "glasses"
-	action_button_name = "Toggle Goggles"
+	actions_types = /datum/action/item_action/attack_self
 	origin_tech = "magnets=2;engineering=2"
 	toggleable = 1
 	vision_flags = SEE_TURFS
@@ -50,10 +51,10 @@
 
 /obj/item/clothing/glasses/science
 	name = "science goggles"
-	desc = "The goggles do nothing!"
+	desc = "Special goggles with built-in reagent and atmospheric scanner"
 	icon_state = "purple"
 	item_state = "glasses"
-	action_button_name = "Toggle Goggles"
+	actions_types = /datum/action/item_action/attack_self
 	toggleable = 1
 
 /obj/item/clothing/glasses/night
@@ -66,7 +67,7 @@
 //	vision_flags = SEE_SELF
 	darkness_view = 7
 	toggleable = 1
-	action_button_name = "Toggle Goggles"
+	actions_types = /datum/action/item_action/attack_self
 	active = 1
 	off_state = "night"
 	activation_sound = 'sound/effects/glasses_on.ogg'
@@ -92,7 +93,7 @@
 	item_state = "glasses"
 	origin_tech = "magnets=3;engineering=3"
 	toggleable = 1
-	action_button_name = "Toggle Goggles"
+	actions_types = /datum/action/item_action/attack_self
 	vision_flags = SEE_OBJS
 
 /obj/item/clothing/glasses/aviator_orange
@@ -154,13 +155,15 @@
 	icon_state = "sun"
 	item_state = "sunglasses"
 	darkness_view = -1
+	flash_protection = 2
 
 /obj/item/clothing/glasses/welding
 	name = "welding goggles"
 	desc = "Protects the eyes from welders, approved by the mad scientist association."
 	icon_state = "welding-g"
 	item_state = "welding-g"
-	action_button_name = "Flip Welding Goggles"
+	actions_types = /datum/action/item_action/attack_self
+	flash_protection = 2
 	var/up = 0
 
 /obj/item/clothing/glasses/welding/attack_self()
@@ -178,6 +181,7 @@
 			src.flags |= GLASSESCOVERSEYES
 			flags_inv |= HIDEEYES
 			body_parts_covered |= EYES
+			flash_protection = 2
 			icon_state = initial(icon_state)
 			to_chat(usr, "You flip \the [src] down to protect your eyes.")
 		else
@@ -185,6 +189,7 @@
 			src.flags &= ~HEADCOVERSEYES
 			flags_inv &= ~HIDEEYES
 			body_parts_covered &= ~EYES
+			flash_protection = 0
 			icon_state = "[initial(icon_state)]up"
 			to_chat(usr, "You push \the [src] up out of your face.")
 
@@ -192,7 +197,7 @@
 
 /obj/item/clothing/glasses/welding/superior
 	name = "superior welding goggles"
-	desc = "Welding goggles made from more expensive materials, strangely smells like potatoes."
+	desc = "Modified welding goggles with built-in reagent and atmospheric scanner. They smell like potatoes, for some reason."
 	icon_state = "rwelding-g"
 	item_state = "rwelding-g"
 
@@ -212,21 +217,6 @@
 	icon_state = "bigsunglasses"
 	item_state = "bigsunglasses"
 
-/obj/item/clothing/glasses/sunglasses/sechud
-	name = "HUDsunglasses"
-	desc = "Sunglasses with a HUD."
-	icon_state = "sunhud"
-	var/obj/item/clothing/glasses/hud/security/hud = null
-
-/obj/item/clothing/glasses/sunglasses/sechud/atom_init()
-	. = ..()
-	hud = new/obj/item/clothing/glasses/hud/security(src)
-
-/obj/item/clothing/glasses/sunglasses/sechud/tactical
-	name = "tactical HUD"
-	desc = "Flash-resistant goggles with inbuilt combat and security information."
-	icon_state = "swatgoggles"
-
 /obj/item/clothing/glasses/thermal
 	name = "optical thermal scanner"
 	desc = "Thermals in the shape of glasses."
@@ -236,7 +226,8 @@
 	vision_flags = SEE_MOBS
 	invisa_view = 2
 	toggleable = 1
-	action_button_name = "Toggle Goggles"
+	flash_protection = -2
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/clothing/glasses/thermal/emp_act(severity)
 	if(istype(src.loc, /mob/living/carbon/human))
@@ -264,7 +255,7 @@
 	body_parts_covered = 0
 	toggleable = 1
 	off_state = "thermoncle_off"
-	action_button_name = "Toggle Monocle"
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/clothing/glasses/thermal/eyepatch
 	name = "optical thermal eyepatch"
@@ -273,7 +264,7 @@
 	item_state = "eyepatch"
 	body_parts_covered = 0
 	toggleable = 0
-	action_button_name = null
+	actions_types = null
 
 /obj/item/clothing/glasses/thermal/jensen
 	name = "optical thermal implants"
@@ -287,7 +278,7 @@
 	icon_state = "hos_shades"
 	item_state = "hos_shades"
 	toggleable = 0
-	action_button_name = null
+	actions_types = null
 
 /obj/item/clothing/glasses/rosas_eyepatch
 	name = "white eyepatch"
@@ -314,19 +305,14 @@
 	icon_state = "garm"
 	item_state = "garm"
 	toggleable = 0
-	action_button_name = null
-
-/obj/item/clothing/glasses/sunglasses/sechud/gar
-	name = "gar HUDsunglasses"
-	icon_state = "gars"
-	item_state = "gars"
+	actions_types = null
 
 /obj/item/clothing/glasses/sunglasses/gar/super
 	name = "supergar sunglasses"
 	icon_state = "supergarb"
 	item_state = "supergarb"
 
-/obj/item/clothing/glasses/sunglasses/sechud/gar/super
+/obj/item/clothing/glasses/hud/security/sun/gar/super
 	name = "supergar HUDSunglasses"
 	icon_state = "supergars"
 	item_state = "supergars"

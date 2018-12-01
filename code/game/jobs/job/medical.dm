@@ -15,8 +15,7 @@
 		access_keycard_auth, access_sec_doors, access_psychiatrist, access_maint_tunnels
 	)
 	minimal_player_age = 10
-	minimal_player_ingame_minutes = 2400
-	restricted_species = list(UNATHI, TAJARAN, DIONA)
+	minimal_player_ingame_minutes = 5000
 
 /datum/job/cmo/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0
@@ -35,12 +34,8 @@
 		return
 
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset/heads/cmo(H), slot_l_ear)
-	if(H.backbag == 1)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
-	else
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 
-	return 1
+	return TRUE
 
 
 /datum/job/doctor
@@ -56,7 +51,6 @@
 	access = list(access_medical, access_morgue, access_surgery, access_maint_tunnels)
 	alt_titles = list("Surgeon", "Nurse")
 	minimal_player_ingame_minutes = 960
-	restricted_species = list(UNATHI, TAJARAN, DIONA)
 
 /datum/job/doctor/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0
@@ -100,12 +94,8 @@
 		H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/labcoat(H), slot_wear_suit)
 
 	H.equip_to_slot_or_del(new /obj/item/device/pda/medical(H), slot_belt)
-	if(H.backbag == 1)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
-	else
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 
-	return 1
+	return TRUE
 
 /datum/job/paramedic
 	title = "Paramedic"
@@ -117,9 +107,9 @@
 	supervisors = "the chief medical officer"
 	selection_color = "#ffeef0"
 	idtype = /obj/item/weapon/card/id/med
-	access = list(access_medical, access_morgue, access_paramedic, access_maint_tunnels, access_external_airlocks, access_sec_doors, access_engine_equip, access_research, access_mailsorting)
+	access = list(access_medical, access_morgue, access_paramedic, access_surgery, access_maint_tunnels, access_external_airlocks, access_sec_doors, access_engine_equip, access_research, access_mailsorting)
 	minimal_player_ingame_minutes = 1500 //they have too much access, so you have to play more to unlock it
-	restricted_species = list(IPC, DIONA)
+	restricted_species = list(DIONA)
 
 /datum/job/paramedic/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0
@@ -138,9 +128,8 @@
 		if(2) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/medic(H), slot_back)
 		if(3) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel/med(H), slot_back)
 		if(4) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel(H), slot_back)
-	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 
-	return 1
+	return TRUE
 
 
 //Chemist is a medical job damnit	//YEAH FUCK YOU SCIENCE	-Pete	//Guys, behave -Erro
@@ -174,9 +163,8 @@
 		if(2) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/backpack_chem(H), slot_back)
 		if(3) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel/chem(H), slot_back)
 		if(4) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel(H), slot_back)
-	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 
-	return 1
+	return TRUE
 
 
 /datum/job/geneticist
@@ -191,7 +179,6 @@
 	idtype = /obj/item/weapon/card/id/med
 	access = list(access_medical, access_morgue, access_genetics, access_research)
 	minimal_player_ingame_minutes = 960
-	restricted_species = list(UNATHI, TAJARAN, DIONA)
 
 /datum/job/geneticist/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0
@@ -210,9 +197,8 @@
 		if(2) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/backpack_gen(H), slot_back)
 		if(3) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel/gen(H), slot_back)
 		if(4) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel(H), slot_back)
-	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 
-	return 1
+	return TRUE
 
 
 /datum/job/virologist
@@ -228,7 +214,6 @@
 	access = list(access_medical, access_virology)
 	alt_titles = list("Pathologist","Microbiologist")
 	minimal_player_ingame_minutes = 960
-	restricted_species = list(SKRELL, UNATHI, TAJARAN, DIONA)
 
 /datum/job/virologist/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0
@@ -247,12 +232,8 @@
 		if(2) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/backpack_vir(H), slot_back)
 		if(3) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel/vir(H), slot_back)
 		if(4) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel(H), slot_back)
-	if(H.backbag == 1)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
-	else
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 
-	return 1
+	return TRUE
 
 
 /datum/job/psychiatrist
@@ -268,7 +249,6 @@
 	access = list(access_medical, access_psychiatrist)
 	alt_titles = list("Psychologist")
 	minimal_player_ingame_minutes = 960
-	restricted_species = list(UNATHI)
 
 /datum/job/psychiatrist/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0
@@ -293,9 +273,5 @@
 	else
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/medical(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/device/pda/medical(H), slot_belt)
-	if(H.backbag == 1)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
-	else
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 
-	return 1
+	return TRUE

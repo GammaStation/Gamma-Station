@@ -4,6 +4,10 @@
 	if(!has_bodypart(def_zone))
 		return PROJECTILE_FORCE_MISS //if they don't have the body part in question then the projectile just passes by.
 
+	if(species.flags[IS_FLYING] && !falling)
+		if(prob((10 - movement_delay()) * 5)) // Tycheon's default dodge - 45%
+			return PROJECTILE_FORCE_MISS
+
 	if(P.impact_force)
 		for(var/i=1, i<=P.impact_force, i++)
 			step_to(src, get_step(loc, P.dir))
@@ -36,7 +40,6 @@
 			visible_message("<span class='userdanger'>The [P.name] hits [src]'s armor!</span>")
 			P.agony /= 2
 		apply_effect(P.agony,AGONY,0)
-		qdel(P)
 		if(istype(wear_suit, /obj/item/clothing/suit))
 			var/obj/item/clothing/suit/V = wear_suit
 			V.attack_reaction(src, REACTION_HIT_BY_BULLET)
@@ -57,7 +60,6 @@
 		P.on_hit(src)
 		flash_pain()
 		to_chat(src, "<span class='userdanger'>You have been shot!</span>")
-		qdel(P)
 		if(istype(wear_suit, /obj/item/clothing/suit))
 			var/obj/item/clothing/suit/V = wear_suit
 			V.attack_reaction(src, REACTION_HIT_BY_BULLET)
@@ -74,7 +76,6 @@
 				if(C.body_parts_covered & BP.body_part) // Is that body part being targeted covered?
 					if(C.flags & THICKMATERIAL )
 						visible_message("<span class='userdanger'> <B>The [P.name] gets absorbed by [src]'s [C.name]!</span>")
-						qdel(P)
 						return
 
 		BP = bodyparts_by_name[check_zone(def_zone)]
@@ -83,7 +84,6 @@
 		apply_effects(P.stun,P.weaken,0,0,P.stutter,0,0,armorblock)
 		flash_pain()
 		to_chat(src, "<span class='userdanger'>You have been shot!</span>")
-		qdel(P)
 		if(istype(wear_suit, /obj/item/clothing/suit))
 			var/obj/item/clothing/suit/V = wear_suit
 			V.attack_reaction(src, REACTION_HIT_BY_BULLET)
@@ -151,7 +151,7 @@
 		return TRUE
 	return FALSE
 
-/mob/living/carbon/human/getarmor(def_zone, type)
+/mob/living/carbon/human/getarmor(def_zone, type, ignore_limb_amount = FALSE)
 	var/armorval = 0
 	var/organnum = 0
 
@@ -165,7 +165,8 @@
 	//If you don't specify a bodypart, it checks ALL your bodyparts for protection, and averages out the values
 	for(var/obj/item/organ/external/BP in bodyparts)
 		armorval += getarmor_organ(BP, type)
-		organnum++
+		if(!ignore_limb_amount)
+			organnum++
 	return (armorval/max(organnum, 1))
 
 //this proc returns the Siemens coefficient of electrical resistivity for a particular external organ.
@@ -199,7 +200,7 @@
 	for(var/gear in protective_gear)
 		if(gear && istype(gear ,/obj/item/clothing))
 			var/obj/item/clothing/C = gear
-			if(istype(C) && (C.body_parts_covered & BP.body_part))
+			if(C.body_parts_covered & BP.body_part)
 				protection += C.armor[type]
 	return protection
 
@@ -248,6 +249,9 @@
 		if(!O)
 			continue
 		O.emp_act(severity)
+
+	species.on_emp_act(src, severity)
+
 	for(var/obj/item/organ/external/BP in bodyparts)
 		if(BP.status & ORGAN_DESTROYED)
 			continue
@@ -262,6 +266,11 @@
 /mob/living/carbon/human/proc/attacked_by(obj/item/I, mob/living/user, def_zone)
 	if(!I || !user)
 		return FALSE
+
+	if(species.flags[IS_FLYING] && !falling)
+		if(prob((10 - movement_delay()) * 5)) // Tycheon's default dodge - 45%
+			visible_message("<span class='notice'>[src] attempted to touch [src], missing narrowly.</span>")
+			return
 
 	var/target_zone = def_zone? check_zone(def_zone) : get_zone_with_miss_chance(user.zone_sel.selecting, src)
 
@@ -391,24 +400,30 @@
 
 	BP.embed(I, null, null, created_wound)
 
-/mob/living/carbon/human/bloody_hands(mob/living/source, amount = 2)
+/mob/living/carbon/human/bloody_hands(mob/living/carbon/human/source, amount = 2, blood_datum)
 	if (gloves)
-		gloves.add_blood(source)
-		gloves:transfer_blood = amount
-		gloves:bloody_hands_mob = source
+		if(istype(gloves, /obj/item/clothing/gloves/))
+			var/obj/item/clothing/gloves/GL = gloves
+			GL.add_blood(source,blood_datum)
+			GL.transfer_blood = amount
+			GL.bloody_hands_mob = source
 	else
-		add_blood(source)
+		add_blood(source,blood_datum)
 		bloody_hands = amount
 		bloody_hands_mob = source
 	update_inv_gloves()		//updates on-mob overlays for bloody hands and/or bloody gloves
 
-/mob/living/carbon/human/bloody_body(mob/living/source)
+/mob/living/carbon/human/bloody_body(mob/living/carbon/human/source, blood_datum)
 	if(wear_suit)
-		wear_suit.add_blood(source)
+		wear_suit.add_blood(source,blood_datum)
 		update_inv_wear_suit()
 	if(w_uniform)
-		w_uniform.add_blood(source)
+		w_uniform.add_blood(source,blood_datum)
 		update_inv_w_uniform()
+
+/mob/living/carbon/human/crawl_in_blood(obj/effect/decal/cleanable/blood/floor_blood, amount = 2)
+	bloody_hands(src,amount,floor_blood.basedatum)
+	bloody_body(src,floor_blood.basedatum)
 
 /mob/living/carbon/proc/check_thickmaterial(obj/item/organ/external/BP, target_zone)
 	return 0
@@ -440,3 +455,10 @@
 	var/penetrated_dam = max(0, min(50, (damage * reduction_dam) / 1.5)) // - SS.damage)) - Consider uncommenting this if suits seem too hardy on dev.
 
 	if(penetrated_dam) SS.create_breaches(damtype, penetrated_dam)
+
+/mob/living/carbon/human/hitby(atom/movable/AM)
+	if(species.flags[IS_FLYING] && !falling)
+		if(prob((10 - movement_delay()) * 5)) // Tycheon's default dodge - 45%
+			visible_message("<span class='notice'>\The [AM] misses [src] narrowly!</span>")
+			return
+	return ..()

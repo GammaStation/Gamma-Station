@@ -198,6 +198,30 @@
 	icon_state = "nerdshirt"
 	item_state = "nerdshirt"
 
+/obj/item/clothing/suit/blueshirt
+	name = "blue shirt"
+	desc = "A blue shirt with some strange symbols. Look out for aliens!"
+	icon_state = "blueshirt"
+	item_state = "blueshirt"
+
+/obj/item/clothing/suit/chemshirt
+	name = "chemistry shirt"
+	desc = "A nice orange shirt made from a special fabric that hides any reagent stains. Has a drawn beaker with some glowy acid inside. Wanna cook?"
+	icon_state = "chemshirt"
+	item_state = "chemshirt"
+
+/obj/item/clothing/suit/roundshirt
+	name = "science shirt"
+	desc = "A purple, sciency t-shirt with a picture of a burning star. Save the Earth! Oh wait, already too late for that"
+	icon_state = "roundshirt"
+	item_state = "roundshirt"
+
+/obj/item/clothing/suit/catshirt
+	name = "cat shirt"
+	desc = "Very comfy, grey t-shirt with a picture of a cute kitty. And the best part: any cat or tajaran hair blends into the design very well!"
+	icon_state = "catshirt"
+	item_state = "catshirt"
+
 /obj/item/clothing/suit/jacket
 	name = "bomber jacket"
 	desc = "Aviators not included."
@@ -225,7 +249,7 @@
 	item_state = "hostrench"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	cold_protection = UPPER_TORSO|LOWER_TORSO
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 35, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 35, rad = 0, telepathy = 0)
 
 /obj/item/clothing/suit/jacket/puffer/vest
 	name = "puffer vest"
@@ -234,7 +258,7 @@
 	item_state = "armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	cold_protection = UPPER_TORSO|LOWER_TORSO
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 30, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 30, rad = 0, telepathy = 0)
 
 //Blue suit jacket toggle
 /obj/item/clothing/suit/suit/verb/toggle()
@@ -522,7 +546,7 @@
 	item_state = "cuirass"
 	blood_overlay_type = "armor"
 	flags = THICKMATERIAL
-	armor = list(melee = 50, bullet = 30, laser = 10, energy = 10, bomb = 25, bio = 0, rad = 0)
+	armor = list(melee = 50, bullet = 30, laser = 10, energy = 10, bomb = 25, bio = 0, rad = 0, telepathy = 10)
 
 /obj/item/clothing/suit/goodman_jacket
 	name = "brown jacket"
@@ -561,10 +585,10 @@
 	name = "Student Jacket"
 	desc = "A Student's jacket from the eighties."
 	icon_state = "student_jacket"
-	action_button_name = "To Fasten"
+	actions_types = /datum/action/item_action/attack_self
 	var/fastened = TRUE
 
-/obj/item/clothing/suit/student_jacket/ui_action_click()
+/obj/item/clothing/suit/student_jacket/attack_self()
 	if(fastened)
 		icon_state = "student_jacket_open"
 		if(ishuman(loc))
