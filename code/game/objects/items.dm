@@ -376,10 +376,9 @@
 	if(QDELETED(src) || freeze_movement) // no item - no pickup, you dummy!
 		return
 
-	src.pickup(user)
-	user.put_in_active_hand(src)
-	return
-
+	if(Adjacent(user))
+		pickup(user)
+		user.put_in_active_hand(src)
 
 /obj/item/attack_ai(mob/user)
 	if (istype(src.loc, /obj/item/weapon/robot_module))

@@ -151,7 +151,7 @@
 		return TRUE
 	return FALSE
 
-/mob/living/carbon/human/getarmor(def_zone, type)
+/mob/living/carbon/human/getarmor(def_zone, type, ignore_limb_amount = FALSE)
 	var/armorval = 0
 	var/organnum = 0
 
@@ -165,7 +165,8 @@
 	//If you don't specify a bodypart, it checks ALL your bodyparts for protection, and averages out the values
 	for(var/obj/item/organ/external/BP in bodyparts)
 		armorval += getarmor_organ(BP, type)
-		organnum++
+		if(!ignore_limb_amount)
+			organnum++
 	return (armorval/max(organnum, 1))
 
 //this proc returns the Siemens coefficient of electrical resistivity for a particular external organ.
@@ -199,7 +200,7 @@
 	for(var/gear in protective_gear)
 		if(gear && istype(gear ,/obj/item/clothing))
 			var/obj/item/clothing/C = gear
-			if(istype(C) && (C.body_parts_covered & BP.body_part))
+			if(C.body_parts_covered & BP.body_part)
 				protection += C.armor[type]
 	return protection
 
