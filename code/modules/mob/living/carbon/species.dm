@@ -1247,7 +1247,8 @@
 	H.flags |= NOSLIP | NOBLOODY
 	H.mutations.Add(TK)
 	H.mutations.Add(REMOTE_TALK)
-	H.tk_level |= TELEKINETIC_MOB_CONTROL | TELEKINETIC_HARM_WEAKEN
+	H.tk_level |= TELEKINETIC_MOB_CONTROL | TELEKINETIC_HARM_WEAKEN |  TELEKINETIC_NO_VIEW_REQUIRED
+	H.tk_maxrange = 15 // Before it was 8.
 	H.ventcrawler = TRUE
 	H.verbs += /mob/living/carbon/human/proc/toggle_sphere
 	H.verbs += /mob/living/carbon/human/proc/metal_bend
@@ -1273,7 +1274,8 @@
 	H.flags &= ~(NOSLIP | NOBLOODY)
 	H.mutations.Remove(TK)
 	H.mutations.Remove(REMOTE_TALK)
-	H.tk_level &= ~(TELEKINETIC_MOB_CONTROL | TELEKINETIC_HARM_WEAKEN)
+	H.tk_level &= ~(TELEKINETIC_MOB_CONTROL | TELEKINETIC_HARM_WEAKEN |  TELEKINETIC_NO_VIEW_REQUIRED)
+	H.tk_maxrange = 8 // Before it was 8.
 	H.ventcrawler = FALSE
 	H.verbs -= /mob/living/carbon/human/proc/toggle_sphere
 	H.verbs -= /mob/living/carbon/human/proc/metal_bend
