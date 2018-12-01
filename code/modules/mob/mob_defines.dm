@@ -235,6 +235,7 @@
 
 	// Telekinesis for grown up boys.
 	var/tk_level = 0
+	var/tk_maxrange = 8
 
 	// Telepathy for dummies.
 	var/list/remote_hearers = list() // A list of people that are listening to you.

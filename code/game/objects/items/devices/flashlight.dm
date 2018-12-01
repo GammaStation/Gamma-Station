@@ -9,7 +9,7 @@
 	slot_flags = SLOT_BELT
 	m_amt = 50
 	g_amt = 20
-	action_button_name = "Toggle Flashlight"
+	actions_types = /datum/action/item_action/attack_self
 	var/on = 0
 	var/brightness_on = 5 //luminosity when on
 
@@ -36,7 +36,7 @@
 		return 0
 	on = !on
 	update_brightness(user)
-	action_button_name = null
+
 	return 1
 
 /obj/item/device/flashlight/Destroy()
@@ -153,13 +153,12 @@
 	brightness_on = 4
 	icon_state = "flare"
 	item_state = "flare"
-	action_button_name = null //just pull it manually, neckbeard.
 	var/fuel = 0
 	var/on_damage = 7
 	var/produce_heat = 1500
 	light_color = "#ff0000"
 	light_power = 2
-	action_button_name = "Toggle Flare"
+	actions_types = /datum/action/item_action/attack_self
 
 
 /obj/item/device/flashlight/flare/atom_init()

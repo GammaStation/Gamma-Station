@@ -175,6 +175,18 @@
 	caliber = ".45"
 	max_ammo = 20
 
+/obj/item/ammo_box/magazine/type76_rubber
+	name = "magazine (9mm rubber)"
+	icon_state = "mag-76"
+	origin_tech = "combat=2"
+	ammo_type = /obj/item/ammo_casing/c9mmr
+	caliber = "9mm"
+	max_ammo = 36
+
+/obj/item/ammo_box/magazine/type76_rubber/update_icon()
+	..()
+	icon_state = "[initial(icon_state)]-[ammo_count() > 0 ? "full" : "empty"]"
+
 /obj/item/ammo_box/magazine/m12mm/update_icon()
 	..()
 	icon_state = "[initial(icon_state)]-[round(ammo_count(),2)]"

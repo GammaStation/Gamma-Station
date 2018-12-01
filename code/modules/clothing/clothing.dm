@@ -311,7 +311,7 @@ BLIND     // can't see anything
 
 /obj/item/clothing/suit/space
 	name = "space suit"
-	desc = "A suit that protects against low pressure environments. \"NSS EXODUS\" is written in large block letters on the back."
+	desc = "A suit that protects against low pressure environments. \"NFS GAMMA\" is written in large block letters on the back."
 	icon_state = "space"
 	item_state = "s_suit"
 	w_class = 4//bulky item
@@ -409,7 +409,7 @@ BLIND     // can't see anything
 	if(istype(loc, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = loc
 		H.update_inv_w_uniform()
-		action_button_name = null
+		actions_types = null
 
 /obj/item/clothing/under/verb/removetie()
 	set name = "Remove Accessory"
@@ -447,7 +447,6 @@ BLIND     // can't see anything
 			if(istype(loc, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = loc
 				H.update_inv_w_uniform()
-			action_button_name = "Use inventory."
 			return
 		else
 			to_chat(user, "<span class='notice'>You cannot attach more accessories of this type to [src].</span>")
