@@ -494,3 +494,33 @@
 	if(..())
 		playsound(user, 'sound/weapons/guns/ak74_reload.ogg', 50, 1)
 	update_icon()
+
+/obj/item/weapon/gun/projectile/automatic/type76
+	name = "Type .76"
+	desc = "Type 76 this is semi-automatic submachine gun that shoots 3 rounds per one shot. You've definitely seen this pretty one in some movie 'bout those Space-Vietnam wars. Pull the trigger, and become a narrow-eyed Solider!"
+	icon_state = "type76"
+	item_state = "type76"
+	w_class = 3.0
+	origin_tech = "combat=4;materials=2;"
+	mag_type = /obj/item/ammo_box/magazine/type76_rubber
+	fire_sound = 'sound/weapons/guns/type76_shot.ogg'
+	burst_mode = TRUE
+	burst_amount = 3
+	burst_delay = 4
+
+
+/obj/item/weapon/gun/projectile/automatic/type76/atom_init()
+	. = ..()
+	update_icon()
+
+/obj/item/weapon/gun/projectile/automatic/type76/afterattack(atom/target, mob/living/user, flag)
+	..()
+	if(!chambered && !get_ammo() && !alarmed)
+		playsound(user, 'sound/weapons/smg_empty_alarm.ogg', 40, 1)
+		update_icon()
+		alarmed = 1
+
+/obj/item/weapon/gun/projectile/automatic/type76/update_icon()
+	..()
+	icon_state = "type76_[magazine ? "clip" : "empty"]"
+	item_state = "type76_[magazine ? "clip" : "empty"]"
