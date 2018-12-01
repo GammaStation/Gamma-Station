@@ -183,6 +183,10 @@
 	caliber = "9mm"
 	max_ammo = 36
 
+/obj/item/ammo_box/magazine/type76_rubber/update_icon()
+	..()
+	icon_state = "[initial(icon_state)]-[ammo_count() > 0 ? "full" : "empty"]"
+
 /obj/item/ammo_box/magazine/m12mm/update_icon()
 	..()
 	icon_state = "[initial(icon_state)]-[round(ammo_count(),2)]"

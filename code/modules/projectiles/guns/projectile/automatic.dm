@@ -498,8 +498,8 @@
 /obj/item/weapon/gun/projectile/automatic/type76
 	name = "Type .76"
 	desc = "Type 76 this is semi-automatic submachine gun that shoots 3 rounds per one shot. You've definitely seen this pretty one in some movie 'bout those Space-Vietnam wars. Pull the trigger, and become a narrow-eyed Solider!"
-	icon_state = "type76_100"
-	item_state = "type76_100"
+	icon_state = "type76"
+	item_state = "type76"
 	w_class = 3.0
 	origin_tech = "combat=4;materials=2;"
 	mag_type = /obj/item/ammo_box/magazine/type76_rubber
@@ -522,5 +522,5 @@
 
 /obj/item/weapon/gun/projectile/automatic/type76/update_icon()
 	..()
-	icon_state = "type76_[magazine ? ceil(get_ammo(0) / magazine.max_ammo * 5 ) : 0]"
-	item_state = "type76_[magazine ? ceil(get_ammo(0) / magazine.max_ammo * 5 ) : 0]"
+	icon_state = "type76_[magazine ? "clip" : "empty"]"
+	item_state = "type76_[magazine ? "clip" : "empty"]"
