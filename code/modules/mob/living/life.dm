@@ -8,14 +8,11 @@
 		return
 
 	if(stat != DEAD)
-		//update_uab()
 		add_ingame_age()
 
 	if(pull_debuff && !pulling)	//For cases when pulling was stopped by 'pulling = null'
 		pull_debuff = 0
 	update_gravity(mob_has_gravity())
-
-	//update_uab()
 
 	handle_regular_hud_updates()
 
@@ -65,10 +62,6 @@
 
 /mob/living/proc/update_sight()
 	return
-
-/mob/living/proc/update_uab()
-	//for(var/obj/item/I in get_contents())
-		//I.handle_actions()
 
 /mob/living/update_action_buttons()
 	if(!hud_used) return

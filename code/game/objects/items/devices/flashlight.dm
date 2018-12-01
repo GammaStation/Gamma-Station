@@ -36,7 +36,7 @@
 		return 0
 	on = !on
 	update_brightness(user)
-	//actions_types = null
+
 	return 1
 
 /obj/item/device/flashlight/Destroy()
@@ -153,7 +153,6 @@
 	brightness_on = 4
 	icon_state = "flare"
 	item_state = "flare"
-	//actions_types = null //just pull it manually, neckbeard.
 	var/fuel = 0
 	var/on_damage = 7
 	var/produce_heat = 1500

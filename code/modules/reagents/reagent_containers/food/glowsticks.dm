@@ -6,7 +6,7 @@
 	icon = 'icons/obj/glowsticks.dmi'
 	icon_state = null
 	item_state = null
-	//actions_types = null	//just pull it manually, neckbeard.
+	actions_types = null
 	slot_flags = SLOT_BELT
 	light_power = 2
 	var/on = 0
@@ -87,7 +87,6 @@
 		return
 	on = !on
 	update_brightness(user)
-	//actions_types = null
 	playsound(src, 'sound/weapons/glowstick_bend.ogg', 35, 0)
 	user.visible_message("<span class='notice'>[user] bends the [name].</span>", "<span class='notice'>You bend the [name]!</span>")
 	START_PROCESSING(SSobj, src)

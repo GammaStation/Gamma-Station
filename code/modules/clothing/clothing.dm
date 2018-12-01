@@ -447,7 +447,6 @@ BLIND     // can't see anything
 			if(istype(loc, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = loc
 				H.update_inv_w_uniform()
-			//actions_types = "Use inventory."
 			return
 		else
 			to_chat(user, "<span class='notice'>You cannot attach more accessories of this type to [src].</span>")
