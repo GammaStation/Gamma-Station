@@ -42,6 +42,7 @@
 		return 0
 
 	equip_to_slot(W, slot, redraw_mob) //This proc should not ever fail.
+	W.after_equipping(src)
 	return 1
 
 //This is an UNSAFE proc. It merely handles the actual job of equipping. All the checks on whether you can or can't eqip need to be done before! Use mob_can_equip() for that task.
