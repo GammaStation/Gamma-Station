@@ -38,7 +38,7 @@
 	force = 8 //might or might not be too high, subject to change
 	throwforce = 8
 	attack_verb = list("drilled", "screwed", "jabbed")
-	action_button_name = "Change mode"
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/weapon/wrench/power/attack_self(mob/user)
 	playsound(user, 'sound/items/change_drill.ogg', 50, 1)
@@ -104,7 +104,7 @@
 	throw_range = 3//it's heavier than a screw driver/wrench, so it does more damage, but can't be thrown as far
 	attack_verb = list("drilled", "screwed", "jabbed","whacked")
 	hitsound = 'sound/items/drill_hit.ogg'
-	action_button_name = "Change mode"
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/weapon/screwdriver/power/attack_self(mob/user)
 	playsound(user, 'sound/items/change_drill.ogg', 50, 1)
@@ -161,7 +161,7 @@
 	item_state = "jawsoflife"
 	origin_tech = "materials=2;engineering=2"
 	materials = list(MAT_METAL=150, MAT_SILVER=50)
-	action_button_name = "Change mode"
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/weapon/wirecutters/power/attack_self(mob/user)
 	playsound(user, 'sound/items/change_jaws.ogg', 50, 1)
@@ -179,7 +179,7 @@
 	icon_state = "welder"
 	flags = CONDUCT
 	slot_flags = SLOT_BELT
-	action_button_name = "Switch Welding tool"
+	actions_types = /datum/action/item_action/attack_self
 
 	//Amount of OUCH when it's thrown
 	force = 3.0
@@ -527,7 +527,7 @@ var/next_refuel_tick = 0
 	materials = list(MAT_METAL=150, MAT_SILVER=50)
 	origin_tech = "materials=2;engineering=2"
 	force = 15
-	action_button_name = "Change mode"
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/weapon/crowbar/power/attack_self(mob/user)
 	playsound(user, 'sound/items/change_jaws.ogg', 50, 1)

@@ -35,6 +35,8 @@
 		if(owner == T)
 			return
 		Remove(owner)
+	if(name == "Generic Action")
+		name = target.name
 	owner = T
 	owner.actions.Add(src)
 	owner.update_action_buttons()
@@ -54,7 +56,7 @@
 	if(!Checks())
 		return
 	switch(action_type)
-		if(AB_GENERIC)
+		if(AB_ITEM)
 			if(target && action_procname)
 				call(target,action_procname)(usr)
 		if(AB_SPELL)

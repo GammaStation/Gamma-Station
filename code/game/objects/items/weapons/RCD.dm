@@ -27,7 +27,7 @@ RCD
 	var/canRwall = 0
 	var/disabled = 0
 
-	action_button_name = "Switch RCD"
+	actions_types = /datum/action/item_action/attack_self
 
 
 /obj/item/weapon/rcd/atom_init()
