@@ -12,7 +12,7 @@
 /datum/action
 	var/name = "Generic Action"
 	var/action_type = AB_GENERIC
-	var/procname = null
+	var/action_procname = null
 	var/atom/movable/target = null
 	var/check_flags = 0
 	var/processing = 0
@@ -57,8 +57,8 @@
 		return
 	switch(action_type)
 		if(AB_GENERIC)
-			if(target && procname)
-				call(target,procname)(usr)
+			if(target && action_procname)
+				call(target,action_procname)(usr)
 		if(AB_SPELL)
 			if(target)
 				var/obj/effect/proc_holder/spell = target
@@ -254,33 +254,33 @@
 
 ////////Action presets
 /datum/action/item_action/attack_self
-	procname = "attack_self"
+	action_procname = "attack_self"
 
 /datum/action/item_action/ui_action_click
-	procname = "ui_action_click"
+	action_procname = "ui_action_click"
 
 /datum/action/item_action/toggle_hood
-	procname = "ToggleHood"
+	action_procname = "ToggleHood"
 
 /datum/action/item_action/toggle_stealth
-	procname = "toggle_stealth"
+	action_procname = "toggle_stealth"
 
 /datum/action/item_action/toggle_mister
-	procname = "toggle_mister"
+	action_procname = "toggle_mister"
 
 /datum/action/item_action/jetpack_toggle
 	name = "toggle jetpack"
-	procname = "toggle"
+	action_procname = "toggle"
 
 /datum/action/item_action/jetpack_stabilisation
 	name = "toggle stabilisation"
-	procname = "toggle_rockets"
+	action_procname = "toggle_rockets"
 
 /datum/action/item_action/implant_storage
-	procname = "open_storage"
+	action_procname = "open_storage"
 
 /datum/action/item_action/toggle_paddles
-	procname = "toggle_paddles"
+	action_procname = "toggle_paddles"
 
 /datum/action/item_action/toggle
-	procname = "toggle"
+	action_procname = "toggle"
