@@ -10,7 +10,7 @@
 	flags = CONDUCT
 	origin_tech = "magnets=2;combat=1"
 
-	actions_types = /datum/action/item_action/attack_self
+	action_button_name = "Toggle Flash"
 
 	var/times_used = 0 //Number of times it's been used.
 	var/broken = 0     //Is the flash burnt out?

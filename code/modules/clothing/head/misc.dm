@@ -261,7 +261,7 @@
 	icon_state = "fedora"
 	item_state = "fedora"
 	desc = "A really cool hat if you're a mobster. A really lame hat if you're not."
-	actions_types = "Tip Fedora"
+	action_button_name = "Tip Fedora"
 
 /obj/item/clothing/head/fedora/attack_self(mob/user)
 	fedoraproc(user)

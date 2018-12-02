@@ -14,7 +14,7 @@
 	throwforce = 6
 	w_class = ITEM_SIZE_LARGE
 	origin_tech = list("biotech" = 2, "powerstorage" = 1)
-	actions_types = /datum/action/item_action/toggle_paddles
+	action_button_name = "Remove/Replace Paddles"
 
 	var/obj/item/weapon/twohanded/shockpaddles/linked/paddles
 	var/obj/item/weapon/stock_parts/cell/bcell = null
@@ -61,6 +61,9 @@
 		new_overlays += blood_overlay
 
 	overlays = new_overlays
+
+/obj/item/weapon/defibrillator/ui_action_click()
+	toggle_paddles()
 
 /obj/item/weapon/defibrillator/attack_hand(mob/user)
 	if(loc == user)

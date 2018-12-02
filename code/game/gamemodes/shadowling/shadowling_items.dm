@@ -94,7 +94,7 @@
 	unacidable = 1
 	flags = ABSTRACT | DROPDEL
 	canremove = 0
-	actions_types = /datum/action/item_action/attack_self
+	action_button_name = "Toggle Vision"
 	icon = 'icons/mob/shadowling_hud.dmi'
 	icon_state = "ling_vision_off"
 

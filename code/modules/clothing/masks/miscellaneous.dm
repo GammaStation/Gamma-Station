@@ -48,7 +48,7 @@
 	desc = "Take center ring at your carnival party with this red clown nose. These clown nose are made of lightweight foam and have a slit down the middle for a comfortable fit."
 	icon_state = "clownnose"
 	item_state = "clownnose"
-	actions_types = /datum/action/item_action/attack_self
+	action_button_name = "HONK!"
 	var/cooldown = 0
 
 /obj/item/clothing/mask/clownnose/attack_self()
@@ -83,7 +83,7 @@
 	flags = MASKCOVERSMOUTH
 	w_class = 2
 	gas_transfer_coefficient = 0.90
-	actions_types = "Adjust scarf"
+	action_button_name = "Adjust scarf"
 	var/hanging = 0
 
 /obj/item/clothing/mask/scarf/blue
@@ -201,7 +201,7 @@
 	desc = "A fine bandana with nanotech lining and a hydroponics pattern."
 	w_class = 1
 	flags = MASKCOVERSMOUTH
-	actions_types = /datum/action/item_action/attack_self
+	action_button_name = "Adjust Bandana"
 	icon_state = "bandbotany"
 	body_parts_covered = 0
 

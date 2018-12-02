@@ -10,12 +10,12 @@
 	item_state = "backpack"
 	w_class = ITEM_SIZE_LARGE
 	slot_flags = SLOT_BACK	//ERROOOOO
-	actions_types = /datum/action/item_action/ui_action_click
+	action_button_name = "Storage"
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_BACKPACK_STORAGE
 	var/opened = 0
 
-/obj/item/weapon/storage/backpack/proc/ui_action_click()
+/obj/item/weapon/storage/backpack/ui_action_click()
 	if(!opened)
 		open(loc)
 	else
