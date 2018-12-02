@@ -51,6 +51,14 @@
 			m_type = 1
 
 		if ("custom")
+			if (client)
+				if (client.prefs.muted & MUTE_IC)
+					to_chat(src, "<span class='warning'>You cannot send IC messages (muted).</span>")
+					return
+				if(client.handle_spam_prevention(message,MUTE_IC))
+					return
+			if (stat)
+				return
 			var/input = sanitize(input("Choose an emote to display.") as text|null)
 			if (!input)
 				return

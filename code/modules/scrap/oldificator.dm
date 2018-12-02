@@ -115,6 +115,7 @@
 		armor["bomb"] = armor["bomb"] / 2
 		armor["bio"] = armor["bio"] / 2
 		armor["rad"] = armor["rad"] / 2
+		armor["telepathy"] = armor["telepathy"] / 2
 	if(prob(50))
 		uncleanable = 1
 	if(prob(25))

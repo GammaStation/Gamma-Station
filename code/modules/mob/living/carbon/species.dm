@@ -1247,7 +1247,8 @@
 	H.flags |= NOSLIP | NOBLOODY
 	H.mutations.Add(TK)
 	H.mutations.Add(REMOTE_TALK)
-	H.tk_level |= TELEKINETIC_MOB_CONTROL | TELEKINETIC_HARM_WEAKEN
+	H.tk_level |= TELEKINETIC_MOB_CONTROL | TELEKINETIC_HARM_WEAKEN |  TELEKINETIC_NO_VIEW_REQUIRED
+	H.tk_maxrange = 15 // Before it was 8.
 	H.ventcrawler = TRUE
 	H.verbs += /mob/living/carbon/human/proc/toggle_sphere
 	H.verbs += /mob/living/carbon/human/proc/metal_bend
@@ -1273,7 +1274,8 @@
 	H.flags &= ~(NOSLIP | NOBLOODY)
 	H.mutations.Remove(TK)
 	H.mutations.Remove(REMOTE_TALK)
-	H.tk_level &= ~(TELEKINETIC_MOB_CONTROL | TELEKINETIC_HARM_WEAKEN)
+	H.tk_level &= ~(TELEKINETIC_MOB_CONTROL | TELEKINETIC_HARM_WEAKEN |  TELEKINETIC_NO_VIEW_REQUIRED)
+	H.tk_maxrange = 8 // Before it was 8.
 	H.ventcrawler = FALSE
 	H.verbs -= /mob/living/carbon/human/proc/toggle_sphere
 	H.verbs -= /mob/living/carbon/human/proc/metal_bend
@@ -1309,7 +1311,7 @@
 			star_chance += dist
 		if(M.remote_hearing.len > 3)
 			star_chance += M.remote_hearing.len * 5
-		star_chance += M.getarmor(BP_HEAD, "telepathy")
+		star_chance += getarmor(BP_HEAD, "telepathy") + M.getarmor(BP_HEAD, "telepathy")
 		if(star_chance)
 			stars(message, star_chance)
 		if(prob(MAX_TELEPATHY_RANGE - dist)) // The further they are, the lesser the chance to understand something.
@@ -1417,9 +1419,9 @@
 	var/star_chance = 0
 	if(dist > MAX_TELEPATHY_RANGE)
 		star_chance += dist
-	star_chance += M.getarmor(BP_HEAD, "telepathy")
+	star_chance += M.getarmor(BP_HEAD, "telepathy") + getarmor(BP_HEAD, "telepathy")
 	if(star_chance)
-		stars(say, dist)
+		stars(say, star_chance)
 
 	if((REMOTE_TALK in M.mutations))
 		to_chat(M, "<span class='notice'>You hear <b>[src]'s voice</b>:</span> [say]")
@@ -1454,7 +1456,7 @@
 		for(var/mob/M in remote_hearing)
 			choices |= M
 			for(var/mob/M_hears in hearers(M, null))
-				choices |= M
+				choices |= M_hears
 		for(var/mob/M in living_mob_list)
 			if(M in hearers())
 				choices |= M
@@ -1547,9 +1549,9 @@
 		var/star_chance = 0
 		if(dist > MAX_TELEPATHY_RANGE)
 			star_chance += dist
-		star_chance += M.getarmor(BP_HEAD, "telepathy")
+		star_chance += M.getarmor(BP_HEAD, "telepathy") + getarmor(BP_HEAD, "telepathy")
 		if(star_chance)
-			stars(cur_say, dist)
+			stars(cur_say, star_chance)
 
 		if((REMOTE_TALK in M.mutations))
 			to_chat(M, "<span class='notice'>You hear <b>[src]'s voice</b>:</span> [cur_say]")

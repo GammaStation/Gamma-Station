@@ -23,7 +23,7 @@
 	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	flags_inv = (HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
 	body_parts_covered = HEAD|FACE|EYES
-	actions_types = /datum/action/item_action/attack_self
+	action_button_name = "Flip Welding Mask"
 	siemens_coefficient = 0.9
 	flash_protection = 2
 	w_class = 3

@@ -8,13 +8,33 @@
 		return
 
 	if(stat != DEAD)
+		handle_actions()
 		add_ingame_age()
 
 	if(pull_debuff && !pulling)	//For cases when pulling was stopped by 'pulling = null'
 		pull_debuff = 0
 	update_gravity(mob_has_gravity())
 
+	handle_actions()
+
 	handle_regular_hud_updates()
+
+/mob/living/proc/handle_actions()
+	//Pretty bad, i'd use picked/dropped instead but the parent calls in these are nonexistent
+	for(var/datum/action/A in actions)
+		if(A.CheckRemoval(src))
+			A.Remove(src)
+	for(var/obj/item/I in src)
+		if(I.action_button_name)
+			if(!I.action)
+				if(I.action_button_is_hands_free)
+					I.action = new/datum/action/item_action/hands_free
+				else
+					I.action = new/datum/action/item_action
+				I.action.name = I.action_button_name
+				I.action.target = I
+			I.action.Grant(src)
+	return
 
 /mob/living/proc/handle_regular_hud_updates()
 	if(!client)

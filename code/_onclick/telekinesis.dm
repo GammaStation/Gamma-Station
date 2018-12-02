@@ -3,10 +3,11 @@
 
 	This needs more thinking out, but I might as well.
 */
-var/const/tk_maxrange = 15
+
 #define TELEKINETIC_BASIC 0
 #define TELEKINETIC_MOB_CONTROL 1
 #define TELEKINETIC_HARM_WEAKEN 2
+#define TELEKINETIC_NO_VIEW_REQUIRED 4
 
 /*
 	Telekinetic attack:
@@ -45,11 +46,12 @@ var/const/tk_maxrange = 15
 		else
 			user.UnarmedAttack(src, 0)
 
-/mob/living/attack_tk(mob/user)
+/mob/living/attack_tk(mob/living/user)
 	if(user.stat)
 		return
+
 	var/dist = get_dist(src, user)
-	var/psy_resist_chance = 50 + (dist * 2) + getarmor(null, "telepathy") // A chance that our target will not be affected.
+	var/psy_resist_chance = 50 + (dist * 2) + getarmor(null, "telepathy", TRUE) +  user.getarmor(BP_HEAD, "telepathy") // A chance that our target will not be affected.
 
 	if(get_species(user) != TYCHEON)
 		psy_resist_chance += 10
@@ -68,6 +70,8 @@ var/const/tk_maxrange = 15
 					return
 				if(next_move > world.time)
 					return
+				if(!(user.tk_level & TELEKINETIC_HARM_WEAKEN))
+					return
 				SetNextClick(max(dist, CLICK_CD_MELEE))
 
 				to_chat(user, "<span class='warning'>You disarm [src]!</span>")
@@ -77,7 +81,7 @@ var/const/tk_maxrange = 15
 				msg_admin_attack("[key_name(user)] disarmed [key_name(src)]")
 				drop_item(loc)
 			if(I_GRAB)
-				if(!user.tk_level & TELEKINETIC_MOB_CONTROL)
+				if(!(user.tk_level & TELEKINETIC_MOB_CONTROL))
 					to_chat(user, "<span class='notice'>You are too weak to control [src].</span>")
 					return
 				var/obj/item/tk_grab/O = new(src)
@@ -89,7 +93,7 @@ var/const/tk_maxrange = 15
 					return
 				if(next_move > world.time)
 					return
-				if(!user.tk_level & TELEKINETIC_HARM_WEAKEN)
+				if(!(user.tk_level & TELEKINETIC_HARM_WEAKEN))
 					to_chat(user, "<span class='notice'>You are too weak to lock [src] in place.</span>")
 					return
 				SetNextClick(max(dist, CLICK_CD_MELEE))
@@ -196,23 +200,23 @@ var/const/tk_maxrange = 15
 	if(!(TK in host.mutations))
 		qdel(src)
 		return
+	if(!(host.tk_level & TELEKINETIC_NO_VIEW_REQUIRED) && !(focus in view(host)))
+		qdel(src)
+		return
 
 	var/d = get_dist(user, target)
 	if(focus)
 		d = max(d, get_dist(user, focus) + get_dist(target, focus)) // whichever is further
-	switch(d)
-		if(0)
-			;
-		if(1 to 5) // not adjacent may mean blocked by window
-			if(!proximity)
-				host.SetNextClick(2)
-		if(5 to 7)
-			host.SetNextClick(5)
-		if(8 to tk_maxrange)
-			host.SetNextClick(10)
-		else
-			to_chat(user, "<span class='notice'>Your mind won't reach that far.</span>")
-			return
+
+	if(d > user.tk_maxrange)
+		to_chat(host, "<span class='notice'>Your mind won't reach that far.</span>")
+		return
+	else if(d > (user.tk_maxrange * 0.6))
+		host.SetNextClick(10)
+	else if(d > (user.tk_maxrange * 0.3))
+		host.SetNextClick(5)
+	else if(d > 0 && !proximity) // not adjacent may mean blocked by window
+		host.SetNextClick(2)
 
 	if(!host.do_telekinesis(d))
 		return
@@ -227,7 +231,7 @@ var/const/tk_maxrange = 15
 		var/mob/living/M = focus
 		user.nutrition -= d * 2 // Manipulating living beings is TOUGH!
 
-		var/psy_resist_chance = 50 + (d * 2) + M.getarmor(null, "telepathy") // A chance that our poor mob might resist our efforts to make him beat something up.
+		var/psy_resist_chance = 50 + (d * 2) + M.getarmor(null, "telepathy", TRUE) +  host.getarmor(BP_HEAD, "telepathy") // A chance that our poor mob might resist our efforts to make him beat something up.
 
 		if(user.get_species() != TYCHEON)
 			psy_resist_chance += 10
@@ -254,8 +258,10 @@ var/const/tk_maxrange = 15
 				if(M.next_move > world.time)
 					return
 				M.drop_item()
+
 			if(I_GRAB)
 				step_towards(M, target)
+
 			if(I_HURT)
 				var/obj/item/I
 				if(host.hand)

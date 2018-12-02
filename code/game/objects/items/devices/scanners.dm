@@ -196,7 +196,7 @@ REAGENT SCANNER
 	g_amt = 20
 	origin_tech = "magnets=1;engineering=1"
 
-	actions_types = /datum/action/item_action/attack_self
+	action_button_name = "Use Analyzer"
 
 	var/advanced_mode = 0
 

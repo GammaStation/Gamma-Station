@@ -1,4 +1,4 @@
-#define AB_GENERIC 1
+#define AB_ITEM 1
 #define AB_SPELL 2
 #define AB_INNATE 3
 
@@ -11,7 +11,7 @@
 
 /datum/action
 	var/name = "Generic Action"
-	var/action_type = AB_GENERIC
+	var/action_type = AB_ITEM
 	var/action_procname = null
 	var/atom/movable/target = null
 	var/check_flags = 0
@@ -35,8 +35,6 @@
 		if(owner == T)
 			return
 		Remove(owner)
-	if(name == "Generic Action")
-		name = target.name
 	owner = T
 	owner.actions.Add(src)
 	owner.update_action_buttons()
@@ -68,7 +66,6 @@
 				Activate()
 			else
 				Deactivate()
-
 	return
 
 /datum/action/proc/Activate()
@@ -137,7 +134,7 @@
 
 	overlays.Cut()
 	var/image/img
-	if(owner.action_type == AB_GENERIC && owner.target)
+	if(owner.action_type == AB_ITEM && owner.target)
 		var/obj/item/I = owner.target
 		img = image(I.icon, src , I.icon_state)
 	else if(owner.button_icon && owner.button_icon_state)

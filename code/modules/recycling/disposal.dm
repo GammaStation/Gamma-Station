@@ -519,7 +519,7 @@
 				M.show_message("\the [I] bounces off of \the [src]'s rim!.", 3)
 		return 0
 	else
-		if(istype(mover) && mover.checkpass(PASSTABLE))
+		if(istype(mover) && mover.checkpass(PASSGRILLE))
 			return TRUE
 		return ..(mover, target, height, air_group)
 

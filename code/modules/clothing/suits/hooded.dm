@@ -1,5 +1,5 @@
 /obj/item/clothing/suit/hooded
-	actions_types = /datum/action/item_action/toggle_hood
+	action_button_name = "Hood"
 	var/obj/item/clothing/head/hood
 	var/hoodtype = /obj/item/clothing/head //so the chaplain hoodie or other hoodies can override this
 	var/hooded = FALSE
@@ -13,6 +13,10 @@
 /obj/item/clothing/suit/hooded/Destroy()
 	qdel(hood)
 	return ..()
+
+
+/obj/item/clothing/suit/hooded/ui_action_click()
+	ToggleHood()
 
 /obj/item/clothing/suit/hooded/equipped(mob/living/carbon/human/user, slot)
 	if(slot != user.wear_suit)
