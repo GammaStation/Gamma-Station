@@ -5,7 +5,8 @@ var/list/forbidden_varedit_object_types = list(
 		/datum/feedback_variable,          //Prevents people messing with feedback gathering
 		/datum/timedevent,                 //Nope.avi
 		/datum/craft_or_build,
-		/datum/stack_recipe
+		/datum/stack_recipe,
+		/datum/events,
 	)
 
 /client/proc/cmd_modify_ticker_variables()
@@ -127,7 +128,7 @@ var/list/forbidden_varedit_object_types = list(
 	if(!islist(L))
 		to_chat(usr, "Still not a list")
 		return
-		
+
 
 	var/list/locked = list("vars", "key", "ckey", "client", "virus", "viruses", "icon", "icon_state")
 	var/list/names = sortList(L)
