@@ -128,7 +128,7 @@ var/list/airlock_overlays = list()
 	return ((!secondsMainPowerLost || !secondsBackupPowerLost) && !(stat & NOPOWER))
 
 /obj/machinery/door/airlock/requiresID()
-	return !(isWireCut(AIRLOCK_WIRE_IDSCAN) || aiDisabledIdScanner)
+	return !(isWireCut(AIRLOCK_WIRE_IDSCAN) || aiDisabledIdScanner) || !req_access.len
 
 /obj/machinery/door/airlock/proc/isAllPowerCut()
 	if(isWireCut(AIRLOCK_WIRE_MAIN_POWER1) || isWireCut(AIRLOCK_WIRE_MAIN_POWER2))

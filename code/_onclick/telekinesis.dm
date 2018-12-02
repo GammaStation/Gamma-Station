@@ -46,12 +46,12 @@
 		else
 			user.UnarmedAttack(src, 0)
 
-/mob/living/attack_tk(mob/user)
+/mob/living/attack_tk(mob/living/user)
 	if(user.stat)
 		return
 
 	var/dist = get_dist(src, user)
-	var/psy_resist_chance = 50 + (dist * 2) + getarmor(null, "telepathy", TRUE) // A chance that our target will not be affected.
+	var/psy_resist_chance = 50 + (dist * 2) + getarmor(null, "telepathy", TRUE) +  user.getarmor(BP_HEAD, "telepathy") // A chance that our target will not be affected.
 
 	if(get_species(user) != TYCHEON)
 		psy_resist_chance += 10
@@ -231,7 +231,7 @@
 		var/mob/living/M = focus
 		user.nutrition -= d * 2 // Manipulating living beings is TOUGH!
 
-		var/psy_resist_chance = 50 + (d * 2) + M.getarmor(null, "telepathy", TRUE) // A chance that our poor mob might resist our efforts to make him beat something up.
+		var/psy_resist_chance = 50 + (d * 2) + M.getarmor(null, "telepathy", TRUE) +  host.getarmor(BP_HEAD, "telepathy") // A chance that our poor mob might resist our efforts to make him beat something up.
 
 		if(user.get_species() != TYCHEON)
 			psy_resist_chance += 10
