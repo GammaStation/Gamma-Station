@@ -356,7 +356,7 @@
 
 
 /obj/machinery/door/proc/requiresID()
-	return req_access.len || req_one_access.len
+	return FALSE
 
 /obj/machinery/door/update_nearby_tiles(need_rebuild)
 	. = ..()
