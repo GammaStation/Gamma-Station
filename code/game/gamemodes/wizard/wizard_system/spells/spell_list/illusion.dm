@@ -24,20 +24,18 @@
 
 
 /obj/effect/proc_holder/magic/click_on/illusion/check_turf_cast(turf/target)
-	. = ..()
 	if(!scanned.current_type)
 		to_chat(owner.current, "<font color='purple'><i>What do you want me to create?!</i></font>")
-		return FALSE
+		return TRUE
 
 	if(istype(target, /turf/simulated/wall))
 		to_chat(owner.current, "<font color='purple'><i>How can I forge an illusion inside a wall?! You fool!</i></font>")
-		return FALSE
+		return TRUE
 
 
 /obj/effect/proc_holder/magic/click_on/illusion/check_object_cast(obj/target)
-	. = ..()
 	if(!istype(target, /obj/item))
-		return FALSE
+		return TRUE
 
 
 /obj/effect/proc_holder/magic/click_on/illusion/cast_on_mob(mob/living/target)

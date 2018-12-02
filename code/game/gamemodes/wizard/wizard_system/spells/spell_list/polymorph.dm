@@ -7,10 +7,9 @@
 
 
 /obj/effect/proc_holder/magic/click_on/polymorph/check_mob_cast(mob/living/target)
-	. = ..()
 	if(!ishuman(target))
 		to_chat(owner.current, "<font color = 'purple'><span class = 'bold'>This spell works only on humans and human-like creatures!</span></font>")
-		return FALSE
+		return TRUE
 
 
 

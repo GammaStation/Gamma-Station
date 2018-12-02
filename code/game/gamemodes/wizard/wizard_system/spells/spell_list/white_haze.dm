@@ -6,14 +6,15 @@
 	types_to_click = list("turfs")
 
 /obj/effect/proc_holder/magic/click_on/haze/check_turf_cast(turf/target)
-	. = ..()
 	if(is_blocked_turf(target))
-		return FALSE
+		return TRUE
 
 /obj/effect/proc_holder/magic/click_on/haze/cast_on_turf(turf/target)
 	var/datum/effect/effect/system/smoke_spread/white_haze/S = new
 	S.attach(target)
-	S.set_up(8, 0, target)
+	S.set_up(10, 0, target)
+	S.start()
+	S.start()
 	S.start()
 
 
@@ -51,6 +52,14 @@
 			M.adjustCloneLoss(HAZE_DAMAGE_MULT*power)
 			if(power > 2)
 				M.emote("scream",,, 1)
+
+			if(prob(power*4))
+				var/bodypart = pick(list(BP_R_ARM , BP_L_ARM , BP_R_LEG , BP_L_LEG))
+				var/mob/living/carbon/human/H = M
+				var/obj/item/organ/external/BP = H.bodyparts_by_name[bodypart]
+				if (BP && !(BP.status & ORGAN_DESTROYED))
+					BP.droplimb(no_explode = FALSE, clean = TRUE, disintegrate = DROPLIMB_BLUNT)
+
 		else if(issilicon(M))
 			M.emp_act(max(3-power,1))
 	else if(istype(A, /obj/item))
@@ -72,6 +81,12 @@
 	for(var/atom/A in get_turf(src))
 		affect(A)
 
+/*
+for(var/obj/item/I in H.contents)
+			if(istype(I, /obj/item/weapon/implant))
+				continue
+			I.make_wet()
+*/
 
 #undef HAZE_MANACOST
 #undef HAZE_DELAY

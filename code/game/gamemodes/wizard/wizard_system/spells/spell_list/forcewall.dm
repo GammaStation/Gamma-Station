@@ -7,14 +7,14 @@
 
 
 /obj/effect/proc_holder/magic/click_on/forcewall/check_turf_cast(turf/target)
-	. = ..()
 	if(is_blocked_turf(target))
 		to_chat(owner.current, "<font color='purple'><i>This place is occupied! I can't forge an energy wall here!</i></font>")
-		return FALSE
+		return TRUE
 
 
 /obj/effect/proc_holder/magic/click_on/forcewall/cast_on_turf(turf/target)
 	new /obj/effect/forcefield/magic(target,owner.current)
+	playsound(target, 'sound/magic/ForceWall.ogg', 100, 1)
 
 /obj/effect/forcefield/magic
 	var/mob/wizard

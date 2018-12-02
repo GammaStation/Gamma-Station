@@ -1,16 +1,14 @@
 /obj/effect/proc_holder/magic/click_on/brainrot
 	name = "Brainrot"
 	desc = ""
-	delay = BRAINROT_DELAY
 	mana_cost = BRAINROT_MANACOST
 	types_to_click = list("mobs")
 
 
 /obj/effect/proc_holder/magic/click_on/brainrot/check_mob_cast(mob/living/target)
-	. = ..()
 	if(!ishuman(target))
 		to_chat(owner.current, "<font color = 'purple'><span class = 'bold'>I can't influence this creature's mind!</span></font>")
-		return FALSE
+		return TRUE
 
 
 /obj/effect/proc_holder/magic/click_on/brainrot/cast_on_mob(mob/living/carbon/human/target)
@@ -26,7 +24,6 @@
 			target.AdjustParalysis(-BRAINROT_STUN_REDUCTION)
 			target.halloss = max(target.halloss - BRAINROT_HALLOSS_REDUCTION, 0)
 			target.shock_stage = max(target.shock_stage - BRAINROT_PAIN_REDUCTION, 0)
-			to_chat(owner.current, "<font color = 'blue'>You suddenly feel a strange surge of vigor!</font>")
 			to_chat(target, "<font color = 'blue'>You suddenly feel a strange surge of vigor!</font>")
 			message_admins("[usr] ([usr.ckey]) reduced stuns on [target] ([target.ckey]) using [src.name] spell.(<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[target.x];Y=[target.y];Z=[target.z]'>JMP</a>)")
 			log_game("[usr] ([usr.ckey]) reduced stuns on [target] ([target.ckey]) using [src.name] spell.")

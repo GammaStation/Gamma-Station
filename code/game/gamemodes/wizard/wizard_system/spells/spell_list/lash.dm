@@ -39,7 +39,17 @@
 			L.adjust_fire_stacks(20)
 			L.IgniteMob()
 
+
 	else if(firer.a_intent == "disarm")
+		if(istype(target, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = target
+			var/obj/item/disarm = H.get_active_hand()
+			if(disarm)
+				H.drop_item()
+				disarm.throw_at(firer, get_dist(firer, disarm) - 1, 1, spin = FALSE)
+
+
+	else if(firer.a_intent == "help")
 		var/atom/throwtarget = get_edge_target_turf(src, get_dir(src, get_step_away(target, src)))
 		if(istype(target, /atom/movable))
 			var/atom/movable/T = target
@@ -48,9 +58,6 @@
 				if(isliving(T))
 					var/mob/living/M = T
 					M.Weaken(2)
-
-	else if(firer.a_intent == "help")
-		firer.throw_at(target, get_dist(firer, target) - 1, 1, spin = FALSE)		//Crashing into the floor
 	return ..()
 
 

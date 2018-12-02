@@ -20,17 +20,14 @@ var/list/magic_spells = typesof(/obj/effect/proc_holder/magic)
 	if(!iswizard(owner.current))
 		return FALSE
 
-	if(!ishuman(owner.current))
-		return FALSE
-
 	if(owner.wizard_power_system.mana < mana_cost)
 		to_chat(owner.current, "<font color='purple'><i>I have not enough mana!</i></font>")
-		owner.current << sound('sound/effects/magicfail.ogg')
+		owner.current << sound('sound/magic/magicfail.ogg')
 		return FALSE
 
 	if(req_stat < owner.current.stat)
 		to_chat(owner.current, "<font color='purple'><i>How am I supposed to cast a spell when I lost consciousness?!</i></font>")
-		owner.current << sound('sound/effects/magicfail.ogg')
+		owner.current << sound('sound/magic/magicfail.ogg')
 		return FALSE
 	return TRUE
 
@@ -40,22 +37,31 @@ var/list/magic_spells = typesof(/obj/effect/proc_holder/magic)
 	return
 
 
+/obj/effect/proc_holder/magic/nondirect/proc/spell_specific_checks()
+	return
+
+
 /obj/effect/proc_holder/magic/nondirect/proc/handle_cast_nondirect()
-	if(!can_cast(owner.current))
+	if(!can_cast())
+		return
+
+	if(spell_specific_checks())
 		return
 
 	if(delay)		//Multicast delay spells
 		if(owner.current.busy_with_action == TRUE)
 			return
 		to_chat(owner.current, "<font color='purple'><i>I start to cast [name]!</i></font>")		//proc for delay stuff
+		owner.current.visible_message("<span class = 'danger'>[owner.current] starts to chant something!</span>")
 		if(!do_after(owner.current,delay, needhand = FALSE, target = owner.current))
 			return
-		if(!can_cast(owner.current))
+		if(!can_cast())
 			return
 
-	cast()
-	owner.wizard_power_system.spend_mana(mana_cost)
-	return
+	if(!cast())		//Negative so I do not have to post . = ..() everywhere
+		owner.wizard_power_system.spend_mana(mana_cost)
+	else
+		owner.current << sound('sound/magic/magicfail.ogg')
 
 
 

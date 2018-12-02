@@ -251,7 +251,8 @@ var/list/blacklisted_tesla_types = typecacheof(list(/obj/machinery/atmospherics,
 
 	else if(closest_mob)
 		var/shock_damage = Clamp(round(power/400), 10, 90) + rand(-5, 5)
-		closest_mob.electrocute_act(shock_damage, source, 1, tesla_shock = 1)
+		var/zone = pick(BP_CHEST , BP_GROIN , BP_L_LEG , BP_R_LEG , BP_R_ARM , BP_L_ARM)
+		closest_mob.electrocute_act(shock_damage, source, 1, tesla_shock = 1, def_zone = zone)
 		if(istype(closest_mob, /mob/living/silicon))
 			var/mob/living/silicon/S = closest_mob
 			S.emp_act(2)

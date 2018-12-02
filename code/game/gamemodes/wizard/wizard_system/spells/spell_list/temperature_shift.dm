@@ -27,15 +27,14 @@
 
 
 /obj/effect/proc_holder/magic/click_on/temperature_shift/check_turf_cast(turf/target)
-	. = ..()
 	var/datum/gas_mixture/aircheck = target.return_air()
 	if(!aircheck || !aircheck.total_moles || target.blocks_air)
 		to_chat(owner.current, "<font color='purple'><i>There is no gas to manipulate in this area!</i></font>")
-		return FALSE
+		return TRUE
 
 	if(istype(target, /turf/unsimulated))
 		to_chat(owner.current, "<font color='purple'><i>Some kind of mystical force prevents me to manipulate temperature in this area!</i></font>")
-		return FALSE
+		return TRUE
 
 /obj/effect/proc_holder/magic/click_on/temperature_shift/cast_on_turf(turf/target)
 	var/datum/gas_mixture/env = target.return_air()

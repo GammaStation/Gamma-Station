@@ -1,19 +1,18 @@
 /obj/effect/proc_holder/magic/click_on/candela
 	name = "Candela"
 	desc = ""
-	mana_cost = 0
+	mana_cost = CANDELA_MANACOST
 	types_to_click = list("turfs")
 
 
 //Effects and shit
 
 /obj/effect/proc_holder/magic/click_on/candela/check_turf_cast(turf/target)
-	. = ..()
 	if(is_blocked_turf(target))
 		to_chat(owner.current, "<font color='purple'><i>This place is occupied! I can't place a magic latern here!</i></font>")
-		return FALSE
+		return TRUE
 	if(locate(/obj/effect/candela) in target.contents)
-		return FALSE
+		return TRUE
 
 
 /obj/effect/proc_holder/magic/click_on/candela/cast_on_turf(turf/target)
@@ -29,12 +28,17 @@
 		if("grab")
 			chosen_color = "#CCCC00"
 
-	orb.set_light(5, 1, chosen_color)
+	orb.set_light(CANDELA_LIGHT_POWER, 1, chosen_color)
 	orb.color = chosen_color
-	QDEL_IN(orb, 3000)
+	QDEL_IN(orb, CANDELA_LIFESPAN)
 
 
 /obj/effect/candela
 	name = "glowing orb"
 	icon = 'icons/obj/wizard.dmi'
 	icon_state = "resurrection"
+	anchored = TRUE
+
+#undef CANDELA_MANACOST
+#undef CANDELA_LIGHT_POWER
+#undef CANDELA_LIFESPAN

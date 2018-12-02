@@ -20,51 +20,52 @@
 	owner.wizard_power_system.chosen_spell = null
 
 
-/obj/effect/proc_holder/magic/click_on/proc/get_target_type(atom/target)
+/obj/effect/proc_holder/magic/click_on/proc/get_target_type(atom/target)		//Checks should return nothing for spell to be succeeded. Not TRUE.
 	if(isliving(target))
-		if(("mobs" in types_to_click) && check_mob_cast(target))
+		if(("mobs" in types_to_click) && !check_mob_cast(target))
 			return "mob"
-		else if(("turfs" in types_to_click) && check_turf_cast(get_turf(target)))
+		else if(("turfs" in types_to_click) && !check_turf_cast(get_turf(target)))
 			return "turf"
 	else if(istype(target, /obj))
-		if(("objects" in types_to_click) && check_object_cast(target))
+		if(("objects" in types_to_click) && !check_object_cast(target))
 			return "object"
-		else if(("turfs" in types_to_click) && check_turf_cast(get_turf(target)))
+		else if(("turfs" in types_to_click) && !check_turf_cast(get_turf(target)))
 			return "turf"
 	else if(isturf(target) && ("turfs" in types_to_click))
-		if(check_turf_cast(get_turf(target)))
+		if(!check_turf_cast(get_turf(target)))
 			return "turf"
 
-	owner.current << sound('sound/effects/magicfail.ogg')
+	owner.current << sound('sound/magic/magicfail.ogg')
 	return
 
 
 /obj/effect/proc_holder/magic/click_on/proc/handle_targeted_cast(atom/spell_target)
-	if(!can_cast(spell_target))
+	if(!can_cast())
 		return
 
-	if(!get_target_type(spell_target))
+	var/target_type = get_target_type(spell_target)
+	if(!target_type)
 		return
 
-	if(delay)		//Multicast delay spells
+	if(delay)
 		if(owner.current.busy_with_action)
 			return
 		to_chat(owner.current, "<font color='purple'><i>I start to cast [name]!</i></font>")		//proc for delay stuff
+		owner.current.visible_message("<span class = 'danger'>[owner.current] starts to chant something!</span>")
 		if(!do_after(owner.current,delay, needhand = FALSE, target = spell_target))
 			return
-		if(!can_cast(spell_target))
+		if(!can_cast())
 			return
 
-	targeted_cast(spell_target)
+	targeted_cast(spell_target,target_type)
 	return
 
 
-/obj/effect/proc_holder/magic/click_on/proc/targeted_cast(atom/target)
+/obj/effect/proc_holder/magic/click_on/proc/targeted_cast(atom/target, targettype)
 //Depending on what we click, we call the appropriate proc.
 //If we can't cast spell on type we click, but can cast spell on turf, we cast spell on turf, on which that object is standing
 //So you won't, for example, be unable to create a forcewall because you clicked on vent, and not on turf with that vent
-//Maybe I can make this a bit less ugly
-	switch(get_target_type(target))
+	switch(targettype)
 		if("mob")
 			cast_on_mob(target)
 		if("object")
@@ -86,13 +87,13 @@
 	return
 
 /obj/effect/proc_holder/magic/click_on/proc/check_mob_cast(mob/living/target)
-	return TRUE
+	return
 
 /obj/effect/proc_holder/magic/click_on/proc/check_object_cast(obj/target)
-	return TRUE
+	return
 
 /obj/effect/proc_holder/magic/click_on/proc/check_turf_cast(turf/target)
-	return TRUE
+	return
 
 
 /obj/effect/proc_holder/magic/click_on/shoot
