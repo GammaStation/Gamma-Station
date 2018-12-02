@@ -20,7 +20,7 @@
 	throw_speed = 4
 	throw_range = 20
 
-	actions_types = /datum/action/item_action/attack_self
+	action_button_name = "Toggle Recorder"
 
 /obj/item/device/taperecorder/hear_talk(mob/living/M, msg, verb="says")
 	if(recording)
