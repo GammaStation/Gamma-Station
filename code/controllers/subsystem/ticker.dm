@@ -145,7 +145,9 @@ var/datum/subsystem/ticker/ticker
 
 /datum/subsystem/ticker/proc/setup()
 	//Create and announce mode
-	if(master_mode=="secret" || master_mode=="bs12" || master_mode=="tau classic")
+	SSjob.DivideOccupations() //Distribute jobs
+
+	if(master_mode=="secret" || master_mode=="random")
 		hide_mode = 1
 
 	var/list/datum/game_mode/runnable_modes
@@ -171,18 +173,18 @@ var/datum/subsystem/ticker/ticker
 			var/mtype = src.mode.type
 			src.mode = new mtype
 
-	else if(master_mode=="bs12" || master_mode=="tau classic")
-		runnable_modes = config.get_custom_modes(master_mode)
-		if (runnable_modes.len==0)
-			current_state = GAME_STATE_PREGAME
-			to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
-			return 0
-		SSjob.ResetOccupations()
-		if(!src.mode)
-			src.mode = pick(runnable_modes)
-		if(src.mode)
-			var/mtype = src.mode.type
-			src.mode = new mtype
+	//else if(master_mode=="bs12" || master_mode=="tau classic")
+		//runnable_modes = config.get_custom_modes(master_mode)
+		//if (runnable_modes.len==0)
+			//current_state = GAME_STATE_PREGAME
+			//to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
+			//return 0
+		//SSjob.ResetOccupations()
+		//if(!src.mode)
+			//src.mode = pick(runnable_modes)
+		//if(src.mode)
+			//var/mtype = src.mode.type
+			//src.mode = new mtype
 
 	else
 		src.mode = config.pick_mode(master_mode)
@@ -197,7 +199,6 @@ var/datum/subsystem/ticker/ticker
 		return 0
 
 	//Configure mode and assign player to special mode stuff
-	SSjob.DivideOccupations() //Distribute jobs
 	var/can_continue = src.mode.pre_setup()//Setup special modes
 	if(!can_continue)
 		message_admins("Preparation phase for [mode.name] has failed.")
@@ -226,7 +227,7 @@ var/datum/subsystem/ticker/ticker
 
 	Master.RoundStart()
 
-	slack_roundstart()
+	//slack_roundstart()
 
 	to_chat(world, "<FONT color='blue'><B>Enjoy the game!</B></FONT>")
 	world << sound('sound/AI/welcome.ogg')

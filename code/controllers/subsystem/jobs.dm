@@ -339,6 +339,7 @@ var/datum/subsystem/job/SSjob
 		if(player.client.prefs.alternate_option == RETURN_TO_LOBBY)
 			player.ready = 0
 			unassigned -= player
+
 	return 1
 
 //Gives the player the stuff he should have with his rank

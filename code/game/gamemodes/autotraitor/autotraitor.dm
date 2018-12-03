@@ -12,6 +12,8 @@
 
 	var/num_players = 0
 
+	min_sec_to_start = 1
+
 /datum/game_mode/traitor/autotraitor/announce()
 	..()
 	to_chat(world, "<B>Game mode is AutoTraitor. Traitors will be added to the round automagically as needed.</B>")

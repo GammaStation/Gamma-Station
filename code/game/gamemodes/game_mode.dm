@@ -31,6 +31,11 @@
 	var/recommended_enemies = 0
 	var/list/datum/mind/antag_candidates = list()	// List of possible starting antags goes here
 	var/list/restricted_jobs_autotraitor = list("Cyborg", "Star Vigil Officer", "Star Vigil Sergeant")
+
+	var/min_sec_to_start = -1 // MINIMUM STAR VIRGIN OFFICERS TO START GAMEMODE
+	var/min_head_to_start = -1 //MINIMUM HEADS TO START (THIS VAR CHECKS ONLY HOP, HOS AND CAP
+	var/min_lhead_to_start = -1 //MINIMUM LOW-PRIORITY HEADS TO START (THIS VAR CHECKS FOR CMO CE AND RD
+
 	var/autotraitor_delay = 15 MINUTES // how often to try to add new traitors.
 	var/role_type = null
 	var/newscaster_announcements = null
@@ -90,6 +95,20 @@ Implants;
 	for(var/mob/dead/new_player/player in player_list)
 		if(player.client && player.ready)
 			playerC++
+
+	var/sec_count = 0
+	var/head_count = 0
+	var/lhead_count = 0
+	for(var/mob/dead/new_player/player in player_list)
+		if(player.mind.assigned_role == "Captain" || "Head of Personnel" || "Star Vigil Commander")
+			head_count++
+		else if(player.mind.assigned_role == "Chief Engineer" || "Research Director" || "Chief Medical Officer")
+			lhead_count++
+		else if(player.mind.assigned_role == "Star Vigil Sergeant" || "Detective" || "Star Vigil Officer")
+			sec_count++
+	if(head_count <= min_head_to_start || lhead_count <= min_lhead_to_start && sec_count <= min_sec_to_start)
+		world.log << "Ooops, not enough players!"
+		return 0
 
 	antag_candidates = get_players_for_role(role_type)
 	if(antag_candidates.len < required_enemies)
