@@ -13,7 +13,7 @@
 	return armor
 
 //if null is passed for def_zone, then this should return something appropriate for all zones (e.g. area effect damage)
-/mob/living/proc/getarmor(def_zone, type)
+/mob/living/getarmor(def_zone, type)
 	return 0
 
 

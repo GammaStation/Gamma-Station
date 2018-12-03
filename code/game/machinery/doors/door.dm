@@ -99,15 +99,19 @@
 	if(user.last_airflow > world.time - vsc.airflow_delay) //Fakkit
 		return
 	src.add_fingerprint(user)
-	if(!src.requiresID())
-		user = null
+
+	if(!requiresID())
+		if(density)
+			open()
+		else
+			do_animate("deny")
+		return
 
 	if(density)
 		if(allowed(user) || emergency)
 			open()
 		else
 			do_animate("deny")
-	return
 
 /obj/machinery/door/meteorhit(obj/M)
 	src.open()
@@ -140,21 +144,20 @@
 	//if(!Adjacent(user))
 	//	user = null
 	user.SetNextMove(CLICK_CD_INTERACT)
-	if(!src.requiresID())
-		if(!Adjacent(user)) // Telekinetic bull.
-			if(density)
-				open()
-			else
-				close()
-			return
-		user = null
-	if(src.allowed(user))
+	if(!requiresID())
 		if(density)
 			open()
 		else
 			close()
 		return
-	if(src.density)
+
+	if(allowed(user))
+		if(density)
+			open()
+		else
+			close()
+		return
+	else if(density)
 		do_animate("deny")
 
 
@@ -353,7 +356,7 @@
 
 
 /obj/machinery/door/proc/requiresID()
-	return 1
+	return FALSE
 
 /obj/machinery/door/update_nearby_tiles(need_rebuild)
 	. = ..()

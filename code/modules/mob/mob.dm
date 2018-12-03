@@ -1058,6 +1058,9 @@ mob/proc/yank_out_object()
 		spell.action.Grant(src)
 	return
 
+/mob/proc/getarmor(def_zone, type)
+	return 0
+
 /mob/proc/set_EyesVision(preset = null, transition_time = 5)
 	if(!client) return
 	if(ishuman(src) && druggy)
