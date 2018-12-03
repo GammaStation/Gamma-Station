@@ -83,7 +83,7 @@
 	flags = MASKCOVERSMOUTH
 	w_class = 2
 	gas_transfer_coefficient = 0.90
-	actions_types = "Adjust scarf"
+	actions_types = /datum/action/item_action/attack_self
 	var/hanging = 0
 
 /obj/item/clothing/mask/scarf/blue
