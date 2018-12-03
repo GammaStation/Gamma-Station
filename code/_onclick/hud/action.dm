@@ -283,3 +283,6 @@
 
 /datum/action/item_action/toggle
 	action_procname = "toggle"
+
+/datum/action/item_action/attack_hand
+	action_procname = "attack_hand"

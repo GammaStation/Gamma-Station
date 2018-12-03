@@ -426,7 +426,6 @@
 	return
 
 /obj/item/proc/moved(mob/user, old_loc)
-	world.log << "Moved"
 	return
 
 // apparently called whenever an item is removed from a slot, container, or anything else.
