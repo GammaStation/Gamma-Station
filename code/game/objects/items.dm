@@ -74,10 +74,6 @@
 
 /obj/item/atom_init()
 	. = ..()
-	return INITIALIZE_HINT_LATELOAD
-
-/obj/item/atom_init_late()
-	..()
 	if(islist(actions_types))
 		for(var/O in actions_types)
 			actions += new O(src)
