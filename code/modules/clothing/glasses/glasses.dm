@@ -260,8 +260,8 @@
 /obj/item/clothing/glasses/thermal/eyepatch
 	name = "optical thermal eyepatch"
 	desc = "An eyepatch with built-in thermal optics."
-	icon_state = "eyepatch"
-	item_state = "eyepatch"
+	icon_state = "eyepatchthermal"
+	item_state = "eyepatchthermal"
 	body_parts_covered = 0
 	toggleable = 0
 	action_button_name = null
