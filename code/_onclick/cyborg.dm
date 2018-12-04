@@ -50,7 +50,7 @@
 		if(is_component_functioning("camera"))
 			aiCamera.captureimage(A, usr)
 		else
-			to_chat(src, "<span class='userdanger'>Your camera isn't functional.</span>")
+			USERDANGER(src, "Your camera isn't functional.")
 		return
 
 	/*

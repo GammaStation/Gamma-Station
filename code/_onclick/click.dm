@@ -296,7 +296,7 @@
 		LE.Fire(A, src)
 		nutrition = max(nutrition - rand(10, 40), 0)
 	else
-		to_chat(src, "<span class='red'> You're out of energy!  You need food!</span>")
+		WARNING(src, "You're out of energy! You need food!")
 
 // Simple helper to face what you clicked on, in case it should be needed in more than one place
 /mob/proc/face_atom(atom/A)

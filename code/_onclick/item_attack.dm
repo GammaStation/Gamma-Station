@@ -96,7 +96,7 @@
 		if(isslime(M))
 			var/mob/living/carbon/slime/slime = M
 			if(prob(25))
-				to_chat(user, "\red [src] passes right through [M]!")
+				WARNING(user, "[src] passes right through [M]!")
 				return
 
 			if(power > 0)
@@ -172,13 +172,13 @@
 
 		for(var/mob/O in viewers(messagesource, null))
 			if(attack_verb.len)
-				O.show_message("\red <B>[M] has been [pick(attack_verb)] with [src][showname] </B>", 1)
+				O.show_message(SPAN_WARNING("<B>[M] has been [pick(attack_verb)] with [src][showname] </B>"), 1)
 			else
-				O.show_message("\red <B>[M] has been attacked with [src][showname] </B>", 1)
+				O.show_message(SPAN_WARNING("<B>[M] has been attacked with [src][showname] </B>"), 1)
 
 		if(!showname && user)
 			if(user.client)
-				to_chat(user, "\red <B>You attack [M] with [src]. </B>")
+				WARNING(user, "<B>You attack [M] with [src].</B>")
 
 
 

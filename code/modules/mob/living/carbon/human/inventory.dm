@@ -9,7 +9,7 @@
 		if(!I)
 			to_chat(H, "<span class='notice'>You are not holding anything to equip.</span>")
 			return
-		if(!Adjacent(I))
+		if(!Adjacent(I) || !I.Adjacent(src))
 			to_chat(H, "<span class='notice'>[I] is too far away to be equipped.</span>")
 			return
 

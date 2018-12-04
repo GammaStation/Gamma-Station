@@ -10,7 +10,7 @@ datum/proc/on_varedit(modified_var) //called whenever a var is edited
 
 
 	if(!usr.client || !usr.client.holder)
-		to_chat(usr, "\red You need to be an administrator to access this.")
+		WARNING(usr, "You need to be an administrator to access this.")
 		return
 
 

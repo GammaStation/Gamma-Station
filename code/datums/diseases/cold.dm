@@ -33,9 +33,9 @@
 			if(prob(1))
 				affected_mob.emote("cough")
 			if(prob(1))
-				to_chat(affected_mob, "\red Your throat feels sore.")
+				WARNING(affected_mob, "Your throat feels sore.")
 			if(prob(1))
-				to_chat(affected_mob, "\red Mucous runs down the back of your throat.")
+				WARNING(affected_mob, "Mucous runs down the back of your throat.")
 		if(3)
 /*
 			if(affected_mob.sleeping && prob(25))  //removed until sleeping is fixed
@@ -44,11 +44,11 @@
 				return
 */
 			if(affected_mob.lying && prob(25))  //changed FROM prob(5) until sleeping is fixed
-				to_chat(affected_mob, "\blue You feel better.")
+				NOTICE(affected_mob, "You feel better.")
 				cure()
 				return
 			if(prob(1) && prob(1))
-				to_chat(affected_mob, "\blue You feel better.")
+				NOTICE(affected_mob, "You feel better.")
 				cure()
 				return
 			if(prob(1))
@@ -56,9 +56,9 @@
 			if(prob(1))
 				affected_mob.emote("cough")
 			if(prob(1))
-				to_chat(affected_mob, "\red Your throat feels sore.")
+				WARNING(affected_mob, "Your throat feels sore.")
 			if(prob(1))
-				to_chat(affected_mob, "\red Mucous runs down the back of your throat.")
+				WARNING(affected_mob, "Mucous runs down the back of your throat.")
 			if(prob(1) && prob(50))
 				if(!affected_mob.resistances.Find(/datum/disease/flu))
 					var/datum/disease/Flu = new /datum/disease/flu(0)
