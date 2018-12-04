@@ -1087,7 +1087,7 @@
 
 /datum/species/tycheon/handle_death(mob/living/carbon/human/H)
 	var/core_amount = 1
-	switch(eyes) // Depending on how many cores we got, we drop different stuff.
+	switch(H.eyes) // Depending on how many cores we got, we drop different stuff.
 		if("duo_core")
 			core_amount = 2
 		if("four_core")
