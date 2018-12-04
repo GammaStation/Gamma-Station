@@ -198,10 +198,10 @@
 	var/protection = 0
 	var/list/protective_gear = list(head, wear_mask, wear_suit, w_uniform, gloves, shoes)
 	for(var/gear in protective_gear)
-		if(gear && istype(gear ,/obj/item/clothing))
-			var/obj/item/clothing/C = gear
-			if(C.body_parts_covered & BP.body_part)
-				protection += C.armor[type]
+		if(gear)
+			var/obj/item/I = gear
+			if(I.body_parts_covered & BP.body_part)
+				protection += I.armor[type]
 	return protection
 
 /mob/living/carbon/human/proc/check_head_coverage()
