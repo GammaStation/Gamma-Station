@@ -255,7 +255,7 @@
 				if(FEMALE)
 					t_him = "her"
 				if(PLURAL)
-					t_him = "their"
+					t_him = "them"
 			if (istype(src,/mob/living/carbon/human) && src:w_uniform)
 				var/mob/living/carbon/human/H = src
 				H.w_uniform.add_fingerprint(M)

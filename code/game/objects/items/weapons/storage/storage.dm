@@ -274,7 +274,7 @@
 		to_chat(user, "\blue You're a robot. No.")
 		return //Robots can't interact with storage items. FALSE
 
-	if(!user.Adjacent(W))
+	if(!Adjacent(W) && !loc.Adjacent(W))
 		return FALSE
 
 	if(!can_be_inserted(W))
@@ -333,7 +333,7 @@
 	var/success = 0
 	var/failure = 0
 
-	if(!user.Adjacent(T))
+	if(!Adjacent(T) && !loc.Adjacent(T))
 		return
 
 	for(var/obj/item/I in T)

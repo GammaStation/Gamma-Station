@@ -1302,8 +1302,10 @@
 		if(source == M)
 			continue
 		var/dist = get_dist(src, M)
+		if(z != M.z)
+			dist += 25
 		if(source)
-			dist = get_dist(src, source)
+			dist += get_dist(src, source)
 		if(!M.do_telepathy(dist))
 			continue
 		var/star_chance = 0 // A chance to censore some symbols.
@@ -1411,6 +1413,8 @@
 		say = "\"[capitalize(say)]\""
 
 	var/dist = get_dist(src, M)
+	if(z != M.z)
+		dist += 25
 	if(!M.do_telepathy(dist))
 		for(var/client/C in show_to)
 			C.images -= II
@@ -1543,6 +1547,8 @@
 			cur_say = "\"[capitalize(say)]\""
 
 		var/dist = get_dist(src, M)
+		if(z != M.z)
+			dist += 25
 		if(!M.do_telepathy(dist))
 			continue
 
