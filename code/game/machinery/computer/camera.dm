@@ -77,6 +77,7 @@
 		ui.open()
 		ui.set_auto_update(1)
 
+
 /obj/machinery/computer/security/Topic(href, href_list)
 	. = ..()
 	if(!.)
@@ -98,6 +99,29 @@
 			return FALSE
 		reset_current()
 		usr.check_eye(current)
+
+	else if(href_list["log"])
+		if(src.z > 6)
+			return FALSE
+		if(usr.blinded)
+			return FALSE
+		var/obj/machinery/camera/C = current
+		if(!C)
+			return FALSE
+		var/output = C.get_log_html()
+		usr << browse(entity_ja(output), "window=camera_log")
+	else if(href_list["print"])
+		if(src.z > 6)
+			return FALSE
+		if(usr.blinded)
+			return FALSE
+		var/obj/machinery/camera/C = current
+		if(!C)
+			return FALSE
+		var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(get_turf(src))
+		P.info = C.get_log_html()
+		P.name = "[sanitize(C.c_tag)] camera log"
+		P.update_icon()
 
 /obj/machinery/computer/security/attack_ghost(mob/user) // this should not ever be opened to ghots, there is simply no point (even for admin) and also this thing eats up ALOT of resources.
 	return

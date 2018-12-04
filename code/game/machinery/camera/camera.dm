@@ -18,6 +18,8 @@
 	var/obj/item/weapon/camera_assembly/assembly = null
 	var/hidden = 0	//Hidden cameras will be unreachable for AI
 
+	var/list/log = new
+
 	var/datum/wires/camera/wires = null
 
 	//OTHER
@@ -172,6 +174,8 @@
 			P = W
 			itemname = P.name
 			info = P.notehtml
+
+		capture(info, U)
 		to_chat(U, "You hold \the [itemname] up to the camera ...")
 		for(var/mob/living/silicon/ai/O in living_mob_list)
 			if(!O.client)
@@ -241,6 +245,36 @@
 
 	if(!status)
 		disconnect_viewers()
+
+
+
+/obj/machinery/camera/proc/capture(message, atom/source)
+	if(status)
+		if(log.len > 0)
+			var/list/entry = log[log.len]
+			if(message == entry["message"])
+				++entry["repeated"]
+				return
+		log.len++
+		if(log.len > 400)
+			log.len = 1
+			message_admins("[sanitize(src.c_tag)] camera message limit reached (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>JMP</a>)")
+		log[log.len] = list("time"=world.timeofday,"message"="[message]", "id" = log.len, "source" = source, "repeated" = 1)
+
+
+/obj/machinery/camera/proc/get_log_html()
+	var/output = "<html><head><title>[src.name] Log</title></head><body style='font: 13px 'Courier', monospace;'>"
+	for(var/list/entry in log)
+		output += {"<div style='font-weight: bold;'>[time2text(entry["time"],"DDD MMM DD hh:mm:ss")] [game_year] [entry["repeated"] > 1 ? "(repeated: [entry["repeated"]] times)" : null]</div>
+						<div style='margin-left:15px; margin-bottom:10px;'>[entry["source"]]: [entry["message"]]</div>
+						"}
+	output += "</body></html>"
+	return output
+
+
+/obj/machinery/camera/hear_talk(source, message)
+	capture(message, source)
+
 
 /obj/machinery/camera/proc/disconnect_viewers()
 	for(var/mob/O in player_list)
