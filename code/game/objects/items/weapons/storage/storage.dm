@@ -140,6 +140,9 @@
 			to_chat(usr, "<span class='notice'>[src] is full, make some space.</span>")
 		return FALSE //Storage item is full
 
+	if(!Adjacent(W))
+		return FALSE
+
 	if(can_hold.len)
 		var/ok = FALSE
 		for(var/A in can_hold)
