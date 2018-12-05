@@ -301,112 +301,80 @@
 //Keeps track of players having the correct icons////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /datum/game_mode/proc/update_all_gang_icons()
-	spawn(0)
-		var/list/all_gangsters = A_bosses + B_bosses + A_gang + B_gang
+	var/list/all_gangsters = A_bosses + B_bosses + A_gang + B_gang
 
-		//Delete all gang icons
-		for(var/datum/mind/gang_mind in all_gangsters)
-			if(gang_mind.current && gang_mind.current.client)
-				for(var/image/I in gang_mind.current.client.images)
-					if(I.icon_state == "gangster" || I.icon_state == "gang_boss")
-						qdel(I)
+	//Delete all gang icons
+	for(var/datum/mind/mind in all_gangsters)
+		if(!mind.current || !mind.current.client)
+			continue
+		for(var/image/I in mind.current.client)
+			if(I.icon_state == "gang_boss" || I.icon_state == "gangsters")
+				mind.current.client.images -= I
+				qdel(I)
 
 		update_gang_icons("A")
 		update_gang_icons("B")
 
 /datum/game_mode/proc/update_gang_icons(gang)
+	var/list/all_gangsters
 	var/list/bosses
-	var/list/gangsters
 	if(gang == "A")
+		all_gangsters = A_bosses + A_gang
 		bosses = A_bosses
-		gangsters = A_gang
 	else if(gang == "B")
+		all_gangsters = B_bosses + B_gang
 		bosses = B_bosses
-		gangsters = B_gang
 	else
 		to_chat(world, "ERROR: Invalid gang in update_gang_icons()")
 
-	for(var/datum/mind/boss_mind in bosses)
-		if(!boss_mind.current || !boss_mind.current.client)
+	for(var/datum/mind/mind in all_gangsters)
+		if(!mind.current || !mind.current.client)
 			continue
-		for(var/image/I in boss_mind.current.client.images)
-			if(I.icon_state == "gang_boss" || I.icon_state == "gangster")
-				boss_mind.current.client.images -= I
-				qdel(I)
-	for(var/datum/mind/gangster_mind in gangsters)
-		if(!gangster_mind.current || !gangster_mind.current.client)
-			continue
-		for(var/image/I in gangster_mind.current.client.images)
-			if(I.icon_state == "gang_boss" || I.icon_state == "gangster")
-				gangster_mind.current.client.images -= I
-				qdel(I)
-
-	for(var/datum/mind/boss_mind in bosses)
-		if(!boss_mind.current || !boss_mind.current.client)
-			continue
-		for(var/datum/mind/boss2_mind in bosses)
-			if(!boss2_mind.current)
+		for(var/datum/mind/mind2 in all_gangsters)
+			if(!mind2.current)
 				continue
-			var/I = image('icons/mob/mob.dmi', loc = boss2_mind.current, icon_state = "gang_boss")
-			boss_mind.current.client.images += I
-		for(var/datum/mind/gangster_mind in gangsters)
-			if(!gangster_mind.current)
-				continue
-			var/I = image('icons/mob/mob.dmi', loc = gangster_mind.current, icon_state = "gangster")
-			boss_mind.current.client.images += I
-	for(var/datum/mind/gangster_mind in gangsters)
-		if(!gangster_mind.current || !gangster_mind.current.client)
-			continue
-		for(var/datum/mind/boss_mind in bosses)
-			if(!boss_mind.current)
-				continue
-				var/I = image('icons/mob/mob.dmi', loc = boss_mind.current, icon_state = "gang_boss")
-				gangster_mind.current.client.images += I
-		for(var/datum/mind/gangster2_mind in gangsters)
-			if(!gangster2_mind.current)
-				continue
-			var/I = image('icons/mob/mob.dmi', loc = gangster2_mind.current, icon_state = "gangster")
-			gangster_mind.current.client.images += I
+			var/I
+			if(mind2 in bosses)
+				I = image('icons/mob/mob.dmi', loc = mind2.current, icon_state = "gang_boss")
+			else
+				I = image('icons/mob/mob.dmi', loc = mind2.current, icon_state = "gangster")
+			mind.current.client.images += I
+			I = null
 
 /////////////////////////////////////////////////
 //Assigns icons when a new gangster is recruited//
 /////////////////////////////////////////////////
 /datum/game_mode/proc/update_gang_icons_added(datum/mind/recruit_mind, gang)
+	var/list/all_gangsters
 	var/list/bosses
-	var/list/gangsters
 	if(gang == "A")
+		all_gangsters = A_bosses + A_gang
 		bosses = A_bosses
-		gangsters = A_gang
 	else if(gang == "B")
+		all_gangsters = B_bosses + B_gang
 		bosses = B_bosses
-		gangsters = B_gang
 	if(!gang)
 		to_chat(world, "ERROR: Invalid gang in update_gang_icons_added()")
 
-	for(var/datum/mind/boss_mind in bosses)
-		if(recruit_mind.current && recruit_mind.current.client && boss_mind.current)
-			var/I = image('icons/mob/mob.dmi', loc = boss_mind.current, icon_state = "gang_boss")
-			recruit_mind.current.client.images += I
-		if(!boss_mind.current || !boss_mind.current.client)
-			continue
-		if(recruit_mind in bosses)
-			var/I = image('icons/mob/mob.dmi', loc = recruit_mind.current, icon_state = "gang_boss")
-			boss_mind.current.client.images += I
+	for(var/datum/mind/mind in all_gangsters)
+		if(!recruit_mind.current || !recruit_mind.current.client || !mind.current)
+			return
+		var/I
+		if(mind in bosses)
+			I = image('icons/mob/mob.dmi', loc = mind.current, icon_state = "gang_boss")
 		else
-			var/I = image('icons/mob/mob.dmi', loc = recruit_mind.current, icon_state = "gangster")
-			boss_mind.current.client.images += I
-	for(var/datum/mind/gangster_mind in gangsters)
-		if(recruit_mind.current && recruit_mind.current.client && gangster_mind.current)
-			var/I = image('icons/mob/mob.dmi', loc = gangster_mind.current, icon_state = "gangster")
-			recruit_mind.current.client.images += I
-		if(!gangster_mind.current || !gangster_mind.current.client)
+			I = image('icons/mob/mob.dmi', loc = mind.current, icon_state = "gangster")
+		recruit_mind.current.client.images += I
+		I = null
+		if(!mind.current || !mind.current.client || !recruit_mind.current)
 			continue
+		var/K
 		if(recruit_mind in bosses)
-			var/I = image('icons/mob/mob.dmi', loc = recruit_mind.current, icon_state = "gang_boss")
-			gangster_mind.current.client.images += I
+			K = image('icons/mob/mob.dmi', loc = recruit_mind.current, icon_state = "gang_boss")
 		else
-			var/I = image('icons/mob/mob.dmi', loc = recruit_mind.current, icon_state = "gangster")
-			gangster_mind.current.client.images += I
+			K = image('icons/mob/mob.dmi', loc = recruit_mind.current, icon_state = "gangster")
+		mind.current.client.images += K
+		K = null
 
 ////////////////////////////////////////
 //Keeps track of deconverted gangsters//
