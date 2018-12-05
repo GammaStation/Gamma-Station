@@ -193,58 +193,9 @@
 	if(!gangtool.can_use(user))
 		return 0
 
-	var/gang_style_list = list("Gang Colored Jumpsuits","Gang Colored Suits","Black Suits","White Suits","Leather Jackets","Leather Overcoats","Puffer Jackets","Tactical Turtlenecks","Soviet Uniforms")
-	var/style
-	if(gang == "A")
-		if(!A_style)
-			A_style = input("Pick an outfit style.", "Pick Style") as null|anything in gang_style_list
-		style = A_style
-
-	if(gang == "B")
-		if(!B_style)
-			B_style = input("Pick an outfit style.", "Pick Style") as null|anything in gang_style_list
-		style = B_style
-
-	if(!style)
-		return 0
-
 	if(gangtool.can_use(user) && (((gang == "A") ? gang_points.A : gang_points.B) >= 1))
-		var/outfit_path
-		switch(style)
-			if("Gang Colored Jumpsuits")
-				if(gang == "A")
-					outfit_path = /obj/item/clothing/under/color/blue
-				if(gang == "B")
-					outfit_path = /obj/item/clothing/under/color/red
-			if("Gang Colored Suits")
-				if(gang == "A")
-					outfit_path = /obj/item/clothing/under/suit_jacket/navy
-				if(gang == "B")
-					outfit_path = /obj/item/clothing/under/suit_jacket/burgundy
-			if("Black Suits")
-				outfit_path = /obj/item/clothing/under/suit_jacket/charcoal
-			if("White Suits")
-				outfit_path = /obj/item/clothing/under/suit_jacket/white
-			if("Puffer Jackets")
-				outfit_path = /obj/item/clothing/suit/jacket/puffer
-			if("Leather Jackets")
-				outfit_path = /obj/item/clothing/suit/jacket/leather
-			if("Leather Overcoats")
-				outfit_path = /obj/item/clothing/suit/jacket/leather/overcoat
-			if("Soviet Uniforms")
-				outfit_path = /obj/item/clothing/under/soviet
-			if("Tactical Turtlenecks")
-				outfit_path = /obj/item/clothing/under/syndicate
-
-		if(outfit_path)
-			var/obj/item/clothing/outfit = new outfit_path(user.loc)
-			outfit.armor = list(melee = 20, bullet = 30, laser = 10, energy = 10, bomb = 20, bio = 0, rad = 0)
-			outfit.desc += " Tailored for the [gang_name(gang)] Gang to offer the wearer moderate protection against ballistics and physical trauma."
-			outfit.gang = gang
-			return 1
-
+		new /obj/item/device/kevlar_kit(user.loc)
 		return 1
-
 	return 0
 
 /////////////////////////////////////////////
@@ -355,11 +306,10 @@
 
 		//Delete all gang icons
 		for(var/datum/mind/gang_mind in all_gangsters)
-			if(gang_mind.current)
-				if(gang_mind.current.client)
-					for(var/image/I in gang_mind.current.client.images)
-						if(I.icon_state == "gangster" || I.icon_state == "gang_boss")
-							qdel(I)
+			if(gang_mind.current && gang_mind.current.client)
+				for(var/image/I in gang_mind.current.client.images)
+					if(I.icon_state == "gangster" || I.icon_state == "gang_boss")
+						qdel(I)
 
 		update_gang_icons("A")
 		update_gang_icons("B")
@@ -376,72 +326,87 @@
 	else
 		to_chat(world, "ERROR: Invalid gang in update_gang_icons()")
 
-	//Update gang icons for boss' visions
 	for(var/datum/mind/boss_mind in bosses)
-		if(boss_mind.current)
-			if(boss_mind.current.client)
-				for(var/datum/mind/gangster_mind in gangsters)
-					if(gangster_mind.current)
-						var/I = image('icons/mob/mob.dmi', loc = gangster_mind.current, icon_state = "gangster")
-						boss_mind.current.client.images += I
-				for(var/datum/mind/boss2_mind in bosses)
-					if(boss2_mind.current)
-						var/I = image('icons/mob/mob.dmi', loc = boss2_mind.current, icon_state = "gang_boss")
-						boss_mind.current.client.images += I
-
-	//Update boss and self icons for gangsters' visions
+		if(!boss_mind.current || !boss_mind.current.client)
+			continue
+		for(var/image/I in boss_mind.current.client.images)
+			if(I.icon_state == "gang_boss" || I.icon_state == "gangster")
+				boss_mind.current.client.images -= I
+				qdel(I)
 	for(var/datum/mind/gangster_mind in gangsters)
-		if(gangster_mind.current)
-			if(gangster_mind.current.client)
-				for(var/datum/mind/boss_mind in bosses)
-					if(boss_mind.current)
-						var/I = image('icons/mob/mob.dmi', loc = boss_mind.current, icon_state = "gang_boss")
-						gangster_mind.current.client.images += I
-					//Tag themselves to see
-					var/K
-					if(gangster_mind in bosses) //If the new gangster is a boss himself
-						K = image('icons/mob/mob.dmi', loc = gangster_mind.current, icon_state = "gang_boss")
-					else
-						K = image('icons/mob/mob.dmi', loc = gangster_mind.current, icon_state = "gangster")
-					gangster_mind.current.client.images += K
+		if(!gangster_mind.current || !gangster_mind.current.client)
+			continue
+		for(var/image/I in gangster_mind.current.client.images)
+			if(I.icon_state == "gang_boss" || I.icon_state == "gangster")
+				gangster_mind.current.client.images -= I
+				qdel(I)
+
+	for(var/datum/mind/boss_mind in bosses)
+		if(!boss_mind.current || !boss_mind.current.client)
+			continue
+		for(var/datum/mind/boss2_mind in bosses)
+			if(!boss2_mind.current)
+				continue
+			var/I = image('icons/mob/mob.dmi', loc = boss2_mind.current, icon_state = "gang_boss")
+			boss_mind.current.client.images += I
+		for(var/datum/mind/gangster_mind in gangsters)
+			if(!gangster_mind.current)
+				continue
+			var/I = image('icons/mob/mob.dmi', loc = gangster_mind.current, icon_state = "gangster")
+			boss_mind.current.client.images += I
+	for(var/datum/mind/gangster_mind in gangsters)
+		if(!gangster_mind.current || !gangster_mind.current.client)
+			continue
+		for(var/datum/mind/boss_mind in bosses)
+			if(!boss_mind.current)
+				continue
+				var/I = image('icons/mob/mob.dmi', loc = boss_mind.current, icon_state = "gang_boss")
+				gangster_mind.current.client.images += I
+		for(var/datum/mind/gangster2_mind in gangsters)
+			if(!gangster2_mind.current)
+				continue
+			var/I = image('icons/mob/mob.dmi', loc = gangster2_mind.current, icon_state = "gangster")
+			gangster_mind.current.client.images += I
 
 /////////////////////////////////////////////////
 //Assigns icons when a new gangster is recruited//
 /////////////////////////////////////////////////
 /datum/game_mode/proc/update_gang_icons_added(datum/mind/recruit_mind, gang)
 	var/list/bosses
+	var/list/gangsters
 	if(gang == "A")
 		bosses = A_bosses
+		gangsters = A_gang
 	else if(gang == "B")
 		bosses = B_bosses
+		gangsters = B_gang
 	if(!gang)
 		to_chat(world, "ERROR: Invalid gang in update_gang_icons_added()")
 
-	spawn(0)
-		for(var/datum/mind/boss_mind in bosses)
-			//Tagging the new gangster for the bosses to see
-			if(boss_mind.current)
-				if(boss_mind.current.client)
-					var/I
-					if(recruit_mind in bosses) //If the new gangster is a boss himself
-						I = image('icons/mob/mob.dmi', loc = recruit_mind.current, icon_state = "gang_boss")
-					else
-						I = image('icons/mob/mob.dmi', loc = recruit_mind.current, icon_state = "gangster")
-					boss_mind.current.client.images += I
-			//Tagging every boss for the new gangster to see
-			if(recruit_mind.current)
-				if(recruit_mind.current.client)
-					var/image/J = image('icons/mob/mob.dmi', loc = boss_mind.current, icon_state = "gang_boss")
-					recruit_mind.current.client.images += J
-		//Tag themselves to see
-		if(recruit_mind.current)
-			if(recruit_mind.current.client)
-				var/K
-				if(recruit_mind in bosses) //If the new gangster is a boss himself
-					K = image('icons/mob/mob.dmi', loc = recruit_mind.current, icon_state = "gang_boss")
-				else
-					K = image('icons/mob/mob.dmi', loc = recruit_mind.current, icon_state = "gangster")
-				recruit_mind.current.client.images += K
+	for(var/datum/mind/boss_mind in bosses)
+		if(recruit_mind.current && recruit_mind.current.client && boss_mind.current)
+			var/I = image('icons/mob/mob.dmi', loc = boss_mind.current, icon_state = "gang_boss")
+			recruit_mind.current.client.images += I
+		if(!boss_mind.current || !boss_mind.current.client)
+			continue
+		if(recruit_mind in bosses)
+			var/I = image('icons/mob/mob.dmi', loc = recruit_mind.current, icon_state = "gang_boss")
+			boss_mind.current.client.images += I
+		else
+			var/I = image('icons/mob/mob.dmi', loc = recruit_mind.current, icon_state = "gangster")
+			boss_mind.current.client.images += I
+	for(var/datum/mind/gangster_mind in gangsters)
+		if(recruit_mind.current && recruit_mind.current.client && gangster_mind.current)
+			var/I = image('icons/mob/mob.dmi', loc = gangster_mind.current, icon_state = "gangster")
+			recruit_mind.current.client.images += I
+		if(!gangster_mind.current || !gangster_mind.current.client)
+			continue
+		if(recruit_mind in bosses)
+			var/I = image('icons/mob/mob.dmi', loc = recruit_mind.current, icon_state = "gang_boss")
+			gangster_mind.current.client.images += I
+		else
+			var/I = image('icons/mob/mob.dmi', loc = recruit_mind.current, icon_state = "gangster")
+			gangster_mind.current.client.images += I
 
 ////////////////////////////////////////
 //Keeps track of deconverted gangsters//
@@ -449,22 +414,20 @@
 /datum/game_mode/proc/update_gang_icons_removed(datum/mind/defector_mind)
 	var/list/all_gangsters = A_bosses + B_bosses + A_gang + B_gang
 
-	spawn(0)
-		//Remove defector's icon from gangsters' visions
-		for(var/datum/mind/boss_mind in all_gangsters)
-			if(boss_mind.current)
-				if(boss_mind.current.client)
-					for(var/image/I in boss_mind.current.client.images)
-						if((I.icon_state == "gangster" || I.icon_state == "gang_boss") && I.loc == defector_mind.current)
-							qdel(I)
+	for(var/datum/mind/mind in all_gangsters)
+		if(!mind.current || !mind.current.client)
+			continue
+		for(var/image/I in mind.current.client.images)
+			if((I.icon_state == "gangster" || I.icon_state == "gang_boss") && I.loc == defector_mind.current)
+				mind.current.client.images -= I
+				qdel(I)
 
-		//Remove gang icons from defector's vision
-		if(defector_mind.current)
-			if(defector_mind.current.client)
-				for(var/image/I in defector_mind.current.client.images)
-					if(I.icon_state == "gangster" || I.icon_state == "gang_boss")
-						qdel(I)
-
+	if(!defector_mind.current.client)
+		return
+	for(var/image/I in defector_mind.current.client.images)
+		if(I.icon_state == "gangster" || I.icon_state == "gang_boss")
+			defector_mind.current.client.images -= I
+			qdel(I)
 //////////////////////////////////////////////////////////////////////
 //Announces the end of the game with all relavent information stated//
 //////////////////////////////////////////////////////////////////////
@@ -593,10 +556,6 @@
 
 			var/obj/item/clothing/outfit
 			var/obj/item/clothing/gang_outfit
-			if(gangster.w_uniform)
-				outfit = gangster.w_uniform
-				if(outfit.gang)
-					gang_outfit = outfit
 			if(gangster.wear_suit)
 				outfit = gangster.wear_suit
 				if(outfit.gang)
@@ -702,3 +661,34 @@
 				to_chat(mob, "<span class='[warning ? "warning" : "notice"]'>[bicon(tool)] [message]</span>")
 				if(beep)
 					playsound(mob.loc, 'sound/machines/twobeep.ogg', 50, 1)
+
+////KEVLAR KIT FOR MODYFIYING GANG SUITS
+/obj/item/device/kevlar_kit
+	name = "Makeshift kevlar kit"
+	desc = "Makeshift kevlar plates and tools, which can be used to make makeshift armor"
+	icon_state = "modkit"
+	var/list/forbidden_types = list(
+		/obj/item/clothing/suit/space,
+		/obj/item/clothing/suit/armor,
+		/obj/item/clothing/suit/storage
+		)
+
+/obj/item/device/kevlar_kit/afterattack(obj/O, mob/user)
+	if(get_dist(src,O)>1)
+		return
+	if(!istype(O, /obj/item/clothing/suit))
+		to_chat(user, "<span class='notice'>[O] can not be modified.</span>")
+		return
+	var/obj/item/clothing/suit/outfit = O
+	if(is_type_in_list(outfit, forbidden_types))
+		to_chat(user, "<span class='notice'>There is already armor plates in [O].</span>")
+		return
+	if(outfit.gang_mogified)
+		to_chat(user, "<span class='notice'>You can't modify [O].</span>")
+		return
+	outfit.armor = list(melee = 20, bullet = 30, laser = 10, energy = 10, bomb = 20, bio = 0, rad = 0)
+	outfit.gang = TRUE
+	outfit.gang_mogified = TRUE
+	playsound(user.loc, 'sound/items/Screwdriver.ogg', 100, 1)
+	to_chat(user, "<span class='notice'>You add kevlar armor plates to [O].</span>")
+	outfit = null
