@@ -4,9 +4,11 @@
 /obj/item/weapon/pen/gang
 	origin_tech = "materials=2;syndicate=5"
 	var/cooldown
+	var/last_convert_time
 
 /obj/item/weapon/pen/gang/attack(mob/living/M, mob/user)
-	if(!istype(M))	return
+	if(!istype(M))
+		return
 	if(!ismob(M))
 		return
 
@@ -16,38 +18,39 @@
 
 	if(ishuman(M) && ishuman(user) && M.stat != DEAD)
 		if(user.mind && ((user.mind in ticker.mode.A_bosses) || (user.mind in ticker.mode.B_bosses)))
-			if(cooldown)
+			if(!M.mind || !M.client)
+				return //He is fucking braindead
+			if(world.time <(last_convert_time + cooldown))
 				to_chat(user, "<span class='warning'>[src] needs more time to recharge before it can be used.</span>")
 				return
-			if(M.client)
-				M.mind_initialize()		//give them a mind datum if they don't have one.
-				if(user.mind in ticker.mode.A_bosses)
-					var/recruitable = ticker.mode.add_gangster(M.mind,"A")
-					switch(recruitable)
-						if(2)
-							M.Paralyse(5)
-							cooldown(max(0,ticker.mode.B_gang.len - ticker.mode.A_gang.len))
-						if(1)
-							to_chat(user, "<span class='warning'>This mind is resistant to recruitment!</span>")
-						else
-							to_chat(user, "<span class='warning'>This mind has already been recruited into a gang!</span>")
-				else if(user.mind in ticker.mode.B_bosses)
-					var/recruitable = ticker.mode.add_gangster(M.mind,"B")
-					switch(recruitable)
-						if(2)
-							M.Paralyse(5)
-							cooldown(max(0,ticker.mode.A_gang.len - ticker.mode.B_gang.len))
-						if(1)
-							to_chat(user, "<span class='warning'>This mind is resistant to recruitment!</span>")
-						else
-							to_chat(user, "<span class='warning'>This mind has already been recruited into a gang!</span>")
-	return
+			var/gang_letter
+			if(user.mind in ticker.mode.A_bosses)
+				gang_letter = "A"
+			else if(user.mind in ticker.mode.B_bosses)
+				gang_letter = "B"
+			var/choice = alert(M,"Asked by [user]: Do you want to join the gang?","Align Thyself with the gang!","No!","Yes!")
+			if(choice == "Yes!")
+				var/recruitable = ticker.mode.add_gangster(M.mind, gang_letter)
+				switch(recruitable)
+					if(2)
+						if(gang_letter == "A")
+							cooldown = max(100,((ticker.mode.A_gang.len - ticker.mode.B_gang.len)*400))
+						else if (gang_letter == "B")
+							cooldown = max(100,((ticker.mode.A_gang.len - ticker.mode.B_gang.len)*400))
+						last_convert_time = world.time
+						icon_state = "pen_blink"
+						addtimer(CALLBACK(src, .proc/cooldown_end),cooldown)
+						to_chat(M, "\blue You join the gang!")
+						to_chat(user, "\blue <b>[M] joins the gang!</b>")
+					if(1)
+						to_chat(user, "<span class='warning'>This mind is resistant to recruitment!</span>")
+					else
+						to_chat(user, "<span class='warning'>This mind has already been recruited into a gang!</span>")
+			else if(choice == "No!")
+				to_chat(M, "\red You reject!")
+				to_chat(user, "\red <b>[M] does not support our gang!</b>")
 
-/obj/item/weapon/pen/gang/proc/cooldown(modifier)
-	cooldown = 1
-	icon_state = "pen_blink"
-	spawn(max(50,1800-(modifier*300)))
-		cooldown = 0
-		icon_state = "pen"
-		var/mob/M = get(src, /mob)
-		to_chat(M, "<span class='notice'>[bicon(src)] [src][(src.loc == M)?(""):(" in your [src.loc]")] vibrates softly.</span>")
+/obj/item/weapon/pen/gang/proc/cooldown_end()
+	icon_state = "pen"
+	var/mob/M = get(src, /mob)
+	to_chat(M, "<span class='notice'>[bicon(src)] [src][(src.loc == M)?(""):(" in your [src.loc]")] vibrates softly.</span>")

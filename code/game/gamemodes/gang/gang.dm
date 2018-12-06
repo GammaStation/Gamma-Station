@@ -241,11 +241,6 @@
 		A_gang += gangster_mind
 	else
 		B_gang += gangster_mind
-	if(check)
-		if(iscarbon(gangster_mind.current))
-			var/mob/living/carbon/carbon_mob = gangster_mind.current
-			carbon_mob.silent = max(carbon_mob.silent, 5)
-		gangster_mind.current.Stun(5)
 	to_chat(gangster_mind.current, "<FONT size=3 color=red><B>You are now a member of the [gang=="A" ? gang_name("A") : gang_name("B")] Gang!</B></FONT>")
 	to_chat(gangster_mind.current, "<font color='red'>Help your bosses take over the station by claiming territory with <b>special spraycans</b> only they can provide. Simply spray on any unclaimed area of the station.</font>")
 	to_chat(gangster_mind.current, "<font color='red'>You can identify your bosses by their <b>red \[G\] icon</b>.</font>")
