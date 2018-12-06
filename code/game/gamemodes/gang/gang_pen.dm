@@ -40,15 +40,15 @@
 						last_convert_time = world.time
 						icon_state = "pen_blink"
 						addtimer(CALLBACK(src, .proc/cooldown_end),cooldown)
-						to_chat(M, "\blue You join the gang!")
-						to_chat(user, "\blue <b>[M] joins the gang!</b>")
+						to_chat(M, "<span class='notice'>You join the gang!</span>")
+						to_chat(user, "<span class='warning'>[M] joins the gang!</span>")
 					if(1)
 						to_chat(user, "<span class='warning'>This mind is resistant to recruitment!</span>")
 					else
 						to_chat(user, "<span class='warning'>This mind has already been recruited into a gang!</span>")
 			else if(choice == "No!")
-				to_chat(M, "\red You reject!")
-				to_chat(user, "\red <b>[M] does not support our gang!</b>")
+				to_chat(M, "<span class='warning'>You reject this offer!</span>")
+				to_chat(user, "<span class='warning'>[M] rejected your offer!</span>")
 
 /obj/item/weapon/pen/gang/proc/cooldown_end()
 	icon_state = "pen"
