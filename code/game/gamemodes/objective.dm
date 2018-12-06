@@ -526,6 +526,7 @@ datum/objective/steal
 		"the hypospray" = /obj/item/weapon/reagent_containers/hypospray/cmo,
 		"the captain's pinpointer" = /obj/item/weapon/pinpointer,
 		"an ablative armor vest" = /obj/item/clothing/suit/armor/laserproof,
+		"a Star Vigil Commander's PP-91 Bison" = /obj/item/weapon/gun/energy/gun/bison,
 	)
 
 	var/global/possible_items_special[] = list(
