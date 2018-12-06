@@ -1,6 +1,6 @@
 /obj/item/weapon/transparant
-	icon = 'code/game/objects/WalterJ_Items_Pack/TRANSPARANTS/transparant.dmi'
-	icon_custom = 'code/game/objects/WalterJ_Items_Pack/TRANSPARANTS/transparant.dmi'
+	icon = 'icons/obj/transparant.dmi'
+	icon_custom = 'icons/obj/transparant.dmi'
 	icon_state = "blank"
 
 	name = "blank sign"
@@ -48,6 +48,10 @@
 		to_chat(user, "<span class='notice'>You painted your blank sign as [W.name].</span>")
 
 /obj/item/weapon/transparant/attack_self(mob/user)
+	if(world.time <(last_showoff_time + ITEM_SHOWOFF_COOLDOWN))
+		to_chat(user, "<span class='notice'>Please wait!</span>")
+		return
+	last_showoff_time = world.time
 	for(var/mob/O in viewers(user, null))
 		O.show_message("[user] shows you: [bicon(src)] [src.blood_DNA ? "bloody " : ""][src.name]: it says: [src.desc]", 1)
 
