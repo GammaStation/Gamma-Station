@@ -5,6 +5,7 @@
 	item_state = "s-ninja_mask"
 	allowed = list(/obj/item/weapon/stock_parts/cell)
 	armor = list(melee = 60, bullet = 50, laser = 60,energy = 45, bomb = 50, bio = 100, rad = 50, telepathy = 15)
+	unacidable = 1
 	flags = MASKCOVERSMOUTH
 	species_restricted = list("exclude", TYCHEON)
 	body_parts_covered = HEAD|FACE
