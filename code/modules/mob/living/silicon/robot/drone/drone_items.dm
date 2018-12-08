@@ -267,6 +267,9 @@
 			stored_comms["plastic"]++
 			stored_comms["plastic"]++
 			stored_comms["glass"]++
+		else if (istype(W,/obj/item/weapon/scrap_lump))
+			stored_comms["metal"]+=2
+			stored_comms["glass"]+=2
 		else if(istype(W,/obj/item/trash))
 			stored_comms["metal"]++
 			stored_comms["plastic"]++

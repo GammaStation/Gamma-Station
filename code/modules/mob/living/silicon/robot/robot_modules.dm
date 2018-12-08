@@ -317,6 +317,7 @@
 
 /obj/item/weapon/robot_module/miner/atom_init()
 	. = ..()
+	modules += new /obj/item/device/flash(src)
 	modules += new /obj/item/borg/sight/hud/miner(src)
 	modules += new /obj/item/borg/sight/meson(src)
 	modules += new /obj/item/weapon/wrench(src)
@@ -363,6 +364,7 @@
 
 /obj/item/weapon/robot_module/science/atom_init()
 	. = ..()
+	modules += new /obj/item/device/flash(src)
 	modules += new /obj/item/device/analyzer(src)
 	modules += new /obj/item/device/assembly/signaler(src)
 	modules += new /obj/item/device/ano_scanner(src)
@@ -408,6 +410,8 @@
 
 /obj/item/weapon/robot_module/maintdrone/atom_init()
 	. = ..()
+	modules += new /obj/item/device/t_scanner(src)
+	modules += new /obj/item/weapon/shovel(src)
 	modules += new /obj/item/weapon/weldingtool(src)
 	modules += new /obj/item/weapon/screwdriver(src)
 	modules += new /obj/item/weapon/wrench(src)
@@ -432,7 +436,7 @@
 
 /obj/item/weapon/robot_module/maintdrone/respawn_consumable(mob/living/silicon/robot/R)
 	var/obj/item/weapon/reagent_containers/spray/cleaner/C = locate() in src.modules
-	C.reagents.add_reagent("cleaner", 3)
+	C.reagents.add_reagent("cleaner", 5)
 
 	var/obj/item/device/lightreplacer/LR = locate() in src.modules
 	LR.Charge(R)

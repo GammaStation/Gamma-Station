@@ -274,6 +274,9 @@
 		to_chat(user, "\blue You're a robot. No.")
 		return //Robots can't interact with storage items. FALSE
 
+	if(!user.Adjacent(W))
+		return FALSE
+
 	if(!can_be_inserted(W))
 		return FALSE
 
@@ -329,6 +332,9 @@
 /obj/item/weapon/storage/proc/gather_all(var/turf/T, var/mob/user)
 	var/success = 0
 	var/failure = 0
+
+	if(!user.Adjacent(T))
+		return
 
 	for(var/obj/item/I in T)
 		if(!can_be_inserted(I, user, 0))	// Note can_be_inserted still makes noise when the answer is no

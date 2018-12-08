@@ -19,13 +19,15 @@
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
+/obj/item/device/radio/intercom/mob_can_equip(M, slot, disable_warning = 0)
+	return FALSE
+
 /obj/item/device/radio/intercom/attack_ai(mob/user)
 	src.add_fingerprint(user)
 	INVOKE_ASYNC(src, .proc/attack_self, user)
 
 /obj/item/device/radio/intercom/attack_paw(mob/user)
 	return src.attack_hand(user)
-
 
 /obj/item/device/radio/intercom/attack_hand(mob/user)
 	src.add_fingerprint(user)

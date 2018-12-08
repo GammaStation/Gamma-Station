@@ -157,7 +157,7 @@
 		else
 			close()
 		return
-	else if(density)
+	else if(density && Adjacent(user))
 		do_animate("deny")
 
 
@@ -356,7 +356,7 @@
 
 
 /obj/machinery/door/proc/requiresID()
-	return req_access.len || req_one_access.len
+	return !check_access(null)
 
 /obj/machinery/door/update_nearby_tiles(need_rebuild)
 	. = ..()
