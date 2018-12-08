@@ -14,7 +14,7 @@
 	blood_overlay_type = "armor"
 	origin_tech = "materials=5;biotech=4;powerstorage=5"
 	armor = list(melee = 15, bullet = 15, laser = 15, energy = 15, bomb = 15, bio = 15, rad = 15, telepathy = 15)
-	actions_types = /datum/action/item_action/attack_self
+	actions_types = /datum/action/item_action/hands_free
 	var/mode = VEST_STEALTH
 	var/stealth_active = 0
 	var/combat_cooldown = 10
@@ -291,7 +291,7 @@
 	var/obj/machinery/abductor/pad/home
 	var/cooldown = 30
 
-	actions_types = /datum/action/item_action/attack_self
+	actions_types = /datum/action/item_action/hands_free
 
 /obj/item/weapon/implant/abductor/attack_self()
 	if(cooldown == initial(cooldown))

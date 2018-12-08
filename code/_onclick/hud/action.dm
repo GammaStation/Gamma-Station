@@ -218,6 +218,7 @@
 
 /datum/action/item_action/hands_free
 	check_flags = AB_CHECK_ALIVE|AB_CHECK_INSIDE
+	action_procname = "attack_self"
 
 //Preset for spells
 /datum/action/spell_action
