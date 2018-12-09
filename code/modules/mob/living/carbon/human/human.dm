@@ -1850,7 +1850,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 			calc_max_tk_range = min(tk_maxrange, calc_max_tk_range)
 			if(dist > calc_max_tk_range)
 				to_chat(src, "<span class='notice'>Your mind won't reach that far.</span>")
-				return
+				return FALSE
 		//if(species.flags[STATICALLY_CHARGED]) // Statically charged species use static electricity for telekinesis. Don't question it!
 			if(nutrition >= 200 + dist)
 				nutrition -= dist // DON'T QUESTION THIS EITHER. The only Statically Charged specie is Tycheon, and they use nutrition as static charge.

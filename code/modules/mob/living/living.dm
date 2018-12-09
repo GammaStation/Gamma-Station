@@ -1187,4 +1187,5 @@
 			return
 
 		to_chat(src, "<span class='notice'>You can taste [english_list(final_taste_list)].</span>")
+		telepathy_hear("can taste", "<span class='notice'>[english_list(final_taste_list)]</span>", src)
 		lasttaste = world.time
