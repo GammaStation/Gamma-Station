@@ -382,6 +382,17 @@ BLIND     // can't see anything
 	var/rolled_down = 0
 	var/basecolor
 	sprite_sheets = list(VOX = 'icons/mob/species/vox/uniform.dmi')
+	actions_types = /datum/action/item_action/attack_hand
+
+/obj/item/clothing/under/after_equipping()
+	if(!accessories.len)
+		return
+	return ..()
+
+/obj/item/clothing/under/pickup()
+	if(!accessories.len)
+		return
+	return ..()
 
 /obj/item/clothing/under/emp_act(severity)
 	..()
@@ -409,7 +420,7 @@ BLIND     // can't see anything
 	if(istype(loc, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = loc
 		H.update_inv_w_uniform()
-		action_button_name = null
+		remove_actions(user)
 
 /obj/item/clothing/under/verb/removetie()
 	set name = "Remove Accessory"
@@ -447,7 +458,7 @@ BLIND     // can't see anything
 			if(istype(loc, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = loc
 				H.update_inv_w_uniform()
-			action_button_name = "Use inventory."
+			grant_actions(user)
 			return
 		else
 			to_chat(user, "<span class='notice'>You cannot attach more accessories of this type to [src].</span>")

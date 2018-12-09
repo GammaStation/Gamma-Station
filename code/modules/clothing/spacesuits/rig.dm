@@ -6,7 +6,7 @@
 	item_state = "eng_helm"
 	armor = list(melee = 40, bullet = 5, laser = 10,energy = 5, bomb = 35, bio = 100, rad = 20, telepathy = 15)
 
-	action_button_name = "Toggle Helmet Light"
+	actions_types = /datum/action/item_action/attack_self
 	allowed = list(/obj/item/device/flashlight)
 	var/brightness_on = 4 //luminosity when on
 	var/on = 0
@@ -415,7 +415,7 @@
 	               /obj/item/weapon/melee/energy/sword,
 	               /obj/item/weapon/handcuffs)
 	species_restricted = list("exclude" , UNATHI , TAJARAN , DIONA, VOX , TYCHEON)
-	action_button_name = "Toggle space suit mode"
+	actions_types = /datum/action/item_action/attack_self
 	var/combat_mode = FALSE
 
 /obj/item/clothing/suit/space/rig/syndi/update_icon(mob/user)
@@ -423,7 +423,7 @@
 	icon_state = "rig-syndie[combat_mode ? "-combat" : ""]"
 	user.update_inv_wear_suit()
 
-/obj/item/clothing/suit/space/rig/syndi/ui_action_click()
+/obj/item/clothing/suit/space/rig/syndi/proc/ui_action_click()
 	toggle_mode()
 
 /obj/item/clothing/suit/space/rig/syndi/verb/toggle_mode()

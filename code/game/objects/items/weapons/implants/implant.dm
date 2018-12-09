@@ -503,14 +503,14 @@ the implant may become unstable and either pre-maturely inject the subject or si
 	desc = "Stores up to two big items in a bluespace pocket."
 	icon_state = "implant_evil"
 	origin_tech = "materials=2;magnets=4;bluespace=5;syndicate=4"
-	action_button_name = "Bluespace pocket"
+	actions_types = /datum/action/item_action/implant_storage
 	var/obj/item/weapon/storage/internal/imp/storage
 
 /obj/item/weapon/implant/storage/atom_init()
 	. = ..()
 	storage = new /obj/item/weapon/storage/internal/imp(src)
 
-/obj/item/weapon/implant/storage/ui_action_click()
+/obj/item/weapon/implant/storage/proc/open_storage()
 	storage.open(imp_in)
 
 /obj/item/weapon/implant/storage/proc/removed()

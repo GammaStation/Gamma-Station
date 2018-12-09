@@ -96,7 +96,7 @@
 	armor = list(melee = 82, bullet = 15, laser = 5,energy = 5, bomb = 5, bio = 2, rad = 0, telepathy = 10)
 	flags_inv = HIDEEARS
 	siemens_coefficient = 0.3
-	action_button_name = "Adjust helmet visor"
+	actions_types = /datum/action/item_action/attack_self
 	var/up = 0
 
 /obj/item/clothing/head/helmet/band/riot/attack_self()
@@ -193,7 +193,7 @@
 	icon_state = "shitcuritron_0"
 	item_state = "helmet"
 	var/on = 0
-	action_button_name = "Toggle Helmet"
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/clothing/head/helmet/helmet_of_justice/attack_self(mob/user)
 	on = !on
