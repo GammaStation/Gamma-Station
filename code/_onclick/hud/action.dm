@@ -287,3 +287,7 @@
 
 /datum/action/item_action/attack_hand
 	action_procname = "attack_hand"
+
+/datum/action/item_action/hands_free/toggle_holomap
+	name = "toggle holomap"
+	action_procname = "toggle_holomap"

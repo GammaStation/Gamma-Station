@@ -308,6 +308,65 @@ BLIND     // can't see anything
 	species_restricted = list("exclude" , DIONA , VOX , TYCHEON)
 	sprite_sheets = list(VOX = 'icons/mob/species/vox/head.dmi')
 	flash_protection = 2
+	var/obj/item/holochip/holochip
+
+/obj/item/clothing/head/helmet/space/after_equipping()
+	if(!holochip)
+		return
+	return ..()
+
+/obj/item/clothing/head/helmet/space/pickup()
+	if(!holochip)
+		return
+	return ..()
+
+/obj/item/clothing/head/helmet/space/dropped()
+	if(!holochip)
+		return ..()
+	holochip.deactivate_holomap()
+	..()
+
+/obj/item/clothing/head/helmet/space/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/holochip))
+		if(holochip)
+			to_chat(user, "<span class='notice'>The [src] is already modified with the [holochip]</span>")
+			return
+		user.drop_item(I)
+		I.forceMove(src)
+		holochip = I
+		holochip.holder = src
+		playsound(user, 'sound/items/Screwdriver.ogg', 100, 1)
+		to_chat(user, "<span class='notice'>[user] modifies the [src] with the [holochip]</span>")
+		grant_actions(user)
+	else if(istype(I, /obj/item/weapon/screwdriver))
+		remove_actions(user)
+		holochip.deactivate_holomap()
+		holochip.holder = null
+		if(!user.put_in_hands(holochip))
+			holochip.forceMove(get_turf(src))
+		holochip = null
+		playsound(user, 'sound/items/Screwdriver.ogg', 100, 1)
+		to_chat(user, "<span class='notice'>[user] removes the [holochip] from the [src]</span>")
+		actions_types = /datum/action/item_action/hands_free/toggle_holomap
+
+/obj/item/clothing/head/helmet/space/proc/toggle_holomap()
+	if(!holochip)
+		to_chat(usr, "<span class='notice'>There is no holochip in your [src].</span>")
+		return
+	if(holochip.activator)
+		holochip.deactivate_holomap()
+		to_chat(usr, "<span class='notice'>You deactivate the holomap.</span>")
+	else if(ishuman(usr))
+		var/mob/living/carbon/human/H = usr
+		if(H.head != src)
+			to_chat(usr, "<span class='notice'>You need to put your helmet on.</span>")
+			return
+		holochip.activate_holomap(usr)
+		to_chat(usr, "<span class='notice'>You activate the holomap.</span>")
+
+/obj/item/clothing/head/helmet/space/Destroy()
+	QDEL_NULL(holochip)
+	return ..()
 
 /obj/item/clothing/suit/space
 	name = "space suit"

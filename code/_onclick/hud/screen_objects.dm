@@ -663,6 +663,9 @@
 	icon_state = "craft"
 	screen_loc = ui_crafting
 
+/obj/screen/holomap
+	name = "Holomap"
+
 /obj/screen/inventory/craft/Click()
 	var/mob/living/M = usr
 	M.OpenCraftingMenu()

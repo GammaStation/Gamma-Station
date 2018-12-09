@@ -5,6 +5,12 @@
 	icon_state = "deathsquad"
 	item_state = "deathsquad"
 	armor = list(melee = 80, bullet = 70, laser = 70,energy = 70, bomb = 70, bio = 30, rad = 30, telepathy = 15)
+	actions_types = list(/datum/action/item_action/attack_self, /datum/action/item_action/hands_free/toggle_holomap)
+
+/obj/item/clothing/head/helmet/space/deathsquad/atom_init()
+	. = ..()
+	holochip = new /obj/item/holochip/deathsquad(src)
+	holochip.holder = src
 
 /obj/item/clothing/head/helmet/space/deathsquad/beret
 	name = "officer's beret"

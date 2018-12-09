@@ -78,6 +78,7 @@ var/datum/subsystem/ticker/ticker
 			timeLeft = initial(timeLeft)
 			to_chat(world, "<b><font color='blue'>Welcome to the pre-game lobby!</font></b>")
 			to_chat(world, "Please, setup your character and select ready. Game will start in [timeLeft/10] seconds")
+			default_holomap = image(generate_holo_map())
 			current_state = GAME_STATE_PREGAME
 
 		if(GAME_STATE_PREGAME)
