@@ -57,6 +57,7 @@
 		if((client.prefs.chat_toggles & CHAT_GHOSTEARS) && speaker in view(src))
 			message = "<b>[message]</b>"
 
+	var/clean_message = message
 	if(sdisabilities & DEAF || ear_deaf)
 		if(speaker == src)
 			to_chat(src, "<span class='warning'>You cannot hear yourself speak!</span>")
@@ -69,6 +70,8 @@
 			message = "<span class='game say'><span class='name'>[speaker_name]</span>[alt_name] [track][verb], <span class='message'><span class='body'>\"[message]\"</span></span></span>"
 
 		to_chat(src, message)
+		if(language && speaker != src)
+			language.on_message_hear(clean_message, src, speaker)
 
 		telepathy_hear("has heard", message, speaker, language)
 
@@ -196,11 +199,14 @@
 	else
 		to_chat(src, "[part_a][speaker_name][part_b][formatted]</span></span>")
 		telepathy_hear("has heard", "<b>[part_a][speaker_name]</span></span></b> [formatted]", speaker, language)
+		if(language && speaker != src)
+			language.on_message_hear(formatted, src, speaker)
 
 /mob/proc/hear_signlang(message, verb = "gestures", datum/language/language, mob/speaker = null)
 	if(!client)
 		return
 
+	var/clean_message = message
 	if(say_understands(speaker, language))
 		message = "<B>[speaker]</B> [verb], \"[language.format_message(message)]\""
 	else
@@ -212,6 +218,8 @@
 	show_message(message)
 
 	telepathy_hear("has seen", message, speaker)
+	if(language && speaker != src)
+		language.on_message_hear(clean_message, src, speaker)
 
 /mob/proc/hear_sleep(message)
 	var/heard = ""

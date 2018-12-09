@@ -1318,6 +1318,8 @@
 			to_chat(src, "<span class='warning'>You feel as if somebody is eavesdropping on you.</span>")
 
 		to_chat(M, "<span class='notice'><span class='bold'>[src]</span> [verb]:</span> [message]")
+		if(language && M != src && M != source)
+			language.on_message_hear(message, M, source)
 		M.telepathy_hear(verb, message, source)
 
 /mob/living/carbon/human/proc/toggle_telepathy_hear((mob/M in (view() + remote_hearing))) // Makes us hear what they hear.
@@ -1405,6 +1407,7 @@
 	if(speaking)
 		say = copytext(say, 2 + length(speaking.key))
 
+	var/clean_say = say
 	if(speaking)
 		say = speaking.format_message(say) //, verb) Verb is actually unused.
 	else
@@ -1428,6 +1431,9 @@
 	else
 		to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room:</span> [say]")
 	to_chat(src, "<span class='notice'>You project your mind into <b>[M]</b>:</span> [say]")
+
+	if(speaking && M != src)
+		speaking.on_message_hear(clean_say, M, src)
 
 	var/mes = say
 	for(var/mob/dead/observer/G in dead_mob_list)
@@ -1537,6 +1543,7 @@
 		if(speaking)
 			cur_say = copytext(cur_say, 2 + length(speaking.key))
 
+		var/clean_say = cur_say
 		if(speaking)
 			cur_say = speaking.format_message(cur_say) //, verb) Verb is actually unused.
 		else
@@ -1558,6 +1565,9 @@
 		else
 			to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room:</span> [cur_say]")
 		to_chat(src, "<span class='notice'>You project your mind into <b>[M]</b>:</span> [cur_say]")
+
+		if(speaking && M != src)
+			speaking.on_message_hear(clean_say, M, src)
 
 		M.telepathy_hear("has heard a voice speak", say, src)
 
