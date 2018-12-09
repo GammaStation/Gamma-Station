@@ -71,7 +71,7 @@
 	Works similarly to worn sprite_sheets, except the alternate sprites are used when the clothing/refit_for_species() proc is called.
 	*/
 	var/list/sprite_sheets_obj = null
-	var/last_cleanup_time
+	var/last_showoff_time
 
 /obj/item/atom_init()
 	. = ..()
@@ -890,10 +890,10 @@ var/global/list/items_blood_overlay_by_type = list()
 		blood_overlay = IMG
 
 /obj/item/proc/showoff(mob/user)
-	if(world.time <(last_cleanup_time + ITEM_SHOWOFF_COOLDOWN))
-		to_chat(user, "<span class='danger'>Please wait!</span>")
+	if(world.time <(last_showoff_time + ITEM_SHOWOFF_COOLDOWN))
+		to_chat(user, "<span class='notice'>Please wait!</span>")
 		return
-	last_cleanup_time = world.time
+	last_showoff_time = world.time
 	for (var/mob/M in view(user))
 		M.show_message("[user] holds up [src]. <a HREF=?src=\ref[M];lookitem=\ref[src]>Take a closer look.</a>",1)
 
