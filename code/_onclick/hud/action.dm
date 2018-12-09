@@ -12,6 +12,7 @@
 /datum/action
 	var/name = "Generic Action"
 	var/action_type = AB_ITEM
+	var/action_procname = null
 	var/atom/movable/target = null
 	var/check_flags = 0
 	var/processing = 0
@@ -34,6 +35,8 @@
 		if(owner == T)
 			return
 		Remove(owner)
+	if(name == "Generic Action")
+		name = target.name
 	owner = T
 	owner.actions.Add(src)
 	owner.update_action_buttons()
@@ -54,9 +57,8 @@
 		return
 	switch(action_type)
 		if(AB_ITEM)
-			if(target)
-				var/obj/item/item = target
-				item.ui_action_click()
+			if(target && action_procname)
+				call(target,action_procname)(usr)
 		if(AB_SPELL)
 			if(target)
 				var/obj/effect/proc_holder/spell = target
@@ -216,6 +218,7 @@
 
 /datum/action/item_action/hands_free
 	check_flags = AB_CHECK_ALIVE|AB_CHECK_INSIDE
+	action_procname = "attack_self"
 
 //Preset for spells
 /datum/action/spell_action
@@ -248,3 +251,39 @@
 #undef AB_WEST_OFFSET
 #undef AB_NORTH_OFFSET
 #undef AB_MAX_COLUMNS
+
+////////Action presets
+/datum/action/item_action/attack_self
+	action_procname = "attack_self"
+
+/datum/action/item_action/ui_action_click
+	action_procname = "ui_action_click"
+
+/datum/action/item_action/toggle_hood
+	action_procname = "ToggleHood"
+
+/datum/action/item_action/toggle_stealth
+	action_procname = "toggle_stealth"
+
+/datum/action/item_action/toggle_mister
+	action_procname = "toggle_mister"
+
+/datum/action/item_action/jetpack_toggle
+	name = "toggle jetpack"
+	action_procname = "toggle"
+
+/datum/action/item_action/jetpack_stabilisation
+	name = "toggle stabilisation"
+	action_procname = "toggle_rockets"
+
+/datum/action/item_action/implant_storage
+	action_procname = "open_storage"
+
+/datum/action/item_action/toggle_paddles
+	action_procname = "toggle_paddles"
+
+/datum/action/item_action/toggle
+	action_procname = "toggle"
+
+/datum/action/item_action/attack_hand
+	action_procname = "attack_hand"

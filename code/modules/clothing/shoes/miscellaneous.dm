@@ -60,6 +60,7 @@
 	permeability_coefficient = 0.01
 	flags = NOSLIP
 	siemens_coefficient = 0.2
+	unacidable = 1
 
 	cold_protection = LEGS
 	min_cold_protection_temperature = SHOE_MIN_COLD_PROTECTION_TEMPERATURE

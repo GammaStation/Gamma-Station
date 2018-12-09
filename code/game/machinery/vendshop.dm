@@ -44,7 +44,7 @@
 	var/list/access_fullaccess = list(access_qm)
 	var/list/whitelist = list()
 	var/list/blacklist = list()
-	var/list/global_blacklist = list(/obj/item/weapon/grab, /obj/item/weapon/holder, /obj/item/device/pda)
+	var/list/global_blacklist = list(/obj/item/weapon/grab, /obj/item/weapon/holder, /obj/item/device/pda, /obj/item/tk_grab)
 
 /obj/machinery/vendshop/atom_init()
 	. = ..()
@@ -348,6 +348,11 @@
 	else if(istype(O, /obj/item/weapon/card))
 		var/obj/item/weapon/card/I = O
 		scan_card(I)
+
+	if(istype(O, /obj/item/tk_grab))
+		var/obj/item/tk_grab/TK_G = O
+		if(Adjacent(TK_G.focus))
+			O = TK_G.focus
 
 	else if(accept_check(O))
 		if(!user_name)
