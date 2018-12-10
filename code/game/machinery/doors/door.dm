@@ -156,10 +156,8 @@
 			open()
 		else
 			close()
-		return
-	else if(density && Adjacent(user))
+	else if(density && (isrobot(user) || Adjacent(user)))
 		do_animate("deny")
-
 
 /obj/machinery/door/blob_act()
 	if(prob(40))

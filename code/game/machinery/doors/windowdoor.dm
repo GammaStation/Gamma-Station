@@ -382,11 +382,11 @@
 		return
 
 	if(allowed(user))
-		if (density)
+		if(density)
 			open()
 		else
 			close()
-	else if (src.density)
+	else if(density && (isrobot(user) || Adjacent(user)))
 		do_animate("deny")
 
 /obj/machinery/door/window/brigdoor

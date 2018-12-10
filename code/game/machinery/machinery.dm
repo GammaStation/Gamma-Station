@@ -334,7 +334,7 @@ Class Procs:
 		var/datum/wires/DW = vars["wires"] // Wires and machinery that uses this feature actually should be refactored.
 		if(istype(DW) && !DW.can_use(user)) // Many of them do not use panel_open var.
 			DW.Topic("close=1", list("close"="1"))
-	if((allowed_checks & ALLOWED_CHECK_A_HAND) && !emagged && !allowed(user))
+	if((allowed_checks & ALLOWED_CHECK_A_HAND) && !emagged && !allowed(user) && Adjacent(user))
 		allowed_fail(user)
 		to_chat(user, "<span class='warning'>Access Denied.</span>")
 		return 1

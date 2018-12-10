@@ -64,6 +64,7 @@
 	if(stat == UNCONSCIOUS || sleeping > 0)
 		msg = "<I>... You can almost hear someone talking ...</I>"
 	to_chat(src, msg, flag)
+	telepathy_hear((type == 1) ? "has seen" : "has heard", msg)
 	return msg
 
 /mob/living/carbon/show_message(msg, type, alt, alt_type)

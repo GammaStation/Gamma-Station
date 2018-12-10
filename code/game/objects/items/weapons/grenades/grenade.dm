@@ -12,7 +12,7 @@
 	var/active = 0
 	var/det_time = 50
 
-	action_button_name = "Activate Grenade"
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/weapon/grenade/proc/clown_check(mob/living/user)
 	if((CLUMSY in user.mutations) && prob(50))
