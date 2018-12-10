@@ -279,7 +279,7 @@
 		var/obj/item/weapon/card/id/C = I
 		visible_message("<span class='info'>[usr] swipes a card through [src].</span>")
 		if(check_accounts)
-			if(vendor_account)
+			if(SSeconomy.vendor_account)
 				var/datum/money_account/D = get_account(C.associated_account_number)
 				var/attempt_pin = 0
 				if(D)
@@ -293,18 +293,18 @@
 
 							//transfer the money
 							D.money -= transaction_amount
-							vendor_account.money += transaction_amount
+							SSeconomy.vendor_account.money += transaction_amount
 
 							//create entries in the two account transaction logs
 							var/datum/transaction/T = new()
-							T.target_name = "[vendor_account.owner_name] (via [src.name])"
+							T.target_name = "[SSeconomy.vendor_account.owner_name] (via [src.name])"
 							T.purpose = "Purchase of [currently_vending.product_name]"
 							if(transaction_amount > 0)
 								T.amount = "([transaction_amount])"
 							else
 								T.amount = "[transaction_amount]"
 							T.source_terminal = src.name
-							T.date = current_date_string
+							T.date = SSeconomy.current_date_string
 							T.time = worldtime2text()
 							D.transaction_log.Add(T)
 							//
@@ -313,9 +313,9 @@
 							T.purpose = "Purchase of [currently_vending.product_name]"
 							T.amount = "[transaction_amount]"
 							T.source_terminal = src.name
-							T.date = current_date_string
+							T.date = SSeconomy.current_date_string
 							T.time = worldtime2text()
-							vendor_account.transaction_log.Add(T)
+							SSeconomy.vendor_account.transaction_log.Add(T)
 
 							// Vend the item
 							src.vend(src.currently_vending, usr)

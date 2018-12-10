@@ -331,7 +331,7 @@
 			if(!on)
 				var/obj/item/weapon/card/C = I
 				visible_message("<span class='info'>[usr] swipes a card through [src].</span>")
-				if(station_account)
+				if(SSeconomy.station_account)
 					var/datum/money_account/D = get_account(C.associated_account_number)
 					var/attempt_pin = 0
 					if(D.security_level > 0)
@@ -343,18 +343,18 @@
 						if(transaction_amount <= D.money)
 							//transfer the money
 							D.money -= transaction_amount
-							station_account.money += transaction_amount
+							SSeconomy.station_account.money += transaction_amount
 
 							//create entries in the two account transaction logs
 							var/datum/transaction/T = new()
-							T.target_name = "[station_account.owner_name] (via [src.name])"
+							T.target_name = "[SSeconomy.station_account.owner_name] (via [src.name])"
 							T.purpose = "Purchase of shower use"
 							if(transaction_amount > 0)
 								T.amount = "([transaction_amount])"
 							else
 								T.amount = "[transaction_amount]"
 							T.source_terminal = src.name
-							T.date = current_date_string
+							T.date = SSeconomy.current_date_string
 							T.time = worldtime2text()
 							D.transaction_log.Add(T)
 
@@ -363,9 +363,9 @@
 							T.purpose = "Purchase of shower use"
 							T.amount = "[transaction_amount]"
 							T.source_terminal = src.name
-							T.date = current_date_string
+							T.date = SSeconomy.current_date_string
 							T.time = worldtime2text()
-							station_account.transaction_log.Add(T)
+							SSeconomy.station_account.transaction_log.Add(T)
 
 							is_payed = 60
 							to_chat(usr, "[bicon(src)]Thank you, happy washing time and don't turn me off accidently or i will take your precious credits again! Teehee.</span>")
