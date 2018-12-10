@@ -984,3 +984,33 @@ var/global/list/thunderfield_items = list()
 	name = "Bulletproof helmet"
 	item = /obj/item/clothing/head/helmet/bulletproof
 	cost = 6
+
+/datum/thunderfield_item/unrechlaser
+	name = "Unrechargable Laser"
+	item = /obj/item/weapon/gun/energy/laser
+	cost = 6
+
+/datum/thunderfield_item/rechlaser
+	name = "Rechargable Laser"
+	item = /obj/item/weapon/gun/energy/laser/selfcharging/captain
+	cost = 12
+
+/datum/thunderfield_item/ablarmor
+	name = "Ablative armor"
+	item = /obj/item/clothing/suit/armor/laserproof
+	cost = 8
+
+/datum/thunderfield_item/ablhelmet
+	name = "Ablative helmet"
+	item = /obj/item/clothing/head/helmet/laserproof
+	cost = 6
+
+/datum/thunderfield_item/esword
+	name = "Energy sword"
+	item = /obj/item/weapon/melee/energy/sword
+	cost = 7
+
+/datum/thunderfield_item/eaxe
+	name = "Energy axe"
+	item = /obj/item/weapon/melee/energy/axe
+	cost = 10
