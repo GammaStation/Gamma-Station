@@ -4,6 +4,7 @@
 	mana_cost = CREATION_MANACOST
 	delay = CREATION_DELAY
 	types_to_click = list("turfs")
+	closerange = TRUE
 
 /obj/effect/proc_holder/magic/click_on/creation/check_turf_cast(turf/target)
 	if(is_blocked_turf(target))

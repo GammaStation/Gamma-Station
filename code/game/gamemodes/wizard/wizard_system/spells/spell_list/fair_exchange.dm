@@ -35,7 +35,7 @@
 
 	var/obj/item/to_put_in_hand = new new_item(owner.current.loc)
 	owner.current.drop_item()
-	owner.current.put_in_active_hand(to_put_in_hand)
+	owner.current.put_in_hands(to_put_in_hand)
 	message_admins("[usr] ([usr.ckey]) transformed [item_to_transform] into [to_put_in_hand].(<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[usr.x];Y=[usr.y];Z=[usr.z]'>JMP</a>)")
 	qdel(item_to_transform)
 

@@ -14,8 +14,6 @@
 	S.attach(target)
 	S.set_up(10, 0, target)
 	S.start()
-	S.start()
-	S.start()
 
 
 /datum/effect/effect/system/smoke_spread/white_haze

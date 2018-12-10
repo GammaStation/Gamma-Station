@@ -38,6 +38,9 @@
 		if(A.anchored)
 			continue
 		step_away(A,loc)
+		if(ismob(A))
+			var/mob/living/M = A
+			M.Weaken(WATERSPHERE_WEAKEN_TIME)
 
 	if(ishuman(target))
 		var/mob/living/carbon/human/H = target

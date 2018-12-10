@@ -16,7 +16,7 @@
 	var/area/thearea = teleportlocs[A]
 
 	for(var/turf/T in get_area_turfs(thearea.type))
-		if(!is_blocked_turf(T))
+		if(!is_blocked_turf(T) && !istype(T,/turf/space))
 			L+=T
 
 	var/turf/exit_loc = safepick(L)

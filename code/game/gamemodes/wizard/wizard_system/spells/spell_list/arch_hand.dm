@@ -4,6 +4,7 @@
 	delay = ARCHITECT_DELAY
 	mana_cost = ARCHITECT_MANACOST
 	types_to_click = list("turfs", "objects")
+	closerange = TRUE
 
 
 /obj/effect/proc_holder/magic/click_on/architect/check_turf_cast(turf/target)

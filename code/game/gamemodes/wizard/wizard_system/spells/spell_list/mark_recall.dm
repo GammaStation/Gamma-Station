@@ -29,7 +29,7 @@
 			return TRUE
 
 /obj/effect/proc_holder/magic/nondirect/mark_recall/cast()
-	owner.current.put_in_any_hand_if_possible(marked_item)
+	owner.current.put_in_hands(marked_item)
 	playsound(owner.current.loc, 'sound/magic/SummonItems_generic.ogg',100,1)
 
 

@@ -1,5 +1,6 @@
 /obj/effect/proc_holder/magic/click_on
 	var/list/types_to_click = list("turfs", "objects", "mobs")
+	var/closerange = FALSE
 
 /obj/effect/proc_holder/magic/click_on/Click()
 	if(!iswizard(owner.current))
@@ -41,6 +42,8 @@
 
 /obj/effect/proc_holder/magic/click_on/proc/handle_targeted_cast(atom/spell_target)
 	if(!can_cast())
+		return
+	if(closerange && get_dist(owner.current, spell_target) > 1)
 		return
 
 	var/target_type = get_target_type(spell_target)

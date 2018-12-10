@@ -175,6 +175,19 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 			melee_damage_lower = 2 + I.force
 			melee_damage_upper = 2 + I.force
 			move_to_delay = 2 * I.w_class
+			if(istype(I, /obj/item/weapon/gun))
+				var/obj/item/weapon/gun/G = I
+				if(istype(I, /obj/item/weapon/gun/energy))
+					var/obj/item/weapon/gun/energy/E = I
+					projectiletype = E.ammo_type[E.select].projectile_type
+				else
+					projectiletype = G.chambered.projectile_type
+
+				if(projectiletype)
+					ranged = TRUE
+					ranged_cooldown_cap = 1
+					retreat_distance = 3
+					minimum_distance = 3
 
 		maxHealth = health
 		if(creator)
