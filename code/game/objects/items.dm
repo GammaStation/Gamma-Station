@@ -416,6 +416,7 @@
 	return FALSE
 
 /obj/item/throw_at(atom/target, range, speed, mob/thrower, spin = TRUE, diagonals_first = FALSE, datum/callback/callback)
+	remove_actions(thrower)
 	callback = CALLBACK(src, .proc/after_throw, callback) // Replace their callback with our own.
 	. = ..(target, range, speed, thrower, spin, diagonals_first, callback)
 

@@ -301,6 +301,7 @@ var/list/slot_equipment_priority = list(
 	O.screen_loc = null
 	if(istype(O, /obj/item))
 		var/obj/item/I = O
+		I.remove_actions(src)
 		if(target)
 			if(Adjacent(target))
 				I.do_putdown_animation(target)
