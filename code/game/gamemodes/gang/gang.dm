@@ -659,7 +659,7 @@
 		to_chat(src, "<span class='notice'>It is not yet time!</span>")
 	var/list/possible = list()
 	for (var/mob/living/carbon/human/P in oview(src))
-		if(!stat && P.client && P.mind && !P.mind.special_role)
+		if(!stat && P.client && P.mind && !P.mind.special_role && !ismindshielded(P))
 			var/instance = FALSE
 			for(var/job in gang_restricted_jobs)
 				if(job == P.job)
