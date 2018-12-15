@@ -266,12 +266,12 @@
 				if(outfits > 0)
 					ticker.mode.gang_outfit(usr,src,gang)
 					outfits -= 1
-			if("ping")
-				ping_gang(usr)
+			//if("ping")
+				//ping_gang(usr)
 	attack_self(usr)
 
 
-/obj/item/device/gangtool/proc/ping_gang(mob/user)
+/*/obj/item/device/gangtool/proc/ping_gang(mob/user)
 	if(!user)
 		return
 	var/message = sanitize(input(user,"Discreetly send a gang-wide message.","Send Message") as null|text)
@@ -292,7 +292,7 @@
 				to_chat(ganger.current, ping)
 		for(var/mob/M in dead_mob_list)
 			to_chat(M, ping)
-		log_game("[key_name(user)] Messaged [gang_name(gang)] Gang ([gang]): [sanitize(message)].")
+		log_game("[key_name(user)] Messaged [gang_name(gang)] Gang ([gang]): [sanitize(message)].")*/
 
 
 /obj/item/device/gangtool/proc/register_device(mob/user)
@@ -302,7 +302,7 @@
 			to_chat(user, "<span class='warning'>[bicon(src)] Error: All positions filled.</span>")
 			return
 
-	if(jobban_isbanned(user, ROLE_REV) || jobban_isbanned(user, "Syndicate") || role_available_in_minutes(user, ROLE_REV))
+	if(jobban_isbanned(user, ROLE_GANG) || role_available_in_minutes(user, ROLE_GANG))
 		to_chat(user, "<span class='warning'>[bicon(src)] ACCESS DENIED: Blacklisted user.</span>")
 		return 0
 
