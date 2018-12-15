@@ -648,6 +648,7 @@
 	playsound(user.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 	to_chat(user, "<span class='notice'>You add kevlar armor plates to [O].</span>")
 	outfit = null
+	qdel(src)
 
 /mob/living/carbon/human/proc/gang_convert()
 	set name = "Gang-Convert"
