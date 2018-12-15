@@ -21,8 +21,8 @@
 /datum/game_mode/gang
 	name = "gang war"
 	config_tag = "gang"
-	role_type = ROLE_REV
-	restricted_jobs = list("Star Vigil Officer", "Star Vigil Sergeant", "Star Vigil Commander", "AI", "Cyborg","Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Research Director", "Chief Medical Officer")
+	role_type = ROLE_GANG
+	restricted_jobs = list("Star Vigil Officer", "Star Vigil Sergeant", "Detective", "AI", "Cyborg","Captain", "Head of Personnel", "Star Vigil Commander", "Chief Engineer", "Research Director", "Chief Medical Officer", "Internal Affairs Agent")
 	required_players = 15
 	required_players_secret = 15
 	required_enemies = 2
@@ -42,7 +42,6 @@
 /datum/game_mode/gang/announce()
 	to_chat(world, "<B>The current game mode is - Gang War!</B>")
 	to_chat(world, "<B>A violent turf war has erupted on the station!<BR>Gangsters -  Take over the station by activating and defending a Dominator! <BR>Crew - The gangs will try to keep you on the station. Successfully evacuate the station to win!</B>")
-
 
 ///////////////////////////////////////////////////////////////////////////////
 //Gets the round setup, cancelling if there's not enough players at the start//
