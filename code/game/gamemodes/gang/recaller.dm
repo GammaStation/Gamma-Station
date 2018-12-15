@@ -79,8 +79,8 @@
 		else
 			dat += "Switchblade<br>"
 
-		dat += "(25 Influence) "
-		if(points >= 25)
+		dat += "(35 Influence) "
+		if(points >= 35)
 			dat += "<a href='?src=\ref[src];purchase=pistol'>9mm Pistol</a><br>"
 		else
 			dat += "9mm Pistol<br>"
@@ -91,8 +91,8 @@
 		else
 			dat += "9mm Ammo<br>"
 
-		dat += "(50 Influence) "
-		if(points >= 50)
+		dat += "(70 Influence) "
+		if(points >= 70)
 			dat += "<a href='?src=\ref[src];purchase=uzi'>Mini Uzi</a><br>"
 		else
 			dat += "Mini Uzi<br>"
@@ -117,15 +117,6 @@
 			dat += "<a href='?src=\ref[src];purchase=C4'>C4 Explosive</a><br>"
 		else
 			dat += "C4 Explosive<br>"
-
-		if(free_pen)
-			dat += "(ONE FREE) "
-		else
-			dat += "(50 Influence) "
-		if(free_pen || (points >= 50))
-			dat += "<a href='?src=\ref[src];purchase=pen'>Recruitment Pen</a><br>"
-		else
-			dat += "Recruitment Pen<br>"
 
 		var/tool_cost = (boss ? 10 : 30)
 		var/gangtooldesc = "Promote a Gangster ([3-gang_bosses] left)."
