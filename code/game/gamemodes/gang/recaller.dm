@@ -118,6 +118,12 @@
 		else
 			dat += "C4 Explosive<br>"
 
+		dat += "(5 Influence) "
+		if(points >= 5)
+			dat += "<a href='?src=\ref[src];purchase=drugs'>Happy pills</a><br>"
+		else
+			dat += "Happy pills<br>"
+
 		var/tool_cost = (boss ? 10 : 30)
 		var/gangtooldesc = "Promote a Gangster ([3-gang_bosses] left)."
 		if(gang_bosses >= 3)
@@ -177,17 +183,17 @@
 					item_type = /obj/item/weapon/switchblade
 					points = 10
 			if("pistol")
-				if(points >= 25)
+				if(points >= 35)
 					item_type = /obj/item/weapon/gun/projectile/automatic/pistol
-					points = 25
+					points = 35
 			if("9mmammo")
 				if(points >= 10)
 					item_type = /obj/item/ammo_box/magazine/m9mm
 					points = 10
 			if("uzi")
-				if(points >= 50)
+				if(points >= 70)
 					item_type = /obj/item/weapon/gun/projectile/automatic/mini_uzi
-					points = 50
+					points = 70
 			if("9mmammoU")
 				if(points >= 20)
 					item_type = /obj/item/ammo_box/magazine/uzim9mm
@@ -196,6 +202,10 @@
 				if(points >= 10)
 					item_type = /obj/item/weapon/plastique
 					points = 10
+			if("drugs")
+				if(points >= 5)
+					item_type = /obj/item/weapon/reagent_containers/pill/happy
+					points = 5
 			if("gangtool")
 				var/tool_cost = (boss ? 10 : 30)
 				if(points >= tool_cost)
