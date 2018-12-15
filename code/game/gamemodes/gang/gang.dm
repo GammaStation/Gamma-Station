@@ -653,13 +653,19 @@
 /mob/living/carbon/human/proc/gang_convert()
 	set name = "Gang-Convert"
 	set category = "IC"
+	var/list/gang_restricted_jobs = list("Star Vigil Officer", "Star Vigil Sergeant", "Detective", "AI", "Cyborg", "Captain", "Head of Personnel", "Star Vigil Commander", "Chief Engineer", "Research Director", "Chief Medical Officer", "Internal Affairs Agent")
 
 	if(!mind.can_gang_convert)
 		to_chat(src, "<span class='notice'>It is not yet time!</span>")
 	var/list/possible = list()
 	for (var/mob/living/carbon/human/P in oview(src))
 		if(!stat && P.client && P.mind && !P.mind.special_role)
-			possible += P
+			var/instance = FALSE
+			for(var/job in gang_restricted_jobs)
+				if(job == P.job)
+					instance = TRUE
+			if(!instance)
+				possible += P
 	if(!possible.len)
 		to_chat(src, "\red There doesn't appear to be anyone available for you to convert here.")
 		return
