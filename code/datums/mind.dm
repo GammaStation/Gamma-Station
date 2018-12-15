@@ -60,6 +60,8 @@
 
 	var/rev_cooldown = 0
 
+	var/can_gang_convert = TRUE
+
 	// the world.time since the mob has been brigged, or -1 if not at all
 	var/brigged_since = -1
 
@@ -117,6 +119,7 @@
 
 /datum/mind/proc/remove_gang()
 	ticker.mode.remove_gangster(src,0,1)
+
 	remove_objectives()
 
 /datum/mind/proc/remove_all_antag() //For the Lazy amongst us.
@@ -800,6 +803,7 @@
 
 		switch(href_list["gang"])
 			if("clear")
+				current.verbs -= /mob/living/carbon/human/proc/gang_convert
 				remove_gang()
 				message_admins("[key_name_admin(usr)] has de-gang'ed [current].")
 				log_admin("[key_name(usr)] has de-gang'ed [current].")
@@ -819,6 +823,7 @@
 				ticker.mode.A_bosses += src
 				src.special_role = "[gang_name("A")] Gang (A) Boss"
 				ticker.mode.update_gang_icons_added(src, "A")
+				current.verbs += /mob/living/carbon/human/proc/gang_convert
 				to_chat(current, "<FONT size=3 color=red><B>You are a [gang_name("A")] Gang Boss!</B></FONT>")
 				message_admins("[key_name_admin(usr)] has added [current] to the [gang_name("A")] Gang (A) leadership.")
 				log_admin("[key_name(usr)] has added [current] to the [gang_name("A")] Gang (A) leadership.")
@@ -840,6 +845,7 @@
 				ticker.mode.B_bosses += src
 				src.special_role = "[gang_name("B")] Gang (B) Boss"
 				ticker.mode.update_gang_icons_added(src, "B")
+				current.verbs += /mob/living/carbon/human/proc/gang_convert
 				to_chat(current, "<FONT size=3 color=red><B>You are a [gang_name("B")] Gang Boss!</B></FONT>")
 				message_admins("[key_name_admin(usr)] has added [current] to the [gang_name("B")] Gang (B) leadership.")
 				log_admin("[key_name(usr)] has added [current] to the [gang_name("B")] Gang (B) leadership.")
@@ -851,14 +857,10 @@
 					if(1)
 						to_chat(usr, "<span class='warning'>Unable to equip territory spraycan!</span>")
 					if(2)
-						to_chat(usr, "<span class='warning'>Unable to equip recruitment pen and spraycan!</span>")
-					if(3)
 						to_chat(usr, "<span class='warning'>Unable to equip gangtool, pen, and spraycan!</span>")
 
 			if("takeequip")
 				var/list/L = current.get_contents()
-				for(var/obj/item/weapon/pen/gang/pen in L)
-					qdel(pen)
 				for(var/obj/item/device/gangtool/gangtool in L)
 					qdel(gangtool)
 				for(var/obj/item/toy/crayon/spraycan/gang/SC in L)

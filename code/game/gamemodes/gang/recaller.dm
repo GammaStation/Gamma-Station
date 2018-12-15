@@ -205,14 +205,6 @@
 				if(points >= 10)
 					item_type = /obj/item/weapon/plastique
 					points = 10
-			if("pen")
-				if(free_pen)
-					item_type = /obj/item/weapon/pen/gang
-					free_pen = 0
-					points = 0
-				else if(points >= 50)
-					item_type = /obj/item/weapon/pen/gang
-					points = 50
 			if("gangtool")
 				var/tool_cost = (boss ? 10 : 30)
 				if(points >= tool_cost)

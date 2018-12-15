@@ -68,12 +68,14 @@
 /datum/game_mode/gang/post_setup()
 	spawn(rand(10,100))
 		for(var/datum/mind/boss_mind in A_bosses)
+			boss_mind.current.verbs += /mob/living/carbon/human/proc/gang_convert
 			update_gang_icons_added(boss_mind, "A")
 			forge_gang_objectives(boss_mind, "A")
 			greet_gang(boss_mind)
 			equip_gang(boss_mind.current)
 
 		for(var/datum/mind/boss_mind in B_bosses)
+			boss_mind.current.verbs += /mob/living/carbon/human/proc/gang_convert
 			update_gang_icons_added(boss_mind, "B")
 			forge_gang_objectives(boss_mind, "B")
 			greet_gang(boss_mind)
@@ -144,7 +146,6 @@
 			to_chat(mob, "Your training has allowed you to overcome your clownish nature, allowing you to wield weapons without harming yourself.")
 			mob.mutations.Remove(CLUMSY)
 
-	var/obj/item/weapon/pen/gang/T = new(mob)
 	var/obj/item/device/gangtool/gangtool = new(mob)
 	var/obj/item/toy/crayon/spraycan/gang/SC = new(mob)
 
@@ -167,19 +168,12 @@
 		to_chat(mob, "The <b>Gangtool</b> in your [where] will allow you to purchase items, send messages to your gangsters and recall the emergency shuttle from anywhere on the station.")
 		to_chat(mob, "You can also promote your gang members to <b>lieutenant</b> by having them use an unregistered gangtool. Unlike regular gangsters, Lieutenants cannot be deconverted and are able to use recruitment pens and gangtools.")
 
-	var/where2 = mob.equip_in_one_of_slots(T, slots)
+	var/where2 = mob.equip_in_one_of_slots(SC, slots)
 	if (!where2)
-		to_chat(mob, "Your Syndicate benefactors were unfortunately unable to get you a recruitment pen to start.")
-		. += 1
-	else
-		to_chat(mob, "The <b>recruitment pen</b> in your [where2] will help you get your gang started. Stab unsuspecting crew members with it to recruit them.")
-
-	var/where3 = mob.equip_in_one_of_slots(SC, slots)
-	if (!where3)
 		to_chat(mob, "Your Syndicate benefactors were unfortunately unable to get you a territory spraycan to start.")
 		. += 1
 	else
-		to_chat(mob, "The <b>territory spraycan</b> in your [where3] can be used to claim areas of the station for your gang. The more territory your gang controls, the more influence you get. All gangsters can use these, so distribute them to grow your influence faster.")
+		to_chat(mob, "The <b>territory spraycan</b> in your [where2] can be used to claim areas of the station for your gang. The more territory your gang controls, the more influence you get. All gangsters can use these, so distribute them to grow your influence faster.")
 	mob.update_icons()
 
 	return .
@@ -654,3 +648,52 @@
 	playsound(user.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 	to_chat(user, "<span class='notice'>You add kevlar armor plates to [O].</span>")
 	outfit = null
+
+/mob/living/carbon/human/proc/gang_convert()
+	set name = "Gang-Convert"
+	set category = "IC"
+
+	if(!mind.can_gang_convert)
+		to_chat(src, "<span class='notice'>It is not yet time!</span>")
+	var/list/possible = list()
+	for (var/mob/living/carbon/human/P in oview(src))
+		if(!stat && P.client && P.mind && !P.mind.special_role)
+			possible += P
+	if(!possible.len)
+		to_chat(src, "\red There doesn't appear to be anyone available for you to convert here.")
+		return
+	var/mob/living/carbon/human/M = input("Select a person to convert", null) as mob in possible
+	if(!M)
+		return
+	var/gang_letter
+	if(mind in ticker.mode.A_bosses)
+		gang_letter = "A"
+	else if(mind in ticker.mode.B_bosses)
+		gang_letter = "B"
+	var/choice = alert(M,"Asked by [src]: Do you want to join the gang?","Align Thyself with the gang!","No!","Yes!")
+	if(choice == "Yes!")
+		var/recruitable = ticker.mode.add_gangster(M.mind, gang_letter)
+		switch(recruitable)
+			if(2)
+				var/cooldown = 0
+				if(gang_letter == "A")
+					cooldown = max(100,((ticker.mode.A_gang.len - ticker.mode.B_gang.len)*400))
+				else if (gang_letter == "B")
+					cooldown = max(100,((ticker.mode.A_gang.len - ticker.mode.B_gang.len)*400))
+				cooldown += world.time
+				addtimer(CALLBACK(src, .proc/lift_convert_cooldown),cooldown)
+				mind.can_gang_convert = FALSE
+				to_chat(M, "<span class='notice'>You join the gang!</span>")
+				to_chat(src, "<span class='warning'>[M] joins the gang!</span>")
+			if(1)
+				to_chat(src, "<span class='warning'>This mind is resistant to recruitment!</span>")
+			else
+				to_chat(src, "<span class='warning'>This mind has already been recruited into a gang!</span>")
+	else if(choice == "No!")
+		to_chat(M, "<span class='warning'>You reject this offer!</span>")
+		to_chat(src, "<span class='warning'>[M] rejected your offer!</span>")
+	QDEL_NULL(possible)
+
+/mob/living/carbon/human/proc/lift_convert_cooldown()
+	mind.can_gang_convert = TRUE
+	to_chat(src, "<span class='notice'>You feel, that it is time to recruit somebody to our gang.</span>")
