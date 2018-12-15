@@ -510,11 +510,18 @@ the implant may become unstable and either pre-maturely inject the subject or si
 	. = ..()
 	storage = new /obj/item/weapon/storage/internal/imp(src)
 
+/obj/item/weapon/implant/storage/inject(mob/living/carbon/C, def_zone)
+	..()
+	grant_actions(C)
+
 /obj/item/weapon/implant/storage/proc/open_storage()
 	storage.open(imp_in)
 
 /obj/item/weapon/implant/storage/proc/removed()
 	storage.close_all()
+	if(ishuman(loc))
+		var/mob/living/carbon/human/H = loc
+		remove_actions(H)
 	for(var/obj/item/I in storage)
 		storage.remove_from_storage(I, get_turf(src))
 
