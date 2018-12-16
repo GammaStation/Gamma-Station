@@ -79,3 +79,44 @@
 
 /obj/structure/ladder/attackby(obj/item/weapon/W, mob/user)
 	return attack_hand(user)
+
+/obj/structure/ladder/MouseDrop_T(atom/movable/AM, mob/user)
+	if(user.is_busy(src) || !atom_ladder_check(AM))
+		return
+	add_fingerprint(user)
+	if(up && down)
+		switch( alert("Move [AM] up or down the ladder?", "Ladder", "Up", "Down", "Cancel") )
+			if("Up")
+				user.visible_message("<span class='notice'>[user] pushes [AM] up \the [src]!</span>", \
+								 	"<span class='notice'>You push [AM] up \the [src]!</span>")
+				if(do_after(user, 30, target = src) && CanMouseDrop(AM, user) && atom_ladder_check(AM))
+					AM.loc = get_turf(up)
+					up.add_fingerprint(user)
+			if("Down")
+				user.visible_message("<span class='notice'>[user] pushes [AM] down \the [src]!</span>", \
+								 	"<span class='notice'>You push [AM] down \the [src]!</span>")
+				if(do_after(user, 30, target = src) && CanMouseDrop(AM, user) && atom_ladder_check(AM))
+					AM.loc = get_turf(down)
+					down.add_fingerprint(user)
+			if("Cancel")
+				return
+
+	else if(up)
+		user.visible_message("<span class='notice'>[user] pushes [AM] up \the [src]!</span>", \
+					 "<span class='notice'>You push [AM] up \the [src]!</span>")
+		if(do_after(user, 30, target = src) && CanMouseDrop(AM, user) && atom_ladder_check(AM))
+			AM.loc = get_turf(up)
+			up.add_fingerprint(user)
+
+	else if(down)
+		user.visible_message("<span class='notice'>[user] pushes [AM] down \the [src]!</span>", \
+					 "<span class='notice'>You push [AM] down \the [src]!</span>")
+		if(do_after(user, 30, target = src) && CanMouseDrop(AM, user) && atom_ladder_check(AM))
+			AM.loc = get_turf(up)
+			up.add_fingerprint(user)
+
+/obj/structure/ladder/proc/atom_ladder_check(atom/movable/AM)
+	if(!isturf(AM.loc) || AM.anchored)
+		return FALSE
+	else
+	 return TRUE
