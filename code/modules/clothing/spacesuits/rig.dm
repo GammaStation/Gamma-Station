@@ -315,7 +315,7 @@
 	species_restricted = list("exclude" , SKRELL , DIONA, VOX , TYCHEON)
 	var/image/lamp = null
 	var/equipped_on_head = FALSE
-	actions_types = list(/datum/action/item_action/adjust_helmet, /datum/action/item_action/hands_free/toggle_holomap)
+	actions_types = list(/datum/action/item_action/adjust_helmet, /datum/action/item_action/hands_free/toggle_holomap, /datum/action/item_action/attack_self)
 	flags = BLOCKHAIR | THICKMATERIAL | PHORONGUARD
 	light_color = "#00f397"
 
