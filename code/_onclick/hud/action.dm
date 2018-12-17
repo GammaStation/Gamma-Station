@@ -291,3 +291,7 @@
 /datum/action/item_action/hands_free/toggle_holomap
 	name = "toggle holomap"
 	action_procname = "toggle_holomap"
+
+/datum/action/item_action/adjust_helmet
+	name = "adjust helmet"
+	action_procname = "toggle"

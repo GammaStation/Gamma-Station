@@ -315,8 +315,14 @@
 	species_restricted = list("exclude" , SKRELL , DIONA, VOX , TYCHEON)
 	var/image/lamp = null
 	var/equipped_on_head = FALSE
+	actions_types = list(/datum/action/item_action/adjust_helmet, /datum/action/item_action/hands_free/toggle_holomap, /datum/action/item_action/attack_self)
 	flags = BLOCKHAIR | THICKMATERIAL | PHORONGUARD
 	light_color = "#00f397"
+
+/obj/item/clothing/head/helmet/space/rig/syndi/atom_init()
+	. = ..()
+	holochip = new /obj/item/holochip/nuclear(src)
+	holochip.holder = src
 
 /obj/item/clothing/head/helmet/space/rig/syndi/equipped(mob/user, slot)
 	. = ..()
@@ -415,7 +421,7 @@
 	               /obj/item/weapon/melee/energy/sword,
 	               /obj/item/weapon/handcuffs)
 	species_restricted = list("exclude" , UNATHI , TAJARAN , DIONA, VOX , TYCHEON)
-	actions_types = /datum/action/item_action/attack_self
+	actions_types = /datum/action/item_action/ui_action_click
 	var/combat_mode = FALSE
 
 /obj/item/clothing/suit/space/rig/syndi/update_icon(mob/user)
