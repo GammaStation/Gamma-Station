@@ -310,16 +310,13 @@ BLIND     // can't see anything
 	sprite_sheets = list(VOX = 'icons/mob/species/vox/head.dmi')
 	flash_protection = 2
 	var/obj/item/holochip/holochip
+	actions_types = /datum/action/item_action/hands_free/toggle_holomap
 
-/obj/item/clothing/head/helmet/space/after_equipping()
-	if(!holochip)
-		return
-	return ..()
-
-/obj/item/clothing/head/helmet/space/pickup()
-	if(!holochip)
-		return
-	return ..()
+/obj/item/clothing/head/helmet/space/grant_actions(mob/user)
+	for(var/datum/action/A in actions)
+		if(!holochip && istype(A, /datum/action/item_action/hands_free/toggle_holomap))
+			continue
+		A.Grant(user)
 
 /obj/item/clothing/head/helmet/space/dropped()
 	if(!holochip)
@@ -338,9 +335,9 @@ BLIND     // can't see anything
 		holochip.holder = src
 		playsound(user, 'sound/items/Screwdriver.ogg', 100, 1)
 		to_chat(user, "<span class='notice'>[user] modifies the [src] with the [holochip]</span>")
-		grant_actions(user)
+		if(ishuman(loc))
+			grant_actions(user)
 	else if(istype(I, /obj/item/weapon/screwdriver))
-		remove_actions(user)
 		holochip.deactivate_holomap()
 		holochip.holder = null
 		if(!user.put_in_hands(holochip))
@@ -348,7 +345,10 @@ BLIND     // can't see anything
 		holochip = null
 		playsound(user, 'sound/items/Screwdriver.ogg', 100, 1)
 		to_chat(user, "<span class='notice'>[user] removes the [holochip] from the [src]</span>")
-		actions_types = /datum/action/item_action/hands_free/toggle_holomap
+		if(ishuman(loc))
+			for(var/datum/action/A in actions)
+				if(istype(A, /datum/action/item_action/hands_free/toggle_holomap))
+					A.Remove(user)
 
 /obj/item/clothing/head/helmet/space/proc/toggle_holomap()
 	if(!holochip)
