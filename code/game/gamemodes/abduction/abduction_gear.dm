@@ -556,6 +556,7 @@
 	name = "hard-light energy field"
 	desc = "A hard-light field restraining the hands."
 	icon_state = "handcuffAlien"
+	flags = CONDUCT // no DROPDEL or this flag will be worn phantom handcuffs which then can not be removed
 	origin_tech = "materials=5;combat=4;powerstorage=5"
 	breakouttime = 450
 
