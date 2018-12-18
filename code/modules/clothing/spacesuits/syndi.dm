@@ -100,7 +100,7 @@
 	desc = "Space helmet made by unknown manufacturer. It's made from some strange composite material."
 	icon_state = "syndicate-helm-infiltrator"
 	item_state = "syndicate-helm-elite"
-	actions_types = null
+	actions_types = /datum/action/item_action/hands_free/toggle_holomap
 
 /obj/item/clothing/suit/space/syndicate/infiltrator
 	name = "infiltrator space suit"
@@ -119,7 +119,7 @@
 	icon_state = "syndicate-helm-elite"
 	item_state = "syndicate-helm-elite"
 	armor = list(melee = 75, bullet = 65, laser = 65, energy = 65, bomb = 70, bio = 100, rad = 20, telepathy = 15)
-	actions_types = null
+	actions_types = /datum/action/item_action/hands_free/toggle_holomap
 
 /obj/item/clothing/head/helmet/space/syndicate/elite/attack_self(mob/user)
 	return

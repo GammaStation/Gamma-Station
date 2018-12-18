@@ -145,7 +145,7 @@
 	armor = list(melee = 60, bullet = 30, laser = 30, energy = 15, bomb = 30, bio = 30, rad = 30, telepathy = 20)
 	slowdown = 0.5
 
-	actions_types = /datum/action/item_action/toggle_stealth
+	actions_types = list(/datum/action/item_action/toggle_stealth, /datum/action/item_action/hands_free/toggle_holomap)
 	var/on = FALSE
 	var/mob/living/carbon/human/wearer
 
@@ -268,7 +268,7 @@
 		VOX_ARMALIS = 'icons/mob/species/armalis/feet.dmi'
 		)
 
-	actions_types = /datum/action/item_action/attack_self
+	actions_types = list(/datum/action/item_action/attack_self, /datum/action/item_action/hands_free/toggle_holomap)
 
 /obj/item/clothing/shoes/magboots/vox/attack_self(mob/user)
 	if(src.magpulse)
