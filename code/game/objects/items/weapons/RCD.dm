@@ -83,7 +83,8 @@ RCD
 
 
 /obj/item/weapon/rcd/afterattack(atom/A, mob/user, proximity)
-	if(!Adjacent(A))
+	var/turf/my_turf = get_turf(src)
+	if(!my_turf.Adjacent(get_turf(A)))
 		return FALSE
 	if(disabled && !isrobot(user))
 		return 0
