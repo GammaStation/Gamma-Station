@@ -67,6 +67,22 @@
 	update_icon()
 	return
 
+//For the hotkey
+/mob/living/verb/select_fire_verb()
+	set name = "SelectFire"
+	set hidden = TRUE
+
+	if(!istype(usr, /mob/living))
+		return
+	if(usr.incapacitated())
+		return
+
+	var/obj/item/weapon/gun/energy/E = usr.get_active_hand()
+	if(!istype(E))
+		return
+
+	E.select_fire(usr)
+
 /obj/item/weapon/gun/energy/update_icon()
 	var/ratio = power_supply.charge / power_supply.maxcharge
 	ratio = ceil(ratio * 4) * 25
@@ -75,16 +91,22 @@
 		if (0)
 			if(ratio > 100)
 				icon_state = "[initial(icon_state)]100"
+				wielded_state = "[initial(icon_state)]100"
 			else
 				icon_state = "[initial(icon_state)][ratio]"
+				wielded_state = "[initial(icon_state)][ratio]"
 		if (1)
 			if(ratio > 100)
 				icon_state = "[initial(icon_state)][shot.mod_name]100"
+				wielded_state = "[initial(icon_state)]100"
 			else
 				icon_state = "[initial(icon_state)][shot.mod_name][ratio]"
+				wielded_state = "[initial(icon_state)][shot.mod_name][ratio]"
 		if (2)
 			if(ratio > 100)
 				icon_state = "[initial(icon_state)][shot.select_name]100"
+				wielded_state = "[initial(icon_state)]100"
 			else
 				icon_state = "[initial(icon_state)][shot.select_name][ratio]"
+				wielded_state = "[initial(icon_state)][shot.select_name][ratio]"
 	return

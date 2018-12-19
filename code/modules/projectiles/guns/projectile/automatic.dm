@@ -91,98 +91,24 @@
 	desc = "A heavily modified light machine gun with a tactical plasteel frame resting on a rather traditionally-made ballistic weapon. Has 'Aussec Armoury - 2531' engraved on the reciever, as well as '7.62x51mm'."
 	icon_state = "l6closed100"
 	item_state = "l6closedmag"
+	wielded_state = "l6"
 	w_class = 5
 	slot_flags = 0
 	origin_tech = "combat=5;materials=1;syndicate=2"
 	mag_type = /obj/item/ammo_box/magazine/m762
 	fire_sound = 'sound/weapons/gunshot3.wav'
-	var/cover_open = 0
-	var/wielded = 0
-
-/obj/item/weapon/gun/projectile/automatic/l6_saw/proc/unwield()
-	wielded = 0
-	update_icon()
-
-/obj/item/weapon/gun/projectile/automatic/l6_saw/proc/wield()
-	wielded = 1
-	update_icon()
-
-/obj/item/weapon/gun/projectile/automatic/l6_saw/mob_can_equip(M, slot)
-	//Cannot equip wielded items.
-	if(wielded)
-		to_chat(M, "<span class='warning'>Unwield the [initial(name)] first!</span>")
-		return 0
-
-	return ..()
-
-/obj/item/weapon/gun/projectile/automatic/l6_saw/dropped(mob/user)
-	//handles unwielding a twohanded weapon when dropped as well as clearing up the offhand
-	if(user)
-		var/obj/item/weapon/gun/projectile/automatic/l6_saw/O = user.get_inactive_hand()
-		if(istype(O))
-			O.unwield()
-	return	unwield()
-
-/obj/item/weapon/gun/projectile/automatic/l6_saw/pickup(mob/user)
-	unwield()
-
-/obj/item/weapon/gun/projectile/automatic/l6_saw/attack_self(mob/user)
-	switch(alert("Would you like to [cover_open ? "open" : "close"], or change grip?","Choose.","Toggle cover","Change grip"))
-		if("Toggle cover")
-			if(wielded || user.get_inactive_hand())
-				to_chat(user, "<span class='warning'>You need your other hand to be empty to do this.</span>")
-				return
-			else
-				if(ishuman(user))
-					var/mob/living/carbon/human/H = user
-					if(!H.can_use_two_hands())
-						to_chat(user, "<span class='warning'>You need both of your hands to be intact.</span>")
-						return
-				cover_open = !cover_open
-				to_chat(user, "<span class='notice'>You [cover_open ? "open" : "close"] [src]'s cover.</span>")
-				update_icon()
-				return
-		if("Change grip")
-			if(wielded) //Trying to unwield it
-				unwield()
-				to_chat(user, "<span class='notice'>You are now carrying the [name] with one hand.</span>")
-				if(user.hand)
-					user.update_inv_l_hand()
-				else
-					user.update_inv_r_hand()
-
-				var/obj/item/weapon/twohanded/offhand/O = user.get_inactive_hand()
-				if(O && istype(O))
-					O.unwield()
-				return
-
-			else //Trying to wield it
-				if(ishuman(user))
-					var/mob/living/carbon/human/H = user
-					var/W = H.wield(src, initial(name))
-					if(W)
-						wield()
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/update_icon()
-	icon_state = "l6[cover_open ? "open" : "closed"][magazine ? ceil(get_ammo(0) / 12.5) * 25 : "-empty"]"
-
-/obj/item/weapon/gun/projectile/automatic/l6_saw/afterattack(atom/target, mob/living/user, flag, params) //what I tried to do here is just add a check to see if the cover is open or not and add an icon_state change because I can't figure out how c-20rs do it with overlays
-	if(!wielded)
-		to_chat(user, "<span class='notice'>You need wield [src] in both hands before firing!</span>")
-		return
-	if(cover_open)
-		to_chat(user, "<span class='notice'>[src]'s cover is open! Close it before firing!</span>")
-	else
-		..()
-		update_icon()
+	icon_state = "l6[magazine ? ceil(get_ammo(0) / 12.5) * 25 : "-empty"]"
+	wielded_state = "[magazine ? "l6" : "l6_empty"]"
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/attack_hand(mob/user)
 	if(loc != user)
 		..()
 		return	//let them pick it up
-	if(!cover_open || (cover_open && !magazine))
+	if(!magazine)
 		..()
-	else if(cover_open && magazine)
+	else if(magazine)
 		//drop the mag
 		magazine.update_icon()
 		magazine.loc = get_turf(src.loc)
@@ -190,13 +116,6 @@
 		magazine = null
 		update_icon()
 		to_chat(user, "<span class='notice'>You remove the magazine from [src].</span>")
-
-
-/obj/item/weapon/gun/projectile/automatic/l6_saw/attackby(obj/item/A, mob/user)
-	if(!cover_open)
-		to_chat(user, "<span class='notice'>[src]'s cover is closed! You can't insert a new mag!</span>")
-		return
-	..()
 
 /obj/item/weapon/gun/projectile/automatic/tommygun
 	name = "thompson SMG"
@@ -228,6 +147,7 @@
 	desc = "A basic energy-based carbine with fast rate of fire."
 	icon_state = "l10-car"
 	item_state = "l10-car"
+	wielded_state = "l10"
 	w_class = 4.0
 	origin_tech = "combat=3;magnets=2"
 	mag_type = /obj/item/ammo_box/magazine/l10mag
@@ -282,21 +202,25 @@
 			return 1
 		else if (magazine)
 			to_chat(user, "<span class='notice'>There's already a magazine in \the [src].</span>")
-	return 0
+	..()
 
 /obj/item/weapon/gun/projectile/automatic/l10c/update_icon(mob/M)
 	if(!magazine)
 		icon_state = "[initial(icon_state)]-e"
 		item_state = "[initial(item_state)]-e"
+		wielded_state = "l10_empty"
 	else if(chambered)
 		icon_state = "[initial(icon_state)]"
 		item_state = "[initial(item_state)]"
+		wielded_state = "l10_empty"
 	else if(magazine && magazine.ammo_count())
 		icon_state = "[initial(icon_state)]"
 		item_state = "[initial(item_state)]"
+		wielded_state = "l10"
 	else
 		icon_state = "[initial(icon_state)]-0"
 		item_state = "[initial(item_state)]-0"
+		wielded_state = "l10"
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		H.update_inv_l_hand()

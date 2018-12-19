@@ -189,9 +189,11 @@ obj/item/weapon/gun/energy/staff/focus
 			if(ratio > 100)
 				icon_state = "[initial(icon_state)]100"
 				item_state = "[initial(item_state)]100"
+				wielded_state = "[initial(item_state)]100"
 			else
 				icon_state = "[initial(icon_state)][ratio]"
 				item_state = "[initial(item_state)][ratio]"
+				wielded_state = "[initial(item_state)]100"
 	return
 
 /obj/item/weapon/gun/energy/sniperrifle/dropped(mob/user)

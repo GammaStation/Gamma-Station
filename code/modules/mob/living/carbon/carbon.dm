@@ -164,9 +164,17 @@
 
 /mob/living/carbon/proc/swap_hand()
 	var/obj/item/item_in_hand = src.get_active_hand()
+	var/obj/item/item_in_inactive = get_inactive_hand()
 	if(item_in_hand) //this segment checks if the item in your hand is twohanded.
-		if(istype(item_in_hand, /obj/item/weapon/twohanded) || istype(item_in_hand, /obj/item/weapon/gun/projectile/automatic/l6_saw))	//OOP? Generics? Hue hue hue hue ...
-			if(item_in_hand:wielded)
+		if(istype(item_in_hand, /obj/item/weapon/gun/projectile/shotgun) && item_in_inactive && istype(item_in_inactive, /obj/item/weapon/twohanded/offhand))
+			var/obj/item/weapon/gun/projectile/shotgun/S = item_in_hand
+			if(S.recentpump)
+				return
+			S.pump(src)
+			return
+		if(istype(item_in_hand, /obj/item/weapon))
+			var/obj/item/weapon/W = item_in_hand
+			if(W.wielded)
 				to_chat(usr, "<span class='warning'>Your other hand is too busy holding the [item_in_hand.name]</span>")
 				return
 	src.hand = !( src.hand )

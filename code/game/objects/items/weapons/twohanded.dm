@@ -6,107 +6,12 @@
  *		Fireaxe
  *		Double-Bladed Energy Swords
  */
-
-/*##################################################################
-##################### TWO HANDED WEAPONS BE HERE~ -Agouri :3 ########
-####################################################################*/
-
-//Rewrote TwoHanded weapons stuff and put it all here. Just copypasta fireaxe to make new ones ~Carn
-//This rewrite means we don't have two variables for EVERY item which are used only by a few weapons.
-//It also tidies stuff up elsewhere.
-
-/*
- * Twohanded
- */
-/obj/item/weapon/twohanded
-	var/wielded = 0
-	var/force_unwielded = 0
-	var/force_wielded = 0
-	var/wieldsound = null
-	var/unwieldsound = null
-	var/obj/item/weapon/twohanded/offhand/offhand_item = /obj/item/weapon/twohanded/offhand
-
-/obj/item/weapon/twohanded/proc/unwield()
-	wielded = 0
-	force = force_unwielded
-	name = "[initial(name)]"
-	update_icon()
-
-/obj/item/weapon/twohanded/proc/wield()
-	wielded = 1
-	force = force_wielded
-	name = "[initial(name)] (Wielded)"
-	update_icon()
-
-/obj/item/weapon/twohanded/mob_can_equip(M, slot)
-	//Cannot equip wielded items.
-	if(wielded)
-		to_chat(M, "<span class='warning'>Unwield the [initial(name)] first!</span>")
-		return 0
-
-	return ..()
-
-/obj/item/weapon/twohanded/dropped(mob/user)
-	//handles unwielding a twohanded weapon when dropped as well as clearing up the offhand
-	if(user)
-		var/obj/item/weapon/twohanded/O = user.get_inactive_hand()
-		if(istype(O))
-			user.drop_from_inventory(O)
-	return unwield()
-
-/obj/item/weapon/twohanded/update_icon()
-	return
-
-/obj/item/weapon/twohanded/pickup(mob/user)
-	unwield()
-
-/obj/item/weapon/twohanded/attack_self(mob/user)
-	if(istype(user,/mob/living/carbon/monkey))
-		to_chat(user, "<span class='warning'>It's too heavy for you to wield fully.</span>")
-		return
-
-	..()
-	if(wielded) //Trying to unwield it
-		unwield()
-		to_chat(user, "<span class='notice'>You are now carrying the [name] with one hand.</span>")
-		if(user.hand)
-			user.update_inv_l_hand()
-		else
-			user.update_inv_r_hand()
-
-		if (src.unwieldsound)
-			playsound(src.loc, unwieldsound, 50, 1)
-
-		var/obj/item/weapon/twohanded/offhand/O = user.get_inactive_hand()
-		if(istype(O))
-			user.drop_from_inventory(O)
-		return
-
-	else //Trying to wield it
-		if(ishuman(user))
-			var/mob/living/carbon/human/H = user
-			var/W = H.wield(src, initial(name), wieldsound)
-			if(W)
-				wield()
-
-///////////OFFHAND///////////////
-/obj/item/weapon/twohanded/offhand
-	w_class = 5.0
-	icon_state = "offhand"
-	name = "offhand"
-	flags = ABSTRACT|DROPDEL
-
-/obj/item/weapon/twohanded/offhand/unwield()
-	qdel(src)
-
-/obj/item/weapon/twohanded/offhand/wield()
-	qdel(src)
-
 /*
  * Fireaxe
  */
 /obj/item/weapon/twohanded/fireaxe  // DEM AXES MAN, marker -Agouri
-	icon_state = "fireaxe0"
+	icon_state = "fireaxe"
+	wielded_state = "fireaxe"
 	name = "fire axe"
 	desc = "Truly, the weapon of a madman. Who would think to fight fire with an axe?"
 	force = 5
@@ -117,10 +22,6 @@
 	force_unwielded = 10
 	force_wielded = 40
 	attack_verb = list("attacked", "chopped", "cleaved", "torn", "cut")
-
-/obj/item/weapon/twohanded/fireaxe/update_icon()  //Currently only here to fuck with the on-mob icons.
-	icon_state = "fireaxe[wielded]"
-	return
 
 /obj/item/weapon/twohanded/fireaxe/afterattack(atom/A, mob/user, proximity)
 	if(!proximity) return
@@ -134,13 +35,15 @@
 			new /obj/item/stack/rods(G.loc)
 			qdel(A)
 
+/obj/item/weapon/twohanded/fireaxe/can_be_wielded()
+	return TRUE
 
 /*
  * Double-Bladed Energy Swords - Cheridan
  */
 /obj/item/weapon/twohanded/dualsaber
 	var/reflect_chance = 0
-	icon_state = "dualsaber0"
+	icon_state = "dualsaber"
 	name = "double-bladed energy sword"
 	desc = "Handle with care."
 	force = 3
@@ -183,11 +86,15 @@
 		if("black")
 			light_color = "#aeaeae"
 
+/obj/item/weapon/twohanded/dualsaber/can_be_wielded()
+	return TRUE
+
+
 /obj/item/weapon/twohanded/dualsaber/update_icon()
 	if(wielded)
-		icon_state = "dualsaber[item_color][wielded]"
+		icon_state = "dualsaber[item_color]"
 	else
-		icon_state = "dualsaber0"
+		icon_state = "dualsaber"
 	clean_blood()//blood overlays get weird otherwise, because the sprite changes.
 
 /obj/item/weapon/twohanded/dualsaber/attack(target, mob/living/user)

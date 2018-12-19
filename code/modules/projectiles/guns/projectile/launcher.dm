@@ -39,6 +39,7 @@
 		chambered = AC
 		update_icon()	//I.E. fix the desc
 		A.update_icon()
+	..()
 
 /obj/item/weapon/gun/projectile/m79/attack_self(mob/user)
 	open = !open

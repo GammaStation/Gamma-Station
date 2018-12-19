@@ -104,7 +104,6 @@
 // miss_chance_mod may be negative.
 /proc/get_zone_with_miss_chance(zone, mob/target, miss_chance_mod = 0)
 	zone = check_zone(zone)
-
 	// you can only miss if your target is standing and not restrained
 	if(!target.buckled && !target.lying)
 		var/miss_chance = 10
@@ -122,7 +121,7 @@
 			if(BP_R_LEG)
 				miss_chance = 60
 		if(prob(max(miss_chance + miss_chance_mod, 0)))
-			if(prob(max(20, (miss_chance/2))))
+			if(prob(max(20, ((miss_chance + miss_chance_mod)/2))))
 				return 0
 			else
 				var/t = rand(1, 100)

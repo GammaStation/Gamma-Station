@@ -80,6 +80,7 @@
 					arrow.icon_state = "metal-rod-superheated"
 					cell.use(500)
 			return
+	..()
 
 	if(istype(W, /obj/item/weapon/stock_parts/cell))
 		if(!cell)

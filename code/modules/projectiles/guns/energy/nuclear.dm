@@ -6,8 +6,11 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/stun, /obj/item/ammo_casing/energy/laser)
 	origin_tech = "combat=3;magnets=2"
 	modifystate = 2
+	actions_types = /datum/action/item_action/select_fire
 
-/obj/item/weapon/gun/energy/gun/attack_self(mob/living/user)
+/obj/item/weapon/gun/energy/gun/attack_hand(mob/living/user)
+	if(loc != user)//Allow pickup
+		return ..()
 	select_fire(user)
 	update_icon()
 	if(user.hand)

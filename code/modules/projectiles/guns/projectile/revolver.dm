@@ -4,6 +4,10 @@
 	icon_state = "revolver"
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder
 	fire_sound = 'sound/weapons/guns/revolver_shot.ogg'
+	miss_chance = 0
+
+/obj/item/weapon/gun/projectile/revolver/can_be_wielded()
+	return FALSE
 
 /obj/item/weapon/gun/projectile/revolver/chamber_round()
 	if (chambered || !magazine)
@@ -22,8 +26,11 @@
 		A.update_icon()
 		update_icon()
 		chamber_round()
+	..()
 
-/obj/item/weapon/gun/projectile/revolver/attack_self(mob/living/user)
+/obj/item/weapon/gun/projectile/revolver/attack_hand(mob/living/user)
+	if(loc != user)//Picking it up
+		return ..()
 	var/num_unloaded = 0
 	while (get_ammo() > 0)
 		var/obj/item/ammo_casing/CB
@@ -155,7 +162,7 @@
 		Spin()
 	update_icon()
 	A.update_icon()
-	return
+	..()
 
 /obj/item/weapon/gun/projectile/revolver/russian/attack_self(mob/user)
 	if(!spun && get_ammo(0,0))

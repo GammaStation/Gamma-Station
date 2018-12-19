@@ -14,7 +14,6 @@
 	force = 5.0
 	origin_tech = "combat=1"
 	attack_verb = list("struck", "hit", "bashed")
-	actions_types = /datum/action/item_action/attack_self
 	var/obj/item/ammo_casing/chambered = null
 	var/fire_sound = 'sound/weapons/Gunshot.ogg'
 	var/silenced = 0
@@ -35,8 +34,13 @@
 	var/burst_amount = 1
 	var/burst_delay = 3 //in world ticks
 
+	var/miss_chance = 160 //Miss chance for shooting weapon unwielded
+
 	lefthand_file = 'icons/mob/inhands/guns_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/guns_righthand.dmi'
+
+/obj/item/weapon/gun/can_be_wielded()
+	return TRUE
 
 /obj/item/weapon/gun/proc/ready_to_fire()
 	if(world.time >= last_fired + fire_delay)
@@ -60,7 +64,10 @@
 
 /obj/item/weapon/gun/proc/shoot_live_shot(mob/living/user)
 	if(recoil)
-		shake_camera(user, recoil + 1, recoil)
+		if(wielded)
+			shake_camera(user, recoil + 1, recoil)
+		else
+			shake_camera(user, recoil + 2, recoil + 2)
 
 	if(silenced)
 		playsound(user, fire_sound, 10, 1)
@@ -167,7 +174,7 @@
 		user.update_inv_r_hand()
 
 /obj/item/weapon/gun/proc/single_shot(atom/target, mob/living/user, params)
-	if(chambered.fire(target, user, params, , silenced))
+	if(chambered.fire(target, user, params, , silenced, !wielded * miss_chance))
 		user.newtonian_move(get_dir(target, user))
 		process_chamber()
 		return TRUE

@@ -1,9 +1,9 @@
-/obj/item/ammo_casing/proc/fire(atom/target, mob/living/user, params, distro, quiet)
+/obj/item/ammo_casing/proc/fire(atom/target, mob/living/user, params, distro, quiet, miss_chance)
 	distro += variance
 	for(var/i = max(1, pellets), i > 0, i--)
 		var/curloc = user.loc
 		var/targloc = get_turf(target)
-		ready_proj(target, user, quiet)
+		ready_proj(target, user, quiet, miss_chance)
 		if(distro)
 			targloc = spread(targloc, curloc, distro)
 		if(!throw_proj(target, targloc, user, params))
@@ -14,13 +14,14 @@
 	update_icon()
 	return 1
 
-/obj/item/ammo_casing/proc/ready_proj(atom/target, mob/living/user, quiet)
+/obj/item/ammo_casing/proc/ready_proj(atom/target, mob/living/user, quiet, miss_chance)
 	if(!BB)
 		return
 	BB.original = target
 	BB.firer = user
 	BB.def_zone = user.zone_sel.selecting
 	BB.silenced = quiet
+	BB.miss_chance = miss_chance
 	return
 
 /obj/item/ammo_casing/proc/throw_proj(atom/target, turf/targloc, mob/living/user, params)
