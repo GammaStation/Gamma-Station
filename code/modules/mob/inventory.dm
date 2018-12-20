@@ -152,7 +152,7 @@ var/list/slot_equipment_priority = list(
 	if(!istype(W))		return 0
 	if(W.anchored)		return 0	//Anchored things shouldn't be picked up because they... anchored?!
 	if(!l_hand)
-		if((!W.flags & ABSTRACT) && m_intent == "run" && Adjacent(W) && (istype(W.loc, /turf) || istype(W.loc.loc, /turf)))
+		if(!(W.flags & ABSTRACT) && m_intent == "run" && Adjacent(W) && (istype(W.loc, /turf) || istype(W.loc.loc, /turf)))
 			W.do_pickup_animation(src)
 		W.loc = src		//TODO: move to equipped?
 		l_hand = W
@@ -175,7 +175,7 @@ var/list/slot_equipment_priority = list(
 	if(!istype(W))		return 0
 	if(W.anchored)		return 0	//Anchored things shouldn't be picked up because they... anchored?!
 	if(!r_hand)
-		if((!W.flags & ABSTRACT) && m_intent == "run" && Adjacent(W) && (istype(W.loc, /turf) || istype(W.loc.loc, /turf)))
+		if(!(W.flags & ABSTRACT) && m_intent == "run" && Adjacent(W) && (istype(W.loc, /turf) || istype(W.loc.loc, /turf)))
 			W.do_pickup_animation(src)
 		W.loc = src
 		r_hand = W
