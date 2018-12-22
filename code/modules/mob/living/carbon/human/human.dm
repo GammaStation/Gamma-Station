@@ -1275,7 +1275,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 /mob/living/carbon/human/add_blood(mob/living/carbon/human/M)
 	if (!..())
 		return 0
-	if(!species.flags[IS_IMMATERIAL]) // Can't touch this.
+	if(species.flags[IS_IMMATERIAL]) // Can't touch this.
 		return 0
 	//if this blood isn't already in the list, add it
 	if(blood_DNA[M.dna.unique_enzymes])
