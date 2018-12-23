@@ -3,6 +3,7 @@
 	desc = "a basic weapon designed kill with concentrated energy bolts."
 	icon = 'icons/obj/gun.dmi'
 	icon_state = "laser"
+	wielded_state = "laser"
 	item_state = null	//so the human update icon uses the icon_state instead.
 	w_class = 3.0
 	m_amt = 2000

@@ -92,7 +92,7 @@
 
 /obj/item/weapon/twohanded/dualsaber/update_icon()
 	if(wielded)
-		icon_state = "dualsaber[item_color]"
+		wielded_state = "dualsaber[item_color]"
 	else
 		icon_state = "dualsaber"
 	clean_blood()//blood overlays get weird otherwise, because the sprite changes.

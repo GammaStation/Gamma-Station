@@ -91,22 +91,28 @@
 		if (0)
 			if(ratio > 100)
 				icon_state = "[initial(icon_state)]100"
-				wielded_state = "[initial(icon_state)]100"
+				if(wielded_state)
+					wielded_state = "[initial(icon_state)]100"
 			else
 				icon_state = "[initial(icon_state)][ratio]"
-				wielded_state = "[initial(icon_state)][ratio]"
+				if(wielded_state)
+					wielded_state = "[initial(icon_state)][ratio]"
 		if (1)
 			if(ratio > 100)
 				icon_state = "[initial(icon_state)][shot.mod_name]100"
-				wielded_state = "[initial(icon_state)]100"
+				if(wielded_state)
+					wielded_state = "[initial(icon_state)]100"
 			else
 				icon_state = "[initial(icon_state)][shot.mod_name][ratio]"
-				wielded_state = "[initial(icon_state)][shot.mod_name][ratio]"
+				if(wielded_state)
+					wielded_state = "[initial(icon_state)][shot.mod_name][ratio]"
 		if (2)
 			if(ratio > 100)
 				icon_state = "[initial(icon_state)][shot.select_name]100"
-				wielded_state = "[initial(icon_state)]100"
+				if(wielded_state)
+					wielded_state = "[initial(icon_state)]100"
 			else
 				icon_state = "[initial(icon_state)][shot.select_name][ratio]"
-				wielded_state = "[initial(icon_state)][shot.select_name][ratio]"
+				if(wielded_state)
+					wielded_state = "[initial(icon_state)][shot.select_name][ratio]"
 	return
