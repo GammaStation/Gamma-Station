@@ -100,7 +100,6 @@
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/update_icon()
 	icon_state = "l6[magazine ? ceil(get_ammo(0) / 12.5) * 25 : "-empty"]"
-	wielded_state = "[magazine ? "l6" : "l6_empty"]"
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/attack_hand(mob/user)
 	if(loc != user)
@@ -168,6 +167,8 @@
 	return
 
 /obj/item/weapon/gun/projectile/automatic/l10c/attack_hand(mob/user)
+	if(loc != usr)//Pick it up
+		..()
 	if(magazine && magazine.ammo_count())
 		playsound(user, 'sound/weapons/guns/l10c-unload.ogg', 70, 1)
 	if(chambered)
@@ -207,19 +208,15 @@
 	if(!magazine)
 		icon_state = "[initial(icon_state)]-e"
 		item_state = "[initial(item_state)]-e"
-		wielded_state = "l10_empty"
 	else if(chambered)
 		icon_state = "[initial(icon_state)]"
 		item_state = "[initial(item_state)]"
-		wielded_state = "l10_empty"
 	else if(magazine && magazine.ammo_count())
 		icon_state = "[initial(icon_state)]"
 		item_state = "[initial(item_state)]"
-		wielded_state = "l10"
 	else
 		icon_state = "[initial(icon_state)]-0"
 		item_state = "[initial(item_state)]-0"
-		wielded_state = "l10"
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		H.update_inv_l_hand()
