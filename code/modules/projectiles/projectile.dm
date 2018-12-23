@@ -186,7 +186,6 @@
 				miss_modifier += -60
 		miss_modifier += miss_chance
 		if(distance > 1)
-			world.log << "[miss_modifier]"
 			def_zone = get_zone_with_miss_chance(def_zone, M, miss_modifier)
 
 		if(!def_zone)
