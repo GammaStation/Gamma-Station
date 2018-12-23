@@ -167,7 +167,7 @@
 	update_icon(user)
 	return
 
-/obj/item/weapon/gun/projectile/automatic/l10c/attack_self(mob/user)
+/obj/item/weapon/gun/projectile/automatic/l10c/attack_hand(mob/user)
 	if(magazine && magazine.ammo_count())
 		playsound(user, 'sound/weapons/guns/l10c-unload.ogg', 70, 1)
 	if(chambered)
@@ -184,7 +184,6 @@
 	else
 		to_chat(user, "<span class='notice'>There's no magazine in \the [src].</span>")
 	update_icon(user)
-	return
 
 /obj/item/weapon/gun/projectile/automatic/l10c/attackby(obj/item/A, mob/user)
 	if (istype(A, /obj/item/ammo_box/magazine))

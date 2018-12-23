@@ -9,6 +9,9 @@
 /*
  * Fireaxe
  */
+/obj/item/weapon/twohanded/can_be_wielded()
+	return TRUE
+
 /obj/item/weapon/twohanded/fireaxe  // DEM AXES MAN, marker -Agouri
 	icon_state = "fireaxe"
 	wielded_state = "fireaxe"
@@ -34,10 +37,6 @@
 			var/obj/structure/grille/G = A
 			new /obj/item/stack/rods(G.loc)
 			qdel(A)
-
-/obj/item/weapon/twohanded/fireaxe/can_be_wielded()
-	return TRUE
-
 /*
  * Double-Bladed Energy Swords - Cheridan
  */
