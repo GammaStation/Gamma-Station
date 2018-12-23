@@ -945,11 +945,6 @@ Please contact me on #coderbus IRC. ~Carn x
 			standing = image("icon"=((r_hand.icon_override) ? r_hand.icon_override : (species.sprite_sheets["held"] ? species.sprite_sheets["held"] : r_hand.righthand_file)), "icon_state"="[t_state]", "layer"=-R_HAND_LAYER)
 		else
 			standing = image("icon"=r_hand:icon_custom, "icon_state"="[t_state]_r", "layer"=-R_HAND_LAYER)
-		if(istype(r_hand, /obj/item/weapon))
-			var/obj/item/weapon/W = r_hand
-			if(W.wielded && W.wielded_state)
-				standing = image("icon"=W.wielded_righthand_file, "icon_state"=W.wielded_state, "layer"=-R_HAND_LAYER)
-			W = null
 		standing.color = r_hand.color
 		overlays_standing[R_HAND_LAYER] = standing
 		if(handcuffed)
@@ -974,11 +969,6 @@ Please contact me on #coderbus IRC. ~Carn x
 			standing = image("icon"=((l_hand.icon_override) ? l_hand.icon_override : (species.sprite_sheets["held"] ? species.sprite_sheets["held"] : l_hand.lefthand_file)), "icon_state"="[t_state]", "layer"=-L_HAND_LAYER)
 		else
 			standing = image("icon"=l_hand:icon_custom, "icon_state"="[t_state]_l", "layer"=-L_HAND_LAYER)
-		if(istype(l_hand, /obj/item/weapon))
-			var/obj/item/weapon/W = l_hand
-			if(W.wielded && W.wielded_state)
-				standing = image("icon"=W.wielded_lefthand_file, "icon_state"="[t_state]", "layer"=-L_HAND_LAYER)
-			W = null
 		standing.color = l_hand.color
 		overlays_standing[L_HAND_LAYER] = standing
 		if(handcuffed)
