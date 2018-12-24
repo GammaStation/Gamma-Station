@@ -27,6 +27,10 @@
 	w_class = 3.0
 	origin_tech = "combat=5;materials=2;syndicate=8"
 	mag_type = /obj/item/ammo_box/magazine/uzim9mm
+	miss_chance = 60
+
+/obj/item/weapon/gun/projectile/automatic/mini_uzi/can_be_wielded()
+	return FALSE
 
 /obj/item/weapon/gun/projectile/automatic/update_icon()
 	..()
@@ -43,7 +47,10 @@
 	origin_tech = "combat=5;materials=2;syndicate=8"
 	mag_type = /obj/item/ammo_box/magazine/m12mm
 	fire_sound = 'sound/weapons/Gunshot_smg.ogg'
+	miss_chance = 60
 
+/obj/item/weapon/gun/projectile/automatic/c20r/can_be_wielded()
+	return FALSE
 
 /obj/item/weapon/gun/projectile/automatic/c20r/atom_init()
 	. = ..()
@@ -234,6 +241,10 @@
 	origin_tech = "combat=4;materials=2"
 	mag_type = /obj/item/ammo_box/magazine/c5_9mm
 	fire_sound = 'sound/weapons/guns/c5_shot.wav'
+	miss_chance = 60
+
+/obj/item/weapon/gun/projectile/automatic/c5/can_be_wielded()
+	return FALSE
 
 /obj/item/weapon/gun/projectile/automatic/c5/update_icon(mob/M)
 	icon_state = "c5[magazine ? "" : "-e"]"
@@ -254,6 +265,10 @@
 	origin_tech = "combat=4;materials=2"
 	mag_type = /obj/item/ammo_box/magazine/l13_38
 	fire_sound = 'sound/weapons/guns/l13_shot.ogg'
+	miss_chance = 60
+
+/obj/item/weapon/gun/projectile/automatic/l13/can_be_wielded()
+	return FALSE
 
 /obj/item/weapon/gun/projectile/automatic/l13/update_icon(mob/M)
 	icon_state = "l13[magazine ? "" : "-e"]"
@@ -295,6 +310,10 @@
 	w_class = 2
 	origin_tech = "combat=2;materials=2;syndicate=2"
 	mag_type = /obj/item/ammo_box/magazine/m9pmm
+	miss_chance = 0
+
+/obj/item/weapon/gun/projectile/automatic/luger/can_be_wielded()
+	return FALSE
 
 /obj/item/weapon/gun/projectile/automatic/luger/update_icon()
 	..()
@@ -405,10 +424,10 @@
 	else
 		item_state = "[initial(icon_state)]-e"
 
-/obj/item/weapon/gun/projectile/automatic/a74/attack_self(mob/user)
+/obj/item/weapon/gun/projectile/automatic/a74/attack_hand(mob/user)
 	if(..())
 		playsound(user, 'sound/weapons/guns/ak74_reload.ogg', 50, 1)
-	update_icon()
+		update_icon()
 
 /obj/item/weapon/gun/projectile/automatic/a74/attackby(obj/item/A, mob/user)
 	if(..())

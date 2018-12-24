@@ -42,7 +42,9 @@
 		A.update_icon()
 	..()
 
-/obj/item/weapon/gun/projectile/heavyrifle/attack_self(mob/user)
+/obj/item/weapon/gun/projectile/heavyrifle/attack_hand(mob/user)
+	if(loc != user)//Pick it up
+		..()
 	bolt_open = !bolt_open
 	if(bolt_open)
 		playsound(src.loc, 'sound/weapons/heavybolt_out.ogg', 50, 1)

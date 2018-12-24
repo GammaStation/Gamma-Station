@@ -13,8 +13,8 @@
 	return TRUE
 
 /obj/item/weapon/twohanded/fireaxe  // DEM AXES MAN, marker -Agouri
-	icon_state = "fireaxe"
-	wielded_state = "fireaxe"
+	icon_state = "fireaxe0"
+	item_state = "fireaxe"
 	name = "fire axe"
 	desc = "Truly, the weapon of a madman. Who would think to fight fire with an axe?"
 	force = 5
@@ -91,7 +91,7 @@
 
 /obj/item/weapon/twohanded/dualsaber/update_icon()
 	if(wielded)
-		wielded_state = "dualsaber[item_color]"
+		icon_state = "dualsaber[item_color]"
 	else
 		icon_state = "dualsaber"
 	clean_blood()//blood overlays get weird otherwise, because the sprite changes.

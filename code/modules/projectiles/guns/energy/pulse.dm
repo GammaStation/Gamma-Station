@@ -7,7 +7,11 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/pulse, /obj/item/ammo_casing/energy/electrode, /obj/item/ammo_casing/energy/laser)
 	cell_type = "/obj/item/weapon/stock_parts/cell/super"
 	var/mode = 2
-	fire_delay = 25
+	fire_delay = 10
+	miss_chance = 0
+
+/obj/item/weapon/gun/energy/pulse_rifle/can_be_wielded()
+	return FALSE
 
 /obj/item/weapon/gun/energy/pulse_rifle/attack_self(mob/living/user)
 	select_fire(user)

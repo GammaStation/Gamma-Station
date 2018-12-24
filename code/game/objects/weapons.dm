@@ -66,7 +66,8 @@
 	name = "[initial(name)] (Wielded)"
 	lefthand_file = wielded_lefthand_file
 	righthand_file = wielded_righthand_file
-
+	if(wieldsound)
+		playsound(src.loc, wieldsound, 100, 1, -1)
 	update_icon()
 
 /obj/item/weapon/proc/unwield()//Left this in case someone would like to inherit and change smthng
@@ -75,6 +76,8 @@
 	name = "[initial(name)]"
 	lefthand_file = initial(lefthand_file)
 	righthand_file = initial(righthand_file)
+	if(unwieldsound)
+		playsound(src.loc, unwieldsound, 100, 1, -1)
 	update_icon()
 
 /obj/item/weapon/MouseDrop(obj/over)
