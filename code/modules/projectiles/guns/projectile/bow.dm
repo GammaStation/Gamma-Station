@@ -10,6 +10,9 @@
 	sharp = 1
 	edge = 0
 
+/obj/item/weapon/arrow/can_be_wielded()
+	return FALSE
+
 /obj/item/weapon/arrow/proc/removed() //Helper for metal rods falling apart.
 	return
 
@@ -54,6 +57,9 @@
 	var/mob/living/current_user = null    // Used to see if the person drawing the bow started drawing it.
 	var/obj/item/weapon/arrow = null      // Nocked arrow.
 	var/obj/item/weapon/stock_parts/cell/cell = null  // Used for firing special projectiles like rods.
+
+/obj/item/weapon/crossbow/can_be_wielded()
+	return FALSE
 
 /obj/item/weapon/crossbow/attackby(obj/item/W, mob/user)
 	if(!arrow)

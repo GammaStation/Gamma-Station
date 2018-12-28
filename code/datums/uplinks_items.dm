@@ -148,7 +148,7 @@
 /datum/uplink_item/dangerous/bulldog
 	name = "V15 Bulldog shotgun"
 	desc = "A compact, mag-fed semi-automatic shotgun for combat in narrow corridors. Uses various 12g magazines."
-	item = /obj/item/weapon/gun/projectile/automatic/bulldog
+	item = /obj/item/weapon/gun/projectile/automatic/twohanded/bulldog
 	cost = 16
 	gamemodes = list(/datum/game_mode/nuclear)
 	uplink_types = list("nuclear")
@@ -157,7 +157,7 @@
 /datum/uplink_item/dangerous/machinegun
 	name = "L6 Squad Automatic Weapon"
 	desc = "A traditionally constructed machine gun made by AA-2531. This deadly weapon has a massive 50-round magazine of 7.62x51mm ammunition."
-	item = /obj/item/weapon/gun/projectile/automatic/l6_saw
+	item = /obj/item/weapon/gun/projectile/automatic/twohanded/l6_saw
 	cost = 45
 	gamemodes = list(/datum/game_mode/nuclear)
 	uplink_types = list("nuclear")
@@ -184,7 +184,7 @@
 /datum/uplink_item/dangerous/a74
 	name = "A74 Assault Rifle"
 	desc = "A bullpup automatic assault rifle. Great for range combat and fire suppresion. Uses 30-round magazine of 7.74mm ammunition."
-	item = /obj/item/weapon/gun/projectile/automatic/a74
+	item = /obj/item/weapon/gun/projectile/automatic/twohanded/a74
 	cost = 20
 	gamemodes = list(/datum/game_mode/nuclear)
 	uplink_types = list("nuclear")
@@ -877,7 +877,7 @@ var/global/list/thunderfield_items = list()
 
 /datum/thunderfield_item/thunderfield_a74
 	name = "A74 "
-	item = /obj/item/weapon/gun/projectile/automatic/a74
+	item = /obj/item/weapon/gun/projectile/automatic/twohanded/a74
 	cost = 12
 
 /datum/thunderfield_item/thunderfield_a74_magazine
@@ -887,7 +887,7 @@ var/global/list/thunderfield_items = list()
 
 /datum/thunderfield_item/thunderfield_bulldog
 	name = "Bulldog"
-	item = /obj/item/weapon/gun/projectile/automatic/bulldog
+	item = /obj/item/weapon/gun/projectile/automatic/twohanded/bulldog
 	cost = 14
 
 /datum/thunderfield_item/thunderfield_bulldog_magazine

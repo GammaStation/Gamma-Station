@@ -11,7 +11,7 @@
 	miss_chance = 0
 
 /obj/item/weapon/gun/energy/pulse_rifle/can_be_wielded()
-	return FALSE
+	return TRUE
 
 /obj/item/weapon/gun/energy/pulse_rifle/attack_self(mob/living/user)
 	select_fire(user)

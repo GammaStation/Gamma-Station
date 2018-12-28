@@ -1974,7 +1974,7 @@ datum/design/large_grenade
 	req_tech = list("combat" = 5, "materials" = 6, "magnets" = 4, "powerstorage" = 5)
 	build_type = PROTOLATHE
 	materials = list(MAT_METAL = 12500, MAT_GOLD = 6000, MAT_SILVER = 4500, MAT_DIAMOND = 500, MAT_URANIUM = 1000)
-	build_path = /obj/item/weapon/gun/projectile/automatic/l10c
+	build_path = /obj/item/weapon/gun/projectile/automatic/twohanded/l10c
 
 /datum/design/l10_mag
 	name = "L10-c battery"

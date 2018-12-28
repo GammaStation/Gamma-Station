@@ -85,10 +85,6 @@
 		if("black")
 			light_color = "#aeaeae"
 
-/obj/item/weapon/twohanded/dualsaber/can_be_wielded()
-	return TRUE
-
-
 /obj/item/weapon/twohanded/dualsaber/update_icon()
 	if(wielded)
 		icon_state = "dualsaber[item_color]"
