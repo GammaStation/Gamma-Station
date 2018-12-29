@@ -90,13 +90,13 @@
 				user.visible_message("<span class='notice'>[user] pushes [AM] up \the [src]!</span>", \
 								 	"<span class='notice'>You push [AM] up \the [src]!</span>")
 				if(do_after(user, 30, target = src) && CanMouseDrop(AM, user) && atom_ladder_check(AM))
-					AM.loc = get_turf(up)
+					AM.forceMove(get_turf(up))
 					up.add_fingerprint(user)
 			if("Down")
 				user.visible_message("<span class='notice'>[user] pushes [AM] down \the [src]!</span>", \
 								 	"<span class='notice'>You push [AM] down \the [src]!</span>")
 				if(do_after(user, 30, target = src) && CanMouseDrop(AM, user) && atom_ladder_check(AM))
-					AM.loc = get_turf(down)
+					AM.forceMove(get_turf(down))
 					down.add_fingerprint(user)
 			if("Cancel")
 				return
@@ -105,14 +105,14 @@
 		user.visible_message("<span class='notice'>[user] pushes [AM] up \the [src]!</span>", \
 					 "<span class='notice'>You push [AM] up \the [src]!</span>")
 		if(do_after(user, 30, target = src) && CanMouseDrop(AM, user) && atom_ladder_check(AM))
-			AM.loc = get_turf(up)
+			AM.forceMove(get_turf(up))
 			up.add_fingerprint(user)
 
 	else if(down)
 		user.visible_message("<span class='notice'>[user] pushes [AM] down \the [src]!</span>", \
 					 "<span class='notice'>You push [AM] down \the [src]!</span>")
 		if(do_after(user, 30, target = src) && CanMouseDrop(AM, user) && atom_ladder_check(AM))
-			AM.loc = get_turf(up)
+			AM.forceMove(get_turf(down))
 			up.add_fingerprint(user)
 
 /obj/structure/ladder/proc/atom_ladder_check(atom/movable/AM)
