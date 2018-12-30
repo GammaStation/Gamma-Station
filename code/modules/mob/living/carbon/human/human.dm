@@ -1289,9 +1289,12 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 
 /mob/living/carbon/human/clean_blood(var/clean_feet)
 	.=..()
-	if(clean_feet && !shoes && istype(feet_blood_DNA, /list) && feet_blood_DNA.len)
+	if(hand_dirt_color)
+		hand_dirt_color = null
+	if(clean_feet && !shoes)
+		if(istype(feet_blood_DNA, /list))
+			feet_blood_DNA = null
 		feet_dirt_color = null
-		feet_blood_DNA = null
 		update_inv_shoes()
 		return 1
 
