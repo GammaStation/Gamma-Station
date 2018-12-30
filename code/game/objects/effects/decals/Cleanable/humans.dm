@@ -114,7 +114,7 @@ var/global/list/image/splatter_cache=list()
 		add_fingerprint(user)
 		if (user.gloves)
 			return
-		if(user.species[IS_IMMATERIAL])
+		if(user.species.flags[IS_IMMATERIAL])
 			return
 		var/taken = rand(1,amount)
 		amount -= taken

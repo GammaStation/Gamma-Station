@@ -659,10 +659,10 @@
 	else
 		return initial(pixel_x)
 
-/mob/living/carbon/proc/bloody_hands(mob/living/source, amount = 2)
+/mob/living/carbon/proc/bloody_hands(mob/living/source, amount = 2, blood_datum)
 	return
 
-/mob/living/carbon/proc/bloody_body(mob/living/source)
+/mob/living/carbon/proc/bloody_body(mob/living/source, blood_datum)
 	return
 
 /mob/living/carbon/proc/handle_phantom_move(NewLoc, direct)
