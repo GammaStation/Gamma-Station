@@ -38,7 +38,7 @@ var/list/gateways_list = list()
 	name = "Unknown Gateway"
 	density = TRUE
 	icon_state = "offcenter"
-	
+
 	use_power = 1
 	idle_power_usage = 50
 	active_power_usage = 5000
@@ -137,7 +137,7 @@ var/list/gateways_list = list()
 
 	if(length(awaydestinations))
 		destinations_choice["Unstable destination"] = pick(awaydestinations)
-	
+
 	destinations_choice["None"] = null
 
 	var/user_pick = input(user, "Select a destination from the following candidates:","Gateway Destination",null) as null|anything in destinations_choice
@@ -178,7 +178,7 @@ var/list/gateways_list = list()
 			if(E.imp_in == M)//Checking that it's actually implanted vs just in their pocket
 				to_chat(M, "The gate has detected your exile implant and is blocking your entry.")
 				return
-	
+
 	M.dir = SOUTH
 	enter_to_transit(M, get_step(destination.loc, SOUTH))
 	use_power(1000)
@@ -226,7 +226,7 @@ var/list/gateways_list = list()
 
 /* station gate tweaks */
 /obj/machinery/gateway/center/station/
-	name = "NSS Exodus Gateway"
+	name = "NFS Gamma Gateway"
 	block_exile_implant = FALSE
 
 /obj/machinery/gateway/center/station/process()
