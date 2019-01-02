@@ -74,6 +74,10 @@
 	var/can_paint = TRUE
 	var/internal_tank_valve = ONE_ATMOSPHERE
 
+	var/controls_blocked = FALSE
+
+	var/obj/effect/overmap/ship/overmap_marker = null
+
 /obj/spacepod/proc/apply_paint(mob/user)
 	var/part_type
 	if(!can_paint)
@@ -98,7 +102,7 @@
 	update_icons()
 
 
-/obj/spacepod/New()
+/obj/spacepod/atom_init()
 	. = ..()
 	if(!pod_overlays)
 		pod_overlays = new/list(2)
@@ -128,6 +132,7 @@
 	cargo_hold.storage_slots = 0	//You need to install cargo modules to use it.
 	cargo_hold.max_w_class = 5		//fit almost anything
 	cargo_hold.max_combined_w_class = 0 //you can optimize your stash with larger items
+	overmap_marker = new /obj/effect/overmap/ship(get_turf(gamma_overmap))
 
 /obj/spacepod/Destroy()
 	if(equipment_system.cargo_system)
@@ -140,6 +145,7 @@
 	QDEL_NULL(pr_int_temp_processor)
 	QDEL_NULL(pr_give_air)
 	QDEL_NULL(ion_trail)
+	QDEL_NULL(overmap_marker)
 	occupant_sanity_check()
 	if(pilot)
 		pilot.forceMove(get_turf(src))
@@ -356,6 +362,8 @@
 				else
 					add_equipment(user, W, "lock_system")
 					return
+			if(istype(W, /obj/item/spacepod_equipment/bluespace_engine))
+				add_equipment(user, W, "bluespace_engine")
 
 		if(istype(W, /obj/item/spacepod_key) && istype(equipment_system.lock_system, /obj/item/spacepod_equipment/lock/keyed))
 			var/obj/item/spacepod_key/key = W
@@ -472,6 +480,8 @@ obj/spacepod/proc/add_equipment(mob/user, var/obj/item/spacepod_equipment/SPE, v
 		possible.Add("Secondary Cargo System")
 	if(equipment_system.lock_system)
 		possible.Add("Lock System")
+	if(equipment_system.bluespace_engine)
+		possible.Add("Bluespace Engine")
 	switch(input(user, "Remove which equipment?", null, null) as null|anything in possible)
 		if("Energy Cell")
 			if(user.put_in_any_hand_if_possible(battery))
@@ -494,6 +504,8 @@ obj/spacepod/proc/add_equipment(mob/user, var/obj/item/spacepod_equipment/SPE, v
 			return
 		if("Lock System")
 			remove_equipment(user, equipment_system.lock_system, "lock_system")
+		if("Bluespace Engine")
+			remove_equipment(user, equipment_system.lock_system, "bluespace_engine")
 
 /obj/spacepod/proc/remove_equipment(mob/user, var/obj/item/spacepod_equipment/SPE, var/slot)
 
@@ -564,7 +576,7 @@ obj/spacepod/proc/add_equipment(mob/user, var/obj/item/spacepod_equipment/SPE, v
 /obj/spacepod/syndi/unlocked
 	unlocked = TRUE
 
-/obj/spacepod/random/New()
+/obj/spacepod/random/atom_init()
 	..()
 	icon_state = pick("pod_civ", "pod_black", "pod_mil", "pod_synd", "pod_gold", "pod_industrial")
 	switch(icon_state)
@@ -803,6 +815,10 @@ obj/spacepod/proc/add_equipment(mob/user, var/obj/item/spacepod_equipment/SPE, v
 		return
 
 	if(usr.stat != CONSCIOUS) // unconscious people can't let themselves out
+		to_chat(usr, "<span class='notice'>You are to weak to climb out of [src].</span>")
+		return
+
+	if(controls_blocked)
 		return
 
 	occupant_sanity_check()
@@ -902,6 +918,33 @@ obj/spacepod/proc/add_equipment(mob/user, var/obj/item/spacepod_equipment/SPE, v
 	else
 		to_chat(pilot, "Weapon fuse is activate. You will can't fire more")
 		equipment_system.weapon_system.fuse = TRUE
+
+/obj/spacepod/verb/toggle_helm()
+	set name = "Helm"
+	set desc = "Blusepace engine control"
+	set category = "Spacepod"
+	set src = usr.loc
+
+	if(usr.incapacitated())
+		return
+
+	if(usr != src.pilot)
+		to_chat(usr, "<span class='notice'>You can't reach the controls from your chair.</span>")
+		return
+	if(!equipment_system.bluespace_engine)
+		to_chat(usr, "<span class='warning'>[src] has no bluespace engine!</span>")
+		return
+	equipment_system.bluespace_engine.helm(usr)
+
+/obj/spacepod/verb/unset_helm()
+	set name = "Disable helm view"
+	set desc = "Disable helm view"
+	set category = "Spacepod"
+	set src = usr.loc
+
+	if(!equipment_system.bluespace_engine)
+		return
+	equipment_system.bluespace_engine.unhelm(usr)
 
 /obj/spacepod/verb/unload()
 	set name = "Unload Cargo"
@@ -1035,7 +1078,7 @@ obj/spacepod/proc/add_equipment(mob/user, var/obj/item/spacepod_equipment/SPE, v
 	return
 
 /obj/spacepod/relaymove(mob/user, direction)
-	if(usr != src.pilot)
+	if(usr != src.pilot || controls_blocked)
 		return
 	handlerelaymove(user, direction)
 

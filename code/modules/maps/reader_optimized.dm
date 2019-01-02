@@ -287,8 +287,8 @@ var/global/dmm_suite/preloader/_preloader = new
 
 		//initialize things that are normally initialized after map load
 		initTemplateBounds(bounds)
-		log_game("Z-level loaded [world.maxz]")
-		return TRUE
+		testing("Z-level loaded [world.maxz]")
+		return world.maxz
 	else
 		return FALSE
 

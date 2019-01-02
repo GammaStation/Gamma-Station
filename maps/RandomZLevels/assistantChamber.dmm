@@ -4,7 +4,6 @@
 "d" = (/obj/machinery/porta_turret/stationary,/obj/machinery/light{dir = 1},/turf/simulated/floor{icon_state = "white"},/area/awaymission)
 "e" = (/obj/machinery/light{icon_state = "tube1"; dir = 8},/obj/machinery/porta_turret/stationary,/turf/simulated/floor{icon_state = "white"},/area/awaymission)
 "f" = (/obj/item/weapon/gift,/turf/simulated/floor{icon_state = "white"},/area/awaymission)
-"g" = (/turf/simulated/floor{icon_state = "white"},/area/awaymission)
 "h" = (/obj/item/weapon/gun/energy/gun/nuclear,/turf/simulated/floor{icon_state = "white"},/area/awaymission)
 "i" = (/obj/item/device/soulstone,/turf/simulated/floor{icon_state = "white"},/area/awaymission)
 "j" = (/obj/item/ammo_box/magazine/m50,/turf/simulated/floor{icon_state = "white"},/area/awaymission)
@@ -18,7 +17,7 @@
 "r" = (/obj/item/device/powersink,/turf/simulated/floor{icon_state = "white"},/area/awaymission)
 "s" = (/obj/item/device/radio/beacon,/obj/item/weapon/caution,/turf/simulated/floor{icon_state = "white"},/area/awaymission)
 "t" = (/obj/item/brain,/turf/simulated/floor{icon_state = "white"},/area/awaymission)
-"u" = (/obj/item/weapon/gun/energy/laser/captain,/turf/simulated/floor{icon_state = "white"},/area/awaymission)
+"u" = (/turf/simulated/floor{icon_state = "white"},/area/awaymission)
 "v" = (/obj/item/weapon/gun/projectile/automatic/deagle/gold,/turf/simulated/floor{icon_state = "white"},/area/awaymission)
 "w" = (/obj/item/weapon/sord,/turf/simulated/floor{icon_state = "white"},/area/awaymission)
 "x" = (/obj/item/weapon/gun/energy/lasercannon,/turf/simulated/floor{icon_state = "white"},/area/awaymission)
@@ -42,12 +41,12 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaabbbbbbbbbbbbaaaaaaaaa
 aaaaaaaaabccccccccccbaaaaaaaaa
 aaaaaaaaabccddddddccbaaaaaaaaa
-aaaaaaaaabcefghijklcbaaaaaaaaa
-aaaaaaaaabcemnopgqlcbaaaaaaaaa
-aaaaaaaaabcegrgstglcbaaaaaaaaa
-aaaaaaaaabceuggvgwlcbaaaaaaaaa
-aaaaaaaaabcegxygzglcbaaaaaaaaa
-aaaaaaaaabceAgBgCglcbaaaaaaaaa
+aaaaaaaaabcefuhijklcbaaaaaaaaa
+aaaaaaaaabcemnopuqlcbaaaaaaaaa
+aaaaaaaaabceurustulcbaaaaaaaaa
+aaaaaaaaabceuuuvuwlcbaaaaaaaaa
+aaaaaaaaabceuxyuzulcbaaaaaaaaa
+aaaaaaaaabceAuBuCulcbaaaaaaaaa
 aaaaaaaaabccDDDDDDccbaaaaaaaaa
 aaaaaaaaabccccccccccbaaaaaaaaa
 aaaaaaaaabbbbbbbbbbbbaaaaaaaaa

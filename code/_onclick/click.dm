@@ -214,7 +214,12 @@
 */
 /mob/proc/ShiftClickOn(atom/A)
 	A.ShiftClick(src)
+	if(istype(A, /turf/unsimulated/floor/overmap) && istype(loc, /obj/spacepod))
+		reset_view()
+		var/obj/spacepod/S = loc
+		S.equipment_system.bluespace_engine.jump(usr, A)
 	return
+
 /atom/proc/ShiftClick(mob/user)
 	if(user.client && user.client.eye == user)
 		user.examinate(src)

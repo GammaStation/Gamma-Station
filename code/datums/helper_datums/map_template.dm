@@ -104,6 +104,7 @@
 
 	preloadShelterTemplates()
 	preloadHolodeckTemplates()
+	preloadOvermapTemplates()
 
 /proc/preloadHolodeckTemplates()
 	for(var/item in subtypesof(/datum/map_template/holoscene))
@@ -123,3 +124,12 @@
 		var/datum/map_template/shelter/S = new shelter_type()
 		shelter_templates[S.id()] = S
 		map_templates[S.id()] = S
+
+/proc/preloadOvermapTemplates()
+	for(var/item in subtypesof(/datum/map_template/overmap))
+		var/datum/map_template/overmap/overmap_type = item
+		if(!(initial(overmap_type.mappath)))
+			continue
+		var/datum/map_template/overmap/O = new overmap_type()
+		overmap_templates[O.id()] = O
+		map_templates[O.id()] = O

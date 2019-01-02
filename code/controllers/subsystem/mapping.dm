@@ -13,7 +13,6 @@ var/datum/subsystem/mapping/SSmapping
 	NEW_SS_GLOBAL(SSmapping)
 
 /datum/subsystem/mapping/Initialize(timeofday)
-
 	// Generate mining.
 	make_mining_asteroid_secrets()
 	populate_distribution_map()

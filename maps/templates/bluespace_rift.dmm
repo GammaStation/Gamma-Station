@@ -1,0 +1,21 @@
+"a" = (/turf/unsimulated/wall/bluespace,/area/space)
+"b" = (/turf/unsimulated/floor/bluespace,/area/space)
+"c" = (/obj/effect/light_emitter,/turf/unsimulated/floor/bluespace,/area/space)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaaa
+abbbbbbbbbbbbba
+abbbbbbbbbbbbba
+abbbbbbbbbbbbba
+abbbbbbbbbbbbba
+abbbbbbbbbbbbba
+abbbbbbbbbbbbba
+abbbbbbcbbbbbba
+abbbbbbbbbbbbba
+abbbbbbbbbbbbba
+abbbbbbbbbbbbba
+abbbbbbbbbbbbba
+abbbbbbbbbbbbba
+abbbbbbbbbbbbba
+aaaaaaaaaaaaaaa
+"}
