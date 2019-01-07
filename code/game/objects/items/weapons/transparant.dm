@@ -57,7 +57,7 @@
 
 /obj/item/weapon/transparant/attack(mob/M, mob/user)
 	..()
-	M.show_message("<span class='attack'>\The <EM>[src.blood_DNA ? "bloody " : ""][bicon(src)][src.name]</EM> says: <EM>[src.desc]</EM></span>", 2)
+	M.show_message("<span class='attack'>\The <EM>[src.blood_DNA ? "bloody " : ""][bicon(src)][src.name]</EM> says: [src.desc]</span>", 2)
 
 
 /obj/item/weapon/transparant/update_icon()

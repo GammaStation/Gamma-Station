@@ -653,6 +653,7 @@ window "outputwindow"
 		anchor1 = 0,0
 		anchor2 = 100,100
 		background-color = #ffffff
+		is-visible = false
 		is-disabled = true
 		saved-params = ""
 		auto-format = false
