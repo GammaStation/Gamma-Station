@@ -387,14 +387,15 @@
 		create_rift()
 	my_atom.controls_blocked = TRUE
 	my_atom.forceMove(get_turf(bluespace_navpoint))
-	sector.pre_crossed()
 	addtimer(CALLBACK(src, .proc/finalize_jump, sector), OVERMAP_JUMP_TIME)
 
 /obj/item/spacepod_equipment/bluespace_engine/proc/finalize_jump(turf/unsimulated/floor/overmap/sector)
-	if(!sector.mapZ)
-		return
 	my_atom.overmap_marker.forceMove(sector)
-	my_atom.forceMove(locate(25, 25, sector.mapZ))
+	if(sector.ships_in_sector.len)
+		var/obj/spacepod/S = sector.ships_in_sector[1]
+		my_atom.forceMove(locate(25, 25, S.mapZ))
+	else
+		my_atom.forceMove(locate(25, 25, my_atom.mapZ))
 	my_atom.controls_blocked = FALSE
 
 /obj/item/spacepod_equipment/bluespace_engine/proc/create_rift()

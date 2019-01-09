@@ -17,3 +17,5 @@ var/global/list/possible_events = list("meteor" = 15, "dust" = 15, "electrical" 
 var/global/list/bluespace_rift_navpoints = list()
 
 var/global/obj/effect/overmap/object/gamma/gamma_overmap = null
+
+var/global/default_overmap_mappath = "maps/templates/spacesector.dmm"

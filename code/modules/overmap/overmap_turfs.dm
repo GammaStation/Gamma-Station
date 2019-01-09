@@ -3,18 +3,12 @@
 	var/sector = null
 	var/list/ships_in_sector = list()
 	var/mappath = "maps/templates/spacesector.dmm"
-	var/mapZ = null // Z coordinate of appropriate map
 	var/navpoint = null // Navpoint on sector map
 
 /turf/unsimulated/floor/overmap/atom_init()
 	. = ..()
 	overmap_turfs += src
 	name = "[x]-[y]"
-
-/turf/unsimulated/floor/overmap/proc/pre_crossed() // Called when some is jumping to turf so maploader will load map
-	if(!mapZ)
-		mapZ = maploader.load_new_z_level(mappath)
-
 
 /turf/unsimulated/floor/overmap/Crossed(atom/movable/A)
 	testing("[A] has entered sector")
