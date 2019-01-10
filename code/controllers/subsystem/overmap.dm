@@ -21,9 +21,11 @@ var/datum/subsystem/overmap/SSovermap
 			if(istype(TU, /turf/unsimulated/wall/overmap))
 				object_candidates -= T
 	//Placing NFS Gamma to random sector
-	var/turf/G = pick(object_candidates)
+	var/turf/unsimulated/floor/overmap/G = pick(object_candidates)
 	if(istype(G))
 		new /obj/effect/overmap/object/gamma(G)
+		G.mapZ = ZLEVEL_STATION
+		G.map_can_be_killed = FALSE
 	//Starting to generate random events
 	for(var/turf/E in overmap_turfs)
 		if(locate(/obj/effect/overmap/object) in E)

@@ -3,12 +3,34 @@
 	var/sector = null
 	var/list/ships_in_sector = list()
 	var/mappath = "maps/templates/spacesector.dmm"
-	var/navpoint = null // Navpoint on sector map
+	var/mapZ = null
+	var/map_can_be_killed = TRUE
 
 /turf/unsimulated/floor/overmap/atom_init()
 	. = ..()
 	overmap_turfs += src
 	name = "[x]-[y]"
+
+/turf/unsimulated/floor/overmap/proc/pre_crossed(atom/movable/A)
+	if(mapZ)
+		return
+	if(empty_zlevels.len)
+		testing("Checking if we have empty zlevel")
+		mapZ = empty_zlevels[1]
+		return
+	world.maxz++
+	mapZ = world.maxz
+	map_zlevels.Add(mapZ)
+
+/turf/unsimulated/floor/overmap/proc/can_die()
+	testing("Checking if sector at [mapZ] can die.")
+	if(!map_can_be_killed)
+		return FALSE
+	for(var/mob/living/M in player_list)
+		if(M.z == mapZ)
+			testing("There are people on it.")
+			return FALSE
+	return TRUE
 
 /turf/unsimulated/floor/overmap/Crossed(atom/movable/A)
 	testing("[A] has entered sector")
@@ -23,6 +45,15 @@
 		var/obj/effect/overmap/ship/S = A
 		S.current_sector = null
 		ships_in_sector -= A
+	if(!ships_in_sector.len && can_die())
+		testing("Killing sector at [mapZ].")
+		var/turf/center = locate(world.maxx/2, world.maxy/2, mapZ)
+		for(var/atom/atom in RANGE_TURFS(world.maxx/2, center))
+			qdel(atom)
+		map_zlevels -= mapZ
+		empty_zlevels += mapZ
+		testing("[empty_zlevels.len]")
+		mapZ = null
 
 /turf/unsimulated/wall/overmap
 	icon = 'icons/turf/floors.dmi'

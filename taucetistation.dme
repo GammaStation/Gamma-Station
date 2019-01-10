@@ -1534,6 +1534,7 @@
 #include "code\modules\organs\wound.dm"
 #include "code\modules\overmap\_overmap_helpers.dm"
 #include "code\modules\overmap\overmap_effects.dm"
+#include "code\modules\overmap\overmap_events.dm"
 #include "code\modules\overmap\overmap_eye.dm"
 #include "code\modules\overmap\overmap_landmarks.dm"
 #include "code\modules\overmap\overmap_templates.dm"
