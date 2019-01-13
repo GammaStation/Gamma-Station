@@ -362,8 +362,6 @@
 	var/radar_range = 3
 	var/bluespace_uses = 3
 	var/obj/effect/landmark/overmap/bluespace_rift_navpoint/bluespace_navpoint = null
-	var/template_id = "bluespace_rift"
-	var/datum/map_template/overmap/bluespace_rift/template
 
 /obj/item/spacepod_equipment/bluespace_engine/proc/helm(mob/living/user)
 	eyeobj = new /mob/camera/Eye/overmap(get_turf(my_atom.overmap_marker))
@@ -384,7 +382,7 @@
 		to_chat(user, "<span class='notice'>You dont have enough bluespace crystals.</span>")
 		return
 	if(!bluespace_navpoint)
-		create_rift()
+		bluespace_navpoint = find_rift()
 	sector.pre_crossed(my_atom)
 	my_atom.controls_blocked = TRUE
 	my_atom.forceMove(get_turf(bluespace_navpoint))
@@ -394,14 +392,5 @@
 	my_atom.overmap_marker.forceMove(sector)
 	my_atom.forceMove(locate(25, 25, sector.mapZ))
 	my_atom.controls_blocked = FALSE
-
-/obj/item/spacepod_equipment/bluespace_engine/proc/create_rift()
-	var/turf/landmark
-	if(!bluespace_rift_navpoints.len)
-		landmark = get_turf(locate(/obj/effect/landmark/overmap/center))
-	else
-		landmark = bluespace_rift_navpoints[bluespace_rift_navpoints.len]
-	var/turf/T = locate((landmark.x + BLUESPACE_OFFSET), (landmark.y + BLUESPACE_OFFSET), landmark.z)
-	template = overmap_templates[template_id]
-	template.load(T, TRUE)
-	bluespace_navpoint = new /obj/effect/landmark/overmap/bluespace_rift_navpoint(T)
+	empty_rift_navpoints += bluespace_navpoint
+	bluespace_navpoint = null
