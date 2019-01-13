@@ -10,23 +10,30 @@ var/datum/subsystem/overmap/SSovermap
 	build_overmap_templates()
 	setup_overmap()
 
-/datum/subsystem/overmap/proc/build_overmap_templates()
-
-
 /datum/subsystem/overmap/proc/setup_overmap()
-	//Removing overmap turfs, which are near to the edge of the map
+	if(!overmap_enabled)
+		return
+	// Removing overmap turfs, which are near to the edge of the map
 	var/list/object_candidates = overmap_turfs.Copy()
 	for(var/turf/T in overmap_turfs)
 		for(var/turf/TU in RANGE_TURFS(2, T))
 			if(istype(TU, /turf/unsimulated/wall/overmap))
 				object_candidates -= T
-	//Placing NFS Gamma to random sector
+	// Placing NFS Gamma to random sector
 	var/turf/unsimulated/floor/overmap/G = pick(object_candidates)
 	if(istype(G))
 		new /obj/effect/overmap/object/gamma(G)
 		G.mapZ = ZLEVEL_STATION
 		G.map_can_be_killed = FALSE
-	//Starting to generate random events
+	// Placing derelicts
+	var/list/derelict_mappaths = file2list("maps/OvermapDerelicts/derelict_map_list.txt")
+	for(var/mappath in derelict_mappaths)
+		var/turf/unsimulated/floor/overmap/derelict_target = pick(object_candidates)
+		if(!derelict_target.map_can_be_killed) // There is already something loaded there
+			continue
+		derelict_target.mapZ = maploader.load_new_z_level(mappath)
+		derelict_target.map_can_be_killed = TRUE
+	// Starting to generate random events
 	for(var/turf/E in overmap_turfs)
 		if(locate(/obj/effect/overmap/object) in E)
 			continue

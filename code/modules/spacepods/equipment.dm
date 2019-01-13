@@ -364,6 +364,9 @@
 	var/obj/effect/landmark/overmap/bluespace_rift_navpoint/bluespace_navpoint = null
 
 /obj/item/spacepod_equipment/bluespace_engine/proc/helm(mob/living/user)
+	if(!overmap_enabled)
+		return
+
 	eyeobj = new /mob/camera/Eye/overmap(get_turf(my_atom.overmap_marker))
 
 	user.client.adminobs = TRUE

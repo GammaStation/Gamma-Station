@@ -132,7 +132,6 @@
 	cargo_hold.storage_slots = 0	//You need to install cargo modules to use it.
 	cargo_hold.max_w_class = 5		//fit almost anything
 	cargo_hold.max_combined_w_class = 0 //you can optimize your stash with larger items
-	//mapZ = maploader.load_new_z_level(default_overmap_mappath)
 	overmap_marker = new /obj/effect/overmap/ship(get_turf(gamma_overmap))
 
 /obj/spacepod/Destroy()
