@@ -1,14 +1,14 @@
 /obj/structure/fuzebox
 	name = "fuzebox"
 	desc = "High voltage!"
-	icon = 'icons/obj/strictures/gulag.dmi'
+	icon = 'icons/obj/structures/gulag.dmi'
 	icon_state = "fuzebox"
 	anchored = TRUE
 
 /obj/structure/poweroutlet
 	name = "poweroutlet"
 	desc = "Don't stick your fingers inside."
-	icon = 'icons/obj/strictures/gulag.dmi'
+	icon = 'icons/obj/structures/gulag.dmi'
 	icon_state = "poweroutlet"
 	anchored = TRUE
 
@@ -18,7 +18,7 @@
 /obj/structure/pipe
 	name = "pipe"
 	desc = "Just an ordinary pipe."
-	icon = 'icons/obj/strictures/gulag.dmi'
+	icon = 'icons/obj/structures/gulag.dmi'
 	icon_state = "pipe"
 	anchored = TRUE
 

@@ -217,7 +217,7 @@ list(name = "-Stalin", desc = "A poster glorifying tovarisch Stalin.") )
 	icon = 'icons/obj/contraband.dmi'
 	official = POSTERSOV
 
-/obj/structure/sign/poster/contraband/sov
+/obj/structure/sign/poster/contraband/sov/pick_state(poster_number)
 	serial_number = poster_number ? poster_number : rand(1, sovposters.len)
 	icon_state = "poster[serial_number]_sov"
 	name += revposters[serial_number][POSTERNAME]
