@@ -53,3 +53,6 @@
 /obj/effect/overmap/object/gamma/atom_init()
 	. = ..()
 	gamma_overmap = src
+
+/obj/effect/overmap/object/derelict
+	name = "Unknown ship"

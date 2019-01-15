@@ -7,11 +7,26 @@ var/datum/subsystem/overmap/SSovermap
 
 /datum/subsystem/overmap/Initialize(timeofday)
 	..()
-	build_overmap_templates()
+	build_overmap()
 	setup_overmap()
 
+/datum/subsystem/overmap/proc/build_overmap()
+	if(!config.overmap_enabled)
+		return
+	testing("Building overmap")
+	world.maxz++
+	var/list/turfs = list()
+	for (var/square in block(locate(1, 1, ZLEVEL_OVERMAP), locate(OVERMAP_SIZE, OVERMAP_SIZE, ZLEVEL_OVERMAP)))
+		var/turf/T = square
+		if(T.x == OVERMAP_SIZE || T.y == OVERMAP_SIZE)
+			T = T.ChangeTurf(/turf/unsimulated/wall/overmap)
+		else
+			T = T.ChangeTurf(/turf/unsimulated/floor/overmap)
+		turfs += T
+	testing("Overmap build complete.")
+
 /datum/subsystem/overmap/proc/setup_overmap()
-	if(!overmap_enabled)
+	if(!config.overmap_enabled)
 		return
 	// Removing overmap turfs, which are near to the edge of the map
 	var/list/object_candidates = overmap_turfs.Copy()
@@ -33,6 +48,7 @@ var/datum/subsystem/overmap/SSovermap
 			continue
 		derelict_target.mapZ = maploader.load_new_z_level(mappath)
 		derelict_target.map_can_be_killed = TRUE
+		new /obj/effect/overmap/object/derelict(derelict_target)
 	// Starting to generate random events
 	for(var/turf/E in overmap_turfs)
 		if(locate(/obj/effect/overmap/object) in E)
