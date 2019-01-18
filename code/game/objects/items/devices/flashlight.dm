@@ -127,6 +127,9 @@
 	g_amt = 0
 	on = 1
 
+/obj/item/device/flashlight/lamp/svetilnik
+	icon_state = "svetilnik"
+	item_state = "svetilnik"
 
 // green-shaded desk lamp
 /obj/item/device/flashlight/lamp/green
