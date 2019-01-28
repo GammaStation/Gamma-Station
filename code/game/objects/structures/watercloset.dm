@@ -21,6 +21,9 @@
 	user.SetNextMove(CLICK_CD_MELEE * 1.5)
 	if(swirlie)
 		user.visible_message("<span class='danger'>[user] slams the toilet seat onto [swirlie.name]'s head!</span>", "<span class='notice'>You slam the toilet seat onto [swirlie.name]'s head!</span>", "You hear reverberating porcelain.")
+		user.attack_log += "\[[time_stamp()]\] <font color='orange'>Slammed the toilet seat onto [swirlie.name] ([swirlie.ckey])</font>"
+		swirlie.attack_log += "\[[time_stamp()]\] <font color='red'>Slammed by the toilet seat by [user.name] ([user.ckey])</font>"
+		msg_admin_attack("[user.name] has slammed  toilet seat onto [swirlie.name] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 		swirlie.adjustBruteLoss(8)
 		return
 
@@ -72,11 +75,17 @@
 					swirlie = GM
 					if(do_after(user, 30, 5, 0, target = src))
 						user.visible_message("<span class='danger'>[user] gives [GM.name] a swirlie!</span>", "<span class='notice'>You give [GM.name] a swirlie!</span>", "You hear a toilet flushing.")
+						user.attack_log += "\[[time_stamp()]\] <font color='orange'>Swirled [swirlie.name] ([swirlie.ckey])</font>"
+						swirlie.attack_log += "\[[time_stamp()]\] <font color='red'>Was given a swirle by [user.name] ([user.ckey])</font>"
+						msg_admin_attack("[user.name] has given a swirle to the [swirlie.name] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 						if(!GM.internal)
 							GM.adjustOxyLoss(5)
 					swirlie = null
 				else
 					user.visible_message("<span class='danger'>[user] slams [GM.name] into the [src]!</span>", "<span class='notice'>You slam [GM.name] into the [src]!</span>")
+					user.attack_log += "\[[time_stamp()]\] <font color='orange'>Slammed [GM.name] ([GM.ckey])</font>"
+					GM.attack_log += "\[[time_stamp()]\] <font color='red'>Was slammed by [user.name] ([user.ckey])</font>"
+					msg_admin_attack("[user.name] was slammed [GM.name] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 					GM.adjustBruteLoss(8)
 			else
 				to_chat(user, "<span class='notice'>You need a tighter grip.</span>")
@@ -117,6 +126,9 @@
 					to_chat(user, "<span class='notice'>[GM.name] needs to be on the urinal.</span>")
 					return
 				user.visible_message("<span class='danger'>[user] slams [GM.name] into the [src]!</span>", "<span class='notice'>You slam [GM.name] into the [src]!</span>")
+				user.attack_log += "\[[time_stamp()]\] <font color='orange'>Slammed [GM.name] ([GM.ckey])</font>"
+				GM.attack_log += "\[[time_stamp()]\] <font color='red'>Was slammed by [user.name] ([user.ckey])</font>"
+				msg_admin_attack("[user.name] was slammed [GM.name] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 				GM.adjustBruteLoss(8)
 			else
 				to_chat(user, "<span class='notice'>You need a tighter grip.</span>")
@@ -193,6 +205,9 @@
 					to_chat(user, "<span class='notice'>[GM.name] needs to be on the urinal.</span>")
 					return
 				user.visible_message("<span class='danger'>[user] slams [GM.name] into the [src]!</span>", "<span class='notice'>You slam [GM.name] into the [src]!</span>")
+				user.attack_log += "\[[time_stamp()]\] <font color='orange'>Slammed [GM.name] ([GM.ckey])</font>"
+				GM.attack_log += "\[[time_stamp()]\] <font color='red'>Was slammed by [user.name] ([user.ckey])</font>"
+				msg_admin_attack("[user.name] was slammed [GM.name] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 				GM.apply_damage(8, BRUTE, BP_HEAD)
 				playsound(src, 'sound/weapons/smash.ogg', 50, 1, 1)
 				return
@@ -225,6 +240,9 @@
 						return
 					busy = 1
 					user.visible_message("<span class='danger'>[user] hold [GM.name] under the [src]!</span>", "<span class='notice'>You hold [GM.name] under the [src]!</span>")
+					user.attack_log += "\[[time_stamp()]\] <font color='orange'>holded [GM.name] under the [src] ([GM.ckey])</font>"
+					GM.attack_log += "\[[time_stamp()]\] <font color='red'>Was held by [user.name] under the [src]([user.ckey])</font>"
+					msg_admin_attack("[user.name] dryed [GM.name] under the [src] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 					playsound(src, 'sound/items/drying.ogg', 30, 1, 1)
 					GM.adjustFireLoss(10)
 					sleep(60)
