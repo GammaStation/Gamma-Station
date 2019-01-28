@@ -20,6 +20,7 @@ var/global/image/default_holomap
 	. = ..()
 	holder = I
 	holochips += src
+	holomap_base = default_holomap
 
 /obj/item/holochip/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -41,10 +42,6 @@ var/global/image/default_holomap
 	if(activator)
 		return
 	activator = user
-	if(!holomap_base)
-		if(!default_holomap)
-			default_holomap = image(generate_holo_map())
-		holomap_base = default_holomap
 	if(color_filter)
 		holomap_base.color = color_filter
 	holomap_base.loc = activator.hud_used.holomap_obj
