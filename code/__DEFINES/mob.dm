@@ -94,13 +94,6 @@
 // Factor of how fast mob nutrition decreases
 #define HUNGER_FACTOR 0.05
 
-// How many units of reagent are consumed per tick, by default.
-#define REAGENTS_METABOLISM 0.2
-
-// By defining the effect multiplier this way, it'll exactly adjust
-// all effects according to how they originally were with the 0.4 metabolism
-#define REAGENTS_EFFECT_MULTIPLIER REAGENTS_METABOLISM / 0.4
-
 // Factor of how fast mob nutrition decreases
 #define	HUNGER_FACTOR 0.1
 

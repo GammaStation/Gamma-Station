@@ -1324,7 +1324,7 @@
 			language.on_message_hear(message, M, source)
 		M.telepathy_hear(verb, message, source)
 
-/mob/living/carbon/human/proc/toggle_telepathy_hear((mob/M in (view() + remote_hearing))) // Makes us hear what they hear.
+/mob/living/carbon/human/proc/toggle_telepathy_hear(mob/M in (view() + remote_hearing)) // Makes us hear what they hear.
 	set name = "Toggle Telepathy Hear"
 	set desc = "Hear anything this mob hears."
 	set category = "Tycheon"
