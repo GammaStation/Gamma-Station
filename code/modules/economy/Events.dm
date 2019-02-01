@@ -150,3 +150,5 @@
 		affected_dest.temp_price_change[good_type] = 1
 	for(var/good_type in cheaper_goods)
 		affected_dest.temp_price_change[good_type] = 1
+
+#undef GAS 10
