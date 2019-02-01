@@ -323,6 +323,10 @@
 	adj_sleepy = -2
 	taste_message = "cola"
 
+	does_glow = TRUE
+	max_glow_power = 2
+	glow_increment = 0.3
+
 /datum/reagent/consumable/drink/cold/nuka_cola/on_general_digest(mob/living/M)
 	..()
 	M.make_jittery(20)
@@ -483,6 +487,10 @@
 	taste_message = "fruity alcohol"
 	restrict_species = list(IPC, DIONA)
 
+	does_glow = TRUE
+	max_glow_power = 2
+	glow_increment = 0.3
+
 /datum/reagent/consumable/atomicbomb/on_general_digest(mob/living/M)
 	..()
 	M.druggy = max(M.druggy, 50)
@@ -633,10 +641,8 @@
 	taste_message = "liquid fire"
 	restrict_species = list(IPC, DIONA)
 
-/datum/reagent/consumable/ethanol/on_mob_life(mob/living/M, alien) // There's a multiplier for Skrells, which can't be inbuilt in any other reasonable way.
-	if(!..())
-		return
-
+/datum/reagent/consumable/ethanol/on_general_digest(mob/living/M) // There's a multiplier for Skrells, which can't be inbuilt in any other reasonable way.
+	..()
 	M.nutrition += nutriment_factor
 
 	if(adj_drowsy)
@@ -655,7 +661,7 @@
 		if(isnum(A.data))
 			d += A.data
 
-	if(alien && alien == SKRELL) //Skrell get very drunk very quickly.
+	if(M.get_species() == SKRELL) //Skrell get very drunk very quickly.
 		d *= 5
 
 	M.dizziness += dizzy_adj
@@ -679,7 +685,6 @@
 			if(istype(IO))
 				IO.take_damage(0.1, 1)
 			H.adjustToxLoss(0.1)
-	return TRUE
 
 /datum/reagent/consumable/ethanol/reaction_obj(var/obj/O, var/volume)
 	if(istype(O,/obj/item/weapon/paper))
@@ -793,6 +798,10 @@
 	color = "#666340" // rgb: 102, 99, 64
 	boozepwr = 5
 	taste_message = "fruity alcohol"
+
+	does_glow = TRUE
+	max_glow_power = 2
+	glow_increment = 0.3
 
 /datum/reagent/consumable/ethanol/threemileisland/on_general_digest(mob/living/M)
 	..()
@@ -1093,6 +1102,10 @@
 	boozepwr = 5
 	taste_message = "FIRE"
 
+	does_glow = TRUE
+	max_glow_power = 1
+	glow_increment = 0.2
+
 /datum/reagent/consumable/ethanol/toxins_special/on_general_digest(mob/living/M)
 	..()
 	if (M.bodytemperature < 330)
@@ -1190,6 +1203,10 @@
 	color = "#664300" // rgb: 102, 67, 0
 	boozepwr = 5
 	taste_message = "bitter alcohol"
+
+	does_glow = TRUE
+	max_glow_power = 2
+	glow_increment = 0.3
 
 /datum/reagent/consumable/ethanol/manhattan_proj/on_general_digest(mob/living/M)
 	..()

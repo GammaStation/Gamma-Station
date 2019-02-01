@@ -399,6 +399,10 @@
 	taste_message = "misguided choices"
 	custom_metabolism = 0.01
 
+	does_glow = TRUE
+	max_glow_power = 1
+	glow_increment = 0.2
+
 /datum/reagent/phosphorus/on_diona_digest(mob/living/M)
 	..()
 	M.adjustBruteLoss(-REM)
@@ -508,6 +512,15 @@
 	color = "#C8A5DC" // rgb: 200, 165, 220
 	overdose = REAGENTS_OVERDOSE
 	taste_message = "metal"
+/datum/reagent/iron/on_tycheon_digest(mob/living/M)
+	..()
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		var/obj/item/organ/internal/brain/tycheon/core = H.organs_by_name[O_BRAIN]
+		if(core)
+			core.damage -= 1
+		H.reagents.remove_reagent("iron", 1)
+	return FALSE
 
 /datum/reagent/gold
 	name = "Gold"
@@ -532,6 +545,10 @@
 	reagent_state = SOLID
 	color = "#B8B8C0" // rgb: 184, 184, 192
 	taste_message = "bonehurting juice"
+
+	does_glow = TRUE
+	max_glow_power = 2
+	glow_increment = 0.3
 
 /datum/reagent/uranium/on_general_digest(mob/living/M)
 	..()
@@ -722,16 +739,6 @@
 ////////////////////////////////////////////// Chemlights ///////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/datum/reagent/luminophore_temp //Temporary holder of vars used in mixing colors
-	name = "Luminophore"
-	id = "luminophore"
-	description = "Uh, some kind of drink."
-	reagent_state = LIQUID
-	nutriment_factor = 0.2
-	color = "#ffffff"
-	custom_metabolism = 0.2
-	taste_message = "bitterness"
-
 /datum/reagent/luminophore
 	name = "Luminophore"
 	id = "luminophore"
@@ -740,6 +747,10 @@
 	color = "#ffffff"
 	custom_metabolism = 0.2
 	taste_message = "bitterness"
+
+	does_glow = TRUE
+	max_glow_power = 3
+	glow_increment = 0.5
 
 /datum/reagent/luminophore/on_general_digest(mob/living/M)
 	..()
@@ -887,7 +898,8 @@
 	data = 1
 	color = "#FFA8E4" // rgb: 255, 168, 228
 
-/datum/reagent/ectoplasm/on_mob_life(mob/living/M)
+/datum/reagent/ectoplasm/on_general_digest(mob/living/M)
+	..()
 	M.hallucination += 1
 	M.make_jittery(2)
 	switch(data)
@@ -932,9 +944,8 @@
 	color = "#C80064" // rgb: 200,0, 100
 	custom_metabolism = REAGENTS_METABOLISM * 10
 
-/datum/reagent/water/unholywater/on_mob_life(mob/living/M)
-	if(!..())
-		return
+/datum/reagent/water/unholywater/on_general_digest(mob/living/M)
+	..()
 	if(iscultist(M) && prob(10))
 		switch(data)
 			if(1 to 30)
@@ -1001,13 +1012,6 @@
 	else if(istype(O, /obj/item/weapon/storage/fancy/black_candle_box))
 		var/obj/item/weapon/storage/fancy/black_candle_box/G = O
 		G.teleporter_delay-- // Basically removes half a minute of delay.
-
-/datum/chemical_reaction/unholywater
-	name = "Unholy Water"
-	id = "unholywater"
-	result = "unholywater"
-	required_reagents = list("water" = 1, "ectoplasm" = 1)
-	result_amount = 1 		// Because rules of logic shouldn't apply here either.
 
 /proc/pretty_string_from_reagent_list(list/reagent_list)
 	//Convert reagent list to a printable string for logging etc

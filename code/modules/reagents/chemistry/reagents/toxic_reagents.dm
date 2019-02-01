@@ -1,4 +1,3 @@
-
 /datum/reagent/toxin
 	name = "Toxin"
 	id = "toxin"
@@ -146,10 +145,25 @@
 	color = "#ef0097" // rgb: 231, 27, 0
 	toxpwr = 3
 
+	does_glow = TRUE
+	max_glow_power = 1
+	glow_increment = 0.2
+
 /datum/reagent/toxin/phoron/on_general_digest(mob/living/M)
 	..()
 	if(holder.has_reagent("inaprovaline"))
 		holder.remove_reagent("inaprovaline", 2 * REM)
+
+/datum/reagent/toxin/phoron/on_tycheon_digest(mob/living/M)
+	..()
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		if(!H.regenerating_bodypart)
+			H.reagents.remove_reagent("phoron", 1)
+			H.regenerating_bodypart = H.find_damaged_bodypart()
+		if(H.regenerating_bodypart)
+			H.regen_bodyparts(0, FALSE)
+	return FALSE
 
 /datum/reagent/toxin/phoron/reaction_obj(var/obj/O, var/volume)
 	src = null
@@ -603,7 +617,6 @@ datum/reagent/toxin/potassium_chloride
 	. = ..()
 	holder = null
 
-
 /datum/reagent/mulligan
 	name = "Mulligan Toxin"
 	id = "mulligan"
@@ -618,8 +631,8 @@ datum/reagent/toxin/potassium_chloride
 		return
 	to_chat(H,"<span class='warning'><b>You grit your teeth in pain as your body rapidly mutates!</b></span>")
 	H.visible_message("<b>[H]</b> suddenly transforms!")
-	H.gender = pick(MALE, FEMALE)
-	if(H.gender == MALE)
+	H.gender = pick(H.species.genders)
+	if(H.gender != FEMALE)
 		H.name = pick(first_names_male)
 	else
 		H.name = pick(first_names_female)

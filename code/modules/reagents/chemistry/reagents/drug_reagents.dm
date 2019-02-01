@@ -44,9 +44,8 @@
 	restrict_species = list(IPC, DIONA)
 	var/alert_time = 0
 
-/datum/reagent/nicotine/on_mob_life(mob/living/M)
-	if(!..())
-		return
+/datum/reagent/nicotine/on_general_digest(mob/living/M)
+	..()
 	if(volume >= 0.85)
 		if(world.time > (alert_time + 90 SECONDS))
 			to_chat(M, pick("<span class='danger'>You feel dizzy and weak</span>"))
@@ -61,7 +60,6 @@
 		if(prob(80))
 			M.adjustOxyLoss(1)
 			M.drowsyness = min(40, (M.drowsyness + 2))
-	return TRUE
 
 /datum/reagent/toxin/mindbreaker
 	name = "Mindbreaker Toxin"
