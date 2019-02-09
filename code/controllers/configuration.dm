@@ -163,6 +163,8 @@
 	var/allow_donators = 0
 	var/donate_info_url = 0
 
+	var/overmap_enabled = FALSE
+
 	// The object used for the clickable stat() button.
 	var/obj/effect/statclick/statclick
 
@@ -575,6 +577,9 @@
 
 				if("donate_info_url")
 					config.donate_info_url = value
+
+				if("overmap_enabled")
+					overmap_enabled = TRUE
 
 				else
 					log_misc("Unknown setting in configuration: '[name]'")

@@ -27,6 +27,7 @@
 #define ZLEVEL_DERELICT		4
 #define ZLEVEL_ASTEROID 	5
 #define ZLEVEL_EMPTY	 	6
+#define ZLEVEL_OVERMAP		8
 
 #define TRANSITIONEDGE		7 //Distance from edge to move to another z-level
 
