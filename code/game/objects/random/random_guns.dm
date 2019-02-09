@@ -34,7 +34,7 @@
 						prob(10);/obj/item/weapon/gun/energy/toxgun,\
 						prob(10);/obj/item/weapon/gun/energy/laser,\
 						prob(8);/obj/item/weapon/gun/energy/ionrifle,\
-						prob(4);/obj/item/weapon/gun/projectile/automatic/l10c,\
+						prob(4);/obj/item/weapon/gun/projectile/automatic/twohanded/l10c,\
 						prob(4);/obj/item/weapon/gun/energy/xray,\
 						prob(4);/obj/item/weapon/gun/energy/gun,\
 						prob(4);/obj/item/weapon/gun/energy/decloner,\
@@ -81,7 +81,7 @@
 						prob(15);/obj/item/weapon/gun/projectile/revolver/doublebarrel/dungeon/sawn_off,\
 						prob(10);/obj/item/weapon/gun/projectile/shotgun,\
 						prob(7);/obj/item/weapon/gun/projectile/shotgun/combat,\
-						prob(5);/obj/item/weapon/gun/projectile/automatic/bulldog\
+						prob(5);/obj/item/weapon/gun/projectile/automatic/twohanded/bulldog\
 					)
 
 /obj/random/guns/projectile_assault
@@ -96,12 +96,12 @@
 						prob(15);/obj/item/weapon/gun/projectile/automatic,\
 						prob(14);/obj/item/weapon/gun/projectile/automatic/c20r,\
 						prob(12);/obj/item/weapon/gun/projectile/automatic/mini_uzi,\
-						prob(10);/obj/item/weapon/gun/projectile/automatic/bar,\
-						prob(8);/obj/item/weapon/gun/projectile/automatic/tommygun,\
+						prob(10);/obj/item/weapon/gun/projectile/automatic/twohanded/bar,\
+						prob(8);/obj/item/weapon/gun/projectile/automatic/twohanded/tommygun,\
 						prob(8);/obj/item/weapon/gun/projectile/automatic/a28,\
 						prob(8);/obj/item/weapon/gun/projectile/automatic/a28/nonlethal,\
 						prob(5);/obj/item/weapon/gun/projectile/heavyrifle,\
-						prob(5);/obj/item/weapon/gun/projectile/automatic/l6_saw\
+						prob(5);/obj/item/weapon/gun/projectile/automatic/twohanded/l6_saw\
 					)
 
 /obj/random/guns/projectile_grenade

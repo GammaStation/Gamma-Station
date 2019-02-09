@@ -3,6 +3,7 @@
 	desc = "a basic weapon designed kill with concentrated energy bolts."
 	icon = 'icons/obj/gun.dmi'
 	icon_state = "laser"
+	wielded_state = "laser"
 	item_state = null	//so the human update icon uses the icon_state instead.
 	w_class = 3.0
 	m_amt = 2000
@@ -129,6 +130,7 @@ obj/item/weapon/gun/energy/laser/retro
 	desc = "With the L.A.S.E.R. cannon, the lasing medium is enclosed in a tube lined with uranium-235 and subjected to high neutron flux in a nuclear reactor core. This incredible technology may help YOU achieve high excitation rates with small laser volumes!"
 	icon_state = "lasercannon"
 	item_state = null
+	wielded_state = "lasercannon"
 	origin_tech = "combat=4;materials=3;powerstorage=3"
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/heavy)
 

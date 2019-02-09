@@ -57,6 +57,8 @@
 	var/hitscan = 0	// whether the projectile should be hitscan
 	var/step_delay = 1	// the delay between iterations if not a hitscan projectile
 
+	var/miss_chance
+
 	// effect types to be used
 	var/list/tracer_list = null // if set to list, it will be gathering all projectile effects into list and delete them after impact
 	var/muzzle_type
@@ -182,6 +184,7 @@
 			var/obj/item/weapon/gun/daddy = shot_from //Kinda balanced by fact you need like 2 seconds to aim
 			if (daddy.target && original in daddy.target) //As opposed to no-delay pew pew
 				miss_modifier += -60
+		miss_modifier += miss_chance
 		if(distance > 1)
 			def_zone = get_zone_with_miss_chance(def_zone, M, miss_modifier)
 
@@ -226,9 +229,15 @@
 
 /obj/item/projectile/proc/add_logs(mob/M, miss)
 	if(silenced)
-		to_chat(M, "<span class='userdanger'>You've been shot in the [parse_zone(def_zone)] by the [src.name]!</span>")
+		if(miss)
+			to_chat(M, "<span class='userdanger'>You've been nearly shot by the [src.name]!</span>")
+		else
+			to_chat(M, "<span class='userdanger'>You've been shot in the [parse_zone(def_zone)] by the [src.name]!</span>")
 	else
-		M.visible_message("<span class='userdanger'>[M.name] is hit by the [src.name] in the [parse_zone(def_zone)]!</span>")
+		if(miss)
+			M.visible_message("<span class='userdanger'>[M.name] is nearly hit by the [src.name]!</span>")
+		else
+			M.visible_message("<span class='userdanger'>[M.name] is hit by the [src.name] in the [parse_zone(def_zone)]!</span>")
 
 	if(firer)
 		if(miss)

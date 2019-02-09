@@ -1,3 +1,4 @@
+#define PUMP_CLICK_CD 10
 /obj/item/weapon/gun/projectile/shotgun
 	name = "shotgun"
 	desc = "Useful for sweeping alleys."
@@ -22,6 +23,7 @@
 		to_chat(user, "<span class='notice'>You load [num_loaded] shell\s into \the [src]!</span>")
 		A.update_icon()
 		update_icon()
+	..()
 
 /obj/item/weapon/gun/projectile/shotgun/process_chamber()
 	return ..(0, 0)
@@ -29,13 +31,6 @@
 /obj/item/weapon/gun/projectile/shotgun/chamber_round()
 	return
 
-/obj/item/weapon/gun/projectile/shotgun/attack_self(mob/living/user)
-	if(recentpump)	return
-	pump(user)
-	recentpump = 1
-	spawn(10)
-		recentpump = 0
-	return
 
 /obj/item/weapon/gun/projectile/shotgun/classic
 	icon_state = "oldshotgun"
@@ -44,6 +39,8 @@
 	icon_state = "shotgun_tg"
 
 /obj/item/weapon/gun/projectile/shotgun/proc/pump(mob/M)
+	recentpump = TRUE
+	addtimer(CALLBACK(src, .proc/lift_pump_cooldown), PUMP_CLICK_CD)
 	playsound(M, 'sound/weapons/shotgunpump.ogg', 60, 1)
 	pumped = 0
 	if(chambered)//We have a shell in the chamber
@@ -55,6 +52,9 @@
 	chambered = AC
 	update_icon()	//I.E. fix the desc
 	return 1
+
+/obj/item/weapon/gun/projectile/shotgun/proc/lift_pump_cooldown()
+	recentpump = FALSE
 
 /obj/item/weapon/gun/projectile/shotgun/examine(mob/user)
 	..()
@@ -73,6 +73,7 @@
 	desc = "A true classic."
 	icon_state = "dshotgun"
 	item_state = "shotgun"
+	wielded_state = "dshotgun"
 	w_class = 4.0
 	force = 10
 	flags =  CONDUCT
@@ -233,7 +234,9 @@
 			return 1
 		else if (magazine)
 			to_chat(user, "<span class='notice'>There's already a clip in \the [src].</span>")
-	return 0
+	..()
 
 /obj/item/weapon/gun/projectile/shotgun/dungeon
 	mag_type = /obj/item/ammo_box/magazine/internal/shot/dungeon
+
+#undef PUMP_CLICK_CD

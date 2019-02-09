@@ -295,3 +295,8 @@
 /datum/action/item_action/adjust_helmet
 	name = "adjust helmet"
 	action_procname = "toggle"
+
+/datum/action/item_action/select_fire
+	name = "select fire mode"
+	action_procname = "select_fire"
+

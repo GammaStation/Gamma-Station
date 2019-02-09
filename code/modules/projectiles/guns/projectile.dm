@@ -66,25 +66,38 @@
 			return 1
 		else if (magazine)
 			to_chat(user, "<span class='notice'>There's already a magazine in \the [src].</span>")
-	return 0
+	..()
 
 /obj/item/weapon/gun/projectile/can_fire()
 	if(chambered && chambered.BB)
 		return 1
 
-/obj/item/weapon/gun/projectile/attack_self(mob/living/user)
-	if (magazine)
+/obj/item/weapon/gun/projectile/attack_hand(mob/living/user)
+	if(loc != user)//Picking it up
+		return ..()
+	if (magazine && !istype(magazine, /obj/item/ammo_box/magazine/internal))
 		magazine.loc = get_turf(src.loc)
 		user.put_in_hands(magazine)
 		magazine.update_icon()
 		magazine = null
 		update_icon()
 		to_chat(user, "<span class='notice'>You pull the magazine out of \the [src]!</span>")
-		return 1
+		return
 	else
 		to_chat(user, "<span class='notice'>There's no magazine in \the [src].</span>")
 	update_icon()
-	return 0
+
+/obj/item/weapon/gun/projectile/verb/drop_magazine()
+	set name = "RemoveMagazine"
+	set category = "Object"
+	set src in usr
+
+	if(!istype(usr, /mob/living))
+		return
+	if(usr.incapacitated())
+		return
+
+	attack_hand(usr)
 
 /obj/item/weapon/gun/projectile/Destroy()
 	qdel(magazine)

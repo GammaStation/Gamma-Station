@@ -7,6 +7,10 @@
 	origin_tech = "combat=2;materials=2;syndicate=8"
 	mag_type = /obj/item/ammo_box/magazine/sm45
 	fire_sound = 'sound/weapons/Gunshot_silenced.ogg'
+	miss_chance = 0
+
+/obj/item/weapon/gun/projectile/automatic/silenced/can_be_wielded()
+	return FALSE
 
 /obj/item/weapon/gun/projectile/sigi
 	name = "\improper pistol"
@@ -17,6 +21,7 @@
 	mag_type = /obj/item/ammo_box/magazine/m9mmr_2
 	var/mag_type2 = /obj/item/ammo_box/magazine/m9mm_2
 	fire_sound = 'sound/weapons/Gunshot.ogg'
+	miss_chance = 0
 
 	var/mag = null
 
@@ -33,6 +38,9 @@
 
 /obj/item/weapon/gun/projectile/sigi/isHandgun()
 	return 1
+
+/obj/item/weapon/gun/projectile/sigi/can_be_wielded()
+	return FALSE
 
 /obj/item/weapon/gun/projectile/sigi/update_icon(load = 0)
 	..()
@@ -89,6 +97,10 @@
 	force = 14.0
 	mag_type = /obj/item/ammo_box/magazine/m50
 	fire_sound = 'sound/weapons/guns/deagle_shot.ogg'
+	miss_chance = 0
+
+/obj/item/weapon/gun/projectile/automatic/deagle/can_be_wielded()
+	return FALSE
 
 /obj/item/weapon/gun/projectile/automatic/deagle/isHandgun()
 	return 1
@@ -134,6 +146,7 @@
 	fire_sound = 'sound/effects/Explosion1.ogg'
 	origin_tech = "combat=3"
 	mag_type = /obj/item/ammo_box/magazine/m75
+	miss_chance = 0
 
 /obj/item/weapon/gun/projectile/automatic/gyropistol/process_chamber(var/eject_casing = 0, var/empty_chamber = 1)
 	..()
@@ -159,6 +172,10 @@
 	silenced = 0
 	origin_tech = "combat=2;materials=2;syndicate=2"
 	mag_type = /obj/item/ammo_box/magazine/m9mm
+	miss_chance = 0
+
+/obj/item/weapon/gun/projectile/automatic/pistol/can_be_wielded()
+	return FALSE
 
 /obj/item/weapon/gun/projectile/automatic/pistol/isHandgun()
 	return 1
@@ -188,6 +205,10 @@
 	mag_type = /obj/item/ammo_box/magazine/c45r
 	var/mag_type2 = /obj/item/ammo_box/magazine/c45m
 	fire_sound = 'sound/weapons/guns/colt1911_shot.ogg'
+	miss_chance = 0
+
+/obj/item/weapon/gun/projectile/automatic/colt1911/can_be_wielded()
+	return FALSE
 
 /obj/item/weapon/gun/projectile/automatic/colt1911/isHandgun()
 	return 1
@@ -241,6 +262,10 @@
 	icon_state = "at7"
 	fire_sound = 'sound/weapons/guns/at7_shot.wav'
 	mag_type = /obj/item/ammo_box/magazine/at7_45
+	miss_chance = 0
+
+/obj/item/weapon/gun/projectile/sec_pistol/can_be_wielded()
+	return FALSE
 
 /obj/item/weapon/gun/projectile/sec_pistol/thunderfield_pistol //Thunderfield stuff
 	name = "\improper self-defense pistol"
@@ -292,6 +317,10 @@
 	item_state = "colt"
 	fire_sound = 'sound/weapons/guns/acm38_shot.ogg'
 	mag_type = /obj/item/ammo_box/magazine/acm38_38
+	miss_chance = 0
+
+/obj/item/weapon/gun/projectile/sec_pistol/acm38/can_be_wielded()
+	return FALSE
 
 /obj/item/weapon/gun/projectile/sec_pistol/update_icon(load = 0)
 	if(load)

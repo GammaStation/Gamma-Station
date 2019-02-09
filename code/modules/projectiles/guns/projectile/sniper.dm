@@ -3,6 +3,7 @@
 	desc = "A portable anti-armour rifle. Originally designed to used against armoured exosuits, it is capable of punching through windows with ease. Fires armor piercing 14.5mm shells."
 	icon_state = "heavyrifle"
 	item_state = "l6closednomag"
+	wielded_state = "heavyrifle"
 	w_class = 5
 	force = 10
 	slot_flags = SLOT_BACK
@@ -39,8 +40,11 @@
 		chambered = AC
 		update_icon()	//I.E. fix the desc
 		A.update_icon()
+	..()
 
-/obj/item/weapon/gun/projectile/heavyrifle/attack_self(mob/user)
+/obj/item/weapon/gun/projectile/heavyrifle/attack_hand(mob/user)
+	if(loc != user)//Pick it up
+		..()
 	bolt_open = !bolt_open
 	if(bolt_open)
 		playsound(src.loc, 'sound/weapons/heavybolt_out.ogg', 50, 1)

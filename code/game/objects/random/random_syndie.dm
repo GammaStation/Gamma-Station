@@ -4,16 +4,16 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "soapsyndie"
 	return pick(\
-	prob(2);/obj/item/weapon/gun/projectile/automatic/l6_saw,\
+	prob(2);/obj/item/weapon/gun/projectile/automatic/twohanded/l6_saw,\
 	prob(3);/obj/item/weapon/antag_spawner/borg_tele,\
 	prob(3);/obj/item/weapon/gun/projectile/revolver/rocketlauncher,\
-	prob(4);/obj/item/weapon/gun/projectile/automatic/a74,\
+	prob(4);/obj/item/weapon/gun/projectile/automatic/twohanded/a74,\
 	prob(5);/obj/item/weapon/storage/box/syndie_kit/imp_uplink,\
 	prob(5);/obj/item/weapon/storage/box/syndicate,\
 	prob(5);/obj/item/toy/syndicateballoon,\
 	prob(5);/obj/item/weapon/gun/projectile/heavyrifle,\
 	prob(6);/obj/item/weapon/shield/energy,\
-	prob(6);/obj/item/weapon/gun/projectile/automatic/bulldog,\
+	prob(6);/obj/item/weapon/gun/projectile/automatic/twohanded/bulldog,\
 	prob(7);/obj/item/device/radio/beacon/syndicate,\
 	prob(7);/obj/item/ammo_box/magazine/m762,\
 	prob(8);/obj/item/weapon/aiModule/syndicate,\

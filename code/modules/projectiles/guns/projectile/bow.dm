@@ -10,6 +10,9 @@
 	sharp = 1
 	edge = 0
 
+/obj/item/weapon/arrow/can_be_wielded()
+	return FALSE
+
 /obj/item/weapon/arrow/proc/removed() //Helper for metal rods falling apart.
 	return
 
@@ -55,6 +58,9 @@
 	var/obj/item/weapon/arrow = null      // Nocked arrow.
 	var/obj/item/weapon/stock_parts/cell/cell = null  // Used for firing special projectiles like rods.
 
+/obj/item/weapon/crossbow/can_be_wielded()
+	return FALSE
+
 /obj/item/weapon/crossbow/attackby(obj/item/W, mob/user)
 	if(!arrow)
 		if (istype(W,/obj/item/weapon/arrow))
@@ -80,6 +86,7 @@
 					arrow.icon_state = "metal-rod-superheated"
 					cell.use(500)
 			return
+	..()
 
 	if(istype(W, /obj/item/weapon/stock_parts/cell))
 		if(!cell)

@@ -445,6 +445,7 @@
 	icon_state = "[initial(icon_state)]-[round(ammo_count(),10)]"
 
 /obj/item/ammo_box/magazine/borg45/attackby(obj/item/A, mob/user)
+	..()
 	if (istype(A, /obj/item/weapon/gun/projectile/automatic/borg))
 		var/obj/item/weapon/gun/projectile/automatic/borg/SMG = A
 		if (!SMG.magazine)
@@ -457,7 +458,7 @@
 			return 1
 		else if (SMG.magazine)
 			to_chat(user, "<span class='notice'>There's already a magazine in \the [src].</span>")
-	return 0
+	..()
 
 /obj/item/ammo_box/magazine/m12g
 	name = "shotgun magazine (12g buckshot)"

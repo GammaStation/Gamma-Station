@@ -39,8 +39,11 @@
 		chambered = AC
 		update_icon()	//I.E. fix the desc
 		A.update_icon()
+	..()
 
-/obj/item/weapon/gun/projectile/m79/attack_self(mob/user)
+/obj/item/weapon/gun/projectile/m79/attack_hand(mob/user)
+	if(loc != user)
+		..()
 	open = !open
 	if(open)
 		playsound(src.loc, 'sound/weapons/guns/m79_out.ogg', 50, 1)

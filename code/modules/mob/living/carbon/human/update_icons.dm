@@ -936,7 +936,6 @@ Please contact me on #coderbus IRC. ~Carn x
 		r_hand.screen_loc = ui_rhand
 		if(client && hud_used)
 			client.screen += r_hand
-
 		var/t_state = r_hand.item_state
 		if(!t_state)
 			t_state = r_hand.icon_state
@@ -952,7 +951,6 @@ Please contact me on #coderbus IRC. ~Carn x
 			drop_r_hand()
 
 	apply_overlay(R_HAND_LAYER)
-
 
 /mob/living/carbon/human/update_inv_l_hand()
 	remove_overlay(L_HAND_LAYER)

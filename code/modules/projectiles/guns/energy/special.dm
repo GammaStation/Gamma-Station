@@ -3,6 +3,7 @@
 	desc = "A man portable anti-armor weapon designed to disable mechanical threats."
 	icon_state = "ionrifle"
 	item_state = "ionrifle"
+	wielded_state = "ionrifle"
 	origin_tech = "combat=2;magnets=4"
 	w_class = 4.0
 	flags =  CONDUCT
@@ -167,6 +168,7 @@ obj/item/weapon/gun/energy/staff/focus
 	icon = 'icons/obj/gun.dmi'
 	icon_state = "w2500e"
 	item_state = "w2500e"
+	wielded_state = "w2500e"
 	origin_tech = "combat=6;materials=5;powerstorage=4"
 	ammo_type = list(/obj/item/ammo_casing/energy/sniper)
 	slot_flags = SLOT_BACK
@@ -189,9 +191,13 @@ obj/item/weapon/gun/energy/staff/focus
 			if(ratio > 100)
 				icon_state = "[initial(icon_state)]100"
 				item_state = "[initial(item_state)]100"
+				if(wielded_state)
+					wielded_state = "[initial(item_state)]100"
 			else
 				icon_state = "[initial(icon_state)][ratio]"
 				item_state = "[initial(item_state)][ratio]"
+				if(wielded_state)
+					wielded_state = "[initial(item_state)]100"
 	return
 
 /obj/item/weapon/gun/energy/sniperrifle/dropped(mob/user)
