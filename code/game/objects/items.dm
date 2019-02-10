@@ -206,11 +206,10 @@
 	if(ismob(loc))
 		var/mob/m = loc
 		m.drop_from_inventory(src)
-	if(islist(actions_types))
-		QDEL_LIST(actions_types)
+	if(islist(actions))
+		QDEL_LIST(actions)
 	else
-		QDEL_NULL(actions_types)
-	QDEL_LIST(actions)
+		QDEL_NULL(actions)
 	return ..()
 
 /obj/item/ex_act(severity)
