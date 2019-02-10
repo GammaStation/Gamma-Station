@@ -428,6 +428,8 @@
 		var/obj/mecha/M = the_target
 		if (M.occupant)
 			return 0
+	if (istype(the_target, /obj/spacepod))
+		return TRUE
 	return 1
 
 /mob/living/simple_animal/say(var/message)

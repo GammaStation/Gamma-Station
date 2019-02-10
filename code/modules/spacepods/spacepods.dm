@@ -98,7 +98,7 @@
 	update_icons()
 
 
-/obj/spacepod/New()
+/obj/spacepod/atom_init()
 	. = ..()
 	if(!pod_overlays)
 		pod_overlays = new/list(2)
@@ -128,6 +128,7 @@
 	cargo_hold.storage_slots = 0	//You need to install cargo modules to use it.
 	cargo_hold.max_w_class = 5		//fit almost anything
 	cargo_hold.max_combined_w_class = 0 //you can optimize your stash with larger items
+	spacepod_list += src
 
 /obj/spacepod/Destroy()
 	if(equipment_system.cargo_system)
@@ -148,6 +149,7 @@
 		for(var/mob/M in passengers)
 			M.forceMove(get_turf(src))
 			passengers -= M
+	spacepod_list -= src
 	return ..()
 
 /obj/spacepod/process()

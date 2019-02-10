@@ -65,6 +65,9 @@
 		for(var/obj/mecha/M in mechas_list)
 			if(get_dist(M, src) <= vision_range && can_see(src, M, vision_range))
 				L += M
+		for(var/obj/spacepod/S in spacepod_list)
+			if(get_dist(S, src) <= vision_range && can_see(src, S, vision_range))
+				L += S
 	else
 		var/list/Objects = oview(vision_range, src)
 		L += Objects
@@ -120,6 +123,8 @@
 			if(M.occupant)//Just so we don't attack empty mechs
 				if(CanAttack(M.occupant))
 					return 1
+		if(istype(the_target, /obj/spacepod))
+			return TRUE
 	return 0
 
 /mob/living/simple_animal/hostile/proc/GiveTarget(new_target)//Step 4, give us our selected target
