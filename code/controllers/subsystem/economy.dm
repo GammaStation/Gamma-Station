@@ -25,7 +25,7 @@ var/datum/subsystem/economy/SSeconomy
 		return 2
 
 	var/datum/feed_channel/newChannel = new /datum/feed_channel
-	newChannel.channel_name = "Tau Ceti Daily"
+	newChannel.channel_name = "Gamma Andromedae Daily"
 	newChannel.author = "CentComm Minister of Information"
 	newChannel.locked = 1
 	newChannel.is_admin_channel = 1
