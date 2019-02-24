@@ -27,7 +27,7 @@
 		user.SetNextMove(CLICK_CD_INTERACT)
 		req_one_access = list()
 		playsound(src.loc, "sparks", 100, 1)
-	return src.attack_hand(user)
+	return attack_hand(user)
 
 /obj/machinery/door_control/attack_hand(mob/user)
 	. = ..()

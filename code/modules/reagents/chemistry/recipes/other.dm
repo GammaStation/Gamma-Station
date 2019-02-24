@@ -210,3 +210,17 @@
 	var/turf/T = get_turf(holder.my_atom)
 	if(istype(T))
 		new /obj/item/stack/sheet/mineral/deuterium(T, created_volume)
+
+/datum/chemical_reaction/coolant
+	name = "Coolant"
+	id = "coolant"
+	result = "coolant"
+	required_reagents = list("tungsten" = 1, "oxygen" = 1, "water" = 1)
+	result_amount = 3
+
+/datum/chemical_reaction/unholywater
+	name = "Unholy Water"
+	id = "unholywater"
+	result = "unholywater"
+	required_reagents = list("water" = 1, "ectoplasm" = 1)
+	result_amount = 1 		// Because rules of logic shouldn't apply here either.

@@ -12,7 +12,7 @@
 	access = list() 			//See get_access()
 	minimal_player_age = 14
 	minimal_player_ingame_minutes = 10000
-	restricted_species = list(SKRELL, UNATHI, TAJARAN, DIONA, IPC)
+	restricted_species = list(SKRELL, UNATHI, TAJARAN, DIONA, IPC, TYCHEON)
 
 /datum/job/captain/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return 0

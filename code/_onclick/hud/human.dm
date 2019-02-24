@@ -420,8 +420,24 @@
 	mymob.zone_sel.overlays.Cut()
 	mymob.zone_sel.overlays += image('icons/mob/zone_sel.dmi', "[mymob.zone_sel.selecting]")
 
+	holomap_obj = new /obj/screen/holomap()
+	holomap_obj.name = "holomap"
+	holomap_obj.icon = null
+	holomap_obj.icon_state = ""
+	holomap_obj.screen_loc = ui_holomap
+	holomap_obj.plane = HUD_PLANE
+	holomap_obj.layer = HUD_LAYER
+	holomap_obj.color = ui_color
+	holomap_obj.mouse_opacity = 0
+	holomap_obj.alpha = 255
+
 	if(mymob.leap_icon)
 		src.adding += mymob.leap_icon
+
+	if(mymob.toggle_sphere_icon)
+		adding += mymob.toggle_sphere_icon
+	if(mymob.metal_bend_icon)
+		adding += mymob.metal_bend_icon
 
 	//Handle the gun settings buttons
 	mymob.gun_setting_icon = new /obj/screen/gun/mode(null)
@@ -446,7 +462,7 @@
 
 	mymob.client.screen = list()
 
-	mymob.client.screen += list( mymob.throw_icon, mymob.zone_sel, mymob.internals, mymob.healths, mymob.healthdoll, mymob.pullin, mymob.gun_setting_icon, lingchemdisplay, lingstingdisplay) //, mymob.hands, mymob.rest, mymob.sleep) //, mymob.mach )
+	mymob.client.screen += list( mymob.throw_icon, mymob.zone_sel, mymob.internals, mymob.healths, mymob.healthdoll, mymob.pullin, mymob.gun_setting_icon, lingchemdisplay, lingstingdisplay, holomap_obj) //, mymob.hands, mymob.rest, mymob.sleep) //, mymob.mach )
 	mymob.client.screen += src.adding + src.hotkeybuttons
 	mymob.client.screen += mymob.client.void
 	inventory_shown = 0

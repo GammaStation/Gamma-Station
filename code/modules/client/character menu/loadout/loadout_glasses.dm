@@ -39,3 +39,15 @@
 /datum/gear/eyes/glasses/Jerusalem_Glasses
 	display_name = "Jerusalem Glasses"
 	path = /obj/item/clothing/glasses/jerusalem
+
+/datum/gear/eyes/glasses/eyepatchsec
+	display_name = "security eyepatch HUD"
+	path = /obj/item/clothing/glasses/hud/security/eyepatch
+	cost = 3
+	allowed_roles = list("Star Vigil Commander", "Star Vigil Sergeant", "Star Vigil Officer")
+
+/datum/gear/eyes/glasses/eyepatchhealth
+	display_name = "health scanner eyepatch HUD"
+	path = /obj/item/clothing/glasses/hud/health/eyepatch
+	cost = 3
+	allowed_roles = list("Chief Medical Officer", "Medical Doctor", "Paramedic")

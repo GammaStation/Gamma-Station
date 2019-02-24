@@ -79,8 +79,8 @@
 		else
 			dat += "Switchblade<br>"
 
-		dat += "(25 Influence) "
-		if(points >= 25)
+		dat += "(35 Influence) "
+		if(points >= 35)
 			dat += "<a href='?src=\ref[src];purchase=pistol'>9mm Pistol</a><br>"
 		else
 			dat += "9mm Pistol<br>"
@@ -91,8 +91,8 @@
 		else
 			dat += "9mm Ammo<br>"
 
-		dat += "(50 Influence) "
-		if(points >= 50)
+		dat += "(70 Influence) "
+		if(points >= 70)
 			dat += "<a href='?src=\ref[src];purchase=uzi'>Mini Uzi</a><br>"
 		else
 			dat += "Mini Uzi<br>"
@@ -118,14 +118,11 @@
 		else
 			dat += "C4 Explosive<br>"
 
-		if(free_pen)
-			dat += "(ONE FREE) "
+		dat += "(5 Influence) "
+		if(points >= 5)
+			dat += "<a href='?src=\ref[src];purchase=drugs'>Happy pills</a><br>"
 		else
-			dat += "(50 Influence) "
-		if(free_pen || (points >= 50))
-			dat += "<a href='?src=\ref[src];purchase=pen'>Recruitment Pen</a><br>"
-		else
-			dat += "Recruitment Pen<br>"
+			dat += "Happy pills<br>"
 
 		var/tool_cost = (boss ? 10 : 30)
 		var/gangtooldesc = "Promote a Gangster ([3-gang_bosses] left)."
@@ -186,17 +183,17 @@
 					item_type = /obj/item/weapon/switchblade
 					points = 10
 			if("pistol")
-				if(points >= 25)
+				if(points >= 35)
 					item_type = /obj/item/weapon/gun/projectile/automatic/pistol
-					points = 25
+					points = 35
 			if("9mmammo")
 				if(points >= 10)
 					item_type = /obj/item/ammo_box/magazine/m9mm
 					points = 10
 			if("uzi")
-				if(points >= 50)
+				if(points >= 70)
 					item_type = /obj/item/weapon/gun/projectile/automatic/mini_uzi
-					points = 50
+					points = 70
 			if("9mmammoU")
 				if(points >= 20)
 					item_type = /obj/item/ammo_box/magazine/uzim9mm
@@ -205,14 +202,10 @@
 				if(points >= 10)
 					item_type = /obj/item/weapon/plastique
 					points = 10
-			if("pen")
-				if(free_pen)
-					item_type = /obj/item/weapon/pen/gang
-					free_pen = 0
-					points = 0
-				else if(points >= 50)
-					item_type = /obj/item/weapon/pen/gang
-					points = 50
+			if("drugs")
+				if(points >= 5)
+					item_type = /obj/item/weapon/reagent_containers/pill/happy
+					points = 5
 			if("gangtool")
 				var/tool_cost = (boss ? 10 : 30)
 				if(points >= tool_cost)
@@ -266,12 +259,12 @@
 				if(outfits > 0)
 					ticker.mode.gang_outfit(usr,src,gang)
 					outfits -= 1
-			if("ping")
-				ping_gang(usr)
+			//if("ping")
+				//ping_gang(usr)
 	attack_self(usr)
 
 
-/obj/item/device/gangtool/proc/ping_gang(mob/user)
+/*/obj/item/device/gangtool/proc/ping_gang(mob/user)
 	if(!user)
 		return
 	var/message = sanitize(input(user,"Discreetly send a gang-wide message.","Send Message") as null|text)
@@ -292,7 +285,7 @@
 				to_chat(ganger.current, ping)
 		for(var/mob/M in dead_mob_list)
 			to_chat(M, ping)
-		log_game("[key_name(user)] Messaged [gang_name(gang)] Gang ([gang]): [sanitize(message)].")
+		log_game("[key_name(user)] Messaged [gang_name(gang)] Gang ([gang]): [sanitize(message)].")*/
 
 
 /obj/item/device/gangtool/proc/register_device(mob/user)
@@ -302,7 +295,7 @@
 			to_chat(user, "<span class='warning'>[bicon(src)] Error: All positions filled.</span>")
 			return
 
-	if(jobban_isbanned(user, ROLE_REV) || jobban_isbanned(user, "Syndicate") || role_available_in_minutes(user, ROLE_REV))
+	if(jobban_isbanned(user, ROLE_GANG) || role_available_in_minutes(user, ROLE_GANG))
 		to_chat(user, "<span class='warning'>[bicon(src)] ACCESS DENIED: Blacklisted user.</span>")
 		return 0
 

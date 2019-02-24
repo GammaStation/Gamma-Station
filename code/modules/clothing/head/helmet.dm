@@ -4,7 +4,7 @@
 	icon_state = "helmet"
 	flags = HEADCOVERSEYES | THICKMATERIAL
 	item_state = "helmet"
-	armor = list(melee = 50, bullet = 60, laser = 50,energy = 20, bomb = 35, bio = 0, rad = 0)
+	armor = list(melee = 50, bullet = 60, laser = 50,energy = 20, bomb = 35, bio = 0, rad = 0, telepathy = 10)
 	flags_inv = HIDEEARS|HIDEEYES
 	cold_protection = HEAD
 	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
@@ -74,7 +74,7 @@
 	desc = "The hat of the Star Vigil Commander. For showing the officers who's in charge."
 	icon_state = "hoscap"
 	flags = HEADCOVERSEYES
-	armor = list(melee = 80, bullet = 60, laser = 50,energy = 10, bomb = 25, bio = 10, rad = 0)
+	armor = list(melee = 80, bullet = 60, laser = 50,energy = 10, bomb = 25, bio = 10, rad = 0, telepathy = 10)
 	flags_inv = HIDEEARS
 	body_parts_covered = 0
 	siemens_coefficient = 0.8
@@ -93,10 +93,10 @@
 	icon_state = "riot"
 	item_state = "helmet"
 	flags = HEADCOVERSEYES | THICKMATERIAL | HEADCOVERSMOUTH
-	armor = list(melee = 82, bullet = 15, laser = 5,energy = 5, bomb = 5, bio = 2, rad = 0)
+	armor = list(melee = 82, bullet = 15, laser = 5,energy = 5, bomb = 5, bio = 2, rad = 0, telepathy = 10)
 	flags_inv = HIDEEARS
 	siemens_coefficient = 0.3
-	action_button_name = "Adjust helmet visor"
+	actions_types = /datum/action/item_action/attack_self
 	var/up = 0
 
 /obj/item/clothing/head/helmet/band/riot/attack_self()
@@ -129,7 +129,7 @@
 	name = "ablative helmet"
 	desc = "A ablative security helmet that excels in protecting the wearer against energy and laser projectiles."
 	icon_state = "laserproof"
-	armor = list(melee = 10, bullet = 10, laser = 45,energy = 55, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 10, laser = 45,energy = 55, bomb = 0, bio = 0, rad = 0, telepathy = 10)
 	siemens_coefficient = 0
 
 	var/hit_reflect_chance = 40
@@ -144,7 +144,7 @@
 	icon_state = "swat"
 	flags = HEADCOVERSEYES | THICKMATERIAL
 	item_state = "swat"
-	armor = list(melee = 80, bullet = 75, laser = 50,energy = 25, bomb = 50, bio = 10, rad = 0)
+	armor = list(melee = 80, bullet = 75, laser = 50,energy = 25, bomb = 50, bio = 10, rad = 0, telepathy = 10)
 	flags_inv = HIDEEARS|HIDEEYES
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
@@ -156,7 +156,7 @@
 	icon_state = "thunderdome"
 	flags = HEADCOVERSEYES
 	item_state = "thunderdome"
-	armor = list(melee = 80, bullet = 60, laser = 50,energy = 10, bomb = 25, bio = 10, rad = 0)
+	armor = list(melee = 80, bullet = 60, laser = 50,energy = 10, bomb = 25, bio = 10, rad = 0, telepathy = 10)
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 1
@@ -176,7 +176,7 @@
 	icon_state = "swathelm"
 	item_state = "helmet"
 	flags = HEADCOVERSEYES
-	armor = list(melee = 62, bullet = 60, laser = 50,energy = 35, bomb = 10, bio = 2, rad = 0)
+	armor = list(melee = 62, bullet = 60, laser = 50,energy = 35, bomb = 10, bio = 2, rad = 0, telepathy = 10)
 	flags_inv = HIDEEARS
 	siemens_coefficient = 0.7
 
@@ -193,7 +193,7 @@
 	icon_state = "shitcuritron_0"
 	item_state = "helmet"
 	var/on = 0
-	action_button_name = "Toggle Helmet"
+	actions_types = /datum/action/item_action/attack_self
 
 /obj/item/clothing/head/helmet/helmet_of_justice/attack_self(mob/user)
 	on = !on
@@ -209,7 +209,7 @@
 /obj/item/clothing/head/helmet/roman
 	name = "roman helmet"
 	desc = "An ancient helmet made of bronze and leather."
-	armor = list(melee = 25, bullet = 0, laser = 25, energy = 10, bomb = 10, bio = 0, rad = 0)
+	armor = list(melee = 25, bullet = 0, laser = 25, energy = 10, bomb = 10, bio = 0, rad = 0, telepathy = 30)
 	icon_state = "roman"
 	item_state = "roman"
 
@@ -224,7 +224,7 @@
 	desc = "A helmet worn by the commander of a NanoTrasen Emergency Response Team. Has blue highlights."
 	icon_state = "erthelmet_cmd"
 	item_state = "erthelmet_cmd"
-	armor = list(melee = 60, bullet = 65, laser = 55, energy = 30, bomb = 50, bio = 0, rad = 30)
+	armor = list(melee = 60, bullet = 65, laser = 55, energy = 30, bomb = 50, bio = 0, rad = 30, telepathy = 10)
 	flags = HEADCOVERSEYES|BLOCKHAIR
 	flags_inv = HIDEEARS|HIDEEYES
 	siemens_coefficient = 0.7
@@ -234,7 +234,7 @@
 	desc = "A helmet worn by security members of a NanoTrasen Emergency Response Team. Has red highlights."
 	icon_state = "erthelmet_sec"
 	item_state = "erthelmet_sec"
-	armor = list(melee = 65, bullet = 55, laser = 55, energy = 25, bomb = 50, bio = 0, rad = 20)
+	armor = list(melee = 65, bullet = 55, laser = 55, energy = 25, bomb = 50, bio = 0, rad = 20, telepathy = 10)
 	flags = HEADCOVERSEYES|BLOCKHAIR
 	flags_inv = HIDEEARS|HIDEEYES
 	siemens_coefficient = 0.7
@@ -244,7 +244,7 @@
 	desc = "A helmet worn by medical members of a NanoTrasen Emergency Response Team. Has white highlights."
 	icon_state = "erthelmet_med"
 	item_state = "erthelmet_med"
-	armor = list(melee = 55, bullet = 45, laser = 40, energy = 20, bomb = 50, bio = 20, rad = 50)
+	armor = list(melee = 55, bullet = 45, laser = 40, energy = 20, bomb = 50, bio = 20, rad = 50, telepathy = 10)
 	flags = HEADCOVERSEYES|BLOCKHAIR
 	flags_inv = HIDEEARS|HIDEEYES
 	siemens_coefficient = 0.7
@@ -254,7 +254,7 @@
 	desc = "A helmet worn by engineering members of a NanoTrasen Emergency Response Team. Has orange highlights."
 	icon_state = "erthelmet_eng"
 	item_state = "erthelmet_eng"
-	armor = list(melee = 55, bullet = 45, laser = 45, energy = 35, bomb = 50, bio = 0, rad = 80)
+	armor = list(melee = 55, bullet = 45, laser = 45, energy = 35, bomb = 50, bio = 0, rad = 80, telepathy = 10)
 	flags = HEADCOVERSEYES|BLOCKHAIR
 	flags_inv = HIDEEARS|HIDEEYES
 	siemens_coefficient = 0.7

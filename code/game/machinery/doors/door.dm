@@ -99,15 +99,19 @@
 	if(user.last_airflow > world.time - vsc.airflow_delay) //Fakkit
 		return
 	src.add_fingerprint(user)
-	if(!src.requiresID())
-		user = null
+
+	if(!requiresID())
+		if(density)
+			open()
+		else
+			do_animate("deny")
+		return
 
 	if(density)
 		if(allowed(user) || emergency)
 			open()
 		else
 			do_animate("deny")
-	return
 
 /obj/machinery/door/meteorhit(obj/M)
 	src.open()
@@ -115,11 +119,6 @@
 
 /obj/machinery/door/attack_hand(mob/user)
 	return attackby(user, user)
-
-/obj/machinery/door/attack_tk(mob/user)
-	if(requiresID() && !allowed(null))
-		return
-	..()
 
 /obj/machinery/door/attack_ghost(mob/user)
 	if(IsAdminGhost(user))
@@ -142,21 +141,23 @@
 		return 1
 	if(isrobot(user))
 		return //borgs can't attack doors open because it conflicts with their AI-like interaction with them.
-	if(!Adjacent(user))
-		user = null
-	if(!src.requiresID())
-		user = null
+	//if(!Adjacent(user))
+	//	user = null
 	user.SetNextMove(CLICK_CD_INTERACT)
-	if(src.allowed(user))
-		if(src.density)
+	if(!requiresID())
+		if(density)
 			open()
 		else
 			close()
 		return
-	if(src.density)
-		do_animate("deny")
-	return
 
+	if(allowed(user))
+		if(density)
+			open()
+		else
+			close()
+	else if(density && (isrobot(user) || Adjacent(user)))
+		do_animate("deny")
 
 /obj/machinery/door/blob_act()
 	if(prob(40))
@@ -307,7 +308,7 @@
  */
 
 /obj/machinery/door/proc/do_open()
-	playsound(src, door_open_sound, 100, 1)
+	playsound(src, door_open_sound, 50, 1)
 	do_animate("opening")
 	sleep(3)
 	set_opacity(FALSE)
@@ -319,7 +320,7 @@
 	update_nearby_tiles()
 
 /obj/machinery/door/proc/do_close()
-	playsound(src, door_close_sound, 100, 1)
+	playsound(src, door_close_sound, 50, 1)
 	do_animate("closing")
 	sleep(3)
 	density = TRUE
@@ -353,7 +354,7 @@
 
 
 /obj/machinery/door/proc/requiresID()
-	return 1
+	return !check_access(null)
 
 /obj/machinery/door/update_nearby_tiles(need_rebuild)
 	. = ..()

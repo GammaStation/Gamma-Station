@@ -58,7 +58,12 @@
 #define BIOHAZZARD_IMMUNE  "biohazzard_immune"
 #define HAS_HAIR           "has_hair"
 #define NO_FINGERPRINT     "no_fingerprint"
-#define NO_MINORCUTS	   "no_minorcuts"
+#define NO_MINORCUTS       "no_minorcuts"
+#define IS_FLYING          "is_flying"
+#define IS_IMMATERIAL      "is_immaterial"
+#define STATICALLY_CHARGED "statically_charged"
+#define NO_FAT             "no_fat"
+#define EMP_HEAL           "emp_heal"
 
 //Species Diet Flags
 #define DIET_CARN		1 //meat
@@ -119,3 +124,12 @@
 #define ESSENCE_POINT 128
 #define ESSENCE_EMOTE 256
 #define ESSENCE_ALL 511
+
+#define HOLOMAP_DEATHSQUAD_COLOR "#800000"
+#define HOLOMAP_NUCLEAR_COLOR "#E30000"
+#define HOLOMAP_VOX_COLOR "#3BCCCC"
+#define HOLOMAP_ERT_COLOR "#0B74B4"
+#define HOLOMAP_FILTER_DEATHSQUAD 1
+#define HOLOMAP_FILTER_NUCLEAR 2
+#define HOLOMAP_FILTER_VOX 4
+#define HOLOMAP_FILTER_ERT 8 

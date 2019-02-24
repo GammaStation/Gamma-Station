@@ -221,12 +221,31 @@
 			to_chat(user, "<span class='notice'>There's already a magazine in \the [src].</span>")
 	return 0
 
+/obj/item/weapon/gun/projectile/automatic/colt1911/detective
+
+/obj/item/weapon/gun/projectile/automatic/colt1911/detective/verb/rename_gun()
+	set name = "Name Gun"
+	set category = "Object"
+	set desc = "Click to rename your gun."
+
+	var/mob/M = usr
+	var/input = sanitize_safe(input(M,"What do you want to name the gun?"), MAX_NAME_LEN)
+
+	if(src && input && !M.incapacitated())
+		name = input
+		to_chat(M, "You name the gun [input]. Say hello to your new friend.")
+
 /obj/item/weapon/gun/projectile/sec_pistol
 	name = "\improper pistol"
 	desc = "AT-7 .45 caliber pistol."
 	icon_state = "at7"
 	fire_sound = 'sound/weapons/guns/at7_shot.wav'
 	mag_type = /obj/item/ammo_box/magazine/at7_45
+
+/obj/item/weapon/gun/projectile/sec_pistol/thunderfield_pistol //Thunderfield stuff
+	name = "\improper self-defense pistol"
+	desc = ".22CB pistol"
+	mag_type = /obj/item/ammo_box/magazine/c22cb
 
 /obj/item/weapon/gun/projectile/sec_pistol/atom_init()
 	. = ..()

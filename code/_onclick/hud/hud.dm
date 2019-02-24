@@ -32,6 +32,7 @@
 	var/obj/screen/action_intent
 	var/obj/screen/move_intent
 	var/obj/screen/staminadisplay
+	var/obj/screen/holomap/holomap_obj
 
 	var/list/adding
 	var/list/other
@@ -158,6 +159,9 @@
 		blob_hud()
 	else if(isessence(mymob))
 		changeling_essence_hud()
+
+	if(isvrhuman(mymob))
+		vrhuman_hud()
 
 	if(istype(mymob.loc,/obj/mecha))
 		show_hud(HUD_STYLE_REDUCED)

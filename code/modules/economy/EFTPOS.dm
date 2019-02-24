@@ -14,7 +14,7 @@
 
 /obj/item/device/eftpos/atom_init()
 	. = ..()
-	machine_id = "[station_name()] EFTPOS #[num_financial_terminals++]"
+	machine_id = "[station_name()] EFTPOS #[SSeconomy.num_financial_terminals++]"
 	access_code = rand(1111,111111)
 
 	print_reference()
@@ -52,7 +52,7 @@
 
 	//by default, connect to the station account
 	//the user of the EFTPOS device can change the target account though, and no-one will be the wiser (except whoever's being charged)
-	linked_account = station_account
+	linked_account = SSeconomy.station_account
 
 /obj/item/device/eftpos/proc/print_reference()
 	var/obj/item/weapon/paper/R = new(src.loc)
@@ -125,7 +125,7 @@
 						T.purpose = transaction_purpose
 						T.amount = transaction_amount
 						T.source_terminal = machine_id
-						T.date = current_date_string
+						T.date = SSeconomy.current_date_string
 						T.time = worldtime2text()
 						linked_account.transaction_log.Add(T)
 					else
@@ -238,7 +238,7 @@
 								else
 									T.amount = "[transaction_amount]"
 								T.source_terminal = machine_id
-								T.date = current_date_string
+								T.date = SSeconomy.current_date_string
 								T.time = worldtime2text()
 								D.transaction_log.Add(T)
 								//
@@ -247,7 +247,7 @@
 								T.purpose = transaction_purpose
 								T.amount = "[transaction_amount]"
 								T.source_terminal = machine_id
-								T.date = current_date_string
+								T.date = SSeconomy.current_date_string
 								T.time = worldtime2text()
 								linked_account.transaction_log.Add(T)
 							else

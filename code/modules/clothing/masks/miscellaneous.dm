@@ -27,7 +27,7 @@
 	body_parts_covered = 0
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.01
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 25, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 25, rad = 0, telepathy = 0)
 
 /obj/item/clothing/mask/fakemoustache
 	name = "fake moustache"
@@ -48,7 +48,7 @@
 	desc = "Take center ring at your carnival party with this red clown nose. These clown nose are made of lightweight foam and have a slit down the middle for a comfortable fit."
 	icon_state = "clownnose"
 	item_state = "clownnose"
-	action_button_name = "HONK!"
+	actions_types = /datum/action/item_action/attack_self
 	var/cooldown = 0
 
 /obj/item/clothing/mask/clownnose/attack_self()
@@ -83,7 +83,7 @@
 	flags = MASKCOVERSMOUTH
 	w_class = 2
 	gas_transfer_coefficient = 0.90
-	action_button_name = "Adjust scarf"
+	actions_types = /datum/action/item_action/attack_self
 	var/hanging = 0
 
 /obj/item/clothing/mask/scarf/blue
@@ -201,7 +201,7 @@
 	desc = "A fine bandana with nanotech lining and a hydroponics pattern."
 	w_class = 1
 	flags = MASKCOVERSMOUTH
-	action_button_name = "Adjust Bandana"
+	actions_types = /datum/action/item_action/attack_self
 	icon_state = "bandbotany"
 	body_parts_covered = 0
 

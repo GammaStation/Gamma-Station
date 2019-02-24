@@ -152,7 +152,7 @@
 /obj/machinery/disposal/proc/MouseDrop_T2(mob/target, mob/user)
 	if(user.stat || !user.canmove || !istype(target))
 		return
-	if(target.buckled || get_dist(user, src) > 1 || get_dist(user, target) > 1)
+	if(target.buckled)
 		return
 	//animals cannot put mobs other than themselves into disposal
 	if(isanimal(user) && target != user)
@@ -519,6 +519,8 @@
 				M.show_message("\the [I] bounces off of \the [src]'s rim!.", 3)
 		return 0
 	else
+		if(istype(mover) && mover.checkpass(PASSGRILLE))
+			return TRUE
 		return ..(mover, target, height, air_group)
 
 // virtual disposal object

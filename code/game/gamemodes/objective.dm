@@ -23,7 +23,7 @@ var/global/list/all_objectives = list()
 /datum/objective/proc/find_target()
 	var/list/possible_targets = list()
 	for(var/datum/mind/possible_target in ticker.minds)
-		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != DEAD))
+		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != DEAD) && !isvrhuman(possible_target.current))
 			possible_targets += possible_target
 	if(possible_targets.len > 0)
 		target = pick(possible_targets)
@@ -129,7 +129,7 @@ datum/objective/mutiny/rp/check_completion()
 datum/objective/anti_revolution/execute
 	find_target()
 		..()
-		if(target && target.current)
+		if(target && target.current && !isvrhuman(target))
 			explanation_text = "[target.current.real_name], the [target.assigned_role] has extracted confidential information above their clearance. Execute \him[target.current]."
 		else
 			explanation_text = "Free Objective"
@@ -138,7 +138,7 @@ datum/objective/anti_revolution/execute
 
 	find_target_by_role(role, role_type=0)
 		..(role, role_type)
-		if(target && target.current)
+		if(target && target.current && !isvrhuman(target))
 			explanation_text = "[target.current.real_name], the [!role_type ? target.assigned_role : target.special_role] has extracted confidential information above their clearance. Execute \him[target.current]."
 		else
 			explanation_text = "Free Objective"
@@ -156,7 +156,7 @@ datum/objective/anti_revolution/brig
 
 	find_target()
 		..()
-		if(target && target.current)
+		if(target && target.current && !isvrhuman(target))
 			explanation_text = "Brig [target.current.real_name], the [target.assigned_role] for 20 minutes to set an example."
 		else
 			explanation_text = "Free Objective"
@@ -187,7 +187,7 @@ datum/objective/anti_revolution/brig
 datum/objective/anti_revolution/demote
 	find_target()
 		..()
-		if(target && target.current)
+		if(target && target.current && !isvrhuman(target))
 			explanation_text = "[target.current.real_name], the [target.assigned_role]  has been classified as harmful to NanoTrasen's goals. Demote \him[target.current] to assistant."
 		else
 			explanation_text = "Free Objective"
@@ -219,7 +219,7 @@ datum/objective/anti_revolution/demote
 datum/objective/debrain//I want braaaainssss
 	find_target()
 		..()
-		if(target && target.current)
+		if(target && target.current && !isvrhuman(target))
 			explanation_text = "Steal the brain of [target.current.real_name]."
 		else
 			explanation_text = "Free Objective"
@@ -250,7 +250,7 @@ datum/objective/debrain//I want braaaainssss
 
 /datum/objective/dehead/find_target()
 	..()
-	if(target && target.current)
+	if(target && target.current && !isvrhuman(target))
 		explanation_text = "Put the head of [target.current.real_name] in biogel can and steal it."
 	else
 		explanation_text = "Free Objective"
@@ -258,7 +258,7 @@ datum/objective/debrain//I want braaaainssss
 
 /datum/objective/dehead/find_target_by_role(role, role_type=0)
 	..()
-	if(target && target.current)
+	if(target && target.current && !isvrhuman(target))
 		explanation_text = "Steal the head of [target.current.real_name] the [!role_type ? target.assigned_role : target.special_role], make shure that head is stored in the biogel can."
 	else
 		explanation_text = "Free Objective"
@@ -280,7 +280,7 @@ datum/objective/debrain//I want braaaainssss
 datum/objective/protect//The opposite of killing a dude.
 	find_target()
 		..()
-		if(target && target.current)
+		if(target && target.current && !isvrhuman(target))
 			explanation_text = "Protect [target.current.real_name], the [target.assigned_role]."
 		else
 			explanation_text = "Free Objective"
@@ -289,7 +289,7 @@ datum/objective/protect//The opposite of killing a dude.
 
 	find_target_by_role(role, role_type=0)
 		..(role, role_type)
-		if(target && target.current)
+		if(target && target.current && !isvrhuman(target))
 			explanation_text = "Protect [target.current.real_name], the [!role_type ? target.assigned_role : target.special_role]."
 		else
 			explanation_text = "Free Objective"
@@ -423,7 +423,7 @@ datum/objective/brig
 
 	find_target()
 		..()
-		if(target && target.current)
+		if(target && target.current && !isvrhuman(target))
 			explanation_text = "Have [target.current.real_name], the [target.assigned_role] brigged for 10 minutes."
 		else
 			explanation_text = "Free Objective"
@@ -432,7 +432,7 @@ datum/objective/brig
 
 	find_target_by_role(role, role_type=0)
 		..(role, role_type)
-		if(target && target.current)
+		if(target && target.current && !isvrhuman(target))
 			explanation_text = "Have [target.current.real_name], the [!role_type ? target.assigned_role : target.special_role] brigged for 10 minutes."
 		else
 			explanation_text = "Free Objective"
@@ -458,7 +458,7 @@ datum/objective/harm
 
 	find_target()
 		..()
-		if(target && target.current)
+		if(target && target.current && !isvrhuman(target))
 			explanation_text = "Make an example of [target.current.real_name], the [target.assigned_role]. Break one of their bones, detach one of their limbs or disfigure their face. Make sure they're alive when you do it."
 		else
 			explanation_text = "Free Objective"
@@ -467,7 +467,7 @@ datum/objective/harm
 
 	find_target_by_role(role, role_type=0)
 		..(role, role_type)
-		if(target && target.current)
+		if(target && target.current && !isvrhuman(target))
 			explanation_text = "Make an example of [target.current.real_name], the [!role_type ? target.assigned_role : target.special_role]. Break one of their bones, detach one of their limbs or disfigure their face. Make sure they're alive when you do it."
 		else
 			explanation_text = "Free Objective"
@@ -526,6 +526,7 @@ datum/objective/steal
 		"the hypospray" = /obj/item/weapon/reagent_containers/hypospray/cmo,
 		"the captain's pinpointer" = /obj/item/weapon/pinpointer,
 		"an ablative armor vest" = /obj/item/clothing/suit/armor/laserproof,
+		"a Star Vigil Commander's PP-91 Bison" = /obj/item/weapon/gun/energy/gun/bison,
 	)
 
 	var/global/possible_items_special[] = list(

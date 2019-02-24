@@ -231,7 +231,7 @@
 	flags = DROPDEL // No PHORONGUARD or THICKMATERIAL, because it's organic tissue, so syringes or other things can get thru easily.
 	canremove = 0
 	allowed = list(/obj/item/device/flashlight, /obj/item/weapon/tank/emergency_oxygen, /obj/item/weapon/tank/oxygen)
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0) // No armor at all.
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0) // No armor at all.
 	siemens_coefficient = 2 // fleeesh! not a skin! very sensitive!
 
 /obj/item/clothing/suit/space/changeling/atom_init()
@@ -255,7 +255,7 @@
 	desc = "A covering of pressure and temperature-resistant organic tissue with a glass-like chitin front."
 	flags = HEADCOVERSEYES | BLOCKHAIR | HEADCOVERSMOUTH | DROPDEL
 	canremove = 0
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	siemens_coefficient = 2 // fleeesh!
 
 /obj/effect/proc_holder/changeling/suit/armor
@@ -283,7 +283,7 @@
 	flags = THICKMATERIAL | DROPDEL
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	slowdown = 1
-	armor = list(melee = 65, bullet = 50, laser = 50, energy = 35, bomb = 25, bio = 0, rad = 0)
+	armor = list(melee = 65, bullet = 50, laser = 50, energy = 35, bomb = 25, bio = 0, rad = 0, telepathy = 15)
 	flags_inv = HIDEJUMPSUIT
 	cold_protection = 0
 	heat_protection = 0
@@ -301,6 +301,6 @@
 	icon_state = "lingarmorhelmet"
 	flags = HEADCOVERSEYES | BLOCKHAIR | THICKMATERIAL | DROPDEL
 	canremove = 0
-	armor = list(melee = 70, bullet = 45, laser = 45, energy = 35, bomb = 25, bio = 2, rad = 0)
+	armor = list(melee = 70, bullet = 45, laser = 45, energy = 35, bomb = 25, bio = 2, rad = 0, telepathy = 15)
 	flags_inv = HIDEEARS
 	siemens_coefficient = 0.4

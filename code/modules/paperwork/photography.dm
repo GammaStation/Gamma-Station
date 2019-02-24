@@ -282,6 +282,8 @@
 /obj/item/device/camera/afterattack(atom/target, mob/user, flag)
 	if(!on || !pictures_left || ismob(target.loc))
 		return
+	if(!(target in view())) // Fuck you Telekinesis I am starting to hate you.
+		return
 	captureimage(target, user, flag)
 
 	playsound(loc, pick('sound/items/polaroid1.ogg', 'sound/items/polaroid2.ogg'), 75, 1, -3)
@@ -352,9 +354,9 @@
 
 /obj/item/device/camera/proc/printpicture(mob/user, datum/picture/P)
 	var/obj/item/weapon/photo/Photo = new/obj/item/weapon/photo()
-	Photo.loc = user.loc
+	Photo.loc = loc
 	if(!user.get_inactive_hand())
-		user.put_in_inactive_hand(Photo)
+		user.put_in_hands(Photo)
 	Photo.construct(P)
 
 /obj/item/device/camera/proc/get_base_photo_icon()

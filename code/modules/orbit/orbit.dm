@@ -111,3 +111,5 @@
 	. = ..()
 	if (orbiting)
 		stop_orbit()
+	for(var/obj/item/tk_grab/TK_G in focused_by)
+		qdel(TK_G)

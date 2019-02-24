@@ -63,7 +63,7 @@
 
 	if(!client && stat == CONSCIOUS)
 
-		if(prob(33) && canmove && isturf(loc) && !pulledby) //won't move if being pulled
+		if(prob(33) && canmove && isturf(loc) && !pulledby && !focused_by.len) //won't move if being pulled or tk-grabbed
 
 			step(src, pick(cardinal))
 

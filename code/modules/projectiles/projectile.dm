@@ -234,16 +234,16 @@
 		if(miss)
 			M.attack_log += "\[[time_stamp()]\] <b>[firer]/[firer.ckey]</b> tried to shot <b>[M]/[M.ckey]</b> with a <b>[src.type] but MISSED</b>"
 			firer.attack_log += "\[[time_stamp()]\] <b>[firer]/[firer.ckey]</b> tried to shot <b>[M]/[M.ckey]</b> with a <b>[src.type] but MISSED</b>"
-			if(!fake)
+			if(!fake && !isvrhuman(M))
 				msg_admin_attack("[firer.name] ([firer.ckey]) tried shot [M.name] ([M.ckey]) with a [src] [ADMIN_JMP(firer)] [ADMIN_FLW(firer)] but MISSED")
 		else
 			M.attack_log += "\[[time_stamp()]\] <b>[firer]/[firer.ckey]</b> shot <b>[M]/[M.ckey]</b> with a <b>[src.type]</b>"
 			firer.attack_log += "\[[time_stamp()]\] <b>[firer]/[firer.ckey]</b> shot <b>[M]/[M.ckey]</b> with a <b>[src.type]</b>"
-			if(!fake)
+			if(!fake && !isvrhuman(M))
 				msg_admin_attack("[firer.name] ([firer.ckey]) shot [M.name] ([M.ckey]) with a [src] [ADMIN_JMP(firer)] [ADMIN_FLW(firer)]")
 	else
 		M.attack_log += "\[[time_stamp()]\] <b>UNKNOWN SUBJECT</b> shot <b>[M]/[M.ckey]</b> with a <b>[src]</b>"
-		if(!fake)
+		if(!fake && isvrhuman(M))
 			msg_admin_attack("UNKNOWN shot [M.name] ([M.ckey]) with a [src] [ADMIN_JMP(M)] [ADMIN_FLW(M)]")
 
 /obj/item/projectile/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)

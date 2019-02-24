@@ -9,6 +9,9 @@
 		if(!I)
 			to_chat(H, "<span class='notice'>You are not holding anything to equip.</span>")
 			return
+		if(!Adjacent(I))
+			to_chat(H, "<span class='notice'>[I] is too far away to be equipped.</span>")
+			return
 
 	//	if(istype(I, /obj/item/clothing/head/helmet/space/rig)) // If the item to be equipped is a rigid suit helmet
 	//		src << "\red You must fasten the helmet to a hardsuit first. (Target the head)" // Stop eva helms equipping.
@@ -676,7 +679,7 @@ It can still be worn/put on as normal.
 	if(!source || !target) return		//Target or source no longer exist
 	if(source.loc != s_loc) return		//source has moved
 	if(target.loc != t_loc) return		//target has moved
-	if(!in_range(s_loc, t_loc)) return	//Use a proxi!
+	if(!in_range(s_loc, t_loc) && !(TK in source.mutations)) return	//Use a proxi!
 	if(item && source.get_active_hand() != item) return	//Swapped hands / removed item from the active one
 	if ((source.restrained() || source.stat)) return //Source restrained or unconscious / dead
 
@@ -871,3 +874,23 @@ It can still be worn/put on as normal.
 		if(source.machine == target)
 			target.show_inv(source)
 	qdel(src)
+
+/mob/living/carbon/human/put_in_l_hand(obj/item/W)
+	if(species.flags[IS_IMMATERIAL] && !(W.flags & ABSTRACT))
+		W.forceMove(get_turf(src))
+		W.layer = initial(W.layer)
+		W.plane = initial(W.plane)
+		W.appearance_flags = initial(W.appearance_flags)
+		W.dropped()
+		return FALSE
+	return ..()
+
+/mob/living/carbon/human/put_in_r_hand(obj/item/W)
+	if(species.flags[IS_IMMATERIAL] && !(W.flags & ABSTRACT))
+		W.forceMove(get_turf(src))
+		W.layer = initial(W.layer)
+		W.plane = initial(W.plane)
+		W.appearance_flags = initial(W.appearance_flags)
+		W.dropped()
+		return FALSE
+	return ..()

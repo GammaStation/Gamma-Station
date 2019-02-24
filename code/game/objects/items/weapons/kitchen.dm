@@ -151,6 +151,7 @@
 	force = 0
 	w_class = 2.0
 	throwforce = 0
+	edge = 0
 
 /obj/item/weapon/kitchenknife/ritual
 	name = "ritual knife"

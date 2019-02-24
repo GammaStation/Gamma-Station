@@ -40,7 +40,7 @@
 		if (istype(usr.loc,/obj/mecha)) // stops inventory actions in a mech
 			return
 
-		if(over_object == usr && Adjacent(usr)) // this must come before the screen objects only block
+		if(over_object == usr && (Adjacent(M) || (TK in M.mutations))) // this must come before the screen objects only block
 			src.open(usr)
 			return
 
@@ -65,7 +65,7 @@
 				if("mouth")
 					if(!M.unEquip(src))
 						return
-					M.put_in_active_hand(src)
+					M.put_in_hands(src)
 			src.add_fingerprint(usr)
 			return
 	return
@@ -274,6 +274,11 @@
 		to_chat(user, "\blue You're a robot. No.")
 		return //Robots can't interact with storage items. FALSE
 
+	var/turf/W_turf = get_turf(W)
+	var/turf/src_turf = get_turf(src)
+	if(!src_turf.Adjacent(W_turf))
+		return FALSE
+
 	if(!can_be_inserted(W))
 		return FALSE
 
@@ -329,6 +334,10 @@
 /obj/item/weapon/storage/proc/gather_all(var/turf/T, var/mob/user)
 	var/success = 0
 	var/failure = 0
+
+	var/turf/src_turf = get_turf(src)
+	if(!src_turf.Adjacent(T))
+		return
 
 	for(var/obj/item/I in T)
 		if(!can_be_inserted(I, user, 0))	// Note can_be_inserted still makes noise when the answer is no

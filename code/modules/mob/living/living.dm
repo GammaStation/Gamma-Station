@@ -65,6 +65,11 @@
 			if(A.density)
 				can_switch = FALSE
 				break
+		if(ishuman(M))
+			var/mob/living/carbon/human/H = M
+			if(H.species.flags[IS_IMMATERIAL] && !istype(H.wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
+				can_switch = FALSE
+
 		if(can_switch && get_dist(M, src) <= 1)
 			now_pushing = 1
 			//TODO: Make this use Move(). we're pretty much recreating it here.
@@ -541,7 +546,8 @@
 
 /mob/living/carbon/human/rejuvenate()
 	var/obj/item/organ/external/head/BP = bodyparts_by_name[BP_HEAD]
-	BP.disfigured = FALSE
+	if(BP)
+		BP.disfigured = FALSE
 
 	for (var/obj/item/weapon/organ/head/H in world) // damn son, where'd you get this?
 		if(H.brainmob)
@@ -757,6 +763,13 @@
 	var/mob/living/L = usr
 
 	//Getting out of someone's inventory.
+
+	if(focused_by.len)
+		for(var/obj/item/tk_grab/TK_G in focused_by)
+			if(prob(30 + get_dist(src, TK_G)))
+				to_chat(TK_G.host, "<span class='warning'>[src] resisted our telekinetic grab!</span>")
+				qdel(TK_G)
+		return
 
 	if(istype(src.loc,/obj/item/weapon/holder))
 		var/obj/item/weapon/holder/H = src.loc //Get our item holder.
@@ -1174,4 +1187,5 @@
 			return
 
 		to_chat(src, "<span class='notice'>You can taste [english_list(final_taste_list)].</span>")
+		telepathy_hear("can taste", "<span class='notice'>[english_list(final_taste_list)]</span>", src)
 		lasttaste = world.time

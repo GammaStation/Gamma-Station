@@ -3,11 +3,11 @@
 	name = "magboots"
 	icon_state = "magboots0"
 	item_state = "magboots"
-	species_restricted = null
+	species_restricted = list("exclude", TYCHEON)
 	var/magpulse = 0
 	var/magboot_state = "magboots"
 	var/slowdown_off = 2
-	action_button_name = "Toggle Magboots"
+	actions_types = /datum/action/item_action/attack_self
 	origin_tech = "materials=3;magnets=4;engineering=4"
 //	flags = NOSLIP //disabled by default
 

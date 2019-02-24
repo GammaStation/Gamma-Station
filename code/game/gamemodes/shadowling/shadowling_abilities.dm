@@ -233,6 +233,7 @@
 		for(var/mob/M in mob_list)
 			if(is_shadow_or_thrall(M) || isobserver(M))
 				to_chat(M, "<span class='shadowling'><b>\[Hive Chat\]</b><i> [usr.real_name]</i>: [text]</span>")
+				M.telepathy_hear("has heard", text, user)
 		log_say("Shadowling Hivemind: [key_name(usr)] : [text]")
 
 /obj/effect/proc_holder/spell/targeted/thrall_sight
@@ -380,28 +381,6 @@
 		S.attach(location)
 		S.set_up(reagents, 10, 0, location, 15, 5)
 		S.start()
-
-/datum/reagent/shadowling_blindness_smoke //Blinds non-shadowlings, heals shadowlings/thralls
-	name = "Odd Black Liquid"
-	id = "blindness_smoke"
-	description = "<::ERROR::> CANNOT ANALYZE REAGENT <::ERROR::>"
-	color = "#000000" //Complete black (RGB: 0, 0, 0)
-	//metabolization_rate = 100 //lel
-	custom_metabolism = 100
-
-/datum/reagent/shadowling_blindness_smoke/on_general_digest(mob/living/M)
-	..()
-	if(!is_shadow_or_thrall(M))
-		to_chat(M, "<span class='warning bold'>You breathe in the black smoke, and your eyes burn horribly!</span>")
-		M.eye_blind = 5
-		if(prob(25))
-			M.visible_message("<b>[M]</b> claws at their eyes!")
-			M.Stun(3)
-	else
-		to_chat(M, "<span class='notice bold'>You breathe in the black smoke, and you feel revitalized!</span>")
-		M.heal_bodypart_damage(2, 2)
-		M.adjustOxyLoss(-2)
-		M.adjustToxLoss(-2)
 
 /obj/effect/proc_holder/spell/aoe_turf/unearthly_screech
 	name = "Sonic Screech"
@@ -680,7 +659,7 @@
 		for(var/mob/M in mob_list)
 			if(is_shadow_or_thrall(M) || (M in dead_mob_list))
 				to_chat(M, "<font size=4><span class='shadowling'><b>\[Hive Chat\]<i> [usr.real_name] (ASCENDANT)</i>: [sanitize(text)]</b></font></span>")//Bigger text for ascendants.
-
+				M.telepathy_hear("has heard", text, user)
 
 
 /obj/effect/proc_holder/spell/targeted/shadowlingAscendantTransmit

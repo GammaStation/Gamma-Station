@@ -119,6 +119,17 @@
 	desc = "The syndicate revolver is a traditional handgun that fires .357 Magnum cartridges and has 7 chambers."
 	item = /obj/item/weapon/gun/projectile/revolver
 	cost = 8
+	gamemodes = list(/datum/game_mode/nuclear)
+	uplink_types = list("nuclear")
+	excludefrom_uplinks = list("traitor")
+
+/datum/uplink_item/dangerous/revolver_toy
+	name = "TR-7 Revolver"
+	desc = "The syndicate revolver is a traditional handgun that fires .357 Magnum cartridges and has 7 chambers."
+	item = /obj/item/weapon/gun/projectile/revolver/traitor
+	cost = 8
+	uplink_types = list("traitor")
+	excludefrom_uplinks = list("nuclear")
 
 /datum/uplink_item/dangerous/pistol
 	name = "Stechkin Pistol"
@@ -209,6 +220,17 @@
 	desc = "The energy sword is an edged weapon with a blade of pure energy. The sword is small enough to be pocketed when inactive. Activating it produces a loud, distinctive noise."
 	item = /obj/item/weapon/melee/energy/sword
 	cost = 7
+	gamemodes = list(/datum/game_mode/nuclear)
+	uplink_types = list("nuclear")
+	excludefrom_uplinks = list("traitor")
+
+/datum/uplink_item/dangerous/sword_toy
+	name = "Energy Sword"
+	desc = "The energy sword is an edged weapon with a blade of pure energy. The sword is small enough to be pocketed when inactive. Activating it produces a loud, distinctive noise."
+	item = /obj/item/weapon/melee/energy/sword/traitor
+	cost = 7
+	uplink_types = list("traitor")
+	excludefrom_uplinks = list("nuclear")
 
 /datum/uplink_item/dangerous/emp
 	name = "EMP Grenades"
@@ -791,3 +813,174 @@
 		U.uses -= max(0, I.cost)
 		feedback_add_details("traitor_uplink_items_bought","RN")
 		return new I.item(loc)
+
+var/global/list/thunderfield_items = list()
+
+/proc/get_thunderfield_items()
+	for(var/item in typesof(/datum/thunderfield_item))
+		var/datum/thunderfield_item/I = new item()
+		if(!I.item) //That can happen?!
+			continue
+		thunderfield_items += I
+	return thunderfield_items
+
+/datum/thunderfield_item
+	var/name = "item name"
+	var/category = "item category"
+	var/item = null
+	var/cost = 0
+
+/datum/thunderfield_item/thunderfield_pistol
+	name = ".22CB pistol"
+	item = /obj/item/weapon/gun/projectile/sec_pistol/thunderfield_pistol
+	cost = 2
+
+/datum/thunderfield_item/thunderfield_pistol_magazine
+	name = ".22CB magazine"
+	item = /obj/item/ammo_box/magazine/c22cb
+	cost = 1
+
+/datum/thunderfield_item/thunderfield_smg
+	name = "C-20r Submachine Gun"
+	item = /obj/item/weapon/gun/projectile/automatic/c20r
+	cost = 4
+
+/datum/thunderfield_item/thunderfield_smg_magazine
+	name = "C-20r magazine"
+	item = /obj/item/ammo_box/magazine/m12mm
+	cost = 1
+
+/datum/thunderfield_item/thunderfield_uzi
+	name = "UZI 9mm"
+	item = /obj/item/weapon/gun/projectile/automatic/mini_uzi
+	cost = 5
+
+/datum/thunderfield_item/thunderfield_uzi_magazine
+	name = "UZI 9mm magazine"
+	item = /obj/item/ammo_box/magazine/uzim9mm
+	cost = 2
+
+/datum/thunderfield_item/thunderfield_shotgun
+	name = "Shotgun"
+	item = /obj/item/weapon/gun/projectile/shotgun
+	cost = 7
+
+/datum/thunderfield_item/thunderfield_shotgun_combat
+	name = "Combat shotgun"
+	item = /obj/item/weapon/gun/projectile/shotgun/combat
+	cost = 9
+
+/datum/thunderfield_item/thunderfield_shotgun_ammo
+	name = "Shotgun ammo"
+	item = /obj/item/ammo_box/magazine/internal/shotcom
+	cost = 1
+
+/datum/thunderfield_item/thunderfield_a74
+	name = "A74 "
+	item = /obj/item/weapon/gun/projectile/automatic/a74
+	cost = 12
+
+/datum/thunderfield_item/thunderfield_a74_magazine
+	name = "A74 magazine"
+	item = /obj/item/ammo_box/magazine/a74mm
+	cost = 1
+
+/datum/thunderfield_item/thunderfield_bulldog
+	name = "Bulldog"
+	item = /obj/item/weapon/gun/projectile/automatic/bulldog
+	cost = 14
+
+/datum/thunderfield_item/thunderfield_bulldog_magazine
+	name = "Bulldog magazine"
+	item = /obj/item/ammo_box/magazine/m12g
+	cost = 2
+
+/datum/thunderfield_item/thunderfield_heavyrifle
+	name = "PTR"
+	item = /obj/item/weapon/gun/projectile/heavyrifle
+	cost = 15
+
+/datum/thunderfield_item/thunderfield_heavyrifle_ammo
+	name = "PTR ammo"
+	item = /obj/item/ammo_box/magazine/internal/heavyrifle
+	cost = 1
+
+/datum/thunderfield_item/toolbox
+	name = "Toolbox"
+	item = /obj/item/weapon/storage/toolbox/mechanical
+	cost = 1
+
+/datum/thunderfield_item/ballon
+	name = "BALLON"
+	item = /obj/item/weapon/extinguisher
+	cost = 1
+
+/datum/thunderfield_item/hatchet
+	name = "Small hatchet"
+	item = /obj/item/weapon/hatchet
+	cost = 3
+
+/datum/thunderfield_item/telescopic
+	name = "Telescopic baton"
+	item = /obj/item/weapon/melee/telebaton
+	cost = 4
+
+/datum/thunderfield_item/spear
+	name = "Spear"
+	item = /obj/item/weapon/twohanded/spear
+	cost = 4
+
+/datum/thunderfield_item/fireaxe
+	name = "Fire axe"
+	item = /obj/item/weapon/twohanded/fireaxe
+	cost = 6
+
+/datum/thunderfield_item/medkit
+	name = "Small medkit"
+	item = /obj/item/weapon/storage/firstaid/small_firstaid_kit/civilian
+	cost = 2
+
+/datum/thunderfield_item/backpack
+	name = "Backpack"
+	item = /obj/item/weapon/storage/backpack
+	cost = 2
+
+/datum/thunderfield_item/belt
+	name = "Combat belt"
+	item = /obj/item/weapon/storage/belt/military
+	cost = 3
+
+/datum/thunderfield_item/medkit
+	name = "Combat medkit"
+	item = /obj/item/weapon/storage/firstaid/small_firstaid_kit/combat
+	cost = 3
+
+/datum/thunderfield_item/hivelordcore
+	name = "Hivelord core"
+	item = /obj/item/asteroid/hivelord_core
+	cost = 6
+
+/datum/thunderfield_item/shield
+	name = "Riot shield"
+	item = /obj/item/weapon/shield/riot
+	cost = 12
+
+/datum/thunderfield_item/armor
+	name = "Armor"
+	item = /obj/item/clothing/suit/armor/vest
+	cost = 5
+
+/datum/thunderfield_item/helmet
+	name = "Helmet"
+	item = /obj/item/clothing/head/helmet
+	cost = 4
+
+/datum/thunderfield_item/barmor
+	name = "Bulletproof armor"
+	item = /obj/item/clothing/suit/storage/flak/bulletproof
+	cost = 8
+
+/datum/thunderfield_item/bhelmet
+	name = "Bulletproof helmet"
+	item = /obj/item/clothing/head/helmet/bulletproof
+	cost = 6

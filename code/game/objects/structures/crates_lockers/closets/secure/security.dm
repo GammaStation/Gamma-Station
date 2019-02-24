@@ -128,7 +128,7 @@
 	new /obj/item/weapon/melee/baton(src)
 	new /obj/item/clothing/accessory/holster/waist(src)
 	new /obj/item/weapon/melee/telebaton(src)
-	new /obj/item/weapon/gun/energy/gun(src)
+	new /obj/item/weapon/gun/energy/gun/bison(src)
 	new /obj/item/device/flashlight/flare(src)
 	new /obj/item/clothing/under/rank/head_of_security/turtleneck(src)
 	new /obj/item/device/flashlight/seclite(src)
@@ -271,7 +271,7 @@
 	for (var/i in 1 to 2)
 		new /obj/item/ammo_box/magazine/c45r(src)
 	new /obj/item/taperoll/police(src)
-	new /obj/item/weapon/gun/projectile/automatic/colt1911(src)
+	new /obj/item/weapon/gun/projectile/automatic/colt1911/detective(src)
 	new /obj/item/clothing/accessory/holster/armpit(src)
 
 /obj/structure/closet/secure_closet/detective/update_icon()

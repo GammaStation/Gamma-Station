@@ -52,7 +52,7 @@
 		var/obj/item/weapon/twohanded/O = user.get_inactive_hand()
 		if(istype(O))
 			user.drop_from_inventory(O)
-	return	unwield()
+	return unwield()
 
 /obj/item/weapon/twohanded/update_icon()
 	return
@@ -94,7 +94,7 @@
 	w_class = 5.0
 	icon_state = "offhand"
 	name = "offhand"
-	flags = ABSTRACT
+	flags = ABSTRACT|DROPDEL
 
 /obj/item/weapon/twohanded/offhand/unwield()
 	qdel(src)

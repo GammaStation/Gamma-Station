@@ -409,9 +409,7 @@
 	user.visible_message("<span class='warning'>[user]'s hand slips, cutting a vein in [target]'s brain with \the [tool]!</span>",
 	"<span class='warning'>Your hand slips, cutting a vein in [target]'s brain with \the [tool]!</span>")
 	target.apply_damage(30, BRUTE, BP_CHEST, 1, DAM_SHARP)
-	if (ishuman(user))
-		user:bloody_body(target)
-		user:bloody_hands(target, 0)
+	make_blood(user,target,0,100)
 //////////////////////////////////////////////////////////////////
 //				EXTRACTING IPC'S BRAIN							//
 //////////////////////////////////////////////////////////////////

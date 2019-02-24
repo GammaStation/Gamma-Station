@@ -4,13 +4,19 @@
 	desc = "That's not red paint. That's real blood."
 	icon_state = "deathsquad"
 	item_state = "deathsquad"
-	armor = list(melee = 80, bullet = 70, laser = 70,energy = 70, bomb = 70, bio = 30, rad = 30)
+	armor = list(melee = 80, bullet = 70, laser = 70,energy = 70, bomb = 70, bio = 30, rad = 30, telepathy = 15)
+	actions_types = list(/datum/action/item_action/attack_self, /datum/action/item_action/hands_free/toggle_holomap)
+
+/obj/item/clothing/head/helmet/space/deathsquad/atom_init()
+	. = ..()
+	holochip = new /obj/item/holochip/deathsquad(src)
+	holochip.holder = src
 
 /obj/item/clothing/head/helmet/space/deathsquad/beret
 	name = "officer's beret"
 	desc = "An armored beret commonly used by special operations officers."
 	icon_state = "beret_badge"
-	armor = list(melee = 65, bullet = 15, laser = 35,energy = 20, bomb = 30, bio = 30, rad = 30)
+	armor = list(melee = 65, bullet = 15, laser = 35,energy = 20, bomb = 30, bio = 30, rad = 30, telepathy = 10)
 	flags = HEADCOVERSEYES | BLOCKHAIR
 	siemens_coefficient = 0.9
 
@@ -35,7 +41,7 @@
 	name = "assault helmet"
 	icon_state = "assaulthelmet_b"
 	item_state = "assaulthelmet_b"
-	armor = list(melee = 50, bullet = 60, laser = 45, energy = 70, bomb = 50, bio = 0, rad = 50)
+	armor = list(melee = 50, bullet = 60, laser = 45, energy = 70, bomb = 50, bio = 0, rad = 50, telepathy = 15)
 	siemens_coefficient = 0.2
 	flash_protection = 2
 
@@ -49,7 +55,7 @@
 	desc = "Yarr."
 	icon_state = "pirate"
 	item_state = "pirate"
-	armor = list(melee = 60, bullet = 35, laser = 60,energy = 60, bomb = 30, bio = 30, rad = 30)
+	armor = list(melee = 60, bullet = 35, laser = 60,energy = 60, bomb = 30, bio = 30, rad = 30, telepathy = 15)
 	flags = HEADCOVERSEYES | BLOCKHAIR
 
 /obj/item/clothing/suit/space/pirate
@@ -60,7 +66,7 @@
 	w_class = 3
 	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_box/magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/tank)
 	slowdown = 0
-	armor = list(melee = 60, bullet = 35, laser = 60,energy = 60, bomb = 30, bio = 30, rad = 30)
+	armor = list(melee = 60, bullet = 35, laser = 60,energy = 60, bomb = 30, bio = 30, rad = 30, telepathy = 20)
 	breach_threshold = 25
 
 //Buget suit

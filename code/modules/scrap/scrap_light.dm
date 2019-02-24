@@ -7,7 +7,7 @@
 	light_color = "#E25822"
 	on_damage = 10
 	slot_flags = null
-	action_button_name = null
+	actions_types = null
 
 /obj/item/device/flashlight/flare/torch/attackby(obj/item/W, mob/user, params) // ravioli ravioli here comes stupid copypastoli
 	..()
