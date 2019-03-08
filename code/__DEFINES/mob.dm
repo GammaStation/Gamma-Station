@@ -92,10 +92,8 @@
 #define NUTRITION_LEVEL_STARVING 150
 
 // Factor of how fast mob nutrition decreases
-#define HUNGER_FACTOR 0.05
-
-// Factor of how fast mob nutrition decreases
-#define	HUNGER_FACTOR 0.1
+#define METABOLISM_FACTOR 1 // standart (for humans, other)
+#define SKRELL_METABOLISM_FACTOR 2 // Twice the speed for half the sense!
 
 // Taste sensitivity - the more the more reagents you'll taste
 #define TASTE_SENSITIVITY_NORMAL 1
