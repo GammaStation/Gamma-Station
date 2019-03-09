@@ -502,14 +502,14 @@
 	ammo_type = /obj/item/ammo_casing/a556i
 	icon_state = "556imm"
 
-/obj/item/ammo_box/magazine/a74mm
-	name = "A74 magazine (7.74mm)"
-	icon_state = "a74mm"
+/obj/item/ammo_box/magazine/om36mm
+	name = "OM36 magazine (5.56mm)"
+	icon_state = "om36mm"
 	origin_tech = "combat=3"
-	ammo_type = /obj/item/ammo_casing/a74
-	caliber = "7.74mm"
+	ammo_type = /obj/item/ammo_casing/om36
+	caliber = "5.56mm"
 	max_ammo = 30
 
-/obj/item/ammo_box/magazine/a74mm/update_icon()
+/obj/item/ammo_box/magazine/om36mm/update_icon()
 	..()
 	icon_state = "[initial(icon_state)]-[ceil(ammo_count(0) / 30) * 30]"
