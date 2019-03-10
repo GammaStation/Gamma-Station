@@ -298,6 +298,8 @@ var/global/loopModeNames=list(
 		"finland" = "Suomi wave",
 		"dreamsofvenus" = "Dreams of Venus",
 		"grob" = "Ponosnie zvuchania",
+		"movingshadow" = "Moving Shadow",
+		"green_dream" = "Green Elephant",
 	)
 
 /obj/machinery/media/jukebox/thunderfield
@@ -319,6 +321,8 @@ var/global/loopModeNames=list(
 		"finland" = "Suomi wave",
 		"dreamsofvenus" = "Dreams of Venus",
 		"grob" = "Ponosnie zvuchania",
+		"movingshadow" = "Moving Shadow",
+		"green_dream" = "Green Elephant",
 	)
 
 // Relaxing elevator music~
@@ -346,6 +350,8 @@ var/global/loopModeNames=list(
 		"finland" = "Suomi wave",
 		"dreamsofvenus" = "Dreams of Venus",
 		"grob" = "Ponosnie zvuchania",
+		"movingshadow" = "Moving Shadow",
+		"green_dream" = "Green Elephant",
 	)
 
 /obj/machinery/media/jukebox/techno
