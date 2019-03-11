@@ -94,6 +94,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 			set_species()
 
 	if(species) // For safety, we put it seperately.
+		metabolism_factor = species.metabolism_mod
 		butcher_results = species.butcher_drops
 		eyes = species.def_eye_icon // Default eye icon is determined there.
 		gender = species.def_gender
