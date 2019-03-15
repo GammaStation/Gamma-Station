@@ -36,6 +36,7 @@
 
 #define SS_PRIORITY_TICKER     200
 #define SS_PRIORITY_NANOUI     110
+#define SS_PRIORITY_TGUI       110
 #define SS_PRIORITY_MOBS       100
 #define SS_PRIORITY_PARALAX    65
 #define SS_PRIORITY_DEFAULT    50
@@ -49,7 +50,7 @@
 #define SS_PRIORITY_GARBAGE    15
 #define SS_PRIORITY_SUN        3
 
-
+#define SS_WAIT_TGUI 	   1
 #define SS_WAIT_THROWING   1
 #define SS_WAIT_TIMER      1
 #define SS_WAIT_LIGHTING   1
