@@ -37,4 +37,4 @@
 	ticket.msgs += new /datum/ticket_msg(src.ckey, null, msg)
 	update_ticket_panels()
 
-	staffhelp(msg, help_type = "AH", ticket)
+	staffhelp(msg, ticket, help_type = "AH")

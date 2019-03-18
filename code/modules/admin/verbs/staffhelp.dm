@@ -1,8 +1,8 @@
 //This is a list of words which are ignored by the parser when comparing message contents for names. MUST BE IN LOWER CASE!
 var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","alien","as")
 
-client/proc/staffhelp(msg, help_type = null, datum/ticket/ticket)
-	if(!help_type)
+client/proc/staffhelp(msg, datum/ticket/ticket = null, help_type = null)
+	if(!help_type || !ticket)
 		return
 
 	var/prefix = null
