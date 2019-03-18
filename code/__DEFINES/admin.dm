@@ -49,3 +49,7 @@
 #define ADMIN_VV(target) "(<a href='?_src_=vars;Vars=\ref[target]'>VV</a>)"
 #define ADMIN_PP(user)  "(<a href='?_src_=holder;adminplayeropts=\ref[user]'>PP</a>)"
 #define ADMIN_LOOKUPFLW(user) "[key_name_admin(user)][ADMIN_QUE(user)] [ADMIN_FLW(user)]"
+
+#define TICKET_CLOSED 	0   // Ticket has been resolved or declined
+#define TICKET_OPEN     1 // Ticket has been created, but not responded to
+#define TICKET_ASSIGNED 2 // An admin has assigned themself to the ticket and will respond
