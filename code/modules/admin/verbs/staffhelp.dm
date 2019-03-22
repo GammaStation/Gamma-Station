@@ -2,7 +2,7 @@
 var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","alien","as")
 
 client/proc/staffhelp(msg, datum/ticket/ticket = null, help_type = null)
-	if(!help_type || !ticket)
+	if(!help_type)
 		return
 
 	var/prefix = null
@@ -81,7 +81,10 @@ client/proc/staffhelp(msg, datum/ticket/ticket = null, help_type = null)
 		msg += "[original_word] "
 
 	var/ref_mob = "\ref[mob]"
-	msg = "<font color=blue><b><font color=[colour]>[prefix]: </font>[get_options_bar(mob, 2, 1, 1, TRUE, ticket)][ai_found ? " (<A HREF='?_src_=holder;adminchecklaws=[ref_mob]'>CL</A>)" : ""]:</b> (<a href='?_src_=holder;take_ticket=\ref[ticket]'>[(ticket.status == TICKET_OPEN) ? "TAKE" : "JOIN"]</a>) (<a href='?src=\ref[usr];close_ticket=\ref[ticket]'>CLOSE</a>):</b> <span class='emojify linkify'>[msg]</span></font>"
+	if(target_group == "Admins" )
+		msg = "<font color=blue><b><font color=[colour]>[prefix]: </font>[get_options_bar(mob, 2, 1, 1, TRUE, ticket)][ai_found ? " (<A HREF='?_src_=holder;adminchecklaws=[ref_mob]'>CL</A>)" : ""]:</b> (<a href='?_src_=holder;take_ticket=\ref[ticket]'>[(ticket.status == TICKET_OPEN) ? "TAKE" : "JOIN"]</a>) (<a href='?src=\ref[usr];close_ticket=\ref[ticket]'>CLOSE</a>):</b> <span class='emojify linkify'>[msg]</span></font>"
+	else
+		msg = "<font color=blue><b><font color=[colour]>[prefix]: </font>[get_options_bar(mob, 2, 1, 1, TRUE)][ai_found ? " (<A HREF='?_src_=holder;adminchecklaws=[ref_mob]'>CL</A>)" : ""]:</b> <span class='emojify linkify'>[msg]</span></font>"
 
 	//send this msg to all admins
 	var/admin_number_afk = 0
@@ -107,7 +110,7 @@ client/proc/staffhelp(msg, datum/ticket/ticket = null, help_type = null)
 	adminhelped = 1 //Determines if they get the message to reply by clicking the name.
 
 	//show it to the person adminhelping too
-	to_chat(src, "<font color='blue'>PM to-<b>[target_group]</b>: (<a href='?src=\ref[usr];close_ticket=\ref[ticket]'>CLOSE</a>) <span class='emojify linkify'>[original_msg]</span></font>")
+	to_chat(src, "<font color='blue'>PM to-<b>[target_group]</b>: <span class='emojify linkify'>[original_msg]</span></font>")
 
 	var/mentor_number_present = mentors.len - mentor_number_afk
 	var/admin_number_present = admins.len - admin_number_afk
