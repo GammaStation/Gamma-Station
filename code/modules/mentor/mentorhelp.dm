@@ -21,4 +21,4 @@
 	if(src.handle_spam_prevention(msg,MUTE_MENTORHELP))
 		return
 
-	staffhelp(msg, help_type = "MH")
+	staffhelp(msg, null, help_type = "MH")

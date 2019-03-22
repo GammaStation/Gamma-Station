@@ -57,7 +57,7 @@
 //takes input from cmd_admin_pm_context, cmd_admin_pm_panel or /client/Topic and sends them a PM.
 //Fetching a message if needed. src is the sender and C is the target client
 
-/client/proc/cmd_admin_pm(client/C, msg = null)
+/client/proc/cmd_admin_pm(client/C, msg = null, datum/ticket/ticket = null)
 	if(prefs.muted & MUTE_ADMINHELP || ((src in mentors) && (prefs.muted & MUTE_MENTORHELP)))
 		to_chat(src, "<font color='red'>Error: Private-Message: You are unable to use PM-s (muted).</font>")
 		return
@@ -79,11 +79,25 @@
 			if(holder)
 				to_chat(src, "<font color='red'>Error: Admin-PM: Client not found.</font>")
 			else
-				adminhelp(msg)	//admin we are replying to has vanished, adminhelp instead
+				to_chat(src, "<span class='warning'>Error: Private-Message: Client not found. They may have lost connection, so try using an adminhelp!</span>")
+//				adminhelp(msg)	//admin we are replying to has vanished, adminhelp instead
 			return
 
 	if (src.handle_spam_prevention(msg,MUTE_ADMINHELP))
 		return
+
+	var/datum/client_lite/receiver_lite = client_repository.get_lite_client(C)
+	var/datum/client_lite/sender_lite = client_repository.get_lite_client(src)
+
+	// searches for an open ticket, in case an outdated link was clicked
+	// I'm paranoid about the problems that could be caused by accidentally finding the wrong ticket, which is why this is strict
+	if(isnull(ticket))
+		if(holder)
+			ticket = get_open_ticket_by_client(receiver_lite) // it's more likely an admin clicked a different PM link, so check admin -> player with ticket first
+			if(isnull(ticket) && C.holder)
+				ticket = get_open_ticket_by_client(sender_lite) // if still no dice, try an admin with ticket -> admin
+		else
+			ticket = get_open_ticket_by_client(sender_lite) // lastly, check player with ticket -> admin
 
 	var/recieve_color = "purple"
 	var/send_pm_type = " "

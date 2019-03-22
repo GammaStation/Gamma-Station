@@ -1,7 +1,7 @@
 //This is a list of words which are ignored by the parser when comparing message contents for names. MUST BE IN LOWER CASE!
 var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","alien","as")
 
-client/proc/staffhelp(msg, help_type = null)
+client/proc/staffhelp(msg, datum/ticket/ticket = null, help_type = null)
 	if(!help_type)
 		return
 
@@ -81,7 +81,10 @@ client/proc/staffhelp(msg, help_type = null)
 		msg += "[original_word] "
 
 	var/ref_mob = "\ref[mob]"
-	msg = "<font color=blue><b><font color=[colour]>[prefix]: </font>[get_options_bar(mob, 2, 1, 1, TRUE)][ai_found ? " (<A HREF='?_src_=holder;adminchecklaws=[ref_mob]'>CL</A>)" : ""]:</b> <span class='emojify linkify'>[msg]</span></font>"
+	if(target_group == "Admins" )
+		msg = "<font color=blue><b><font color=[colour]>[prefix]: </font>[get_options_bar(mob, 2, 1, 1, TRUE, ticket)][ai_found ? " (<A HREF='?_src_=holder;adminchecklaws=[ref_mob]'>CL</A>)" : ""]:</b> (<a href='?_src_=holder;take_ticket=\ref[ticket]'>[(ticket.status == TICKET_OPEN) ? "TAKE" : "JOIN"]</a>) (<a href='?src=\ref[usr];close_ticket=\ref[ticket]'>CLOSE</a>):</b> <span class='emojify linkify'>[msg]</span></font>"
+	else
+		msg = "<font color=blue><b><font color=[colour]>[prefix]: </font>[get_options_bar(mob, 2, 1, 1, TRUE)][ai_found ? " (<A HREF='?_src_=holder;adminchecklaws=[ref_mob]'>CL</A>)" : ""]:</b> <span class='emojify linkify'>[msg]</span></font>"
 
 	//send this msg to all admins
 	var/admin_number_afk = 0
