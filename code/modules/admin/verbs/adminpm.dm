@@ -99,6 +99,22 @@
 		else
 			ticket = get_open_ticket_by_client(sender_lite) // lastly, check player with ticket -> admin
 
+	if(isnull(ticket)) // finally, accept that no ticket exists
+		if(holder && sender_lite.ckey != receiver_lite.ckey)
+			ticket = new /datum/ticket(receiver_lite)
+			ticket.take(sender_lite)
+		else
+			to_chat(src, "<span class='notice'>You do not have an open ticket. Please use the adminhelp verb to open a ticket.</span>")
+			return
+	else if(ticket.status != TICKET_ASSIGNED && sender_lite.ckey == ticket.owner.ckey)
+		to_chat(src, "<span class='notice'>Your ticket is not open for conversation. Please wait for an administrator to receive your adminhelp.</span>")
+		return
+
+	// if the sender is an admin and they're not assigned to the ticket, ask them if they want to take/join it, unless the admin is responding to their own ticket
+	if(holder && !(sender_lite.ckey in ticket.assigned_admin_ckeys()))
+		if(sender_lite.ckey != ticket.owner.ckey && !ticket.take(sender_lite))
+			return
+
 	var/recieve_color = "purple"
 	var/send_pm_type = " "
 	var/recieve_pm_type = "Player"
@@ -156,6 +172,9 @@
 
 	log_admin("PM: [key_name(src)]->[key_name(C)]: [msg]")
 	send2slack_logs("[key_name(src)]->[key_name(C)]",  msg, "(PM)")
+
+	ticket.msgs += new /datum/ticket_msg(src.ckey, C.ckey, msg)
+	update_ticket_panels()
 
 	//we don't use message_admins here because the sender/receiver might get it too
 	for(var/client/X in admins)
