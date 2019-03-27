@@ -76,6 +76,16 @@
 				do_animate("deny")
 		return
 
+	if(istype(AM, /obj/vehicle))
+		var/obj/vehicle/V = AM
+		if(density)
+			if(V.airlock_automatic_opening && V.load && (src.allowed(V.load) || emergency))
+				open()
+			else
+				do_animate("deny")
+		return
+
+
 	if(istype(AM, /obj/structure/stool/bed/chair/wheelchair))
 		var/obj/structure/stool/bed/chair/wheelchair/wheel = AM
 		if(density)

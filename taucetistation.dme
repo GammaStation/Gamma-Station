@@ -1845,6 +1845,7 @@
 #include "code\modules\thunderfield2562\thunderfield_gamepod.dm"
 #include "code\modules\thunderfield2562\thunderfield_people.dm"
 #include "code\modules\tooltip\tooltip.dm"
+#include "code\modules\vehicles\segway.dm"
 #include "code\modules\vehicles\spacebike.dm"
 #include "code\modules\vehicles\vehicle.dm"
 #include "code\modules\ventcrawl\ventcrawl.dm"
