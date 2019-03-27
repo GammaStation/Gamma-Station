@@ -6,7 +6,7 @@
 		to_chat(usr, "\red Speech is currently admin-disabled.")
 		return
 
-	if(!mob)
+	if(!mob || !msg)
 		return	//this doesn't happen
 
 	//handle muting and automuting
