@@ -106,7 +106,6 @@
 		new /obj/item/weapon/storage/backpack/satchel/sec(src)
 
 	new /obj/item/clothing/head/helmet/HoS(src)
-	new /obj/item/clothing/head/helmet/HoS/dermal(src)
 	new /obj/item/device/remote_device/head_of_security(src)
 	new /obj/item/clothing/under/rank/head_of_security_fem(src)
 	new /obj/item/clothing/suit/armor/hos(src)
