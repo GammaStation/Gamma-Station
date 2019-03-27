@@ -24,7 +24,8 @@
 	var/foldable = null	// BubbleWrap - if set, can be folded (when empty) into a sheet of cardboard
 	var/use_sound = "rustle"	//sound played when used. null for no sound.
 
-	var/datum/storage_ui/storage_ui = /datum/storage_ui/default
+	var/storage_ui_path = /datum/storage_ui/default
+	var/datum/storage_ui/storage_ui = null
 
 /obj/item/weapon/storage/Destroy()
 	QDEL_NULL(storage_ui)
@@ -394,7 +395,7 @@
 	if(isnull(max_storage_space) && !isnull(storage_slots))
 		max_storage_space = storage_slots*base_storage_cost(max_w_class)
 
-	storage_ui = new storage_ui(src)
+	storage_ui = new storage_ui_path(src)
 	prepare_ui()
 
 /obj/item/weapon/storage/emp_act(severity)
