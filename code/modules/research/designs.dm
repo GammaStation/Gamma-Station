@@ -2277,6 +2277,15 @@ datum/design/binaryencrypt
 	materials = list(MAT_METAL = 300, MAT_GLASS = 600)
 	build_path = /obj/item/device/encryptionkey/binary
 
+datum/design/holopad
+	name = "Holopad"
+	desc = "A holografic communication device."
+	id = "holopad-comm"
+	req_tech = list("programming" = 2, "bluespace" = 1, "magnets" = 3)
+	build_type = PROTOLATHE
+	materials = list(MAT_METAL = 500, MAT_GLASS = 500)
+	build_path = /obj/item/device/holopad
+
 datum/design/pda
 	name = "PDA"
 	desc = "A portable microcomputer by Thinktronic Systems, LTD. Functionality determined by a preprogrammed ROM cartridge."

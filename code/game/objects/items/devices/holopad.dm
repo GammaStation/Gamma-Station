@@ -1,0 +1,198 @@
+#define CALL_NONE 0
+#define CALL_CALLING 1
+#define CALL_RINGING 2
+#define CALL_IN_CALL 3
+
+/obj/item/device/holopad
+	name = "Holopad"
+	desc = "Small handheld disk with controls."
+	icon = 'icons/obj/holopad.dmi'
+	icon_state = "holopad"
+	item_state = "card-id"
+	w_class = 2
+	var/id
+	var/uniq_id
+	var/obj/item/device/holopad/abonent = null
+	var/call_state = CALL_NONE
+	var/obj/effect/hologram = null
+	var/updatingPos = 0
+	origin_tech = "programming=4;bluespace=2;magnets=4"
+
+/obj/item/device/holopad/atom_init()
+	. = ..()
+	uniq_id = rand(00000, 999999)
+	id = rand(1000, 9999)
+	name = "[initial(name)] [id]"
+
+/obj/item/device/holopad/Destroy()
+	return ..()
+
+/obj/item/device/holopad/verb/setID()
+	set name="Set ID"
+	set category = "Object"
+	set src in usr
+	var/newid = input(usr,"What would be new ID?") as text
+	if(newid)
+		id = newid
+		name = "[initial(name)] [id]"
+
+/obj/item/device/holopad/proc/getName(var/override_busy = 0)
+	if(call_state!=CALL_NONE && !override_busy)
+		return "Holopad [id] #[uniq_id] - busy"
+	else
+		return "Holopad [id] #[uniq_id]"
+
+/obj/item/device/holopad/proc/incall(var/obj/item/device/holopad/caller)
+	if(call_state != CALL_NONE)
+		return FALSE
+	abonent = caller
+	call_state = CALL_RINGING
+	icon_state = "holopad_ringing"
+	desc = "[initial(desc)] Incoming call from [caller.getName()]"
+	INVOKE_ASYNC(src, .proc/ring)
+	return TRUE
+
+/obj/item/device/holopad/proc/ring()
+	if(call_state != CALL_RINGING)
+		return
+	var/mob/living/L = loc
+	if(isliving(loc) && L.client)
+		to_chat(loc, "<span class='warning'>Something vibrates..</span>")
+		playsound(loc, 'sound/machines/twobeep.ogg', 25, -5)
+	addtimer(CALLBACK(src, .proc/ring), 50)
+
+/obj/item/device/holopad/proc/placeCall()
+	var/list/Targets = list()
+	for(var/obj/item/device/holopad/H)
+		if(H == src)
+			continue
+		Targets[H.getName()] = H
+	var/selection = input("Who do you want to call?") as null|anything in Targets
+	if(!selection)
+		return
+	var/obj/item/device/holopad/target = Targets[selection]
+	if(!target)
+		return
+	if(target.incall(src))
+		call_state = CALL_CALLING
+		abonent = target
+		icon_state = "holopad_calling"
+		to_chat(usr, "Calling [sanitize(abonent.getName(1))]")
+	else
+		to_chat(usr, "Remote device is busy")
+
+/obj/item/device/holopad/proc/acceptCall()
+	if(call_state == CALL_RINGING)
+		if(abonent && abonent.call_state == CALL_CALLING)
+			abonent.acceptCall()
+			call_state = CALL_IN_CALL
+			icon_state = "holopad_in_call"
+			addtimer(CALLBACK(src, .proc/update_holo), 1)
+
+			if(isliving(loc))
+				to_chat(loc, "Connection established")
+		else
+			call_state = CALL_NONE
+			icon_state = initial(icon_state)
+			desc = initial(desc)
+			abonent = null
+
+	else if(call_state == CALL_CALLING)
+		call_state = CALL_IN_CALL
+		icon_state = "holopad_in_call"
+		addtimer(CALLBACK(src, .proc/update_holo), 1)
+
+		if(isliving(loc))
+			to_chat(loc, "Connection established")
+
+/obj/item/device/holopad/proc/hangUp(var/remote = 0)
+	if(!remote && abonent)
+		abonent.hangUp(1)
+
+	if(call_state==CALL_NONE)
+		return
+
+	if(isliving(loc))
+		to_chat(loc, "Connection closed")
+
+	call_state = CALL_NONE
+	icon_state = initial(icon_state)
+	desc = initial(desc)
+	abonent = null
+	qdel(hologram)
+
+/obj/item/device/holopad/dropped()
+	update_holo()
+	..()
+
+/obj/item/device/holopad/proc/update_holo()
+	if(call_state == CALL_IN_CALL)
+		if(!abonent)
+			return
+		if(!abonent.hologram)
+			abonent.hologram = new()
+			abonent.hologram.name = "Hologram [sanitize(id)]"
+			abonent.hologram.layer = 5
+		if(isliving(loc))
+			abonent.hologram.icon = getHologramIcon(build_composite_icon_omnidir(loc))
+		else
+			abonent.hologram.icon = icon('icons/effects/effects.dmi', "icon_state"="nothing")
+		if(!abonent.updatingPos)
+			abonent.update_holo_pos()
+
+/obj/item/device/holopad/proc/update_holo_pos()
+	if(call_state != CALL_IN_CALL)
+		updatingPos = 0
+		return
+	updatingPos = 1
+	if(isliving(loc))
+		var/mob/living/L = loc
+		hologram.dir = turn(L.dir,180)
+		hologram.loc = L.loc
+		hologram.pixel_x = ((L.dir&4)?32:((L.dir&8)?-32:0))
+		hologram.pixel_y = ((L.dir&1)?32:((L.dir&2)?-32:0))
+	else if(isturf(loc))
+		hologram.dir = 2
+		hologram.loc = loc
+		hologram.pixel_x = 0
+		hologram.pixel_y = 0
+	else
+		hangUp()
+	addtimer(CALLBACK(src, .proc/update_holo_pos), 2)
+
+
+/obj/item/device/holopad/attack_self(mob/user as mob)
+	switch(call_state)
+		if(CALL_NONE)
+			placeCall()
+		if(CALL_CALLING)
+			hangUp()
+		if(CALL_RINGING)
+			acceptCall()
+		if(CALL_IN_CALL)
+			hangUp()
+
+/obj/item/device/holopad/hear_talk(mob/living/M, text, datum/language/speaking)
+	if(call_state == CALL_IN_CALL)
+		abonent.receive(text,M==loc)
+
+/obj/item/device/holopad/proc/receive(text, isowner)
+	var/list/listening = get_mobs_in_view(2,loc)
+	for(var/mob/M in player_list)
+		if (!M.client)
+			continue
+		if (istype(M, /mob/dead/new_player))
+			continue
+		if(M.stat == 2)
+			listening|=M
+	var/voice = "Holopad Background Voice"
+	if(isowner)
+		voice = "Holopad [sanitize(abonent.id)]"
+	var/rendered = "<span class='game say'><span class='name'>[voice]</span> transmits, \"<span class='message'>[sanitize(text)]</span>\"</span>"
+	for(var/mob/M in listening)
+		M.show_message(rendered, 2)
+
+#undef CALL_NONE
+#undef CALL_CALLING
+#undef CALL_RINGING
+#undef CALL_IN_CALL
