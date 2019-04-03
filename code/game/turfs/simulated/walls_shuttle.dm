@@ -80,13 +80,14 @@
 			join_flags &= ~flag     // turn off the bit flag
 
 /turf/simulated/shuttle/wall/hard_corner
-	name = "hardcorner wall"
+	name = "wall"
 	icon_state = "white-hc"
 	hard_corner = TRUE
 
 /turf/simulated/shuttle/wall/no_join
 	icon_state = "white-nj"
 	join_group = null
+	takes_underlays = FALSE
 
 /turf/simulated/shuttle/wall/orange
 	icon = 'icons/turf/shuttle.dmi'
