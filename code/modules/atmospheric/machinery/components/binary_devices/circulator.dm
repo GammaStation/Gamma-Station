@@ -27,32 +27,30 @@
 
 /obj/machinery/atmospherics/components/binary/circulator/atom_init()
 	. = ..()
-
 	desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."
-
 	var/datum/gas_mixture/air1 = AIR1
 	air1.volume = 400
 
 /obj/machinery/atmospherics/components/binary/circulator/proc/return_transfer_air()
 	var/datum/gas_mixture/removed
-	if(anchored && !(stat & BROKEN))
+	var/datum/pipeline/parent1 = PARENT1
+	var/datum/gas_mixture/air1 = AIR1
+	var/datum/gas_mixture/air2 = AIR2
 
-		var/datum/gas_mixture/air1 = AIR1
-		var/datum/gas_mixture/air2 = AIR2
-
+	if(anchored && !(stat & BROKEN) && parent1)
 		var/input_starting_pressure = air1.return_pressure()
 		var/output_starting_pressure = air2.return_pressure()
 		last_pressure_delta = max(input_starting_pressure - output_starting_pressure - 5, 0)
 
 		//only circulate air if there is a pressure difference (plus 5kPa kinetic, 10kPa static friction)
 		if(air1.temperature > 0 && last_pressure_delta > 5)
-			var/datum/pipeline/parent1 = PARENT1
+
 			//Calculate necessary moles to transfer using PV = nRT
 			recent_moles_transferred = (last_pressure_delta * parent1.air.volume / (air1.temperature * R_IDEAL_GAS_EQUATION)) / 3 //uses the volume of the whole network, not just itself
 			volume_capacity_used = min( (last_pressure_delta * parent1.air.volume / 3) / (input_starting_pressure * air1.volume) , 1) //how much of the gas in the input air volume is consumed
 
 			//Calculate energy generated from kinetic turbine
-			stored_energy += 1 / ADIABATIC_EXPONENT * min(last_pressure_delta * parent1.air.volume , input_starting_pressure*air1.volume) * (1 - volume_ratio ** ADIABATIC_EXPONENT) * kinetic_efficiency
+			stored_energy += 1 / ADIABATIC_EXPONENT * min(last_pressure_delta * parent1.air.volume , input_starting_pressure * air1.volume) * (1 - volume_ratio ** ADIABATIC_EXPONENT) * kinetic_efficiency
 
 			//Actually transfer the gas
 			removed = air1.remove(recent_moles_transferred)
@@ -60,6 +58,7 @@
 				last_heat_capacity = removed.heat_capacity()
 				last_temperature = removed.temperature
 
+				//Update the gas networks.
 				update_parents()
 
 				last_worldtime_transfer = world.time
@@ -101,32 +100,29 @@
 			"You [anchored ? "secure" : "unsecure"] the bolts holding [src] to the floor.", \
 			"You hear a ratchet")
 
-		SetInitDirections()
 		var/obj/machinery/atmospherics/node1 = NODE1
+		var/obj/machinery/atmospherics/node2 = NODE2
+
 		if(node1)
 			node1.disconnect(src)
 			NODE1 = null
-		nullifyPipenet(PARENT1)
-
-		var/obj/machinery/atmospherics/node2 = NODE2
+			nullifyPipenet(PARENT1)
 		if(node2)
 			node2.disconnect(src)
 			NODE2 = null
-		nullifyPipenet(PARENT2)
+			nullifyPipenet(PARENT2)
 
 		if(anchored)
+			SetInitDirections()
 			atmos_init()
-
 			node1 = NODE1
-			node2 = NODE2
-
 			if(node1)
 				node1.atmos_init()
 				node1.addMember(src)
+			node2 = NODE2
 			if(node2)
 				node2.atmos_init()
 				node2.addMember(src)
-
 			build_network()
 
 	else
@@ -140,7 +136,7 @@
 	if (usr.stat || usr.restrained() || anchored)
 		return
 
-	src.set_dir(turn(src.dir, 90))
+	src.set_dir(turn(dir, 90))
 	desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."
 
 
@@ -152,5 +148,5 @@
 	if (usr.stat || usr.restrained() || anchored)
 		return
 
-	src.set_dir(turn(src.dir, -90))
+	src.set_dir(turn(dir, -90))
 	desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."
