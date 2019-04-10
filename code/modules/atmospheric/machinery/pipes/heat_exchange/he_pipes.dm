@@ -27,35 +27,29 @@
 	normalize_dir()
 	..()
 
-/obj/machinery/atmospherics/pipe/simple/heat_exchanging/can_be_node(obj/machinery/atmospherics/pipe/simple/heat_exchanging/target)
-	if(!istype(target))
-		return 0
-	if(target.initialize_directions_he & get_dir(target,src))
-		return 1
-
-/obj/machinery/atmospherics/pipe/simple/heat_exchanging/SetInitDirections()
-	initialize_directions_he = initialize_directions
-
-/obj/machinery/atmospherics/pipe/simple/heat_exchanging/GetInitDirections()
-	return ..() | initialize_directions_he
+/obj/machinery/atmospherics/pipe/heat_exchanging/isConnectable(obj/machinery/atmospherics/pipe/heat_exchanging/target, given_layer, HE_type_check = TRUE)
+	if(istype(target, /obj/machinery/atmospherics/pipe/heat_exchanging) != HE_type_check)
+		return FALSE
+	. = ..()
 
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging/process_atmos()
-	last_power_draw = 0
-	last_flow_rate = 0
-
+	var/environment_temperature = 0
 	var/datum/gas_mixture/pipe_air = return_air()
 
-	if(istype(loc, /turf/simulated/))
-		var/environment_temperature = 0
-		if(loc:blocks_air)
-			environment_temperature = loc:temperature
+	var/turf/T = loc
+	if(istype(T, /turf/simulated))
+		var/turf/simulated/ST = T
+		if(ST.blocks_air)
+			environment_temperature = ST.temperature
 		else
-			var/datum/gas_mixture/environment = loc.return_air()
+			var/datum/gas_mixture/environment = ST.return_air()
 			environment_temperature = environment.temperature
-		if(abs(environment_temperature-pipe_air.temperature) > minimum_temperature_difference)
-			parent.temperature_interact(loc, volume, thermal_conductivity)
-	else if(istype(loc, /turf/space/))
+
+	else if(istype(T, /turf/space/))
 		parent.radiate_heat_to_space(surface, 1)
+
+	if(abs(environment_temperature-pipe_air.temperature) > minimum_temperature_difference)
+		parent.temperature_interact(T, volume, thermal_conductivity)
 
 	if(buckled_mob)
 		var/hc = pipe_air.heat_capacity()
