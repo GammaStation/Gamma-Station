@@ -1,6 +1,6 @@
 #define MIN_SANDWICH_LIMIT 4
 #define SANDWICH_GROWTH_BY_SLICE 4
-#define MAX_SANDWICH_LIMIT 124 //30 breadslices + 4 base size
+#define MAX_SANDWICH_LIMIT INFINITY //FUCK YOU
 
 /obj/item/weapon/reagent_containers/food/snacks/breadslice/attackby(obj/item/W, mob/user)
 
