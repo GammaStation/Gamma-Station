@@ -1,9 +1,9 @@
 /obj/effect/proc_holder/magic/nondirect/summon_forest
 	name = "Summon forest"
 	desc = ""
-	mana_cost = FOREST_MANACOST
-	delay = FOREST_DELAY
-
+	mana_cost = 0
+	cooldown = 45
+	delay = 30
 
 
 /obj/effect/proc_holder/magic/nondirect/summon_forest/cast()

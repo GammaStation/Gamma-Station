@@ -11,7 +11,7 @@
 		to_chat(user, "<span class='warning'>You're pretty sure you know exactly what this is used for and you can't seem to touch it.</span>")
 		return
 
-	var/list/magicschools = list("Conjuration", "Ergokinesis", "Dimensional Manipulation", "Biokinesis", "Maleficium", "Mentalism", "Elemental Arts", "Technomancy")
+	var/list/magicschools = list("Conjuration", "Ergokinesis", "Dimensional Manipulation", "Biokinesis", "Maleficium", "Mysticism", "Elemental Arts")
 	var/magicschool = input(user, "Magic Schools") in magicschools
 
 

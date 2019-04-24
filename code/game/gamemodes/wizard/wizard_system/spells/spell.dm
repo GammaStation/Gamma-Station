@@ -10,14 +10,30 @@ var/list/magic_spells = typesof(/obj/effect/proc_holder/magic)
 	var/req_stat = CONSCIOUS // Can this spell be cast when you are incapacitated/dead?
 	var/robeless = FALSE
 	var/datum/mind/owner		//Owner mind of the spell. Honestly, not sure if this is good idea, to use owner.current instead of user. And owner instead of user.mind.
+	var/cooldown = 0		//In seconds
+	var/cooldown_left
 	var/list/required_schools = list()
+
+/obj/effect/proc_holder/magic/atom_init()
+	cooldown_left = cooldown
+	START_PROCESSING(SSobj, src)
+
+/obj/effect/proc_holder/magic/process()
+	if(cooldown_left < cooldown)
+		++cooldown_left
 
 /obj/effect/proc_holder/magic/Destroy()
 	owner = null
+	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/effect/proc_holder/magic/proc/can_cast()		//Nondirect spells have NO target
 	if(!iswizard(owner.current))
+		return FALSE
+
+	if(cooldown_left < cooldown)
+		to_chat(owner.current, "<font color='purple'><i>I can't cast this spell so frequently!</i></font>")
+		owner.current << sound('sound/magic/magicfail.ogg')
 		return FALSE
 
 	if(owner.wizard_power_system.mana < mana_cost)
@@ -48,6 +64,9 @@ var/list/magic_spells = typesof(/obj/effect/proc_holder/magic)
 	if(spell_specific_checks())
 		return
 
+// if(user.is_busy()) return
+
+
 	if(delay)		//Multicast delay spells
 		if(owner.current.busy_with_action == TRUE)
 			return
@@ -60,6 +79,8 @@ var/list/magic_spells = typesof(/obj/effect/proc_holder/magic)
 
 	if(!cast())		//Negative so I do not have to post . = ..() everywhere
 		owner.wizard_power_system.spend_mana(mana_cost)
+		if(cooldown > 0)
+			cooldown_left = 0
 	else
 		owner.current << sound('sound/magic/magicfail.ogg')
 

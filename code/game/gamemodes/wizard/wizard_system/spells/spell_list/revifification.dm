@@ -1,8 +1,9 @@
 /obj/effect/proc_holder/magic/click_on/revivification
 	name = "Borgnjor's revivification"
 	desc = ""
-	delay = REVIVE_DELAY
-	mana_cost = REVIVE_MANACOST
+	delay = 20
+	mana_cost = 0
+	cooldown = 120
 	types_to_click = list("mobs")
 	closerange = TRUE
 
@@ -14,11 +15,17 @@
 		return TRUE
 	if(target.species.name == SKELETON)
 		to_chat(owner.current, "<font color = 'purple'><i>Even Borgnjor couldn't think of a way to heal this!</i></font>")
-		return
+		return TRUE
 	if(target.stat == DEAD)
 		if(!target.mind || !target.client)
-			to_chat(owner.current, "<font color = 'purple'><i>There is no soul connected to this body...</i></font>")
-			return
+			to_chat(owner.current, "<font color = 'purple'><i>There is no soul connected to this body!</i></font>")
+			return TRUE
+		else
+			if(iswizard(target))
+				to_chat(owner.current, "<font color = 'purple'><i>Raising fellow mage as an undead slave is beyond all morals.</i></font>")
+				return TRUE
+			if(alert(owner.current, "The target is dead! Usage of this spell will raise them as a skeleton. Are you sure?",,"Yes", "No") == "No")
+				return TRUE
 
 /obj/effect/proc_holder/magic/click_on/revivification/cast_on_mob(mob/living/carbon/human/target)
 	if(target.stat != DEAD)

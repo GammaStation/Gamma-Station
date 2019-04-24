@@ -1,8 +1,9 @@
 /obj/effect/proc_holder/magic/click_on/polymorph
 	name = "Polymorph"
 	desc = ""
-	delay = POLYMORPH_DELAY
-	mana_cost = POLYMORPH_MANACOST
+	delay = 30
+	mana_cost = 0
+	cooldown = 60
 	types_to_click = list("mobs")
 
 

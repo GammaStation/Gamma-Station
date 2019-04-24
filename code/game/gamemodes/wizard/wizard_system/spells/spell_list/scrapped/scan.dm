@@ -158,7 +158,7 @@
 		dat += target.mind.memory
 
 		if(target.mind.objectives.len>0)
-			dat += "<HR><B>Objectives:</B>"
+			dat += "<HR><B>Objectives:</B><BR>"
 
 			var/obj_count = 1
 			for(var/datum/objective/objective in target.mind.objectives)

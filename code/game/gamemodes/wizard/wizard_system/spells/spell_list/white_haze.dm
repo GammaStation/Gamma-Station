@@ -1,8 +1,9 @@
 /obj/effect/proc_holder/magic/click_on/haze
 	name = "White haze"
 	desc = ""
-	delay = HAZE_DELAY
-	mana_cost = HAZE_MANACOST
+	delay = 50
+	mana_cost = 0
+	cooldown = 45
 	types_to_click = list("turfs")
 
 /obj/effect/proc_holder/magic/click_on/haze/check_turf_cast(turf/target)
@@ -12,7 +13,7 @@
 /obj/effect/proc_holder/magic/click_on/haze/cast_on_turf(turf/target)
 	var/datum/effect/effect/system/smoke_spread/white_haze/S = new
 	S.attach(target)
-	S.set_up(10, 0, target)
+	S.set_up(30, 0, target)
 	S.start()
 
 

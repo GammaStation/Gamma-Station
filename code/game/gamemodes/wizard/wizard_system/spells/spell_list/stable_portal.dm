@@ -1,8 +1,8 @@
 /obj/effect/proc_holder/magic/nondirect/stable_portal
 	name = "Stable portal"
 	desc = ""
-	mana_cost = PORTAL_MANACOST
-	delay = PORTAL_DELAY
+	mana_cost = 0
+	cooldown = 50
 	var/location
 
 //Remove "charging effect" or add sleep or whatever
@@ -32,6 +32,5 @@
 	message_admins("[usr] ([usr.ckey]) used [src.name] spell and opened a portal from [get_area(usr)] to [get_area(location)].(<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[usr.x];Y=[usr.y];Z=[usr.z]'>JMP</a>)")
 	QDEL_IN(wormhole, PORTAL_LIFESPAN)
 
-#undef PORTAL_MANACOST
-#undef PORTAL_DELAY
+
 #undef PORTAL_LIFESPAN

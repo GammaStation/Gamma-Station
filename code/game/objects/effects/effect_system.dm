@@ -314,8 +314,6 @@ steam.start() -- spawns the effect
 	var/smoke_type = /obj/effect/effect/smoke
 
 /datum/effect/effect/system/smoke_spread/set_up(n = 5, c = 0, loca, direct)
-	if(n > 10)
-		n = 10
 	number = n
 	cardinals = c
 	if(istype(loca, /turf/))

@@ -1,7 +1,7 @@
 /obj/effect/proc_holder/magic/click_on/shoot/lash
 	name = "Shaab's lash"
 	desc = ""
-	mana_cost = LASH_MANACOST
+	mana_cost = 0
 	projectile = /obj/item/projectile/lash
 
 
@@ -32,6 +32,7 @@
 				if(isliving(T))
 					var/mob/living/M = T
 					M.Weaken(2)
+
 	else if(firer.a_intent == "hurt")
 		explosion(get_turf(target), 1)
 		if(ismob(target))
@@ -47,7 +48,6 @@
 			if(disarm)
 				H.drop_item()
 				disarm.throw_at(firer, get_dist(firer, disarm) - 1, 1, spin = FALSE)
-
 
 	else if(firer.a_intent == "help")
 		var/atom/throwtarget = get_edge_target_turf(src, get_dir(src, get_step_away(target, src)))

@@ -1,30 +1,24 @@
 /obj/effect/proc_holder/magic/click_on/illusion
 	name = "Decoy"
 	desc = ""
-	mana_cost = ILLUSION_MANACOST
+	mana_cost = 0
 	types_to_click = list("objects","mobs", "turfs")
-	var/obj/effect/dummy/chameleon/illusion/scanned = null
+	var/scanned = null
 
 
 /obj/effect/dummy/chameleon/illusion/proc/copy(atom/target)		//Atom because either mob or obj/item
 	name = target.name
 	desc = target.desc
+	copying = target
 	density = target.density
 	anchored = FALSE
 	appearance = target.appearance
-	current_type = target.type
 	layer = initial(target.layer)
 	plane = initial(target.plane)
 
 
-
-/obj/effect/proc_holder/magic/click_on/illusion/atom_init()
-	. = ..()
-	scanned = new
-
-
 /obj/effect/proc_holder/magic/click_on/illusion/check_turf_cast(turf/target)
-	if(!scanned.current_type)
+	if(!scanned)
 		to_chat(owner.current, "<font color='purple'><i>What do you want me to create?!</i></font>")
 		return TRUE
 
@@ -40,12 +34,12 @@
 
 /obj/effect/proc_holder/magic/click_on/illusion/cast_on_mob(mob/living/target)
 	to_chat(owner.current, "<font color='purple'><i>I scanned the [target]! Now I can create decoys of it!</i></font>")
-	scanned.copy(target)
+	scanned = target
 
 
 /obj/effect/proc_holder/magic/click_on/illusion/cast_on_object(obj/target)
 	to_chat(owner.current, "<font color='purple'><i>I scanned the [target]! Now I can create decoys of it!</i></font>")
-	scanned.copy(target)
+	scanned = target
 
 
 /obj/effect/proc_holder/magic/click_on/illusion/cast_on_turf(turf/target)
@@ -61,6 +55,13 @@
 
 
 /obj/effect/dummy/chameleon/illusion
+	var/atom/copying = null
+
+/obj/effect/dummy/chameleon/illusion/examine(mob/user)
+	if(copying)
+		copying.examine(user)		//Messy, because if I, for example, undress, copy will be examined as undressed, despite it being dressed. Still, the best solution against examine-check.
+		return
+	..()
 
 
 /obj/effect/dummy/chameleon/illusion/Destroy()

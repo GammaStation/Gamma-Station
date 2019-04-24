@@ -6,6 +6,7 @@
 
 
 //Effects and shit
+//Can place through walls
 
 /obj/effect/proc_holder/magic/click_on/candela/check_turf_cast(turf/target)
 	if(is_blocked_turf(target))

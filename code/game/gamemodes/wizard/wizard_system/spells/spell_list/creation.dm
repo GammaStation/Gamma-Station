@@ -1,8 +1,9 @@
 /obj/effect/proc_holder/magic/click_on/creation
 	name = "Esoteric creation"
 	desc = ""
-	mana_cost = CREATION_MANACOST
-	delay = CREATION_DELAY
+	mana_cost = 0
+	delay = 50
+	cooldown = 20
 	types_to_click = list("turfs")
 	closerange = TRUE
 

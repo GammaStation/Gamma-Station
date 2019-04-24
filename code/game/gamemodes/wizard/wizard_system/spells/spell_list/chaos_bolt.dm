@@ -1,7 +1,7 @@
 /obj/effect/proc_holder/magic/click_on/shoot/chaos_bolt
 	name = "Arrow of darkness"
 	desc = ""
-	mana_cost = CHAOS_BOLT_MANACOST
+	mana_cost = 0
 	projectile = /obj/item/projectile/magic/chaos_bolt
 	shootsound = 'sound/effects/dark_blast.ogg'
 

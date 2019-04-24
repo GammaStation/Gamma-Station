@@ -27,7 +27,7 @@
 		{ \
 			if(iswizard(src)) \
 			{ \
-				statpanel("[spell.panel]", ("[spell.mana_cost] Mana"),spell); \
+				statpanel("[spell.panel]", (spell.cooldown > 0 ? "Mana: [spell.mana_cost], CD: [spell.cooldown_left]/[spell.cooldown]" : "Mana: [spell.mana_cost]"),spell); \
 			} \
 		} \
 	}

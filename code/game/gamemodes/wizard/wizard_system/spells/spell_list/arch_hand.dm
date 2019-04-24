@@ -1,8 +1,8 @@
 /obj/effect/proc_holder/magic/click_on/architect
 	name = "Architect's hand"
 	desc = ""
-	delay = ARCHITECT_DELAY
-	mana_cost = ARCHITECT_MANACOST
+	delay = 40
+	mana_cost = 0
 	types_to_click = list("turfs", "objects")
 	closerange = TRUE
 

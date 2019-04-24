@@ -1,7 +1,7 @@
 /obj/effect/proc_holder/magic/click_on/shoot/soulspark
 	name = "Soul spark"
 	desc = ""
-	mana_cost = SOULSPARK_MANACOST
+	mana_cost = 0
 	projectile = /obj/item/projectile/magic/soulspark
 	shootsound = 'sound/magic/soulspark.ogg'
 
@@ -16,7 +16,7 @@
 	damage_type = BURN
 
 /obj/item/projectile/magic/soulspark/atom_init()
-	..()
+	. = ..()
 	var/matrix/Mx = matrix()
 	Mx.Scale(2)
 	transform = Mx

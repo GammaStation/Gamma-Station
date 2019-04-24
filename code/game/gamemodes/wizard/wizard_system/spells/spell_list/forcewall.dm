@@ -1,7 +1,7 @@
 /obj/effect/proc_holder/magic/click_on/forcewall
 	name = "Forcewall"
 	desc = ""
-	mana_cost = FORCEWALL_MANACOST
+	mana_cost = 0
 	types_to_click = list("turfs")
 
 

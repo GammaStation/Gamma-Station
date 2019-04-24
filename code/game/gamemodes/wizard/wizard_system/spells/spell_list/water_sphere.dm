@@ -1,7 +1,7 @@
 /obj/effect/proc_holder/magic/click_on/shoot/water_sphere
 	name = "Water Sphere"
 	desc = ""
-	mana_cost = WATERSPHERE_MANACOST
+	mana_cost = 0
 	projectile = /obj/item/projectile/magic/water_sphere
 	shootsound = 'sound/magic/water.ogg'
 
@@ -10,7 +10,7 @@
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "bubble"
 	nodamage = FALSE
-	damage = WATERSPHERE_DAMAGE
+	damage = 5
 	weaken = WATERSPHERE_WEAKEN_TIME
 
 	damage_type = OXY

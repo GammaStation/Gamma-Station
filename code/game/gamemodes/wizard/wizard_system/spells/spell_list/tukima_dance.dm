@@ -1,7 +1,7 @@
 /obj/effect/proc_holder/magic/click_on/tukima_dance
 	name = "Tukima's dance"
 	desc = ""
-	mana_cost = DANCE_MANACOST
+	mana_cost = 0
 	types_to_click = list("mobs", "objects")
 
 
@@ -32,4 +32,4 @@
 
 /obj/effect/proc_holder/magic/click_on/tukima_dance/cast_on_object(obj/item/target)
 	var/obj/O = target
-	new /mob/living/simple_animal/hostile/mimic/copy(O.loc, O, owner.current)
+	new /mob/living/simple_animal/hostile/mimic/copy(O.loc, O, owner.current)		//Delete after some time

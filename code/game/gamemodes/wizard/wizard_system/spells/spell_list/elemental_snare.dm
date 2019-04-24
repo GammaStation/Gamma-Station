@@ -1,7 +1,7 @@
 /obj/effect/proc_holder/magic/click_on/elemental_snare
 	name = "Elemental snare"
 	desc = ""
-	mana_cost = SNARE_MANACOST
+	mana_cost = 0
 	types_to_click = list("turfs")
 
 /obj/effect/proc_holder/magic/click_on/elemental_snare/check_turf_cast(turf/target)

@@ -1,9 +1,10 @@
 /obj/effect/proc_holder/magic/nondirect/fair_exchange
 	name = "Fair exchange"
 	desc = ""
-	mana_cost = EXCHANGE_MANACOST
-	delay = EXCHANGE_DELAY
+	mana_cost = 0
 	var/obj/item/item_to_transform
+
+//Messages if no item
 
 
 /obj/effect/proc_holder/magic/nondirect/fair_exchange/spell_specific_checks()

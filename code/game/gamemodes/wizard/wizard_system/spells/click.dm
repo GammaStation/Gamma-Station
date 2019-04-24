@@ -40,6 +40,9 @@
 	return
 
 
+// isbusy()
+
+
 /obj/effect/proc_holder/magic/click_on/proc/handle_targeted_cast(atom/spell_target)
 	if(!can_cast())
 		return
@@ -54,9 +57,13 @@
 		if(owner.current.busy_with_action)
 			return
 		to_chat(owner.current, "<font color='purple'><i>I start to cast [name]!</i></font>")		//proc for delay stuff
-		owner.current.visible_message("<span class = 'danger'>[owner.current] starts to chant something!</span>")
-		if(!do_after(owner.current,delay, needhand = FALSE, target = spell_target))
-			return
+		if(spell_target == owner.current || target_type != "mob")
+			owner.current.visible_message("<span class = 'danger'>[owner.current] starts to chant something!</span>")
+		else
+			owner.current.visible_message("<span class = 'danger'>[owner.current] starts to chant something, actively poiting at [spell_target]!</span>")
+		if(!do_after(owner.current,delay, needhand = FALSE, target = owner.current))		//They can move, we can not
+			if(get_dist(owner.current, spell_target) > world.view)
+				return
 		if(!can_cast())
 			return
 
@@ -78,6 +85,8 @@
 		else
 			return
 
+	if(cooldown > 0)
+		cooldown_left = 0
 	owner.wizard_power_system.spend_mana(mana_cost)
 
 /obj/effect/proc_holder/magic/click_on/proc/cast_on_mob(mob/living/target)
@@ -116,6 +125,8 @@
 		playsound(owner.current, shootsound, 50)
 	var/obj/item/projectile/P = new projectile(owner.current.loc)
 	P.Fire(target, owner.current)
+	if(cooldown > 0)
+		cooldown_left = 0
 	owner.wizard_power_system.spend_mana(mana_cost)
 
 

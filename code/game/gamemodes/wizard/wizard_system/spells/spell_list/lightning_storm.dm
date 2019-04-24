@@ -1,8 +1,9 @@
 /obj/effect/proc_holder/magic/nondirect/lightning_storm
 	name = "Lightning storm"
 	desc = ""
-	mana_cost = LIGHTNING_STORM_MANACOST
-	delay = LIGHTNING_STORM_DELAY
+	mana_cost = 0
+	cooldown = 35
+	delay = 25
 
 
 
