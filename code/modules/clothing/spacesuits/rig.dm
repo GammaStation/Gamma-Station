@@ -85,8 +85,9 @@
 	var/list/can_mount = null                         // Types of device that can be hardpoint mounted.
 	var/list/mounted_devices = null                   // Holder for the above device.
 	var/obj/item/active_device = null                 // Currently deployed device, if any.
+	var/equipped_on = FALSE
 
-/obj/item/clothing/suit/space/rig/equipped(mob/M)
+/obj/item/clothing/suit/space/rig/equipped(mob/M,slot)
 	..()
 
 	var/mob/living/carbon/human/H = M
@@ -347,7 +348,7 @@
 /obj/item/clothing/head/helmet/space/rig/syndi/update_icon(mob/user)
 	user.overlays -= lamp
 	if(equipped_on_head && camera && (on || combat_mode))
-		lamp = image(icon = 'icons/mob/nuclear_helm_overlays.dmi', icon_state = "terror[combat_mode ? "_combat" : ""]_glow", layer = ABOVE_LIGHTING_LAYER)
+		lamp = image(icon = 'icons/mob/additional_overlays.dmi', icon_state = "terror[combat_mode ? "_combat" : ""]_glow", layer = ABOVE_LIGHTING_LAYER)
 		lamp.plane = LIGHTING_PLANE + 1
 		lamp.alpha = on ? 255 : 127
 		user.overlays += lamp
@@ -523,6 +524,41 @@
 	allowed = list(/obj/item/weapon/gun,/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit,/obj/item/weapon/melee/baton)
 	breach_threshold = 20
 	slowdown = 1.4
+	actions_types = list(/datum/action/item_action/attack_self)
+	item_color = "sec"
+	var/on = FALSE
+	var/image/lights = null
+	var/suit_lights = null
+
+/obj/item/clothing/suit/space/rig/security/atom_init()
+	. = ..()
+	lights = image(icon = 'icons/mob/additional_overlays.dmi', icon_state = "ledsec_overlay", layer = ABOVE_LIGHTING_LAYER)
+	lights.plane = LIGHTING_PLANE + 1
+	suit_lights = image(icon = 'icons/mob/additional_overlays.dmi', icon_state = "ledsec_icon", layer = ABOVE_HUD_LAYER)
+
+/obj/item/clothing/suit/space/rig/security/attack_self(mob/user)
+	if(equipped_on)
+		on = !on
+		update_icon(user)
+
+/obj/item/clothing/suit/space/rig/security/update_icon(mob/user)
+	user.overlays -= lights
+	overlays -= suit_lights
+	if(equipped_on && on)
+		overlays += suit_lights
+		user.overlays += lights
+
+/obj/item/clothing/suit/space/rig/security/equipped(mob/user, slot)
+	. = ..()
+	if(slot == slot_wear_suit)
+		equipped_on = TRUE
+		update_icon(user)
+
+/obj/item/clothing/suit/space/rig/security/dropped(mob/user)
+	. = ..()
+	if(equipped_on)
+		equipped_on = FALSE
+		update_icon(user)
 
 //SVC Rig
 /obj/item/clothing/head/helmet/space/rig/security/hos
