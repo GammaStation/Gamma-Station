@@ -7,7 +7,7 @@
 
 /obj/item/projectile/lash
 	name = "fiery lash"
-	icon_state = null	//If you have sprite of a fiery lash - pls give
+	icon_state = null	//I need a sprite for lash.
 	damage = LASH_BASE_DAMAGE
 	damage_type = BURN
 	flag = "bomb"
@@ -18,9 +18,10 @@
 	var/turf/T = get_turf(src)
 	if(T)
 		if(!istype(T,/turf/simulated))
-			qdel(src)			//Runtime in process
+			STOP_PROCESSING(SSobj, src)
+			qdel(src)		//Runtime, should forbid using on unsimulated
 		else
-			T.create_fire(4)
+			T.create_fire(4)		//Fire trail should only be in hurt mode, but I have no sprite so it will be always, until then
 
 
 /obj/item/projectile/lash/on_hit(atom/target)

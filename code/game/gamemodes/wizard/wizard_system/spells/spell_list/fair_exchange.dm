@@ -31,7 +31,7 @@
 		new_item = safepick(subtypesof(item_to_transform.parent_type) - item_to_transform.type)
 
 	if(!new_item)
-		to_chat(owner.current, "<font color='purple'><i>The spell failed! There is no equivalent of this item in the parallel dimension!</i></font>")
+		to_chat(owner.current, "<span class='wizard'>The spell failed! There is no equivalent of this item in the parallel dimension!</span>")
 		return
 
 	var/obj/item/to_put_in_hand = new new_item(owner.current.loc)

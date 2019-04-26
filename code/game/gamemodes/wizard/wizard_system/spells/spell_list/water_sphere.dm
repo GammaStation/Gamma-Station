@@ -1,9 +1,31 @@
+//Rename
+
 /obj/effect/proc_holder/magic/click_on/shoot/water_sphere
-	name = "Water Sphere"
+	name = "Water sphere"
 	desc = ""
 	mana_cost = 0
 	projectile = /obj/item/projectile/magic/water_sphere
 	shootsound = 'sound/magic/water.ogg'
+
+/obj/effect/proc_holder/magic/click_on/shoot/water_sphere/process()
+	switch(owner.current.a_intent)
+		if("help")
+			name = "Stone arrow"
+			projectile = /obj/item/projectile/bullet/stone_arrow
+			shootsound = 'sound/weapons/Gunshot_silenced.ogg'			//Change sound effect
+		if("disarm")
+			name = "Water sphere"
+			projectile = /obj/item/projectile/magic/water_sphere
+			shootsound = 'sound/magic/water.ogg'
+		if("hurt")
+			name = "Fireball"
+			projectile = /obj/item/projectile/magic/fireball_weak
+			shootsound = 'sound/magic/Fireball.ogg'
+		if("grab")
+			name = "Ball lightning"
+			projectile = /obj/item/projectile/magic/lightning_weak
+			shootsound = 'sound/magic/lightningbolt.ogg'
+
 
 /obj/item/projectile/magic/water_sphere
 	name = "watersphere"
@@ -14,6 +36,38 @@
 	weaken = WATERSPHERE_WEAKEN_TIME
 
 	damage_type = OXY
+
+/obj/item/projectile/bullet/stone_arrow
+	name = "stone arrow"
+	damage = 20
+	muzzle_type = null
+
+/obj/item/projectile/magic/fireball_weak
+	name = "bolt of fireball"
+	icon_state = "fireball"
+	damage = 10
+	damage_type = BURN
+	nodamage = 0
+
+/obj/item/projectile/magic/fireball_weak/on_hit(atom/target)
+	if(isliving(target))
+		var/mob/living/M = target
+		M.fire_act()
+		M.adjust_fire_stacks(5)
+	return ..()
+
+/obj/item/projectile/magic/lightning_weak
+	name = "lightning bolt"
+	icon_state = "tesla_projectile"
+	damage = 5
+	damage_type = BURN
+	nodamage = 0
+
+
+/obj/item/projectile/magic/lightning_weak/on_hit(atom/target)
+	tesla_zap(src, 3, 2000)
+	return ..()
+
 
 /obj/item/projectile/magic/water_sphere/atom_init()
 	. = ..()

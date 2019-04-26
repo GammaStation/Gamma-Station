@@ -19,11 +19,11 @@
 
 /obj/effect/proc_holder/magic/click_on/illusion/check_turf_cast(turf/target)
 	if(!scanned)
-		to_chat(owner.current, "<font color='purple'><i>What do you want me to create?!</i></font>")
+		to_chat(owner.current, "<span class='wizard'>What do you want me to create?!</span>")
 		return TRUE
 
 	if(istype(target, /turf/simulated/wall))
-		to_chat(owner.current, "<font color='purple'><i>How can I forge an illusion inside a wall?! You fool!</i></font>")
+		to_chat(owner.current, "<span class='wizard'>How can I forge an illusion inside a wall?! You fool!</span>")
 		return TRUE
 
 
@@ -33,12 +33,12 @@
 
 
 /obj/effect/proc_holder/magic/click_on/illusion/cast_on_mob(mob/living/target)
-	to_chat(owner.current, "<font color='purple'><i>I scanned the [target]! Now I can create decoys of it!</i></font>")
+	to_chat(owner.current, "<span class='wizard'>I scanned the [target]! Now I can create decoys of it!</span>")
 	scanned = target
 
 
 /obj/effect/proc_holder/magic/click_on/illusion/cast_on_object(obj/target)
-	to_chat(owner.current, "<font color='purple'><i>I scanned the [target]! Now I can create decoys of it!</i></font>")
+	to_chat(owner.current, "<span class='wizard'>I scanned the [target]! Now I can create decoys of it!</span>")
 	scanned = target
 
 

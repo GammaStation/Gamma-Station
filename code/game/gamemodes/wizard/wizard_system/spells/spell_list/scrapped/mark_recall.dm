@@ -11,11 +11,11 @@
 		if(item_in_hand.flags & ABSTRACT || item_in_hand.flags & NODROP)
 			return TRUE
 		if(marked_item == item_in_hand)
-			to_chat(owner.current, "<font color='purple'><i>Mark removed!</i></font>")
+			to_chat(owner.current, "<span class='wizard'>Mark removed!</span>")
 			name = "Mark & Recall"
 			marked_item = null
 		else
-			to_chat(owner.current, "<font color='purple'><i>Item marked!</i></font>")
+			to_chat(owner.current, "<span class='wizard'>Item marked!</span>")
 			name = "Recall [item_in_hand]"
 			marked_item = item_in_hand
 		return TRUE

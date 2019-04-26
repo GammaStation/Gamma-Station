@@ -5,6 +5,8 @@
 	projectile = /obj/item/projectile/magic/soulspark
 	shootsound = 'sound/magic/soulspark.ogg'
 
+//buff damage and explosion, give cooldown
+
 /obj/item/projectile/magic/soulspark
 	name = "aether ball"
 	icon_state = "ice_1"

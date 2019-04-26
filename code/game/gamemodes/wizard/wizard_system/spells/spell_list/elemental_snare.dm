@@ -6,7 +6,7 @@
 
 /obj/effect/proc_holder/magic/click_on/elemental_snare/check_turf_cast(turf/target)
 	if(is_blocked_turf(target))
-		to_chat(owner.current, "<font color='purple'><i>This place is occupied! I can't place a trap here!</i></font>")
+		to_chat(owner.current, "<span class='wizard'>This place is occupied! I can't place a trap here!</span>")
 		return TRUE
 	if(locate(/obj/structure/trap) in target.contents)
 		return TRUE

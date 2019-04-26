@@ -10,7 +10,7 @@
 
 /obj/effect/proc_holder/magic/click_on/spirits/check_turf_cast(turf/target)
 	if(is_blocked_turf(target))
-		to_chat(owner.current, "<font color='purple'><i>This place is occupied! I can't summon a magical spirit here!</i></font>")
+		to_chat(owner.current, "<span class='wizard'>This place is occupied! I can't summon a magical spirit here!</span>")
 		return TRUE
 
 

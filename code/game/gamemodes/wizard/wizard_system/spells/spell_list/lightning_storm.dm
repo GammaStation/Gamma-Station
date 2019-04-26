@@ -5,7 +5,7 @@
 	cooldown = 35
 	delay = 25
 
-
+//Probably all four elements
 
 /obj/effect/proc_holder/magic/nondirect/lightning_storm/cast()
 	owner.current.tesla_ignore = TRUE

@@ -7,7 +7,7 @@
 
 /obj/effect/proc_holder/magic/click_on/scan/check_mob_cast(mob/target)
 	if(!ishuman(target))
-		to_chat(owner.current, "<font color='purple'><i>This spell is intended to be used only on humans!</i></font>")
+		to_chat(owner.current, "<span class='wizard'>This spell is intended to be used only on humans!</span>")
 		return TRUE
 
 

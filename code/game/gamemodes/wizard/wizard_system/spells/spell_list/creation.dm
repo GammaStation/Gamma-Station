@@ -9,7 +9,7 @@
 
 /obj/effect/proc_holder/magic/click_on/creation/check_turf_cast(turf/target)
 	if(is_blocked_turf(target))
-		to_chat(owner.current, "<font color='purple'><i>This place is occupied! I can't conjure a creature here!</i></font>")
+		to_chat(owner.current, "<span class='wizard'>This place is occupied! I can't conjure a creature here!</span>")
 		return TRUE
 
 

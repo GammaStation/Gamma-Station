@@ -8,7 +8,7 @@
 
 /obj/effect/proc_holder/magic/click_on/brainrot/check_mob_cast(mob/living/target)
 	if(!ishuman(target))
-		to_chat(owner.current, "<font color = 'purple'><span class = 'bold'>I can't influence this creature's mind!</span></font>")
+		to_chat(owner.current, "<span class='wizard'>I can't influence this creature's mind!</span>")
 		return TRUE
 
 

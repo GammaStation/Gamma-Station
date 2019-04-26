@@ -13,11 +13,11 @@
 
 
 /obj/effect/proc_holder/magic/click_on/proc/set_spell()
-	to_chat(owner.current, "<font color='purple'><i>I have prepared [name]</i></font>")
+	to_chat(owner.current, "<span class='wizard'>I have prepared [name]</span>")
 	owner.wizard_power_system.chosen_spell = src
 
 /obj/effect/proc_holder/magic/click_on/proc/unset_spell()
-	to_chat(owner.current, "<font color='purple'><i>I have dismissed [name]</i></font>")
+	to_chat(owner.current, "<span class='wizard'>I have dismissed [name]</span>")
 	owner.wizard_power_system.chosen_spell = null
 
 
@@ -40,7 +40,6 @@
 	return
 
 
-// isbusy()
 
 
 /obj/effect/proc_holder/magic/click_on/proc/handle_targeted_cast(atom/spell_target)
@@ -54,16 +53,17 @@
 		return
 
 	if(delay)
-		if(owner.current.busy_with_action)
+		if(owner.current.busy_with_action)		//isbusy()
 			return
-		to_chat(owner.current, "<font color='purple'><i>I start to cast [name]!</i></font>")		//proc for delay stuff
+		to_chat(owner.current, "<span class='wizard'>I start to cast [name]!</span>")		//proc for delay stuff
 		if(spell_target == owner.current || target_type != "mob")
 			owner.current.visible_message("<span class = 'danger'>[owner.current] starts to chant something!</span>")
 		else
 			owner.current.visible_message("<span class = 'danger'>[owner.current] starts to chant something, actively poiting at [spell_target]!</span>")
 		if(!do_after(owner.current,delay, needhand = FALSE, target = owner.current))		//They can move, we can not
-			if(get_dist(owner.current, spell_target) > world.view)
-				return
+			return
+		if(get_dist(owner.current, spell_target) > world.view)
+			return
 		if(!can_cast())
 			return
 
