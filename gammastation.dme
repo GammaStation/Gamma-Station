@@ -1869,11 +1869,6 @@
 #include "code\modules\zwater\wet_stuff.dm"
 #include "interface\interface.dm"
 #include "interface\skin.dmf"
-#include "maps\z1.dmm"
+#include "maps\samosbor_v1.dmm"
 #include "maps\z2.dmm"
-#include "maps\z3.dmm"
-#include "maps\z4.dmm"
-#include "maps\z5.dmm"
-#include "maps\z6.dmm"
-#include "maps\z7.dmm"
 // END_INCLUDE
