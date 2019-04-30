@@ -131,13 +131,13 @@
 
 // Diamonds. Rare and expensive.
 /datum/export/stack/diamond
-	cost = 2500
+	cost = 1000
 	export_types = list(/obj/item/stack/sheet/mineral/diamond)
 	message = "of diamonds"
 
 // Phoron. The oil of 26 century. The reason why you are here.
 /datum/export/stack/phoron
-	cost = 350
+	cost = 175
 	export_types = list(/obj/item/stack/sheet/mineral/phoron)
 	message = "of phoron"
 
@@ -148,25 +148,25 @@
 
 // Refined scrap. The coal of 26 century. The reason why you are here.
 /datum/export/stack/scrap
-	cost = 250
+	cost = 50
 	export_types = list(/obj/item/stack/sheet/refined_scrap)
 	message = "of scrap"
 
 // Uranium. Still useful for both power generation and nuclear annihilation.
 /datum/export/stack/uranium
-	cost = 400
+	cost = 200
 	export_types = list(/obj/item/stack/sheet/mineral/uranium)
 	message = "of uranium"
 
 // Gold. Used in electronics and corrosion-resistant plating.
 /datum/export/stack/gold
-	cost = 250
+	cost = 125
 	export_types = list(/obj/item/stack/sheet/mineral/gold)
 	message = "of gold"
 
 // Silver.
 /datum/export/stack/silver
-	cost = 100
+	cost = 50
 	export_types = list(/obj/item/stack/sheet/mineral/silver)
 	message = "of silver"
 
@@ -178,7 +178,7 @@
 
 // Platinum.
 /datum/export/stack/platinum
-	cost = 1000
+	cost = 500
 	message = "of platinum"
 	export_types = list(/obj/item/stack/sheet/mineral/platinum)
 
