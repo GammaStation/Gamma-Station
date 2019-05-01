@@ -95,10 +95,23 @@
 	base_state = "pwall"
 	join_group = null
 
-/turf/simulated/shuttle/wall/black
+/turf/simulated/shuttle/wall/legacy_black
 	icon = 'icons/turf/shuttle.dmi'
 	icon_state = "wall3"
 	base_state = "wall3"
 	join_group = null
 
+/turf/simulated/shuttle/wall/black
+	icon = 'icons/turf/shuttle_black.dmi'
+	icon_state = "black"
+	base_state = "black"
 
+/turf/simulated/shuttle/wall/black/hard_corner
+	name = "wall"
+	icon_state = "black-hc"
+	hard_corner = TRUE
+
+/turf/simulated/shuttle/wall/black/no_join
+	icon_state = "black-nj"
+	join_group = null
+	takes_underlays = FALSE

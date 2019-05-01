@@ -26,3 +26,6 @@
 	icon_state = "door1"
 	opacity = 1
 	density = 1
+
+/obj/machinery/door/unpowered/shuttle/black
+	icon = 'icons/turf/shuttle_black.dmi'
