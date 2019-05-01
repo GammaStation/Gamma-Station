@@ -6,12 +6,13 @@ var/list/magic_spells = typesof(/obj/effect/proc_holder/magic)
 	desc = "" // Fluff
 	var/mana_cost = 0
 	var/delay = DEFAULT_DELAY
-	var/continuous = FALSE
 	var/req_stat = CONSCIOUS // Can this spell be cast when you are incapacitated/dead?
 	var/robeless = FALSE
 	var/datum/mind/owner		//Owner mind of the spell. Honestly, not sure if this is good idea, to use owner.current instead of user. And owner instead of user.mind.
 	var/cooldown = 0		//In seconds
 	var/cooldown_left
+	var/ultimate = FALSE	//Ultimate spell reduces your max mana
+	var/cast_message		//Message when finished casting
 	var/list/required_schools = list()
 
 /obj/effect/proc_holder/magic/atom_init()
@@ -45,6 +46,10 @@ var/list/magic_spells = typesof(/obj/effect/proc_holder/magic)
 		to_chat(owner.current, "<span class='wizard'>How am I supposed to cast a spell when I lost consciousness?!</span>")
 		owner.current << sound('sound/magic/magicfail.ogg')
 		return FALSE
+	if(ultimate && istype(owner.current,/mob/living/carbon/human/shadow_twin))
+		to_chat(owner.current, "<span class='wizard'>This form is too frail for such a spell!</span>")
+		owner.current << sound('sound/magic/magicfail.ogg')
+		return FALSE
 	return TRUE
 
 
@@ -64,23 +69,32 @@ var/list/magic_spells = typesof(/obj/effect/proc_holder/magic)
 	if(spell_specific_checks())
 		return
 
-// if(user.is_busy()) return
-
 
 	if(delay)		//Multicast delay spells
-		if(owner.current.busy_with_action == TRUE)
+		if(owner.current.is_busy())
 			return
-		to_chat(owner.current, "<span class='wizard'>I start to cast [name]!</span>")		//proc for delay stuff
-		owner.current.visible_message("<span class = 'danger'>[owner.current] starts to chant something!</span>")
+		if(!ultimate)
+			to_chat(owner.current, "<span class='wizard'>I start to cast [name]!</span>")
+			owner.current.visible_message("<span class = 'danger'>[owner.current] starts to chant something!</span>")
+		else
+			for(var/mob/M in view(7,owner.current))
+				if(M.client)
+					shake_camera(M, 7, 1)
+			to_chat(owner.current, "<span class='wizard'><b>I start to cast [name]!</b></span>")
+			owner.current.visible_message("<span class = 'big'>[owner.current] glows with power as they loudly chant something!</span>")
+			owner.wizard_power_system.spend_mana(mana_cost)
 		if(!do_after(owner.current,delay, needhand = FALSE, target = owner.current))
 			return
 		if(!can_cast())
 			return
 
 	if(!cast())		//Negative so I do not have to post . = ..() everywhere
-		owner.wizard_power_system.spend_mana(mana_cost)
+		if(!ultimate)
+			owner.wizard_power_system.spend_mana(mana_cost)		//Non ultimate spells spend mana after chanting. Ultimate spend mana at the beginning
 		if(cooldown > 0)
 			cooldown_left = 0
+		if(ultimate)
+			owner.wizard_power_system.maxmana -= WIZARD_ULTIMATE_SPELL_MANA_PENALTY
 	else
 		owner.current << sound('sound/magic/magicfail.ogg')
 

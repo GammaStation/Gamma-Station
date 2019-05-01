@@ -6,6 +6,7 @@
 	cooldown = 60
 	types_to_click = list("mobs")
 
+//Probably should link mind
 
 /obj/effect/proc_holder/magic/click_on/polymorph/check_mob_cast(mob/living/target)
 	if(!ishuman(target))
@@ -75,7 +76,7 @@
 
 /mob/living/simple_animal/hostile/carp/megacarp/polymorph/Destroy()
 	if(original_body)
-		original_body.loc = get_turf(src)
+		original_body.forceMove(get_turf(src))
 		if(mind)
 			mind.transfer_to(original_body)
 
@@ -105,7 +106,7 @@
 
 /mob/living/simple_animal/hulk/human/polymorph/Destroy()
 	if(original_body)
-		original_body.loc = get_turf(src)
+		original_body.forceMove(get_turf(src))
 		if(mind)
 			mind.transfer_to(original_body)
 
@@ -134,7 +135,7 @@
 
 /mob/living/simple_animal/headcrab/polymorph/Destroy()
 	if(original_body)
-		original_body.loc = get_turf(src)
+		original_body.forceMove(get_turf(src))
 		if(mind)
 			mind.transfer_to(original_body)
 
@@ -166,7 +167,7 @@
 
 /mob/living/simple_animal/mouse/polymorph/Destroy()
 	if(original_body)
-		original_body.loc = get_turf(src)
+		original_body.forceMove(get_turf(src))
 		if(mind)
 			mind.transfer_to(original_body)
 

@@ -247,7 +247,8 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 			if(prob(current_size * 5) && hand.w_class >= ((STAGE_FIVE-current_size)/2)  && unEquip(hand))
 				step_towards(hand, src)
 				to_chat(src, "<span class='warning'>\The [S] pulls \the [hand] from your grip!</span>")
-	apply_effect(current_size * 3, IRRADIATE)
+	if(!istype(S,/obj/singularity/scrap_ball))
+		apply_effect(current_size * 3, IRRADIATE)
 	if(mob_negates_gravity())//Magboots protection
 		return
 	..()

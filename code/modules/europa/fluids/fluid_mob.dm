@@ -127,9 +127,10 @@
 				power_calculated = 0
 				continue
 
-			if(istype(H.wear_suit, /obj/item/clothing/suit/space/rig && H.wear_suit.flags & NOSLIP))
-				power_calculated = 0
-				continue
+			if(istype(H.wear_suit, /obj/item/clothing/suit/space/rig))
+				if(H.wear_suit.flags & NOSLIP)
+					power_calculated = 0
+					continue
 
 			var/obj/item/organ/external/BP = H.bodyparts_by_name[BP_CHEST]
 			if(H.check_thickmaterial(BP))

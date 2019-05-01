@@ -55,11 +55,22 @@
 	if(delay)
 		if(owner.current.busy_with_action)		//isbusy()
 			return
-		to_chat(owner.current, "<span class='wizard'>I start to cast [name]!</span>")		//proc for delay stuff
-		if(spell_target == owner.current || target_type != "mob")
-			owner.current.visible_message("<span class = 'danger'>[owner.current] starts to chant something!</span>")
+		if(!ultimate)
+			to_chat(owner.current, "<span class='wizard'>I start to cast [name]!</span>")		//proc for delay stuff
+			if(spell_target == owner.current || target_type != "mob")
+				owner.current.visible_message("<span class = 'danger'>[owner.current] starts to chant something!</span>")
+			else
+				owner.current.visible_message("<span class = 'danger'>[owner.current] starts to chant something, actively poiting at [spell_target]!</span>")
 		else
-			owner.current.visible_message("<span class = 'danger'>[owner.current] starts to chant something, actively poiting at [spell_target]!</span>")
+			for(var/mob/M in view(7,owner.current))
+				if(M.client)
+					shake_camera(M, 7, 1)
+			to_chat(owner.current, "<span class='wizard'><b>I start to cast [name]!</b></span>")		//proc for delay stuff
+			if(spell_target == owner.current || target_type != "mob")
+				owner.current.visible_message("<span class = 'big'>[owner.current] glows with power as they loudly chant something!</span>")
+			else
+				owner.current.visible_message("<span class = 'BIG'>[owner.current] glows with power as they loudly chant something, actively poiting at [spell_target]!</span>")
+			owner.wizard_power_system.spend_mana(mana_cost)
 		if(!do_after(owner.current,delay, needhand = FALSE, target = owner.current))		//They can move, we can not
 			return
 		if(get_dist(owner.current, spell_target) > world.view)
@@ -87,7 +98,8 @@
 
 	if(cooldown > 0)
 		cooldown_left = 0
-	owner.wizard_power_system.spend_mana(mana_cost)
+	if(!ultimate)
+		owner.wizard_power_system.spend_mana(mana_cost)		//Ultimate spells spend mana at the beginning of channeling, not at the end
 
 /obj/effect/proc_holder/magic/click_on/proc/cast_on_mob(mob/living/target)
 	return

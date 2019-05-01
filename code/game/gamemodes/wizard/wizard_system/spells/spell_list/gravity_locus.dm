@@ -18,4 +18,4 @@
 
 		if(isliving(AM))
 			var/mob/living/M = AM
-			M.Weaken(2)
+			M.Weaken(3)

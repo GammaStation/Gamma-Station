@@ -4,7 +4,7 @@
 var/list/explosion_turfs = list()
 var/explosion_in_progress = 0
 
-proc/explosion_rec(turf/epicenter, power)
+proc/explosion_rec(turf/epicenter, power, forbid_floor_removal)
 	var/loopbreak = 0
 	while(explosion_in_progress)
 		if(loopbreak >= 15) return
@@ -44,7 +44,10 @@ proc/explosion_rec(turf/epicenter, power)
 		var/x = T.x
 		var/y = T.y
 		var/z = T.z
-		T.ex_act(severity)
+		if(forbid_floor_removal && istype(T, /turf/simulated/floor))
+			T.ex_act(max(severity,3))
+		else
+			T.ex_act(severity)
 		if(!T)
 			T = locate(x,y,z)
 		for(var/atom/A in T)
