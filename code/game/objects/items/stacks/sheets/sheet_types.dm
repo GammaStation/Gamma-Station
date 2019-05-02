@@ -111,9 +111,11 @@ var/global/list/datum/stack_recipe/metal_recipes = list (
 /*
  * Plasteel
  */
-var/global/list/datum/stack_recipe/plasteel_recipes = list ( \
-	new/datum/stack_recipe("AI core", /obj/structure/AIcore, 4, time = 50, one_per_turf = TRUE), \
-	new/datum/stack_recipe("Metal crate", /obj/structure/closet/crate, 10, time = 50, one_per_turf = TRUE), \
+var/global/list/datum/stack_recipe/plasteel_recipes = list (
+	new/datum/stack_recipe("AI core", /obj/structure/AIcore, 4, time = 50, one_per_turf = TRUE),
+	new/datum/stack_recipe("Metal crate", /obj/structure/closet/crate, 10, time = 50, one_per_turf = TRUE),
+	new/datum/stack_recipe("remote door-control assembly", /obj/item/door_control_assembly, 1, time = 20, one_per_turf = TRUE),
+	new/datum/stack_recipe("shutters", /obj/machinery/door/poddoor/shutters/constructable, 5, time = 50, one_per_turf = TRUE, on_floor = TRUE)
 	)
 
 /obj/item/stack/sheet/plasteel
