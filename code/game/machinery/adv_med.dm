@@ -10,6 +10,17 @@
 	anchored = 1
 	light_color = "#00FF00"
 
+/obj/machinery/bodyscanner/atom_init()
+	. = ..()
+
+	component_parts = list()
+	component_parts += new /obj/item/weapon/circuitboard/bodyscanner(null)
+	component_parts += new /obj/item/weapon/stock_parts/manipulator(null)
+	component_parts += new /obj/item/weapon/stock_parts/manipulator(null)
+	component_parts += new /obj/item/weapon/stock_parts/console_screen(null)
+	component_parts += new /obj/item/weapon/stock_parts/console_screen(null)
+	component_parts += new /obj/item/stack/cable_coil/random(null, 1)
+
 /obj/machinery/bodyscanner/power_change()
 	..()
 	if(!(stat & (BROKEN|NOPOWER)))
@@ -54,14 +65,20 @@
 		return FALSE
 	return TRUE
 
-/obj/machinery/bodyscanner/attackby(obj/item/weapon/grab/G, mob/user)
-	if(!istype(G, /obj/item/weapon/grab))
-		return
-	if(!move_inside_checks(G.affecting, user))
-		return
+/obj/machinery/bodyscanner/attackby(obj/item/I, mob/user)
 	add_fingerprint(user)
-	close_machine(G.affecting)
-	qdel(G)
+
+	if(istype(I, /obj/item/weapon/grab))
+		var/obj/item/weapon/grab/G = I
+		if(move_inside_checks(G.affecting, user))
+			close_machine(G.affecting)
+			qdel(G)
+			return
+
+	if(occupant && default_pry_open(I))
+		return
+	if(default_deconstruction_crowbar(I, TRUE))
+		return
 
 /obj/machinery/bodyscanner/update_icon()
 	icon_state = "body_scanner_[occupant ? "1" : "0"]"
@@ -137,10 +154,19 @@
 
 /obj/machinery/body_scanconsole/atom_init()
 	..()
+	component_parts = list()
+	component_parts += new /obj/item/weapon/circuitboard/body_scanconsole(null)
+	component_parts += new /obj/item/weapon/stock_parts/console_screen(null)
+	component_parts += new /obj/item/stack/cable_coil/random(null, 1)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/body_scanconsole/atom_init_late()
 	connected = locate(/obj/machinery/bodyscanner, get_step(src, WEST))
+
+/obj/machinery/body_scanconsole/attackby(obj/item/I, mob/user)
+	if(default_deconstruction_crowbar(I, TRUE))
+		return
+	return ..()
 
 /*
 

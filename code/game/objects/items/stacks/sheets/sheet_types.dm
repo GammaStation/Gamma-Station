@@ -114,6 +114,8 @@ var/global/list/datum/stack_recipe/metal_recipes = list (
 var/global/list/datum/stack_recipe/plasteel_recipes = list ( \
 	new/datum/stack_recipe("AI core", /obj/structure/AIcore, 4, time = 50, one_per_turf = TRUE), \
 	new/datum/stack_recipe("Metal crate", /obj/structure/closet/crate, 10, time = 50, one_per_turf = TRUE), \
+	new/datum/stack_recipe("roller bed", /obj/item/roller, 4, time = 50, one_per_turf = TRUE),
+	new/datum/stack_recipe("wheelchair", /obj/structure/stool/bed/chair/wheelchair, 3, time = 50, one_per_turf = TRUE)
 	)
 
 /obj/item/stack/sheet/plasteel

@@ -365,6 +365,25 @@ to destroy them and players will be able to make replacements.
 							/obj/item/stack/cable_coil = 1,
 							/obj/item/weapon/stock_parts/console_screen = 2)
 
+/obj/item/weapon/circuitboard/bodyscanner
+	name = "circuit board (Bodyscanner)"
+	build_path = /obj/machinery/bodyscanner
+	board_type = "machine"
+	origin_tech = "programming=3;biotech=3;engineering=3;materials=2"
+	req_components = list(
+							/obj/item/weapon/stock_parts/manipulator = 2,
+							/obj/item/stack/cable_coil = 1,
+							/obj/item/weapon/stock_parts/console_screen = 2)
+
+/obj/item/weapon/circuitboard/body_scanconsole
+	name = "circuit board (Bodyscanner Console)"
+	build_path = /obj/machinery/body_scanconsole
+	board_type = "machine"
+	origin_tech = "programming=3;biotech=3;engineering=3;materials=2"
+	req_components = list(
+							/obj/item/stack/cable_coil = 1,
+							/obj/item/weapon/stock_parts/console_screen = 1)
+
 /obj/item/weapon/circuitboard/cryo_tube
 	name = "circuit board (Cryotube)"
 	build_path = /obj/machinery/atmospherics/components/unary/cryo_cell
