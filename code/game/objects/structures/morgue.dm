@@ -16,9 +16,9 @@
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "morgue1"
 	dir = EAST
-	density = 1
+	density = TRUE
 	var/obj/structure/m_tray/connected = null
-	anchored = 1.0
+	anchored = TRUE
 	var/check_delay = 0
 
 /obj/structure/morgue/atom_init()
@@ -101,7 +101,7 @@
 		update()
 
 /obj/structure/morgue/proc/open()
-	if (!connected)
+	if(!connected && anchored)
 		playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 		connected = new /obj/structure/m_tray( loc )
 		step(connected, dir)
@@ -134,7 +134,7 @@
 	add_fingerprint(user)
 	return
 
-/obj/structure/morgue/attackby(P, mob/user)
+/obj/structure/morgue/attackby(obj/item/P, mob/user)
 	if(istype(P, /obj/item/weapon/pen))
 
 		var/t = sanitize_safe(input(user, "What would you like the label to be?", src.name, null)  as text, MAX_NAME_LEN)
@@ -148,6 +148,19 @@
 			src.name = text("Morgue- '[]'", t)
 		else
 			src.name = "Morgue"
+	else if(istype(P, /obj/item/weapon/wrench))
+		close()
+		if(dir == EAST)
+			dir = WEST
+		else
+			dir = EAST
+	else if(istype(P, /obj/item/weapon/crowbar))
+		if(!user.is_busy() && do_after(user, 40, target=src))
+			close()
+			for(var/atom/movable/A in src)
+				A.forceMove(loc)
+			new /obj/item/stack/sheet/mineral/plastic(loc, 5, TRUE)
+			qdel(src)
 	else
 		..()
 
