@@ -550,7 +550,8 @@ datum/supply_pack/New()
 					/obj/item/clothing/suit/storage/hazardvest,
 					/obj/item/clothing/head/welding,
 					/obj/item/clothing/head/welding,
-					/obj/item/clothing/head/hardhat/yellow)
+					/obj/item/clothing/head/hardhat/yellow,
+					/obj/item/weapon/airlock_painter)
 	cost = 1000
 	crate_type = /obj/structure/closet/crate/engi
 	crate_name = "Mechanical maintenance crate"
