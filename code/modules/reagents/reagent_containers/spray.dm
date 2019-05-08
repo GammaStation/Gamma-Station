@@ -17,7 +17,7 @@
 	volume = 250
 	var/safety = FALSE
 
-	action_button_name = "Switch Spray"
+	actions_types = /datum/action/item_action/attack_self
 
 
 /obj/item/weapon/reagent_containers/spray/atom_init()

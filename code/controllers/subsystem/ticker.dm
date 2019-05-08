@@ -78,6 +78,7 @@ var/datum/subsystem/ticker/ticker
 			timeLeft = initial(timeLeft)
 			to_chat(world, "<b><font color='blue'>Welcome to the pre-game lobby!</font></b>")
 			to_chat(world, "Please, setup your character and select ready. Game will start in [timeLeft/10] seconds")
+			default_holomap = image(generate_holo_map())
 			current_state = GAME_STATE_PREGAME
 
 		if(GAME_STATE_PREGAME)
@@ -213,8 +214,6 @@ var/datum/subsystem/ticker/ticker
 
 	current_state = GAME_STATE_PLAYING
 	round_start_time = world.time
-
-	setup_economy()
 
 	//start_landmarks_list = shuffle(start_landmarks_list) //Shuffle the order of spawn points so they dont always predictably spawn bottom-up and right-to-left
 	create_characters() //Create player characters and transfer them

@@ -2,7 +2,7 @@
 /obj/item/clothing/head/helmet/space/skrell
 	name = "skrellian helmet"
 	desc = "Smoothly contoured and polished to a shine. Still looks like a fishbowl."
-	armor = list(melee = 20, bullet = 20, laser = 25,energy = 50, bomb = 50, bio = 100, rad = 100)
+	armor = list(melee = 20, bullet = 20, laser = 25,energy = 50, bomb = 50, bio = 100, rad = 100, telepathy = 15)
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	species_restricted = list(SKRELL , HUMAN)
 
@@ -19,7 +19,7 @@
 /obj/item/clothing/suit/space/skrell
 	name = "skrellian hardsuit"
 	desc = "Seems like a wetsuit with reinforced plating seamlessly attached to it. Very chic."
-	armor = list(melee = 20, bullet = 20, laser = 25,energy = 50, bomb = 50, bio = 100, rad = 100)
+	armor = list(melee = 20, bullet = 20, laser = 25,energy = 50, bomb = 50, bio = 100, rad = 100, telepathy = 20)
 	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/weapon/storage/bag/ore,/obj/item/device/t_scanner,/obj/item/weapon/pickaxe, /obj/item/weapon/rcd)
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
@@ -37,7 +37,7 @@
 
 //Unathi space gear. Huge and restrictive.
 /obj/item/clothing/head/helmet/space/unathi
-	armor = list(melee = 40, bullet = 30, laser = 30,energy = 15, bomb = 35, bio = 100, rad = 50)
+	armor = list(melee = 40, bullet = 30, laser = 30,energy = 15, bomb = 35, bio = 100, rad = 50, telepathy = 15)
 	heat_protection = HEAD
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	var/up = 0 //So Unathi helmets play nicely with the weldervision check.
@@ -51,7 +51,7 @@
 	item_color = "unathi_helm_cheap"
 
 /obj/item/clothing/suit/space/unathi
-	armor = list(melee = 40, bullet = 30, laser = 30,energy = 15, bomb = 35, bio = 100, rad = 50)
+	armor = list(melee = 40, bullet = 30, laser = 30,energy = 15, bomb = 35, bio = 100, rad = 50, telepathy = 20)
 	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/weapon/storage/bag/ore,/obj/item/device/t_scanner,/obj/item/weapon/pickaxe, /obj/item/weapon/rcd)
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
@@ -85,7 +85,7 @@
 	w_class = 3
 	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_box/magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/melee/energy/sword,/obj/item/weapon/handcuffs,/obj/item/weapon/tank)
 	slowdown = 1.5
-	armor = list(melee = 60, bullet = 50, laser = 40,energy = 15, bomb = 30, bio = 30, rad = 30)
+	armor = list(melee = 60, bullet = 50, laser = 40,energy = 15, bomb = 30, bio = 30, rad = 30, telepathy = 20)
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	species_restricted = list(VOX , VOX_ARMALIS)
@@ -95,7 +95,7 @@
 		)
 
 /obj/item/clothing/head/helmet/space/vox
-	armor = list(melee = 60, bullet = 50, laser = 40, energy = 15, bomb = 30, bio = 30, rad = 30)
+	armor = list(melee = 60, bullet = 50, laser = 40, energy = 15, bomb = 30, bio = 30, rad = 30, telepathy = 15)
 	flags = HEADCOVERSEYES
 	species_restricted = list(VOX , VOX_ARMALIS)
 	sprite_sheets = list(
@@ -134,7 +134,7 @@
 	item_state = "vox-stealth"
 	desc = "A smoothly contoured, matte-black alien helmet."
 
-	armor = list(melee = 60, bullet = 30, laser = 30, energy = 15, bomb = 30, bio = 30, rad = 30)
+	armor = list(melee = 60, bullet = 30, laser = 30, energy = 15, bomb = 30, bio = 30, rad = 30, telepathy = 15)
 
 /obj/item/clothing/suit/space/vox/stealth
 	name = "alien stealth suit"
@@ -142,15 +142,12 @@
 	item_state = "vox-stealth"
 	desc = "A sleek black suit. It seems to have a tail, and is very heavy."
 
-	armor = list(melee = 60, bullet = 30, laser = 30, energy = 15, bomb = 30, bio = 30, rad = 30)
+	armor = list(melee = 60, bullet = 30, laser = 30, energy = 15, bomb = 30, bio = 30, rad = 30, telepathy = 20)
 	slowdown = 0.5
 
-	action_button_name = "Toggle Stealth Technology"
+	actions_types = list(/datum/action/item_action/toggle_stealth, /datum/action/item_action/hands_free/toggle_holomap)
 	var/on = FALSE
 	var/mob/living/carbon/human/wearer
-
-/obj/item/clothing/suit/space/vox/stealth/ui_action_click()
-	toggle_stealth()
 
 /obj/item/clothing/suit/space/vox/stealth/process()
 	if(!on)
@@ -271,7 +268,7 @@
 		VOX_ARMALIS = 'icons/mob/species/armalis/feet.dmi'
 		)
 
-	action_button_name = "Toggle the magclaws"
+	actions_types = list(/datum/action/item_action/attack_self, /datum/action/item_action/hands_free/toggle_holomap)
 
 /obj/item/clothing/shoes/magboots/vox/attack_self(mob/user)
 	if(src.magpulse)

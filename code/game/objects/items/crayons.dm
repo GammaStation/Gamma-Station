@@ -70,6 +70,8 @@
 		if(!instant)
 			qdel(src)
 		return
+	if((target.x - user.x) != 0 && (target.y - user.y) != 0) // check if user not on the axis with wall
+		return
 	if(istype(target, /obj/effect/decal/cleanable))
 		target = target.loc
 	if(is_type_in_list(target,validSurfaces))
@@ -95,19 +97,17 @@
 
 			//Check area validity. Reject space, player-created areas, and non-station z-levels.
 			if (gangID)
-				territory = get_area(target)
+				territory = get_area(get_turf(user))
 				if(territory && (territory.z == ZLEVEL_STATION) && territory.valid_territory)
 					//Check if this area is already tagged by a gang
 					if(!(locate(/obj/effect/decal/cleanable/crayon/gang) in target)) //Ignore the check if the tile being sprayed has a gang tag
 						if(territory_claimed(territory, user))
 							return
-					/*
 					//Prevent people spraying from outside of the territory (ie. Maint walls)
-					var/area/user_area = get_area(user.loc)
+					/*var/area/user_area = get_area(user.loc)
 					if(istype(user_area) && (user_area.type != territory.type))
 						to_chat(user, "<span class='warning'>You cannot tag [territory] from the outside.</span>")
-						return
-					*/
+						return*/
 					if(locate(/obj/machinery/power/apc) in (user.loc.contents | target.contents))
 						to_chat(user, "<span class='warning'>You cannot tag here.</span>")
 						return
@@ -122,20 +122,22 @@
 		if(instant)
 			playsound(user.loc, 'sound/effects/spray.ogg', 5, 1, 5)
 		if(instant > 0 || (!user.is_busy(src) && do_after(user, 50, target = target)))
-
+			var/obj/effect/decal/cleanable/crayon/C
 			//Gang functions
 			if(gangID)
 				//Delete any old markings on this tile, including other gang tags
-				if(!(locate(/obj/effect/decal/cleanable/crayon/gang) in target)) //Ignore the check if the tile being sprayed has a gang tag
+				if(!(locate(/obj/effect/decal/cleanable/crayon/gang) in get_turf(user))) //Ignore the check if the tile being sprayed has a gang tag
 					if(territory_claimed(territory, user))
 						return
 				for(var/obj/effect/decal/cleanable/crayon/old_marking in target)
 					qdel(old_marking)
-				new /obj/effect/decal/cleanable/crayon/gang(target,gangID,"graffiti")
+				C = new /obj/effect/decal/cleanable/crayon/gang(user.loc,gangID,"graffiti")
 				to_chat(user, "<span class='notice'>You tagged [territory] for your gang!</span>")
-
 			else
-				new /obj/effect/decal/cleanable/crayon(target,colour,shadeColour,drawtype)
+				C = new /obj/effect/decal/cleanable/crayon(user.loc,colour,shadeColour,drawtype)
+
+			C.pixel_x = (target.x - C.x) * world.icon_size
+			C.pixel_y = (target.y - C.y) * world.icon_size
 
 			if(drawtype in list("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"))
 				to_chat(user, "<span class = 'notice'>You finish [instant ? "spraying" : "drawing"] a letter on the [target.name].</span>")

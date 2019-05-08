@@ -24,7 +24,8 @@
 	var/foldable = null	// BubbleWrap - if set, can be folded (when empty) into a sheet of cardboard
 	var/use_sound = "rustle"	//sound played when used. null for no sound.
 
-	var/datum/storage_ui/storage_ui = /datum/storage_ui/default
+	var/storage_ui_path = /datum/storage_ui/default
+	var/datum/storage_ui/storage_ui = null
 
 /obj/item/weapon/storage/Destroy()
 	QDEL_NULL(storage_ui)
@@ -274,6 +275,11 @@
 		to_chat(user, "\blue You're a robot. No.")
 		return //Robots can't interact with storage items. FALSE
 
+	var/turf/W_turf = get_turf(W)
+	var/turf/src_turf = get_turf(src)
+	if(!src_turf.Adjacent(W_turf))
+		return FALSE
+
 	if(!can_be_inserted(W))
 		return FALSE
 
@@ -330,6 +336,10 @@
 	var/success = 0
 	var/failure = 0
 
+	var/turf/src_turf = get_turf(src)
+	if(!src_turf.Adjacent(T))
+		return
+
 	for(var/obj/item/I in T)
 		if(!can_be_inserted(I, user, 0))	// Note can_be_inserted still makes noise when the answer is no
 			failure = 1
@@ -385,7 +395,7 @@
 	if(isnull(max_storage_space) && !isnull(storage_slots))
 		max_storage_space = storage_slots*base_storage_cost(max_w_class)
 
-	storage_ui = new storage_ui(src)
+	storage_ui = new storage_ui_path(src)
 	prepare_ui()
 
 /obj/item/weapon/storage/emp_act(severity)

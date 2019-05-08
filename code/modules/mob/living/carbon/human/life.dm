@@ -33,14 +33,6 @@
 
 	..()
 
-	/*
-	//This code is here to try to determine what causes the gender switch to plural error. Once the error is tracked down and fixed, this code should be deleted
-	//Also delete var/prev_gender once this is removed.
-	if(prev_gender != gender)
-		prev_gender = gender
-		if(gender in list(PLURAL, NEUTER))
-			message_admins("[src] ([ckey]) gender has been changed to plural or neuter. Please record what has happened recently to the person and then notify coders. (<A HREF='?_src_=holder;adminmoreinfo=\ref[src]'>?</A>)  (<A HREF='?_src_=vars;Vars=\ref[src]'>VV</A>) (<A HREF='?priv_msg=\ref[src]'>PM</A>) (<A HREF='?_src_=holder;adminplayerobservejump=\ref[src]'>JMP</A>)")
-	*/
 	//Apparently, the person who wrote this code designed it so that
 	//blinded get reset each cycle and then get activated later in the
 	//code. Very ugly. I dont care. Moving this stuff here so its easy
@@ -954,8 +946,15 @@
 
 /mob/living/carbon/human/proc/handle_chemicals_in_body()
 	if(get_species() == TYCHEON && life_tick % 3 == 0)  // Shut up and truuuust thiiis! Come up with a flag if you ever need it elsewhere.
+		if(!istype(get_turf(src), /turf/space)) // The only to use this is Voidan. And their nutrition is static charge.
+			if(prob(5))
+				new /obj/effect/effect/sparks(loc)
+			nutrition = min(500, nutrition + 1)
+
 		if(istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon)) // We spend charge to keep sphere going.
 			if(!istype(loc, /turf/space)) // Not in space though.
+				if(nutrition < 250 && life_tick % 12 == 0)
+					to_chat(src, "<span class='warning'>Your sphere is becoming unstable due to lack of charge!</span>")
 				if(nutrition > 203)
 					nutrition -= 3
 				else
@@ -965,7 +964,7 @@
 		var/mix_color = mix_color_from_reagents(reagents.reagent_list)
 		if(!istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
 			var/list/range_objs = orange(1, src)
-			for(var/atom/movable/AM in range_objs) // Gas mixing color, AND reagents with each other.
+			for(var/atom/AM in range_objs) // Gas mixing color, AND reagents with each other.
 				if(iscarbon(AM))
 					var/mob/living/carbon/C = AM
 					if(C.get_species() == TYCHEON && ishuman(C))
@@ -1003,6 +1002,18 @@
 							if(RC.reagents.total_volume < RC.reagents.maximum_volume)
 								RC.reagents.add_reagent(R.id, 1, R.data)
 								reagents.remove_reagent(R.id, 1)
+
+				else if(istype(AM, /obj))
+					if(prob(10))
+						for(var/datum/reagent/R in reagents.reagent_list)
+							R.reaction_obj(AM, 1)
+							reagents.remove_reagent(R.id, 1)
+
+				else if(istype(AM, /turf))
+					if(prob(5))
+						for(var/datum/reagent/R in reagents.reagent_list)
+							R.reaction_turf(AM, 1)
+							reagents.remove_reagent(R.id, 1)
 
 		if((mix_color != 0) && owner_color != mix_color) // Why change our color if we already achieved the result.
 			var/redcolor = hex2num(copytext(mix_color, 2, 4)) // "Complex" math. Trust me, it works.
@@ -1122,7 +1133,7 @@
 
 	// nutrition decrease
 	if (nutrition > 0 && stat != DEAD)
-		nutrition = max (0, nutrition - HUNGER_FACTOR)
+		nutrition = max(0, nutrition - metabolism_factor/10)
 
 	if (nutrition > 450)
 		if(overeatduration < 600) //capped so people don't take forever to unfat
@@ -1156,6 +1167,9 @@
 		handle_trace_chems()
 
 	if(reagents_lit_on)
+		if(get_species() == TYCHEON && istype(wear_suit, /obj/item/clothing/suit/space/rig/tycheon)) // We don't glow in the sphere that completely covers ourselves.
+			reagents_lit_on = FALSE
+			set_light(0)
 		var/r_c = num2hex(r_skin)
 		var/g_c = num2hex(g_skin)
 		var/b_c = num2hex(b_skin)

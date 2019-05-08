@@ -7,6 +7,7 @@
 	w_class = 3.0
 	m_amt = 2000
 	origin_tech = "combat=3;magnets=2"
+	slot_flags = SLOT_BACK
 	ammo_type = list(/obj/item/ammo_casing/energy/laser)
 
 /obj/item/weapon/gun/energy/laser/atom_init()
@@ -55,8 +56,10 @@ obj/item/weapon/gun/energy/laser/retro
 	name ="retro laser"
 	icon_state = "retro"
 	desc = "An older model of the basic lasergun, no longer used by Nanotrasen's security or military forces. Nevertheless, it is still quite deadly and easy to maintain, making it a favorite amongst pirates and other outlaws."
+	slot_flags = SLOT_BELT
 
 /obj/item/weapon/gun/energy/laser/selfcharging
+	slot_flags = SLOT_BELT
 	var/charge_tick = 0
 	var/chargespeed = 0
 
@@ -111,6 +114,7 @@ obj/item/weapon/gun/energy/laser/retro
 	name = "scatter laser gun"
 	icon_state = "oldlaser"
 	desc = "A laser gun equipped with a refraction kit that spreads bolts."
+	slot_flags = SLOT_BELT
 	ammo_type = list(/obj/item/ammo_casing/energy/laser, /obj/item/ammo_casing/energy/laser/scatter)
 
 	attack_self(mob/living/user)

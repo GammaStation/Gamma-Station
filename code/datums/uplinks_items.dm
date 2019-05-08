@@ -181,10 +181,10 @@
 	uplink_types = list("nuclear")
 	excludefrom_uplinks = list("traitor")
 
-/datum/uplink_item/dangerous/a74
-	name = "A74 Assault Rifle"
-	desc = "A bullpup automatic assault rifle. Great for range combat and fire suppresion. Uses 30-round magazine of 7.74mm ammunition."
-	item = /obj/item/weapon/gun/projectile/automatic/a74
+/datum/uplink_item/dangerous/om36
+	name = "om36 Assault Rifle"
+	desc = "A light automatic assault rifle. Great for range combat and fire suppresion. Uses 30-round magazine of 5.56mm ammunition."
+	item = /obj/item/weapon/gun/projectile/automatic/om36
 	cost = 20
 	gamemodes = list(/datum/game_mode/nuclear)
 	uplink_types = list("nuclear")
@@ -330,10 +330,10 @@
 	uplink_types = list("nuclear")
 	excludefrom_uplinks = list("traitor")
 
-/datum/uplink_item/ammo/a74standart
-	name = "Ammo-7.74mm"
-	desc = "A 30-round 7.74 magazine for use in the A74 assault rifle."
-	item = /obj/item/ammo_box/magazine/a74mm
+/datum/uplink_item/ammo/om36standart
+	name = "Ammo-5.56mm"
+	desc = "A 30-round 5.56 magazine for use in the om36 assault rifle."
+	item = /obj/item/ammo_box/magazine/om36mm
 	cost = 7
 	gamemodes = list(/datum/game_mode/nuclear)
 	uplink_types = list("nuclear")
@@ -875,14 +875,14 @@ var/global/list/thunderfield_items = list()
 	item = /obj/item/ammo_box/magazine/internal/shotcom
 	cost = 1
 
-/datum/thunderfield_item/thunderfield_a74
-	name = "A74 "
-	item = /obj/item/weapon/gun/projectile/automatic/a74
+/datum/thunderfield_item/thunderfield_om36
+	name = "om36 "
+	item = /obj/item/weapon/gun/projectile/automatic/om36
 	cost = 12
 
-/datum/thunderfield_item/thunderfield_a74_magazine
-	name = "A74 magazine"
-	item = /obj/item/ammo_box/magazine/a74mm
+/datum/thunderfield_item/thunderfield_om36_magazine
+	name = "OM36 magazine"
+	item = /obj/item/ammo_box/magazine/om36mm
 	cost = 1
 
 /datum/thunderfield_item/thunderfield_bulldog

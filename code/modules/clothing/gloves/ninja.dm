@@ -14,6 +14,7 @@
 	name = "ninja gloves"
 	icon_state = "s-ninja"
 	item_state = "s-ninja"
+	unacidable = 1
 	siemens_coefficient = 0
 	var/draining = 0
 	var/candrain = 0

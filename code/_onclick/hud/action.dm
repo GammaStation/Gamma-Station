@@ -1,7 +1,6 @@
 #define AB_ITEM 1
 #define AB_SPELL 2
 #define AB_INNATE 3
-#define AB_GENERIC 4
 
 #define AB_CHECK_RESTRAINED 1
 #define AB_CHECK_STUNNED 2
@@ -13,7 +12,7 @@
 /datum/action
 	var/name = "Generic Action"
 	var/action_type = AB_ITEM
-	var/procname = null
+	var/action_procname = null
 	var/atom/movable/target = null
 	var/check_flags = 0
 	var/processing = 0
@@ -36,6 +35,8 @@
 		if(owner == T)
 			return
 		Remove(owner)
+	if(name == "Generic Action")
+		name = target.name
 	owner = T
 	owner.actions.Add(src)
 	owner.update_action_buttons()
@@ -56,9 +57,8 @@
 		return
 	switch(action_type)
 		if(AB_ITEM)
-			if(target)
-				var/obj/item/item = target
-				item.ui_action_click()
+			if(target && action_procname)
+				call(target,action_procname)(usr)
 		if(AB_SPELL)
 			if(target)
 				var/obj/effect/proc_holder/spell = target
@@ -68,9 +68,6 @@
 				Activate()
 			else
 				Deactivate()
-		if(AB_GENERIC)
-			if(target && procname)
-				call(target,procname)(usr)
 	return
 
 /datum/action/proc/Activate()
@@ -221,6 +218,7 @@
 
 /datum/action/item_action/hands_free
 	check_flags = AB_CHECK_ALIVE|AB_CHECK_INSIDE
+	action_procname = "attack_self"
 
 //Preset for spells
 /datum/action/spell_action
@@ -253,3 +251,47 @@
 #undef AB_WEST_OFFSET
 #undef AB_NORTH_OFFSET
 #undef AB_MAX_COLUMNS
+
+////////Action presets
+/datum/action/item_action/attack_self
+	action_procname = "attack_self"
+
+/datum/action/item_action/ui_action_click
+	action_procname = "ui_action_click"
+
+/datum/action/item_action/toggle_hood
+	action_procname = "ToggleHood"
+
+/datum/action/item_action/toggle_stealth
+	action_procname = "toggle_stealth"
+
+/datum/action/item_action/toggle_mister
+	action_procname = "toggle_mister"
+
+/datum/action/item_action/jetpack_toggle
+	name = "toggle jetpack"
+	action_procname = "toggle"
+
+/datum/action/item_action/jetpack_stabilisation
+	name = "toggle stabilisation"
+	action_procname = "toggle_rockets"
+
+/datum/action/item_action/implant_storage
+	action_procname = "open_storage"
+
+/datum/action/item_action/toggle_paddles
+	action_procname = "toggle_paddles"
+
+/datum/action/item_action/toggle
+	action_procname = "toggle"
+
+/datum/action/item_action/attack_hand
+	action_procname = "attack_hand"
+
+/datum/action/item_action/hands_free/toggle_holomap
+	name = "toggle holomap"
+	action_procname = "toggle_holomap"
+
+/datum/action/item_action/adjust_helmet
+	name = "adjust helmet"
+	action_procname = "toggle"

@@ -8,7 +8,9 @@
 	var/icobase = 'icons/mob/human_races/r_human.dmi'    // Normal icon set.
 	var/deform = 'icons/mob/human_races/r_def_human.dmi' // Mutated icon set.
 	var/damage_mask = TRUE
-	var/eyes = "eyes"                                    // Icon for eyes.
+	var/def_eye_icon = "eyes"
+	var/eyes = list("default" = "eyes")                                    // Possible icons for eyes.
+	var/eye_glow = FALSE
 
 	// Combat vars.
 	var/total_health = 100                               // Point at which the mob will enter crit.
@@ -49,6 +51,7 @@
 	var/body_temperature = 310.15	//non-IS_SYNTHETIC species will try to stabilize at this temperature. (also affects temperature processing)
 	var/synth_temp_gain = 0			//IS_SYNTHETIC species will gain this much temperature every second
 
+	var/metabolism_mod = METABOLISM_FACTOR
 	var/taste_sensitivity = TASTE_SENSITIVITY_NORMAL //the most widely used factor; humans use a different one
 	var/dietflags = 0	// Make sure you set this, otherwise it won't be able to digest a lot of foods
 	var/custom_metabolism = 1.0
@@ -114,6 +117,8 @@
 		,O_KIDNEYS = /obj/item/organ/internal/kidneys
 		)
 
+	var/def_gender = MALE // I'm sorry mate, but the default pawn looks male.
+	var/genders = list(MALE, FEMALE)
 	var/has_gendered_icons = TRUE // if TRUE = use icon_state with _f or _m for respective gender (see get_icon() external organ proc).
 
 /datum/species/New()
@@ -299,6 +304,7 @@
 	primitive = /mob/living/carbon/monkey/skrell
 	unarmed_type = /datum/unarmed_attack/punch
 	dietflags = DIET_HERB
+	metabolism_mod = SKRELL_METABOLISM_FACTOR
 	taste_sensitivity = TASTE_SENSITIVITY_DULL
 
 	siemens_coefficient = 1.3 // Because they are wet and slimy.
@@ -319,7 +325,8 @@
 		O_KIDNEYS = /obj/item/organ/internal/kidneys
 		)
 
-	eyes = "skrell_eyes"
+	def_eye_icon = "skrell_eyes"
+	eyes = list("default" = "skrell_eyes")
 	blood_color = /datum/dirt_cover/purple_blood
 	flesh_color = "#8CD7A3"
 
@@ -342,7 +349,8 @@
 	cold_level_2 = 50
 	cold_level_3 = 0
 
-	eyes = "vox_eyes"
+	def_eye_icon = "vox_eyes"
+	eyes = list("default" = "vox_eyes")
 
 	breath_type = "nitrogen"
 	poison_type = "oxygen"
@@ -427,7 +435,8 @@
 	brute_mod = 0.2
 	burn_mod = 0.2
 
-	eyes = "blank_eyes"
+	def_eye_icon = "blank_eyes"
+	eyes = list("default" = "blank_eyes")
 	breath_type = "nitrogen"
 	poison_type = "oxygen"
 
@@ -517,12 +526,10 @@
 	blood_color = /datum/dirt_cover/green_blood
 	flesh_color = "#907E4A"
 
+
+	def_gender = NEUTER
+	genders = list(NEUTER, PLURAL)
 	has_gendered_icons = FALSE
-
-/datum/species/diona/handle_post_spawn(mob/living/carbon/human/H)
-	H.gender = NEUTER
-
-	return ..()
 
 /datum/species/diona/regen(mob/living/carbon/human/H, light_amount)
 	if(light_amount >= 5) // If you can regen organs - do so.
@@ -578,7 +585,8 @@
 	dietflags = 0		//IPCs can't eat, so no diet
 	taste_sensitivity = TASTE_SENSITIVITY_NO_TASTE
 
-	eyes = "blank_eyes"
+	def_eye_icon = "blank_eyes"
+	eyes = list("default" = "blank_eyes")
 
 	warning_low_pressure = 50
 	hazard_low_pressure = 0
@@ -636,6 +644,9 @@
 	blood_color = /datum/dirt_cover/oil
 	flesh_color = "#575757"
 
+	def_gender = NEUTER
+	genders = list(MALE, FEMALE, NEUTER, PLURAL)
+
 /datum/species/machine/after_job_equip(mob/living/carbon/human/H, datum/job/J)
 	if(H.backbag == 1)
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/ipc_survival(H), slot_r_hand)
@@ -661,10 +672,8 @@
 
 	blood_color = /datum/dirt_cover/gray_blood
 
-/datum/species/abductor/handle_post_spawn(mob/living/carbon/human/H)
-	H.gender = NEUTER
-
-	return ..()
+	def_gender = NEUTER
+	genders = list(NEUTER)
 
 /datum/species/abductor/call_digest_proc(mob/living/M, datum/reagent/R)
 	return R.on_abductor_digest(M)
@@ -703,10 +712,9 @@
 	,NO_FINGERPRINT = TRUE
 	)
 
-/datum/species/skeleton/handle_post_spawn(mob/living/carbon/human/H)
-	H.gender = NEUTER
-
-	return ..()
+	has_gendered_icons = FALSE
+	def_gender = NEUTER
+	genders = list(NEUTER)
 
 /datum/species/skeleton/call_digest_proc(mob/living/M, datum/reagent/R)
 	return R.on_skeleton_digest(M)
@@ -782,19 +790,16 @@
 	,RAD_IMMUNE = TRUE
 	,VIRUS_IMMUNE = TRUE
 	,NO_FINGERPRINT = TRUE
-	,NO_MINORCUTS
+	,NO_SCAN = TRUE
+	,NO_MINORCUTS = TRUE
 	)
 
 	burn_mod = 2
 	brain_mod = 0
 
 	has_gendered_icons = FALSE
-
-
-/datum/species/shadowling/handle_post_spawn(mob/living/carbon/human/H)
-	H.gender = NEUTER
-
-	return ..()
+	def_gender = NEUTER
+	genders = list(NEUTER, PLURAL)
 
 /datum/species/shadowling/call_digest_proc(mob/living/M, datum/reagent/R)
 	return R.on_shadowling_digest(M)
@@ -965,7 +970,8 @@
 	icobase = 'icons/mob/human_races/r_zombie_skrell.dmi'
 	deform = 'icons/mob/human_races/r_zombie_skrell.dmi'
 
-	eyes = "skrell_eyes"
+	def_eye_icon = "skrell_eyes"
+	eyes = list("default" = "skrell_eyes")
 	blood_color = /datum/dirt_cover/purple_blood
 	flesh_color = "#8CD7A3"
 	base_color = "#000000"
@@ -1000,24 +1006,29 @@
 	icobase = 'icons/mob/human_races/r_tycheon.dmi'
 	deform = 'icons/mob/human_races/r_tycheon.dmi'
 	damage_mask = FALSE
-	eyes = "core"                              // Glowing core.
+
+	def_eye_icon = "core" // It's also glowing.
+	eyes = list("default" = "core", "round" = "round_core", "angled" = "angle_core",
+	            "inner eye" = "inner_eye_core", "diplopia" = "duo_core", "quadruplopia" = "four_core",
+	            "spider" = "spider_core", "pentaplopia" = "navi_core", "moonman" = "r_n_m_core",
+	            "maw" = "maw_core")
+	eye_glow = TRUE
 
 	brute_mod = 3.0
 	burn_mod = 3.0
 	brain_mod = 0.0
 	speed_mod =  -1.0
-	siemens_coefficient = 0
+	siemens_coefficient = 0.0
 
 	custom_metabolism = 0.0
 
-	language = "The Gaping Maw"
+	language = "The Perfect Control"
+	additional_languages = list("The Gaping Maw")
 	force_racial_language = TRUE
 
 	butcher_drops = list()
 	taste_sensitivity = 0
-
 	dietflags = 0
-	darksight = 8
 
 	flags = list(IS_WHITELISTED = TRUE,
 	             NO_BLOOD = TRUE,
@@ -1064,6 +1075,8 @@
 	restricted_inventory_slots = list(slot_back, slot_wear_mask, slot_handcuffed, slot_l_hand, slot_r_hand, slot_belt, slot_l_ear, slot_r_ear, slot_glasses, slot_glasses,
 	                                  slot_shoes, slot_w_uniform, slot_l_store, slot_r_store, slot_s_store, slot_in_backpack, slot_legcuffed, slot_legs, slot_tie, slot_head) // Still allows them to wear rigs, and ids.
 	has_gendered_icons = FALSE
+	def_gender = NEUTER
+	genders = list(NEUTER, PLURAL)
 
 /datum/species/tycheon/call_digest_proc(mob/living/M, datum/reagent/R)
 	return R.on_tycheon_digest(M)
@@ -1076,7 +1089,23 @@
 			H.heal_overall_damage(1.0, 1.0)
 
 /datum/species/tycheon/handle_death(mob/living/carbon/human/H)
-	new /obj/item/weapon/reagent_containers/food/snacks/tycheon_core(H.loc)
+	var/core_amount = 1
+	switch(H.eyes) // Depending on how many cores we got, we drop different stuff.
+		if("duo_core")
+			core_amount = 2
+		if("four_core")
+			core_amount = 4
+		if("spider_core")
+			core_amount = 4
+		if("r_n_m_core")
+			core_amount = 5
+		if("navi_core")
+			core_amount = 5
+		if("maw_core")
+			core_amount = 6
+	for(var/i in 1 to core_amount)
+		var/obj/item/core = new /obj/item/weapon/reagent_containers/food/snacks/tycheon_core(H.loc)
+		core.throw_at(get_edge_target_turf(H, pick(alldirs)), 1, core.throw_speed)
 	H.gib()
 
 /mob/living/carbon/human/proc/metal_bend()
@@ -1104,27 +1133,27 @@
 					K2.name = "circling metal"
 					switch(a_intent)
 						if(I_DISARM)
-							if(nutrition > 215)
+							if(nutrition > 207)
 								electrocuting:
 									for(var/mob/living/L in view(1, src))
-										if(nutrition <= 215)
+										if(nutrition <= 207)
 											break electrocuting
 										L.electrocute_act(1, src, 1.0)
-										nutrition--
+										nutrition -= 7
 							else
 								metal_bending = FALSE
 								return
 						if(I_GRAB)
 							var/obj/item/organ/internal/brain/tycheon/core = organs_by_name[O_BRAIN]
-							if(core && nutrition > 215)
+							if(core && nutrition > 207)
 								core.damage -= 1
-								nutrition -= 15
+								nutrition -= 7
 							else
 								metal_bending = FALSE
 								return
 						if(I_HURT)
-							if(nutrition > 215)
-								nutrition -= 15
+							if(nutrition > 207)
+								nutrition -= 7
 								empulse(src, 0, 1)
 							else
 								metal_bending = FALSE
@@ -1161,7 +1190,7 @@
 							return
 						if(!in_range(src, M))
 							break metal_retracting
-						if(nutrition < 205)
+						if(nutrition < 250)
 							to_chat(src, "<span class='warning'>Not enough static charge.</span>")
 							metal_bending = FALSE
 							return
@@ -1197,7 +1226,7 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|HEAD|FACE|EYES
 	max_heat_protection_temperature = 313 // See the tycheon species.
 	min_cold_protection_temperature = 273
-	armor = list(melee = 75, bullet = 10, laser = 10,energy = 100, bomb = 75, bio = 100, rad = 100)
+	armor = list(melee = 75, bullet = 10, laser = 10,energy = 100, bomb = 75, bio = 100, rad = 100, telepathy = 30)
 
 /obj/item/clothing/suit/space/rig/tycheon/equipped(mob/user)
 	if(ishuman(user))
@@ -1221,6 +1250,8 @@
 	H.flags |= NOSLIP | NOBLOODY
 	H.mutations.Add(TK)
 	H.mutations.Add(REMOTE_TALK)
+	H.tk_level |= TELEKINETIC_MOB_CONTROL | TELEKINETIC_HARM_WEAKEN |  TELEKINETIC_NO_VIEW_REQUIRED
+	H.tk_maxrange = 15 // Before it was 8.
 	H.ventcrawler = TRUE
 	H.verbs += /mob/living/carbon/human/proc/toggle_sphere
 	H.verbs += /mob/living/carbon/human/proc/metal_bend
@@ -1246,6 +1277,8 @@
 	H.flags &= ~(NOSLIP | NOBLOODY)
 	H.mutations.Remove(TK)
 	H.mutations.Remove(REMOTE_TALK)
+	H.tk_level &= ~(TELEKINETIC_MOB_CONTROL | TELEKINETIC_HARM_WEAKEN |  TELEKINETIC_NO_VIEW_REQUIRED)
+	H.tk_maxrange = 8 // Before it was 8.
 	H.ventcrawler = FALSE
 	H.verbs -= /mob/living/carbon/human/proc/toggle_sphere
 	H.verbs -= /mob/living/carbon/human/proc/metal_bend
@@ -1268,12 +1301,14 @@
 	return ..()
 
 /mob/proc/telepathy_hear(verb, message, source, datum/language/language = null) // Makes all those nosy telepathics hear what we hear. Also, please do see game\sound.dm, I have a little bootleg hidden there for you ;).
-	for(var/mob/M in remote_hearers)
+	for(var/mob/living/M in remote_hearers)
 		if(source == M)
 			continue
 		var/dist = get_dist(src, M)
+		if(z != M.z)
+			dist += 25
 		if(source)
-			dist = get_dist(src, source)
+			dist += get_dist(src, source)
 		if(!M.do_telepathy(dist))
 			continue
 		var/star_chance = 0 // A chance to censore some symbols.
@@ -1281,12 +1316,15 @@
 			star_chance += dist
 		if(M.remote_hearing.len > 3)
 			star_chance += M.remote_hearing.len * 5
+		star_chance += getarmor(BP_HEAD, "telepathy") + M.getarmor(BP_HEAD, "telepathy")
 		if(star_chance)
 			stars(message, star_chance)
 		if(prob(MAX_TELEPATHY_RANGE - dist)) // The further they are, the lesser the chance to understand something.
 			to_chat(src, "<span class='warning'>You feel as if somebody is eavesdropping on you.</span>")
 
 		to_chat(M, "<span class='notice'><span class='bold'>[src]</span> [verb]:</span> [message]")
+		if(language && M != src && M != source)
+			language.on_message_hear(message, M, source)
 		M.telepathy_hear(verb, message, source)
 
 /mob/living/carbon/human/proc/toggle_telepathy_hear((mob/M in (view() + remote_hearing))) // Makes us hear what they hear.
@@ -1320,7 +1358,7 @@
 		M.remote_hearers += src
 		to_chat(src, "<span class='notice'>You start telepathically eavesdropping on [M]")
 
-/mob/living/carbon/human/proc/quick_telepathy_say((mob/M in (view() + remote_hearing)))
+/mob/living/carbon/human/proc/quick_telepathy_say((mob/living/M in (view() + remote_hearing)))
 	set name = "Project Mind(Q)"
 	set desc = "Make them hear what you desire. Quickly."
 	set category = "Tycheon"
@@ -1374,31 +1412,35 @@
 	if(speaking)
 		say = copytext(say, 2 + length(speaking.key))
 
-	if(!M.say_understands(src, speaking) && speaking)
-		say = speaking.scramble(say)
-
-	if(!speaking)
-		say = "\"[say]\""
-
+	var/clean_say = say
 	if(speaking)
 		say = speaking.format_message(say) //, verb) Verb is actually unused.
 	else
-		say = capitalize(say)
+		say = "\"[capitalize(say)]\""
 
 	var/dist = get_dist(src, M)
+	if(z != M.z)
+		dist += 25
 	if(!M.do_telepathy(dist))
 		for(var/client/C in show_to)
 			C.images -= II
 		return
 
+	var/star_chance = 0
 	if(dist > MAX_TELEPATHY_RANGE)
-		stars(say, dist)
+		star_chance += dist
+	star_chance += M.getarmor(BP_HEAD, "telepathy") + getarmor(BP_HEAD, "telepathy")
+	if(star_chance)
+		stars(say, star_chance)
 
 	if((REMOTE_TALK in M.mutations))
 		to_chat(M, "<span class='notice'>You hear <b>[src]'s voice</b>:</span> [say]")
 	else
 		to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room:</span> [say]")
 	to_chat(src, "<span class='notice'>You project your mind into <b>[M]</b>:</span> [say]")
+
+	if(speaking && M != src)
+		speaking.on_message_hear(clean_say, M, src)
 
 	var/mes = say
 	for(var/mob/dead/observer/G in dead_mob_list)
@@ -1427,7 +1469,7 @@
 		for(var/mob/M in remote_hearing)
 			choices |= M
 			for(var/mob/M_hears in hearers(M, null))
-				choices |= M
+				choices |= M_hears
 		for(var/mob/M in living_mob_list)
 			if(M in hearers())
 				choices |= M
@@ -1499,45 +1541,50 @@
 	II.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 	INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, II, bubble_recipients, 3 SECONDS)
 
-	for(var/mob/M in chosen)
+	for(var/mob/living/M in chosen)
+		var/cur_say = say
 		var/datum/language/speaking = parse_language(say, M) // We can talk in languages they know, but we don't.
 		if(!speaking)
 			speaking = parse_language(say, src) // Or in languages we know, but they don't.
 
 		if(speaking)
-			say = copytext(say, 2 + length(speaking.key))
+			cur_say = copytext(cur_say, 2 + length(speaking.key))
 
-		if(!speaking)
-			say = "\"[say]\""
-
-		if(!M.say_understands(src, speaking) && speaking)
-			say = speaking.scramble(say)
-
+		var/clean_say = cur_say
 		if(speaking)
-			say = speaking.format_message(say) //, verb) Verb is actually unused.
+			cur_say = speaking.format_message(cur_say) //, verb) Verb is actually unused.
 		else
-			say = capitalize(say)
+			cur_say = "\"[capitalize(say)]\""
 
 		var/dist = get_dist(src, M)
+		if(z != M.z)
+			dist += 25
 		if(!M.do_telepathy(dist))
 			continue
 
+		var/star_chance = 0
 		if(dist > MAX_TELEPATHY_RANGE)
-			stars(say, dist)
+			star_chance += dist
+		star_chance += M.getarmor(BP_HEAD, "telepathy") + getarmor(BP_HEAD, "telepathy")
+		if(star_chance)
+			stars(cur_say, star_chance)
 
 		if((REMOTE_TALK in M.mutations))
-			to_chat(M, "<span class='notice'>You hear <b>[src]'s voice</b>:</span> [say]")
+			to_chat(M, "<span class='notice'>You hear <b>[src]'s voice</b>:</span> [cur_say]")
 		else
-			to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room:</span> [say]")
-		to_chat(src, "<span class='notice'>You project your mind into <b>[M]</b>:</span> [say]")
+			to_chat(M, "<span class='notice'>You hear a voice that seems to echo around the room:</span> [cur_say]")
+		to_chat(src, "<span class='notice'>You project your mind into <b>[M]</b>:</span> [cur_say]")
+
+		if(speaking && M != src)
+			speaking.on_message_hear(clean_say, M, src)
 
 		M.telepathy_hear("has heard a voice speak", say, src)
 
-	var/mes = say
 	for(var/mob/dead/observer/G in dead_mob_list)
+		var/mes = say
 		var/track = "<a href='byond://?src=\ref[G];track=\ref[src]'>(F)</a>"
 		if((client.prefs.chat_toggles & CHAT_GHOSTEARS) && src in view(G))
-			mes = "<b>[say]</b>"
+			mes = "<b>[mes]</b>"
 		to_chat(G, "<span class='italics'>Telepathic message from <b>[real_name]</b>[track]:</span> [mes]")
 
 	log_say("Telepathic message from [key_name(src)]: [say]")

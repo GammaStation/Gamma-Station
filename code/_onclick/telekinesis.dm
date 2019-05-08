@@ -3,7 +3,11 @@
 
 	This needs more thinking out, but I might as well.
 */
-var/const/tk_maxrange = 15
+
+#define TELEKINETIC_BASIC 0
+#define TELEKINETIC_MOB_CONTROL 1
+#define TELEKINETIC_HARM_WEAKEN 2
+#define TELEKINETIC_NO_VIEW_REQUIRED 4
 
 /*
 	Telekinetic attack:
@@ -42,10 +46,12 @@ var/const/tk_maxrange = 15
 		else
 			user.UnarmedAttack(src, 0)
 
-/mob/living/attack_tk(mob/user)
+/mob/living/attack_tk(mob/living/user)
 	if(user.stat)
 		return
-	var/psy_resist_chance = 50 + (get_dist(src, user) * 2)// A chance that our target will not be affected.
+
+	var/dist = get_dist(src, user)
+	var/psy_resist_chance = 50 + (dist * 2) + getarmor(null, "telepathy", TRUE) +  user.getarmor(BP_HEAD, "telepathy") // A chance that our target will not be affected.
 
 	if(get_species(user) != TYCHEON)
 		psy_resist_chance += 10
@@ -54,6 +60,9 @@ var/const/tk_maxrange = 15
 		psy_resist_chance = 0
 	else if(stat)
 		psy_resist_chance = 0
+	else if(lying)
+		psy_resist_chance = 0
+
 	if(!prob(psy_resist_chance))
 		switch(user.a_intent)
 			if(I_DISARM)
@@ -61,6 +70,9 @@ var/const/tk_maxrange = 15
 					return
 				if(next_move > world.time)
 					return
+				if(!(user.tk_level & TELEKINETIC_HARM_WEAKEN))
+					return
+				SetNextClick(max(dist, CLICK_CD_MELEE))
 
 				to_chat(user, "<span class='warning'>You disarm [src]!</span>")
 				to_chat(src, "<span class='warning'>An immense force disarms you!</span>")
@@ -69,6 +81,9 @@ var/const/tk_maxrange = 15
 				msg_admin_attack("[key_name(user)] disarmed [key_name(src)]")
 				drop_item(loc)
 			if(I_GRAB)
+				if(!(user.tk_level & TELEKINETIC_MOB_CONTROL))
+					to_chat(user, "<span class='notice'>You are too weak to control [src].</span>")
+					return
 				var/obj/item/tk_grab/O = new(src)
 				user.put_in_active_hand(O)
 				O.host = user
@@ -78,13 +93,17 @@ var/const/tk_maxrange = 15
 					return
 				if(next_move > world.time)
 					return
+				if(!(user.tk_level & TELEKINETIC_HARM_WEAKEN))
+					to_chat(user, "<span class='notice'>You are too weak to lock [src] in place.</span>")
+					return
+				SetNextClick(max(dist, CLICK_CD_MELEE))
 
 				to_chat(user, "<span class='warning'>You lock [src] in place!</span>")
 				to_chat(src, "<span class='warning'>An immense force seems to lock you in place, paralyzing!</span>")
 				user.attack_log += text("\[[time_stamp()]\] <font color='red'>Paralyzed [name] ([ckey])</font>")
 				attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been paralyzed by [user.name] ([user.ckey])</font>")
 				msg_admin_attack("[key_name(user)] paralyzed [key_name(src)]")
-				apply_effect(3, PARALYZE)
+				apply_effect(3, WEAKEN)
 	else
 		to_chat(host, "<span class='notice'>[src] is resisting your efforts.</span>")
 
@@ -139,7 +158,7 @@ var/const/tk_maxrange = 15
 	var/mob/living/host = null
 
 /obj/item/tk_grab/Destroy()
-	focus.is_focused = FALSE // Currently if you focus one object with two hands it may lose it's is_focused status. ~Luduk
+	focus.focused_by -= src
 	return ..()
 
 	//stops TK grabs being equipped anywhere but into hands
@@ -181,23 +200,23 @@ var/const/tk_maxrange = 15
 	if(!(TK in host.mutations))
 		qdel(src)
 		return
+	if(!(host.tk_level & TELEKINETIC_NO_VIEW_REQUIRED) && !(focus in view(host)))
+		qdel(src)
+		return
 
 	var/d = get_dist(user, target)
 	if(focus)
-		d = max(d, get_dist(user,focus) + get_dist(target, focus)) // whichever is further
-	switch(d)
-		if(0)
-			;
-		if(1 to 5) // not adjacent may mean blocked by window
-			if(!proximity)
-				host.SetNextClick(2)
-		if(5 to 7)
-			host.SetNextClick(5)
-		if(8 to tk_maxrange)
-			host.SetNextClick(10)
-		else
-			to_chat(user, "<span class='notice'>Your mind won't reach that far.</span>")
-			return
+		d = max(d, get_dist(user, focus) + get_dist(target, focus)) // whichever is further
+
+	if(d > user.tk_maxrange)
+		to_chat(host, "<span class='notice'>Your mind won't reach that far.</span>")
+		return
+	else if(d > (user.tk_maxrange * 0.6))
+		host.SetNextClick(10)
+	else if(d > (user.tk_maxrange * 0.3))
+		host.SetNextClick(5)
+	else if(d > 0 && !proximity) // not adjacent may mean blocked by window
+		host.SetNextClick(2)
 
 	if(!host.do_telekinesis(d))
 		return
@@ -210,9 +229,9 @@ var/const/tk_maxrange = 15
 
 	if(isliving(focus))
 		var/mob/living/M = focus
-		user.nutrition -= 10 // Manipulating living beings is TOUGH!
+		user.nutrition -= d * 2 // Manipulating living beings is TOUGH!
 
-		var/psy_resist_chance = 50 + (d * 2) // A chance that our poor mob might resist our efforts to make him beat something up.
+		var/psy_resist_chance = 50 + (d * 2) + M.getarmor(null, "telepathy", TRUE) +  host.getarmor(BP_HEAD, "telepathy") // A chance that our poor mob might resist our efforts to make him beat something up.
 
 		if(user.get_species() != TYCHEON)
 			psy_resist_chance += 10
@@ -225,6 +244,8 @@ var/const/tk_maxrange = 15
 			psy_resist_chance = 0
 		else if(M == host) // Tis' a feature.
 			psy_resist_chance = 0
+		else if(M.lying)
+			psy_resist_chance = 0
 
 		if(prob(psy_resist_chance))
 			to_chat(host, "<span class='notice'>[M] is resisting our efforts.</span>")
@@ -236,10 +257,11 @@ var/const/tk_maxrange = 15
 					return
 				if(M.next_move > world.time)
 					return
-
 				M.drop_item()
+
 			if(I_GRAB)
 				step_towards(M, target)
+
 			if(I_HURT)
 				var/obj/item/I
 				if(host.hand)
@@ -306,9 +328,9 @@ var/const/tk_maxrange = 15
 	if(!istype(target, /atom/movable))
 		return
 	if(focus)
-		focus.is_focused = FALSE
+		focus.focused_by -= src
 	focus = target
-	focus.is_focused = TRUE
+	focus.focused_by |= src
 	apply_focus_overlay()
 
 /obj/item/tk_grab/proc/apply_focus_overlay()

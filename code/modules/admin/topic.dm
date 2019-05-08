@@ -1417,6 +1417,14 @@
 		var/mob/dead/observer/A = C.mob
 		A.ManualFollow(AM)
 
+	else if(href_list["take_ticket"])
+		var/datum/ticket/ticket = locate(href_list["take_ticket"])
+
+		if(isnull(ticket))
+			return
+
+		ticket.take(client_repository.get_lite_client(usr.client))
+
 	else if(href_list["adminplayerobservecoodjump"])
 		if(!check_rights(R_ADMIN))
 			return

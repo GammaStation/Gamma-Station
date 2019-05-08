@@ -56,7 +56,7 @@
 		if(isturf(src.loc) && !resting && !buckled && canmove)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
 			turns_since_move++
 			if(turns_since_move >= turns_per_move)
-				if(!(stop_automated_movement_when_pulled && (pulledby || is_focused))) //Soma animals don't move when pulled
+				if(!(stop_automated_movement_when_pulled && (pulledby || focused_by.len))) //Soma animals don't move when pulled
 					var/anydir = pick(cardinal)
 					if(Process_Spacemove(anydir))
 						Move(get_step(src,anydir), anydir)
@@ -372,7 +372,7 @@
 
 	// nutrition decrease
 	if (nutrition > 0)
-		nutrition = max(0, nutrition - HUNGER_FACTOR)
+		nutrition = max(0, nutrition - metabolism_factor/10)
 
 	if (nutrition > 450)
 		if(overeatduration < 600)

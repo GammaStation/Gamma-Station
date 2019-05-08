@@ -116,7 +116,7 @@
 			break
 
 // attack with item, place item on conveyor
-/obj/machinery/conveyor/attackby(obj/item/I, mob/user)
+/obj/machinery/conveyor/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/weapon/crowbar))
 		if(!(stat & BROKEN))
 			var/obj/item/conveyor_construct/C = new/obj/item/conveyor_construct(src.loc)
@@ -133,13 +133,45 @@
 			update_move_direction()
 			to_chat(user, "<span class='notice'>You rotate [src].</span>")
 			return
+
+	var/obj/item/tk_grab/put_me = user.get_active_hand(additional_checks = FALSE)
+	if(istype(put_me) && user.a_intent != I_HURT)
+		if(put_me.focus.anchored || !Adjacent(put_me.focus))
+			return
+		if(istype(put_me.focus, /obj/item))
+			var/obj/item/II = put_me.focus
+			if(II.flags & NODROP || II.flags & ABSTRACT)
+				return
+			if(!istype(put_me.focus.loc, /turf))
+				user.drop_from_inventory(put_me.focus)
+			var/list/click_params = params2list(params)
+			//Center the icon where the user clicked.
+			if(!click_params || !click_params["icon-x"] || !click_params["icon-y"])
+				return
+			put_me.focus.pixel_x = Clamp(text2num(click_params["icon-x"]) - 16, -(world.icon_size/2), world.icon_size/2)
+			put_me.focus.pixel_y = Clamp(text2num(click_params["icon-y"]) - 16, -(world.icon_size/2), world.icon_size/2)
+		put_me.focus.forceMove(loc)
+		return
+
 	if(isrobot(user))
 		return //Carn: fix for borgs dropping their modules on conveyor belts
+
+	if(!I.canremove || I.flags & NODROP)
+		return
+	if(!(I.flags & ABSTRACT))
+		return
+
 	if(!user.drop_item())
 		to_chat(user, "<span class='warning'>\The [I] is stuck to your hand, you cannot place it on the conveyor!</span>")
 		return
 	if(I && I.loc)
-		I.loc = src.loc
+		var/list/click_params = params2list(params)
+		//Center the icon where the user clicked.
+		if(!click_params || !click_params["icon-x"] || !click_params["icon-y"])
+			return
+		I.pixel_x = Clamp(text2num(click_params["icon-x"]) - 16, -(world.icon_size/2), world.icon_size/2)
+		I.pixel_y = Clamp(text2num(click_params["icon-y"]) - 16, -(world.icon_size/2), world.icon_size/2)
+		I.forceMove(loc)
 	return
 
 // attack with hand, move pulled object onto conveyor

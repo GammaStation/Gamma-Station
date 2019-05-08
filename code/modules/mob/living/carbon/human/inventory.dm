@@ -9,6 +9,9 @@
 		if(!I)
 			to_chat(H, "<span class='notice'>You are not holding anything to equip.</span>")
 			return
+		if(!Adjacent(I))
+			to_chat(H, "<span class='notice'>[I] is too far away to be equipped.</span>")
+			return
 
 	//	if(istype(I, /obj/item/clothing/head/helmet/space/rig)) // If the item to be equipped is a rigid suit helmet
 	//		src << "\red You must fasten the helmet to a hardsuit first. (Target the head)" // Stop eva helms equipping.

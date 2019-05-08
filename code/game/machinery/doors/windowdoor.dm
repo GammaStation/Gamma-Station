@@ -114,20 +114,20 @@
 	var/mob/M = AM
 	if(!M.restrained())
 		bumpopen(M)
-	return
 
 /obj/machinery/door/window/bumpopen(mob/user)
 	if( operating || !src.density )
 		return
 	src.add_fingerprint(user)
-	if(!src.requiresID())
-		user = null
+
+	if(!requiresID())
+		open_and_close()
+		return
 
 	if(allowed(user))
 		open_and_close()
-	else
+	else if(Adjacent(user)) // Telekinesis be a bitch.
 		do_animate("deny")
-	return
 
 /obj/machinery/door/window/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	if(istype(mover) && mover.checkpass(PASSGLASS))
@@ -373,21 +373,21 @@
 			take_damage(aforce)
 		return
 
-	src.add_fingerprint(user)
-	if (!src.requiresID())
-		//don't care who they are or what they have, act as if they're NOTHING
-		user = null
-
-	if (src.allowed(user))
-		if (src.density)
+	add_fingerprint(user)
+	if(!requiresID())
+		if(density)
 			open()
 		else
 			close()
+		return
 
-	else if (src.density)
+	if(allowed(user))
+		if(density)
+			open()
+		else
+			close()
+	else if(density && (isrobot(user) || Adjacent(user)))
 		do_animate("deny")
-
-	return
 
 /obj/machinery/door/window/brigdoor
 	name = "Secure Door"

@@ -7,7 +7,7 @@
 	var/magpulse = 0
 	var/magboot_state = "magboots"
 	var/slowdown_off = 2
-	action_button_name = "Toggle Magboots"
+	actions_types = /datum/action/item_action/attack_self
 	origin_tech = "materials=3;magnets=4;engineering=4"
 //	flags = NOSLIP //disabled by default
 

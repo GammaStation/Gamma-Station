@@ -42,6 +42,7 @@
 		return 0
 
 	equip_to_slot(W, slot, redraw_mob) //This proc should not ever fail.
+	W.after_equipping(src)
 	return 1
 
 //This is an UNSAFE proc. It merely handles the actual job of equipping. All the checks on whether you can or can't eqip need to be done before! Use mob_can_equip() for that task.
@@ -151,7 +152,7 @@ var/list/slot_equipment_priority = list(
 	if(!istype(W))		return 0
 	if(W.anchored)		return 0	//Anchored things shouldn't be picked up because they... anchored?!
 	if(!l_hand)
-		if((!W.flags & ABSTRACT) && m_intent == "run" && Adjacent(W) && (istype(W.loc, /turf) || istype(W.loc.loc, /turf)))
+		if(!(W.flags & ABSTRACT) && m_intent == "run" && Adjacent(W) && (istype(W.loc, /turf) || istype(W.loc.loc, /turf)))
 			W.do_pickup_animation(src)
 		W.loc = src		//TODO: move to equipped?
 		l_hand = W
@@ -174,7 +175,7 @@ var/list/slot_equipment_priority = list(
 	if(!istype(W))		return 0
 	if(W.anchored)		return 0	//Anchored things shouldn't be picked up because they... anchored?!
 	if(!r_hand)
-		if((!W.flags & ABSTRACT) && m_intent == "run" && Adjacent(W) && (istype(W.loc, /turf) || istype(W.loc.loc, /turf)))
+		if(!(W.flags & ABSTRACT) && m_intent == "run" && Adjacent(W) && (istype(W.loc, /turf) || istype(W.loc.loc, /turf)))
 			W.do_pickup_animation(src)
 		W.loc = src
 		r_hand = W
@@ -300,6 +301,7 @@ var/list/slot_equipment_priority = list(
 	O.screen_loc = null
 	if(istype(O, /obj/item))
 		var/obj/item/I = O
+		I.remove_actions(src)
 		if(target)
 			if(Adjacent(target))
 				I.do_putdown_animation(target)

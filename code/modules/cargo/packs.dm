@@ -511,7 +511,7 @@ datum/supply_pack/New()
 	name = "50 wooden planks"
 	contains = list(/obj/item/stack/sheet/wood)
 	amount = 50
-	cost = 1000
+	cost = 1500
 	crate_type = /obj/structure/closet/crate/engi
 	crate_name = "Wooden planks crate"
 	group = "Engineering"
@@ -550,7 +550,8 @@ datum/supply_pack/New()
 					/obj/item/clothing/suit/storage/hazardvest,
 					/obj/item/clothing/head/welding,
 					/obj/item/clothing/head/welding,
-					/obj/item/clothing/head/hardhat/yellow)
+					/obj/item/clothing/head/hardhat/yellow,
+					/obj/item/weapon/airlock_painter)
 	cost = 1000
 	crate_type = /obj/structure/closet/crate/engi
 	crate_name = "Mechanical maintenance crate"
@@ -599,7 +600,7 @@ datum/supply_pack/New()
 	name = "Emitter crate"
 	contains = list(/obj/machinery/power/emitter,
 					/obj/machinery/power/emitter)
-	cost = 1000
+	cost = 1500
 	crate_type = /obj/structure/closet/crate/secure/engisec
 	crate_name = "Emitter crate"
 	access = access_ce
@@ -615,6 +616,7 @@ datum/supply_pack/New()
 /datum/supply_pack/engine/sing_gen
 	name = "Singularity Generator crate"
 	contains = list(/obj/machinery/the_singularitygen)
+	cost = 2000
 	crate_type = /obj/structure/closet/crate/engi
 	crate_name = "Singularity Generator crate"
 
@@ -714,23 +716,23 @@ datum/supply_pack/New()
 	group = "Engineering"
 	access = access_ce
 
-/*/datum/supply_pack/teg // teg currently were broken for a long time ago, so no point to have it in-game until fixed.
+/datum/supply_pack/teg // teg currently were broken for a long time ago, so no point to have it in-game until fixed. --How do you do, fellow shitcoders?
 	contains = list(/obj/machinery/power/generator)
 	name = "Mark I Thermoelectric Generator"
 	cost = 7500
 	crate_type = /obj/structure/closet/crate/secure/large
 	crate_name = "Mk1 TEG crate"
 	group = "Engineering"
-	access = access_engine*/
+	access = access_engine
 
-/*/datum/supply_pack/circulator
+/datum/supply_pack/circulator
 	contains = list(/obj/machinery/atmospherics/components/binary/circulator)
 	name = "Binary atmospheric circulator"
 	cost = 6000
 	crate_type = /obj/structure/closet/crate/secure/large
 	crate_name = "Atmospheric circulator crate"
 	group = "Engineering"
-	access = access_engine*/
+	access = access_engine
 
 /datum/supply_pack/air_dispenser
 	contains = list(/obj/machinery/pipedispenser/orderable)

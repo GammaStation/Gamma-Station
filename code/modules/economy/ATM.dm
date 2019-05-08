@@ -38,7 +38,7 @@ log transactions
 
 /obj/machinery/atm/atom_init()
 	. = ..()
-	machine_id = "[station_name()] RT #[num_financial_terminals++]"
+	machine_id = "[station_name()] RT #[SSeconomy.num_financial_terminals++]"
 	spark_system = new /datum/effect/effect/system/spark_spread
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
@@ -117,7 +117,7 @@ log transactions
 			T.purpose = "Credit deposit"
 			T.amount = SC.worth
 			T.source_terminal = machine_id
-			T.date = current_date_string
+			T.date = SSeconomy.current_date_string
 			T.time = worldtime2text()
 			authenticated_account.transaction_log.Add(T)
 
@@ -255,7 +255,7 @@ log transactions
 							T.target_name = "Account #[target_account_number]"
 							T.purpose = transfer_purpose
 							T.source_terminal = machine_id
-							T.date = current_date_string
+							T.date = SSeconomy.current_date_string
 							T.time = worldtime2text()
 							T.amount = "([transfer_amount])"
 							authenticated_account.transaction_log.Add(T)
@@ -297,7 +297,7 @@ log transactions
 									T.target_name = failed_account.owner_name
 									T.purpose = "Unauthorised login attempt"
 									T.source_terminal = machine_id
-									T.date = current_date_string
+									T.date = SSeconomy.current_date_string
 									T.time = worldtime2text()
 									failed_account.transaction_log.Add(T)
 							else
@@ -317,7 +317,7 @@ log transactions
 						T.target_name = authenticated_account.owner_name
 						T.purpose = "Remote terminal access"
 						T.source_terminal = machine_id
-						T.date = current_date_string
+						T.date = SSeconomy.current_date_string
 						T.time = worldtime2text()
 						authenticated_account.transaction_log.Add(T)
 
@@ -345,7 +345,7 @@ log transactions
 						T.purpose = "Credit withdrawal"
 						T.amount = "([amount])"
 						T.source_terminal = machine_id
-						T.date = current_date_string
+						T.date = SSeconomy.current_date_string
 						T.time = worldtime2text()
 						authenticated_account.transaction_log.Add(T)
 					else
@@ -358,7 +358,7 @@ log transactions
 					R.info += "<i>Account holder:</i> [authenticated_account.owner_name]<br>"
 					R.info += "<i>Account number:</i> [authenticated_account.account_number]<br>"
 					R.info += "<i>Balance:</i> $[authenticated_account.money]<br>"
-					R.info += "<i>Date and time:</i> [worldtime2text()], [current_date_string]<br><br>"
+					R.info += "<i>Date and time:</i> [worldtime2text()], [SSeconomy.current_date_string]<br><br>"
 					R.info += "<i>Service terminal ID:</i> [machine_id]<br>"
 
 					//stamp the paper
@@ -376,7 +376,7 @@ log transactions
 					R.info = "<b>Transaction logs</b><br>"
 					R.info += "<i>Account holder:</i> [authenticated_account.owner_name]<br>"
 					R.info += "<i>Account number:</i> [authenticated_account.account_number]<br>"
-					R.info += "<i>Date and time:</i> [worldtime2text()], [current_date_string]<br><br>"
+					R.info += "<i>Date and time:</i> [worldtime2text()], [SSeconomy.current_date_string]<br><br>"
 					R.info += "<i>Service terminal ID:</i> [machine_id]<br>"
 					R.info += "<table border=1 style='width:100%'>"
 					R.info += "<tr>"
@@ -446,7 +446,7 @@ log transactions
 					T.target_name = authenticated_account.owner_name
 					T.purpose = "Remote terminal access"
 					T.source_terminal = machine_id
-					T.date = current_date_string
+					T.date = SSeconomy.current_date_string
 					T.time = worldtime2text()
 					authenticated_account.transaction_log.Add(T)
 

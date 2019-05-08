@@ -466,6 +466,11 @@
 		AH.try_build(src)
 		return
 
+	else if(istype(W, /obj/item/door_control_assembly))
+		var/obj/item/door_control_assembly/DCA = W
+		DCA.try_build(src)
+		return
+
 	//Poster stuff
 	else if(istype(W,/obj/item/weapon/poster))
 		place_poster(W,user)

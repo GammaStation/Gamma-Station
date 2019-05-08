@@ -44,7 +44,7 @@
 	var/list/access_fullaccess = list(access_qm)
 	var/list/whitelist = list()
 	var/list/blacklist = list()
-	var/list/global_blacklist = list(/obj/item/weapon/grab, /obj/item/weapon/holder, /obj/item/device/pda)
+	var/list/global_blacklist = list(/obj/item/weapon/grab, /obj/item/weapon/holder, /obj/item/device/pda, /obj/item/tk_grab)
 
 /obj/machinery/vendshop/atom_init()
 	. = ..()
@@ -203,7 +203,7 @@
 			T.purpose = "Profits transfer"
 			T.amount = "[earnings[user_name]]"
 			T.source_terminal = src.name
-			T.date = current_date_string
+			T.date = SSeconomy.current_date_string
 			T.time = worldtime2text()
 			user_account.transaction_log.Add(T)
 
@@ -349,6 +349,11 @@
 		var/obj/item/weapon/card/I = O
 		scan_card(I)
 
+	if(istype(O, /obj/item/tk_grab))
+		var/obj/item/tk_grab/TK_G = O
+		if(Adjacent(TK_G.focus))
+			O = TK_G.focus
+
 	else if(accept_check(O))
 		if(!user_name)
 			to_chat(user, "<span class='notice'>\The [src] beeps and a message 'Authentication required' shows up.</span>")
@@ -435,7 +440,7 @@
 				earnings[buying_product.owner] = 0
 			earnings[buying_product.owner] += money_left
 
-			if(!station_account)
+			if(!SSeconomy.station_account)
 				to_chat(usr, "[bicon(src)]<span class='warning'>Unable to access account. Check security settings and try again.</span>")
 				return
 			var/datum/money_account/D = get_account(ID.associated_account_number)
@@ -457,16 +462,16 @@
 
 			//transfer the money
 			D.money -= buying_product.price
-			station_account.money += station_cut
-			department_accounts[department].money += department_cut
+			SSeconomy.station_account.money += station_cut
+			SSeconomy.department_accounts[department].money += department_cut
 
 			//card transaction logs
 			var/datum/transaction/T = new()
-			T.target_name = "[station_account.owner_name] (via [src.name])"
+			T.target_name = "[SSeconomy.station_account.owner_name] (via [src.name])"
 			T.purpose = "Purchase of [buying_product.name]"
 			T.amount = "([buying_product.price])"
 			T.source_terminal = src.name
-			T.date = current_date_string
+			T.date = SSeconomy.current_date_string
 			T.time = worldtime2text()
 			D.transaction_log.Add(T)
 			//station account transaction logs
@@ -475,18 +480,18 @@
 			T.purpose = "Purchase of [buying_product.name]"
 			T.amount = "[station_cut]"
 			T.source_terminal = src.name
-			T.date = current_date_string
+			T.date = SSeconomy.current_date_string
 			T.time = worldtime2text()
-			station_account.transaction_log.Add(T)
+			SSeconomy.station_account.transaction_log.Add(T)
 			//department account transaction logs
 			T = new()
 			T.target_name = D.owner_name
 			T.purpose = "Purchase of [buying_product.name]"
 			T.amount = "[department_cut]"
 			T.source_terminal = src.name
-			T.date = current_date_string
+			T.date = SSeconomy.current_date_string
 			T.time = worldtime2text()
-			department_accounts[department].transaction_log.Add(T)
+			SSeconomy.department_accounts[department].transaction_log.Add(T)
 
 			// Vend the item
 			vend_product(buying_product)

@@ -202,3 +202,9 @@
 
 //Error handler defines
 #define ERROR_USEFUL_LEN 2
+
+#define CLIENT_FROM_VAR(I) (ismob(I) ? I:client : (istype(I, /client) ? I : (istype(I, /datum/mind) ? I:current?:client : null)))
+
+#define ENTITY_TAB "&nbsp;&nbsp;&nbsp;&nbsp;"
+
+#define any2ref(x) "\ref[x]"

@@ -20,7 +20,7 @@
 	var/inertia_next_move = 0
 	var/inertia_move_delay = 5
 
-	var/is_focused = FALSE // By telekinesis.
+	var/list/focused_by = list() // Who is telekinetically grabbing us.
 	var/list/client_mobs_in_contents
 	var/freeze_movement = FALSE
 

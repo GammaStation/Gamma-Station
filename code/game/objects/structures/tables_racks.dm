@@ -290,7 +290,7 @@
 		return (check_cover(mover,target))
 	if(istype(mover) && mover.checkpass(PASSTABLE))
 		return 1
-	if(mover.is_focused)
+	if(mover.focused_by.len)
 		return 1
 	if(iscarbon(mover) && mover.checkpass(PASSCRAWL))
 		mover.layer = 2.7
@@ -334,7 +334,7 @@
 /obj/structure/table/CheckExit(atom/movable/O, target)
 	if(istype(O) && O.checkpass(PASSTABLE))
 		return 1
-	if(O.is_focused)
+	if(O.focused_by.len)
 		return 1
 	if(istype(O) && O.checkpass(PASSCRAWL))
 		O.layer = 4.0
@@ -385,7 +385,7 @@
 			return
 
 	var/obj/item/tk_grab/put_me = user.get_active_hand(additional_checks = FALSE)
-	if(istype(put_me))
+	if(istype(put_me) && user.a_intent != I_HURT)
 		if(put_me.focus.anchored || !Adjacent(put_me.focus))
 			return
 		if(istype(put_me.focus, /obj/item))
@@ -689,7 +689,7 @@
 		return (check_cover(mover,target))
 	if(istype(mover) && mover.checkpass(PASSTABLE))
 		return 1
-	if(mover.is_focused)
+	if(mover.focused_by.len)
 		return TRUE
 	if(locate(/obj/structure/table) in get_turf(mover))
 		return 1
@@ -777,7 +777,7 @@
 		return 1
 	if(istype(mover) && mover.checkpass(PASSTABLE))
 		return 1
-	if(mover.is_focused)
+	if(mover.focused_by.len)
 		return 1
 	else
 		return 0

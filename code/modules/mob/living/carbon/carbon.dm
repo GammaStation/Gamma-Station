@@ -9,12 +9,12 @@
 	. = ..()
 	if(.)
 		handle_phantom_move(NewLoc, direct)
-		if(src.nutrition && src.stat != DEAD)
-			src.nutrition -= HUNGER_FACTOR/10
-			if(src.m_intent == "run")
-				src.nutrition -= HUNGER_FACTOR/10
-		if((FAT in src.mutations) && src.m_intent == "run" && src.bodytemperature <= 360)
-			src.bodytemperature += 2
+		if(nutrition && stat != DEAD)
+			nutrition -= metabolism_factor/100
+			if(m_intent == "run")
+				nutrition -= metabolism_factor/100
+		if((FAT in mutations) && m_intent == "run" && bodytemperature <= 360)
+			bodytemperature += 2
 
 		// Moving around increases germ_level faster
 		if(germ_level < GERM_LEVEL_MOVE_CAP && prob(8))
@@ -199,10 +199,18 @@
 /mob/living/carbon/proc/help_shake_act(mob/living/carbon/M)
 	if (src.health >= config.health_threshold_crit)
 		if(src == M && istype(src, /mob/living/carbon/human))
+			var/gen_self = "themself"
+			switch(gender)
+				if(MALE)
+					gen_self = "himself"
+				if(FEMALE)
+					gen_self = "herself"
+				if(NEUTER)
+					gen_self = "itself"
 			var/mob/living/carbon/human/H = src
-			src.visible_message( \
-				text("<span class='notice'>[src] examines [].</span>",src.gender==MALE?"himself":"herself"), \
-				"<span class='notice'>You check yourself for injuries.</span>" \
+			src.visible_message(
+				"<span class='notice'>[src] examines [gen_self].</span>",
+				"<span class='notice'>You check yourself for injuries.</span>"
 				)
 
 			for(var/obj/item/organ/external/BP in H.bodyparts)
@@ -241,10 +249,13 @@
 				H.play_xylophone()
 		else
 			var/t_him = "it"
-			if (src.gender == MALE)
-				t_him = "him"
-			else if (src.gender == FEMALE)
-				t_him = "her"
+			switch(gender)
+				if(MALE)
+					t_him = "him"
+				if(FEMALE)
+					t_him = "her"
+				if(PLURAL)
+					t_him = "them"
 			if (istype(src,/mob/living/carbon/human) && src:w_uniform)
 				var/mob/living/carbon/human/H = src
 				H.w_uniform.add_fingerprint(M)
@@ -648,10 +659,10 @@
 	else
 		return initial(pixel_x)
 
-/mob/living/carbon/proc/bloody_hands(mob/living/source, amount = 2)
+/mob/living/carbon/proc/bloody_hands(mob/living/source, amount = 2, blood_datum)
 	return
 
-/mob/living/carbon/proc/bloody_body(mob/living/source)
+/mob/living/carbon/proc/bloody_body(mob/living/source, blood_datum)
 	return
 
 /mob/living/carbon/proc/handle_phantom_move(NewLoc, direct)

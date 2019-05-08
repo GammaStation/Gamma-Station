@@ -909,7 +909,7 @@
 	canremove = 0
 	siemens_coefficient = 0
 
-	armor = list(melee = 77, bullet = 66, laser = 44, energy = 44, bomb = 80, bio = 100, rad = 80)
+	armor = list(melee = 77, bullet = 66, laser = 44, energy = 44, bomb = 80, bio = 100, rad = 80, telepathy = 0)
 
 
 /obj/item/clothing/suit/space/golem
@@ -934,7 +934,7 @@
 	siemens_coefficient = 0
 	can_breach = 0
 
-	armor = list(melee = 77, bullet = 66, laser = 44, energy = 44, bomb = 80, bio = 100, rad = 80)
+	armor = list(melee = 77, bullet = 66, laser = 44, energy = 44, bomb = 80, bio = 100, rad = 80, telepathy = 0)
 
 /obj/effect/golemrune
 	anchored = 1

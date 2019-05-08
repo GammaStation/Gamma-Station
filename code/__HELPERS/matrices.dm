@@ -252,3 +252,11 @@
 			resultMatrix[(i - 1) * rowSize + j] = result
 
 	return resultMatrix
+
+//The X pixel offset of this matrix
+/matrix/proc/get_x_shift()
+	. = c
+
+//The Y pixel offset of this matrix
+/matrix/proc/get_y_shift()
+	. = f

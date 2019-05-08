@@ -742,6 +742,10 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "Robotics Lab"
 	icon_state = "ass_line"
 
+/area/assembly/spconstruction
+	name = "Space Pod Construction Site"
+	icon_state = "ass_line"
+
 /area/assembly/assembly_line //Derelict Assembly Line
 	name = "Assembly Line"
 	icon_state = "ass_line"

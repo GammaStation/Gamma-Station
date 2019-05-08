@@ -162,6 +162,17 @@ var/datum/cameranet/cameranet = new()
 
 	stat(name, statclick.update("Cameras: [cameranet.cameras.len] | Chunks: [cameranet.chunks.len]"))
 
+/datum/cameranet/proc/is_turf_visible(var/turf/position)
+	if(!position)
+		return FALSE
+	var/datum/camerachunk/chunk = getCameraChunk(position.x, position.y, position.z)
+	if(chunk)
+		if(chunk.changed)
+			chunk.update(TRUE) // Update now, no matter if it's visible or not.
+		if(position in chunk.visibleTurfs)
+			return TRUE
+	return FALSE
+
 // Debug verb for VVing the chunk that the turf is in.
 /*
 /turf/verb/view_chunk()

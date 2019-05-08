@@ -38,9 +38,9 @@
 
 /obj/machinery/door/spacepoddoor/update_icon()
 	if(density)
-		icon_state = "open"
-	else
 		icon_state = "closed"
+	else
+		icon_state = "open"
 
 
 /obj/machinery/door/spacepoddoor/interact(mob/user)

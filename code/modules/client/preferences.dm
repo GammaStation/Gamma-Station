@@ -68,6 +68,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	var/r_skin = 0						//Skin color
 	var/g_skin = 0						//Skin color
 	var/b_skin = 0						//Skin color
+	var/eye_name = "default"
 	var/r_eyes = 0						//Eye color
 	var/g_eyes = 0						//Eye color
 	var/b_eyes = 0						//Eye color
@@ -271,6 +272,7 @@ var/const/MAX_SAVE_SLOTS = 10
 	character.age = age
 	character.b_type = b_type
 
+	character.eyes = character.species.eyes[eye_name]
 	character.r_eyes = r_eyes
 	character.g_eyes = g_eyes
 	character.b_eyes = b_eyes
@@ -361,12 +363,6 @@ var/const/MAX_SAVE_SLOTS = 10
 	if(backbag > 4 || backbag < 1)
 		backbag = 1 //Same as above
 	character.backbag = backbag
-
-	//Debugging report to track down a bug, which randomly assigned the plural gender to people.
-	if(character.gender in list(PLURAL, NEUTER))
-		if(isliving(src)) //Ghosts get neuter by default
-			message_admins("[character] ([character.ckey]) has spawned with their gender as plural or neuter. Please notify coders.")
-			character.gender = MALE
 
 	if(icon_updates)
 		character.update_body()

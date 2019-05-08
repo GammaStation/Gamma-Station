@@ -2,7 +2,7 @@
 #define SAVEFILE_VERSION_MIN 8
 
 //This is the current version, anything below this will attempt to update (if it's not obsolete)
-#define SAVEFILE_VERSION_MAX 19
+#define SAVEFILE_VERSION_MAX 21
 
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
@@ -67,6 +67,10 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			if(!(species in lang.allowed_species))
 				language = "None"
 				S["language"] << language
+
+	if(current_version < 21)
+		S["eye_name"] << "default"
+		eye_name = "default"
 
 /datum/preferences/proc/load_path(ckey, filename = "preferences.sav")
 	if(!ckey)
@@ -191,6 +195,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["skin_blue"]			>> b_skin
 	S["hair_style_name"]	>> h_style
 	S["facial_style_name"]	>> f_style
+	S["eye_name"]           >> eye_name
 	S["eyes_red"]			>> r_eyes
 	S["eyes_green"]			>> g_eyes
 	S["eyes_blue"]			>> b_eyes
@@ -245,10 +250,12 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if(isnull(species)) species = HUMAN
 	if(isnull(language)) language = "None"
 	if(isnull(nanotrasen_relation)) nanotrasen_relation = initial(nanotrasen_relation)
+	if(isnull(eye_name))
+		eye_name = "default"
 	if(!real_name) real_name = random_name(gender)
 	if(!gear) gear = list()
 	be_random_name	= sanitize_integer(be_random_name, 0, 1, initial(be_random_name))
-	gender			= sanitize_gender(gender)
+	gender			= sanitize_gender(gender, TRUE, TRUE) // Can be Neuter and Plural, why not?
 	age				= sanitize_integer(age, AGE_MIN, AGE_MAX, initial(age))
 	r_hair			= sanitize_integer(r_hair, 0, 255, initial(r_hair))
 	g_hair			= sanitize_integer(g_hair, 0, 255, initial(g_hair))
@@ -366,6 +373,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["skin_blue"]			<< b_skin
 	S["hair_style_name"]	<< h_style
 	S["facial_style_name"]	<< f_style
+	S["eye_name"]           << eye_name
 	S["eyes_red"]			<< r_eyes
 	S["eyes_green"]			<< g_eyes
 	S["eyes_blue"]			<< b_eyes

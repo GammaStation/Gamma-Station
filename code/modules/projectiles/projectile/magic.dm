@@ -77,9 +77,11 @@
 			//		else			new_mob = new /mob/living/carbon/alien/larva(M.loc)
 			//	new_mob.universal_speak = 1
 			if("human")
-				new_mob = new /mob/living/carbon/human(M.loc, pick(all_species))
-				if(M.gender == MALE)
-					new_mob.gender = MALE
+				var/new_specie = pick(all_species)
+				var/datum/species/S = all_species[new_specie]
+				new_mob = new /mob/living/carbon/human(M.loc, new_specie)
+				if(M.gender != FEMALE)
+					new_mob.gender = pick(S.genders)
 					new_mob.name = pick(first_names_male)
 				else
 					new_mob.gender = FEMALE

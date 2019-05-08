@@ -5,7 +5,9 @@ var/list/forbidden_varedit_object_types = list(
 		/datum/feedback_variable,          //Prevents people messing with feedback gathering
 		/datum/timedevent,                 //Nope.avi
 		/datum/craft_or_build,
-		/datum/stack_recipe
+		/datum/stack_recipe,
+		/datum/events,
+		/datum/action
 	)
 
 /client/proc/cmd_modify_ticker_variables()
@@ -127,7 +129,7 @@ var/list/forbidden_varedit_object_types = list(
 	if(!islist(L))
 		to_chat(usr, "Still not a list")
 		return
-		
+
 
 	var/list/locked = list("vars", "key", "ckey", "client", "virus", "viruses", "icon", "icon_state")
 	var/list/names = sortList(L)
@@ -273,7 +275,7 @@ var/list/forbidden_varedit_object_types = list(
 	var/list/icons_modifying = list("resize")
 	var/list/locked = list("vars", "key", "ckey", "client", "virus", "viruses", "mutantrace", "player_ingame_age", "summon_type", "AI_Interact")
 	var/list/typechange_locked = list("player_next_age_tick","player_ingame_age")
-	var/list/fully_locked = list("holder", "player_next_age_tick", "resize_rev")
+	var/list/fully_locked = list("holder", "player_next_age_tick", "resize_rev", "action_procname")
 
 	if(is_type_in_list(O, forbidden_varedit_object_types))
 		to_chat(usr, "\red It is forbidden to edit this object's variables.")

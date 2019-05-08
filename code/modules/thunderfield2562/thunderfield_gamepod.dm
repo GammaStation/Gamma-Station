@@ -23,7 +23,6 @@
 	component_parts += new /obj/item/weapon/stock_parts/console_screen(null)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(null)
 	component_parts += new /obj/item/weapon/stock_parts/manipulator(null)
-	component_parts += new /obj/item/stack/cable_coil/random(null, 1)
 	RefreshParts()
 
 //Code for attackby
@@ -73,7 +72,7 @@
 
 /obj/machinery/gamepod/proc/scan_card(obj/item/weapon/card/id/C)
 	visible_message("<span class='info'><B>[usr] swipes a card through [src].</B></span>")
-	if(!station_account)
+	if(!SSeconomy.station_account)
 		return
 	if(!get_account(C.associated_account_number))
 		to_chat(usr, "<span class='warning'>[bicon(src)] There is no account associated with your ID!</span>")
@@ -92,17 +91,17 @@
 		to_chat(usr, "<span class='warning'>[bicon(src)] You don't have that much money!</span>")
 		return
 	D.money -= transaction_amount
-	station_account.money += transaction_amount
+	SSeconomy.station_account.money += transaction_amount
 	var/datum/transaction/T = new()
-	T.target_name = "[station_account.owner_name] (via [src.name])"
+	T.target_name = "[SSeconomy.station_account.owner_name] (via [src.name])"
 	T.purpose = "Purchase of thunderfield gamepod use"
 	T.amount = "[transaction_amount]"
 	T.source_terminal = src.name
-	T.date = current_date_string
+	T.date = SSeconomy.current_date_string
 	T.time = worldtime2text()
 	D.transaction_log.Add(T)
 	T.target_name = D.owner_name
-	station_account.transaction_log.Add(T)
+	SSeconomy.station_account.transaction_log.Add(T)
 	QDEL_NULL(T)
 	to_chat(usr, "<span class='notice'><B>[bicon(src)] Transaction successful. Have a nice time.</B></span>")
 	is_payed = TRUE

@@ -282,6 +282,8 @@
 /obj/item/device/camera/afterattack(atom/target, mob/user, flag)
 	if(!on || !pictures_left || ismob(target.loc))
 		return
+	if(!(target in view())) // Fuck you Telekinesis I am starting to hate you.
+		return
 	captureimage(target, user, flag)
 
 	playsound(loc, pick('sound/items/polaroid1.ogg', 'sound/items/polaroid2.ogg'), 75, 1, -3)
