@@ -66,8 +66,9 @@
 		to_chat(usr, "<span class='notice'>Assembling grille...</span>")
 		if (!do_after(usr, 10, target = usr))
 			return
+		var/turf/T_R = get_turf(src)
 		if (!use(2))
 			return
-		var/obj/structure/grille/F = new /obj/structure/grille/ (get_turf(src))
+		var/obj/structure/grille/F = new /obj/structure/grille(T_R)
 		to_chat(usr, "<span class='notice'>You assemble a grille.</span>")
 		F.add_fingerprint(usr)
