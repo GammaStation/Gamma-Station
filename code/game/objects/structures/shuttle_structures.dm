@@ -50,6 +50,9 @@
 			window_flags &= ~flag     // turn off the bit flag
 			wall_flags &= ~flag     // turn off the bit flag
 
+/obj/structure/shuttle/window/black
+	icon = 'icons/obj/structures/shuttle/window_black.dmi'
+
 /obj/structure/shuttle/engine
 	name = "engine"
 	density = 1

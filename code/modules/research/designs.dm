@@ -1169,7 +1169,7 @@ datum/design/smes
 	build_path = /obj/item/weapon/circuitboard/space_heater
 	//category = list("Engineering Machinery")
 
-datum/design/teleport_station
+/datum/design/teleport_station
 	name = "Teleportation Station Board"
 	desc = "The circuit board for a teleportation station."
 	id = "tele_station"
@@ -1178,7 +1178,7 @@ datum/design/teleport_station
 	materials = list(MAT_GLASS = 2000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/teleporter_station
 
-datum/design/teleport_hub
+/datum/design/teleport_hub
 	name = "Teleportation Hub Board"
 	desc = "The circuit board for a teleportation hub."
 	id = "tele_hub"
@@ -1187,7 +1187,7 @@ datum/design/teleport_hub
 	materials = list(MAT_GLASS = 2000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/teleporter_hub
 
-datum/design/telepad
+/datum/design/telepad
 	name = "Telepad Board"
 	desc = "The circuit board for a telescience telepad."
 	id = "telepad"
@@ -1196,7 +1196,7 @@ datum/design/telepad
 	materials = list(MAT_GLASS = 2000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/telesci_pad
 
-datum/design/sleeper
+/datum/design/sleeper
 	name = "Sleeper Board"
 	desc = "The circuit board for a sleeper."
 	id = "sleeper"
@@ -1205,7 +1205,25 @@ datum/design/sleeper
 	materials = list(MAT_GLASS = 2000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/sleeper
 
-datum/design/cryotube
+/datum/design/bodyscanner
+	name = "Bodyscanner Board"
+	desc = "The circuit board for a bodyscanner."
+	id = "bodyscanner"
+	req_tech = list("programming" = 3, "biotech" = 3, "materials" = 3, "engineering" = 2)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 2000, "sacid" = 20)
+	build_path = /obj/item/weapon/circuitboard/bodyscanner
+
+/datum/design/body_scanconsole
+	name = "Bodyscanner Console Board"
+	desc = "The circuit board for a bodyscanenr console."
+	id = "body_scanconsole"
+	req_tech = list("programming" = 3, "biotech" = 3, "materials" = 3, "engineering" = 2)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 2000, "sacid" = 20)
+	build_path = /obj/item/weapon/circuitboard/body_scanconsole
+
+/datum/design/cryotube
 	name = "Cryotube Board"
 	desc = "The circuit board for a cryotube."
 	id = "cryotube"
