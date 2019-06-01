@@ -248,7 +248,18 @@ to destroy them and players will be able to make replacements.
 							/obj/machinery/vending/coffee = "Getmore Chocolate Corp",
 							/obj/machinery/vending/snack = "Hot Drinks",
 							/obj/machinery/vending/cola = "Robust Softdrinks",
-							/obj/machinery/vending/cigarette = "Cigarette")
+							/obj/machinery/vending/cigarette = "Cigarette",
+							/obj/machinery/vending/barbervend = "Fab-O-Vend",
+							/obj/machinery/vending/chinese = "\improper Mr. Chang",
+							/obj/machinery/vending/medical = "NanoMed Plus",
+							/obj/machinery/vending/hydronutrients = "NutriMax",
+							/obj/machinery/vending/hydroseeds = "MegaSeed Servitor",
+							/obj/machinery/vending/dinnerware = "Dinnerware",
+							/obj/machinery/vending/tool = "YouTool",
+							/obj/machinery/vending/engivend = "Engi-Vend",
+							/obj/machinery/vending/clothing = "ClothesMate",
+							/obj/machinery/vending/blood = "Blood'O'Matic",
+							/obj/machinery/vending/security = "SecTech")
 //							/obj/machinery/vending/autodrobe = "AutoDrobe")
 
 		build_path = pick(names)

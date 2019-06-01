@@ -3,7 +3,7 @@
 	var/machine_name = "Generic"
 
 	icon = 'icons/obj/vending.dmi'
-	icon_state = "refill_snack"
+	icon_state = "refill_unk"
 	item_state = "restock_unit"
 	flags = CONDUCT
 	force = 7.0
@@ -40,6 +40,7 @@
 
 /obj/item/weapon/vending_refill/snack
 	machine_name = "Getmore Chocolate Corp"
+	icon_state = "refill_snack"
 	charges = 15//of 48
 
 /obj/item/weapon/vending_refill/cola
@@ -60,10 +61,52 @@
 
 /obj/item/weapon/vending_refill/clothing
 	machine_name = "ClothesMate"
-	icon_state = "refill_clothes"
+	icon_state = "refill_costume"
 	charges = 16// of 48
 
 /obj/item/weapon/vending_refill/barbervend
 	machine_name = "BarberVend"
-	icon_state = "refill_booze" // Placeholder?
-	charges =  25// of 70
+	icon_state = "refill_costume" // Placeholder?
+	charges =  25// of 73
+
+/obj/item/weapon/vending_refill/hydroseeds
+	machine_name = "MegaSeed Servitor"
+	charges =  30// of 90
+
+/obj/item/weapon/vending_refill/hydronutrients
+	machine_name = "NutriMax"
+	charges =  38// of 115
+
+/obj/item/weapon/vending_refill/medical
+	machine_name = "NanoMed Plus"
+	charges =  17// of 51
+
+/obj/item/weapon/vending_refill/tool
+	machine_name = "YouTool"
+	charges =  15// of 43
+
+/obj/item/weapon/vending_refill/engivend
+	machine_name = "Engi-Vend"
+	charges =  15// of 46
+
+/obj/item/weapon/vending_refill/blood
+	machine_name = "Blood'O'Matic"
+	charges =  10// of 28
+
+/obj/item/weapon/vending_refill/assist
+	machine_name = "Vendomat"
+	charges =  6// of 17
+
+/obj/item/weapon/vending_refill/dinnerware
+	machine_name = "Dinnerware"
+	charges =  12// of 35
+
+/obj/item/weapon/vending_refill/chinese
+	machine_name = "\improper Mr. Chang"
+	icon_state = "refill_snack"
+	charges =  16// of 4
+
+/obj/item/weapon/vending_refill/security
+	machine_name = "SecTech"
+	icon_state = "refill_sec"
+	charges =  15// of 43
