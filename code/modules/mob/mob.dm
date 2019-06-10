@@ -64,6 +64,7 @@
 	if(stat == UNCONSCIOUS || sleeping > 0)
 		msg = "<I>... You can almost hear someone talking ...</I>"
 	to_chat(src, msg, flag)
+	telepathy_hear((type == 1) ? "has seen" : "has heard", msg)
 	return msg
 
 /mob/living/carbon/show_message(msg, type, alt, alt_type)
@@ -500,7 +501,7 @@
 		return
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
-		if(H.species.flags[IS_IMMATERIAL])
+		if(H.species.flags[IS_IMMATERIAL] && !istype(H.wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
 			return
 	if(!AM.anchored)
 		AM.add_fingerprint(src)
@@ -1057,6 +1058,9 @@ mob/proc/yank_out_object()
 	if(isliving(src))
 		spell.action.Grant(src)
 	return
+
+/mob/proc/getarmor(def_zone, type)
+	return 0
 
 /mob/proc/set_EyesVision(preset = null, transition_time = 5)
 	if(!client) return

@@ -124,7 +124,7 @@
 		if(CB_CONTENT)
 			desc = "Something is written out there, you start reading..."
 			desc += "<HR>"
-			desc +=	content
+			desc += content
 			desc += "<HR>"
 			icon_state = "board_text[rand(1, 5)]"
 

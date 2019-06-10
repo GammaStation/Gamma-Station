@@ -11,6 +11,31 @@
 	. = ..()
 	layer = SHUTTERS_LAYER
 
+/obj/machinery/door/poddoor/shutters/constructable
+	anchored = FALSE
+
+/obj/machinery/door/poddoor/shutters/constructable/atom_init()
+	. = ..()
+	close(TRUE)
+
+/obj/machinery/door/poddoor/shutters/attackby(obj/item/I, mob/living/user)
+	if(istype(I, /obj/item/weapon/wrench))
+		if(!density)
+			default_unfasten_wrench(user, I, time = 30)
+		return
+	if(istype(I, /obj/item/device/multitool))
+		var/obj/item/device/multitool/MT = I
+		if(!anchored && MT.button_id)
+			to_chat(user, "<span class='notice'>[bicon(MT)] Set [src]'s ID to: </span><span class='bold'>\"[MT.button_id]\"</span><span class='notice'>.</span>")
+			id = MT.button_id
+		return
+	if(istype(I, /obj/item/weapon/crowbar))
+		if(!anchored && !user.is_busy() && do_after(user, 60, target=src))
+			new /obj/item/stack/sheet/plasteel(loc, 5, TRUE)
+			qdel(src)
+		return
+	return ..()
+
 /obj/machinery/door/poddoor/shutters/do_animate(animation)
 	switch(animation)
 		if("opening")

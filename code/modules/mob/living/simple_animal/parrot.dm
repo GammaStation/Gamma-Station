@@ -289,7 +289,7 @@
 	..()
 
 	//Sprite and AI update for when a parrot gets pulled
-	if((pulledby || is_focused) && stat == CONSCIOUS)
+	if((pulledby || focused_by.len) && stat == CONSCIOUS)
 		icon_state = "parrot_fly"
 		if(!client)
 			parrot_state = PARROT_WANDER

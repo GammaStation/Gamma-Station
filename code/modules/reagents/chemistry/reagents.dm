@@ -1,12 +1,5 @@
-#define SOLID 1
-#define LIQUID 2
-#define GAS 3
-#define FOOD_METABOLISM 0.4
-#define DRINK_METABOLISM 0.8
-#define REAGENTS_OVERDOSE 30
-#define REM REAGENTS_EFFECT_MULTIPLIER
-#define MAX_PILL_SPRITE 20
-#define MAX_BOTTLE_SPRITE 3
+//The reaction procs must ALWAYS set src = null, this detaches the proc from the object (the reagent)
+//so that it can continue working when the reagent is deleted while the proc is still active.
 
 /datum/reagent
 	var/name = "Reagent"
@@ -22,6 +15,11 @@
 	var/taste_strength = 1 //how easy it is to taste - the more the easier
 	var/taste_message = "bitterness" //life's bitter by default. Cool points for using a span class for when you're tasting <span class='userdanger'>LIQUID FUCKING DEATH</span>
 	var/list/restrict_species = list(IPC) // Species that simply can not digest this reagent.
+
+	// Currently things below work only in Tycheons.
+	var/does_glow = FALSE
+	var/max_glow_power = 0
+	var/glow_increment = 0
 
 	var/overdose = 0
 	var/overdose_dam = 1
@@ -72,12 +70,10 @@
 	return
 
 /datum/reagent/proc/on_mob_life(mob/living/M, alien)
-	if(!M || !holder)
-		return
 	if(!isliving(M))
 		return //Noticed runtime errors from pacid trying to damage ghosts, this should fix. --NEO
 	if(!check_digesting(M, alien)) // You can't overdose on what you can't digest
-		return
+		return FALSE
 	if((overdose > 0) && (volume >= overdose))//Overdosing, wooo
 		M.adjustToxLoss(overdose_dam)
 	return TRUE
@@ -106,10 +102,8 @@
 			var/mob/living/carbon/monkey/C = M
 			if(C.race in restrict_species)
 				return FALSE
-	var/should_general_digest = TRUE
 	var/datum/species/specimen = all_species[alien]
-	should_general_digest = specimen.call_digest_proc(M, src)
-	if(should_general_digest)
+	if(specimen.call_digest_proc(M, src)) // call_digest_proc returns TRUE if we need to do general digest.
 		on_general_digest(M)
 	return TRUE
 
@@ -142,3 +136,13 @@
 
 /datum/reagent/proc/on_golem_digest(mob/living/M)
 	return TRUE
+
+/datum/reagent/proc/on_tycheon_digest(mob/living/M)
+	if(ishuman(M) && does_glow)
+		var/mob/living/carbon/human/H = M
+		if(istype(H.wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
+			return FALSE
+		if(H.light_range_reagents < max_glow_power)
+			H.light_range_reagents = min(max_glow_power, H.light_range_reagents + glow_increment)
+		H.reagents_lit_on = TRUE
+	return FALSE // Do not call general digestion proc.

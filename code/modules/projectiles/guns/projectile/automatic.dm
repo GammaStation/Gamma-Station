@@ -462,22 +462,22 @@
 	icon_state = "[initial(icon_state)][chambered ? "" : "-e"]"
 	return
 
-/obj/item/weapon/gun/projectile/automatic/a74
-	name = "A74 assault rifle"
-	desc = "Stradi and Practican Maid Bai Spess soviets corporation, bazed he original design of 20 centuriyu fin about baars and vodka vile patrimonial it, saunds of balalaika place minvile, yuzes 7.74 caliber"
-	mag_type = /obj/item/ammo_box/magazine/a74mm
+/obj/item/weapon/gun/projectile/automatic/om36
+	name = "OM36 assault rifle"
+	desc = "The OM36 is a light gas-operated assault rifle, designed in the early 2530s by Cracker & Followill in Sol System Goverment as a replacement for the heavier OM3 battle rifle"
+	mag_type = /obj/item/ammo_box/magazine/om36mm
 	w_class = 3.0
-	icon_state = "a74"
-	item_state = "a74"
+	icon_state = "om36"
+	item_state = "om36"
 	origin_tech = "combat=5;materials=4;syndicate=6"
-	fire_sound = 'sound/weapons/guns/ak74_fire.ogg'
-	var/icon/mag_icon = icon('icons/obj/gun.dmi',"mag-a74")
+	fire_sound = 'sound/weapons/guns/om36f.ogg'
+	var/icon/mag_icon = icon('icons/obj/gun.dmi',"mag-om36")
 
-/obj/item/weapon/gun/projectile/automatic/a74/atom_init()
+/obj/item/weapon/gun/projectile/automatic/om36/atom_init()
 	. = ..()
 	update_icon()
 
-/obj/item/weapon/gun/projectile/automatic/a74/update_icon()
+/obj/item/weapon/gun/projectile/automatic/om36/update_icon()
 	overlays.Cut()
 	if(magazine)
 		overlays += mag_icon
@@ -485,12 +485,42 @@
 	else
 		item_state = "[initial(icon_state)]-e"
 
-/obj/item/weapon/gun/projectile/automatic/a74/attack_self(mob/user)
+/obj/item/weapon/gun/projectile/automatic/om36/attack_self(mob/user)
 	if(..())
-		playsound(user, 'sound/weapons/guns/ak74_reload.ogg', 50, 1)
+		playsound(user, 'sound/weapons/guns/om36r.ogg', 50, 1)
 	update_icon()
 
-/obj/item/weapon/gun/projectile/automatic/a74/attackby(obj/item/A, mob/user)
+/obj/item/weapon/gun/projectile/automatic/om36/attackby(obj/item/A, mob/user)
 	if(..())
-		playsound(user, 'sound/weapons/guns/ak74_reload.ogg', 50, 1)
+		playsound(user, 'sound/weapons/guns/om36r.ogg', 50, 1)
 	update_icon()
+
+/obj/item/weapon/gun/projectile/automatic/type76
+	name = "Type .76"
+	desc = "Type 76 this is semi-automatic submachine gun that shoots 3 rounds per one shot. You've definitely seen this pretty one in some movie 'bout those Space-Vietnam wars. Pull the trigger, and become a narrow-eyed Solider!"
+	icon_state = "type76"
+	item_state = "type76"
+	w_class = 3.0
+	origin_tech = "combat=4;materials=2;"
+	mag_type = /obj/item/ammo_box/magazine/type76_rubber
+	fire_sound = 'sound/weapons/guns/type76_shot.ogg'
+	burst_mode = TRUE
+	burst_amount = 3
+	burst_delay = 4
+
+
+/obj/item/weapon/gun/projectile/automatic/type76/atom_init()
+	. = ..()
+	update_icon()
+
+/obj/item/weapon/gun/projectile/automatic/type76/afterattack(atom/target, mob/living/user, flag)
+	..()
+	if(!chambered && !get_ammo() && !alarmed)
+		playsound(user, 'sound/weapons/smg_empty_alarm.ogg', 40, 1)
+		update_icon()
+		alarmed = 1
+
+/obj/item/weapon/gun/projectile/automatic/type76/update_icon()
+	..()
+	icon_state = "type76_[magazine ? "clip" : "empty"]"
+	item_state = "type76_[magazine ? "clip" : "empty"]"

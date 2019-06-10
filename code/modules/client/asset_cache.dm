@@ -170,10 +170,15 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"jquery.mark.min.js" = 'code/modules/goonchat/browserassets/js/jquery.mark.min.js',
 		"json2.min.js" = 'code/modules/goonchat/browserassets/js/json2.min.js',
 		"browserOutput.js" = 'code/modules/goonchat/browserassets/js/browserOutput.js',
+		"error_handler.js" = 'code/modules/error_handler_js/error_handler.js',
 		"fontawesome-webfont.eot" = 'code/modules/goonchat/browserassets/css/fonts/fontawesome-webfont.eot',
 		"fontawesome-webfont.svg" = 'code/modules/goonchat/browserassets/css/fonts/fontawesome-webfont.svg',
 		"fontawesome-webfont.ttf" = 'code/modules/goonchat/browserassets/css/fonts/fontawesome-webfont.ttf',
 		"fontawesome-webfont.woff" = 'code/modules/goonchat/browserassets/css/fonts/fontawesome-webfont.woff',
+		"horror_font.otf" = 'code/modules/goonchat/browserassets/css/fonts/horror_font.otf',
+		"horror_font.eot" = 'code/modules/goonchat/browserassets/css/fonts/horror_font.eot',
+		"balanced_font.otf" = 'code/modules/goonchat/browserassets/css/fonts/balanced_font.ttf',
+		"balanced_font.eot" = 'code/modules/goonchat/browserassets/css/fonts/balanced_font.eot',
 		"font-awesome.css" = 'code/modules/goonchat/browserassets/css/font-awesome.css',
 		"emojib64.css" = 'code/modules/goonchat/browserassets/css/emojib64.css',
 		"browserOutput.css" = 'code/modules/goonchat/browserassets/css/browserOutput.css'
@@ -220,6 +225,12 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"CB.png" = 'icons/obj/chess/board_CB.png',
 		"CR.png" = 'icons/obj/chess/board_CR.png',
 		"none.png" = 'icons/obj/chess/board_none.png'
+	)
+
+/datum/asset/simple/tgui
+	assets = list(
+		"tgui.css"	= 'tgui/assets/tgui.css',
+		"tgui.js"	= 'tgui/assets/tgui.js'
 	)
 
 /datum/asset/nanoui

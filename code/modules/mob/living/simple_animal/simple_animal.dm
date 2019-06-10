@@ -89,7 +89,7 @@
 		if(isturf(src.loc) && !resting && !buckled && canmove)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
 			turns_since_move++
 			if(turns_since_move >= turns_per_move)
-				if(!(stop_automated_movement_when_pulled && (pulledby || is_focused))) //Soma animals don't move when pulled
+				if(!(stop_automated_movement_when_pulled && (pulledby || focused_by.len))) //Soma animals don't move when pulled
 					var/anydir = pick(cardinal)
 					if(Process_Spacemove(anydir))
 						Move(get_step(src,anydir), anydir)
@@ -428,6 +428,8 @@
 		var/obj/mecha/M = the_target
 		if (M.occupant)
 			return 0
+	if (istype(the_target, /obj/spacepod))
+		return TRUE
 	return 1
 
 /mob/living/simple_animal/say(var/message)

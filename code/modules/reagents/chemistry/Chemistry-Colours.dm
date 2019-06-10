@@ -1,8 +1,8 @@
 /proc/mix_color_from_reagents(list/reagent_list)
-	if(!reagent_list || !length(reagent_list))
+	if(!reagent_list || !reagent_list.len)
 		return 0
 
-	var/contents = length(reagent_list)
+	var/contents = reagent_list.len
 	var/list/weight = new /list(contents)
 	var/list/redcolor = new /list(contents)
 	var/list/greencolor = new /list(contents)
@@ -10,7 +10,7 @@
 	var/i
 
 	//fill the list of weights
-	for(i=1; i<=contents; i++)
+	for(i in 1 to contents)
 		var/datum/reagent/re = reagent_list[i]
 		var/reagentweight = re.volume
 		if(istype(re, /datum/reagent/paint))
@@ -19,7 +19,7 @@
 
 
 	//fill the lists of colours
-	for(i=1; i<=contents; i++)
+	for(i in 1 to contents)
 		var/datum/reagent/re = reagent_list[i]
 		var/hue = re.color
 		if(length(hue) != 7)

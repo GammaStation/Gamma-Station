@@ -67,7 +67,7 @@
 				break
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			if(H.species.flags[IS_IMMATERIAL])
+			if(H.species.flags[IS_IMMATERIAL] && !istype(H.wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
 				can_switch = FALSE
 
 		if(can_switch && get_dist(M, src) <= 1)
@@ -764,6 +764,13 @@
 
 	//Getting out of someone's inventory.
 
+	if(focused_by.len)
+		for(var/obj/item/tk_grab/TK_G in focused_by)
+			if(prob(30 + get_dist(src, TK_G)))
+				to_chat(TK_G.host, "<span class='warning'>[src] resisted our telekinetic grab!</span>")
+				qdel(TK_G)
+		return
+
 	if(istype(src.loc,/obj/item/weapon/holder))
 		var/obj/item/weapon/holder/H = src.loc //Get our item holder.
 		var/mob/living/M = H.loc                      //Get our mob holder (if any).
@@ -1180,4 +1187,5 @@
 			return
 
 		to_chat(src, "<span class='notice'>You can taste [english_list(final_taste_list)].</span>")
+		telepathy_hear("can taste", "<span class='notice'>[english_list(final_taste_list)]</span>", src)
 		lasttaste = world.time

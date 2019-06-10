@@ -4,7 +4,8 @@
 	icon_state = "s-ninja"
 	item_state = "s-ninja_mask"
 	allowed = list(/obj/item/weapon/stock_parts/cell)
-	armor = list(melee = 60, bullet = 50, laser = 60,energy = 45, bomb = 50, bio = 100, rad = 50)
+	armor = list(melee = 60, bullet = 50, laser = 60,energy = 45, bomb = 50, bio = 100, rad = 50, telepathy = 15)
+	unacidable = 1
 	flags = MASKCOVERSMOUTH
 	species_restricted = list("exclude", TYCHEON)
 	body_parts_covered = HEAD|FACE
@@ -17,7 +18,8 @@
 	item_state = "s-ninja_suit"
 	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_box/magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit,/obj/item/weapon/stock_parts/cell)
 	slowdown = 0
-	armor = list(melee = 60, bullet = 50, laser = 60,energy = 45, bomb = 30, bio = 100, rad = 50)
+	armor = list(melee = 60, bullet = 50, laser = 60,energy = 45, bomb = 30, bio = 100, rad = 50, telepathy = 20)
+	unacidable = 1
 	species_restricted = list("exclude", TYCHEON) //Workaround for spawning alien ninja without internals.
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	supporting_limbs = list()

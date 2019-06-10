@@ -1,12 +1,15 @@
 //Handles the control of airlocks
 
-#define STATE_WAIT			0
-#define STATE_DEPRESSURIZE	1
-#define STATE_PRESSURIZE	2
+#define STATE_IDLE			0
+#define STATE_PREPARE		1
+#define STATE_DEPRESSURIZE	2
+#define STATE_PRESSURIZE	3
 
 #define TARGET_NONE			0
 #define TARGET_INOPEN		-1
 #define TARGET_OUTOPEN		-2
+
+#define SENSOR_TOLERANCE 1
 
 /datum/computer/file/embedded_program
 	var/list/memory = list()
@@ -20,9 +23,14 @@
 	var/tag_exterior_sensor
 	var/tag_interior_sensor
 
-	var/state = STATE_WAIT
+	var/state = STATE_IDLE
 	var/target_state = TARGET_NONE
 
+	var/cycle_to_external_air = 0
+	var/tag_pump_out_external
+	var/tag_pump_out_internal
+
+	var/tag_air_alarm
 
 /datum/computer/file/embedded_program/New()
 	..()
@@ -63,7 +71,7 @@
 		memory["interior_status"]["state"] = signal.data["door_status"]
 		memory["interior_status"]["lock"] = signal.data["lock_status"]
 
-	else if(receive_tag==tag_airpump)
+	else if(receive_tag==tag_airpump || receive_tag==tag_pump_out_internal)
 		if(signal.data["power"])
 			memory["pump_status"] = signal.data["direction"]
 		else
@@ -96,14 +104,22 @@
 
 /datum/computer/file/embedded_program/proc/receive_user_command(command)
 	var/shutdown_pump = 0
+	. = TRUE
 	switch(command)
 		if("cycle_ext")
-			state = STATE_WAIT
-			target_state = TARGET_OUTOPEN
+			//If airlock is already cycled in this direction, just toggle the doors.
+			if(!memory["purge"] && IsInRange(memory["external_sensor_pressure"], memory["chamber_sensor_pressure"] - SENSOR_TOLERANCE, memory["chamber_sensor_pressure"] + SENSOR_TOLERANCE))
+				toggleDoor(memory["exterior_status"], tag_exterior_door, memory["secure"], "toggle")
+			//only respond to these commands if the airlock isn't already doing something
+			//prevents the controller from getting confused and doing strange things
+			else if(state == target_state)
+				begin_cycle_out()
 
 		if("cycle_int")
-			state = STATE_WAIT
-			target_state = TARGET_INOPEN
+			if(!memory["purge"] && IsInRange(memory["internal_sensor_pressure"], memory["chamber_sensor_pressure"] - SENSOR_TOLERANCE, memory["chamber_sensor_pressure"] + SENSOR_TOLERANCE))
+				toggleDoor(memory["interior_status"], tag_interior_door, memory["secure"], "toggle")
+			else if(state == target_state)
+				begin_cycle_in()
 
 		if("cycle_ext_door")
 			cycleDoors(TARGET_OUTOPEN)
@@ -112,11 +128,7 @@
 			cycleDoors(TARGET_INOPEN)
 
 		if("abort")
-			state = STATE_PRESSURIZE
-			target_state = TARGET_NONE
-			memory["target_pressure"] = ONE_ATMOSPHERE
-			signalPump(tag_airpump, 1, 1, memory["target_pressure"])
-			process()
+			stop_cycling()
 
 		if("force_ext")
 			toggleDoor(memory["exterior_status"], tag_exterior_door, memory["secure"], "toggle")
@@ -127,11 +139,9 @@
 		if("purge")
 			memory["purge"] = !memory["purge"]
 			if(memory["purge"])
-				toggleDoor(memory["exterior_status"], tag_exterior_door, 1, "close")
-				toggleDoor(memory["interior_status"], tag_interior_door, 1, "close")
-				state = STATE_DEPRESSURIZE
+				close_doors()
+				state = STATE_PREPARE
 				target_state = TARGET_NONE
-				signalPump(tag_airpump, 1, 0, 0)
 
 		if("secure")
 			memory["secure"] = !memory["secure"]
@@ -141,71 +151,105 @@
 			else
 				signalDoor(tag_interior_door, "unlock")
 				signalDoor(tag_exterior_door, "unlock")
+		else
+			. = FALSE
 
 	if(shutdown_pump)
 		signalPump(tag_airpump, 0)		//send a signal to stop pressurizing
-
+		if(cycle_to_external_air)
+			signalPump(tag_pump_out_internal, 0)
+			signalPump(tag_pump_out_external, 0)
 
 /datum/computer/file/embedded_program/process()
-	if(!state && target_state)
-		switch(target_state)
-			if(TARGET_INOPEN)
-				memory["target_pressure"] = memory["internal_sensor_pressure"]
-			if(TARGET_OUTOPEN)
-				memory["target_pressure"] = memory["external_sensor_pressure"]
+	if(!state) //Idle
+		if(target_state)
+			switch(target_state)
+				if(TARGET_INOPEN)
+					memory["target_pressure"] = memory["internal_sensor_pressure"]
+				if(TARGET_OUTOPEN)
+					memory["target_pressure"] = memory["external_sensor_pressure"]
 
-		//lock down the airlock before activating pumps
-		toggleDoor(memory["exterior_status"], tag_exterior_door, 1, "close")
-		toggleDoor(memory["interior_status"], tag_interior_door, 1, "close")
+			//lock down the airlock before activating pumps
+			close_doors()
 
-		var/chamber_pressure = memory["chamber_sensor_pressure"]
-		var/target_pressure = memory["target_pressure"]
+			state = STATE_PREPARE
+		else
+			//make sure to return to a sane idle state
+			if(memory["pump_status"] != "off")	//send a signal to stop pumping
+				signalPump(tag_airpump, 0)
+				if(cycle_to_external_air)
+					signalPump(tag_pump_out_internal, 0)
+					signalPump(tag_pump_out_external, 0)
 
-		if(memory["purge"])
-			target_pressure = 0
-
-		if(chamber_pressure <= target_pressure)
-			state = STATE_PRESSURIZE
-			signalPump(tag_airpump, 1, 1, target_pressure)	//send a signal to start pressurizing
-
-		else if(chamber_pressure > target_pressure)
-			state = STATE_DEPRESSURIZE
-			signalPump(tag_airpump, 1, 0, target_pressure)	//send a signal to start depressurizing
-
-		//Check for vacuum - this is set after the pumps so the pumps are aiming for 0
-		if(!memory["target_pressure"])
-			memory["target_pressure"] = ONE_ATMOSPHERE * 0.05
+	if ((state == STATE_PRESSURIZE || state == STATE_DEPRESSURIZE) && !check_doors_secured())
+		//the airlock will not allow itself to continue to cycle when any of the doors are forced open.
+		stop_cycling()
 
 
 	switch(state)
+		if(STATE_PREPARE)
+			if (check_doors_secured())
+				var/chamber_pressure = memory["chamber_sensor_pressure"]
+				var/target_pressure = memory["target_pressure"]
+
+				if(memory["purge"])
+					//purge apparently means clearing the airlock chamber to vacuum (then refilling, handled later)
+					target_pressure = 0
+					state = STATE_DEPRESSURIZE
+					if(!cycle_to_external_air || target_state == TARGET_OUTOPEN) // if going outside, pump internal air into air tank
+						signalPump(tag_airpump, 1, 0, target_pressure)	//send a signal to start depressurizing
+					else
+						signalPump(tag_pump_out_internal, 1, 0, target_pressure) // if going inside, pump external air out of the airlock
+						signalPump(tag_pump_out_external, 1, 1, 1000) // make sure the air is actually going outside
+
+				else if(chamber_pressure <= target_pressure)
+					state = STATE_PRESSURIZE
+					if(!cycle_to_external_air || target_state == TARGET_INOPEN) // if going inside, pump air into airlock
+						signalPump(tag_airpump, 1, 1, target_pressure)	//send a signal to start pressurizing
+					else
+						signalPump(tag_pump_out_internal, 1, 1, target_pressure) // if going outside, fill airlock with external air
+						signalPump(tag_pump_out_external, 1, 0, 0)
+
+				else if(chamber_pressure > target_pressure)
+					if(!cycle_to_external_air)
+						state = STATE_DEPRESSURIZE
+						signalPump(tag_airpump, 1, 0, target_pressure)	//send a signal to start depressurizing
+					else
+						memory["purge"] = 1 // should always purge first if using external air, chamber pressure should never be higher than target pressure here
+
+				memory["target_pressure"] = target_pressure
+
+
 		if(STATE_PRESSURIZE)
-			if(memory["chamber_sensor_pressure"] >= memory["target_pressure"] * 0.95)
-				cycleDoors(target_state)
-
-				state = STATE_WAIT
-				target_state = TARGET_NONE
-
-				if(memory["pump_status"] != "off")
-					signalPump(tag_airpump, 0)		//send a signal to stop pumping
-
+			if(memory["chamber_sensor_pressure"] >= memory["target_pressure"] - SENSOR_TOLERANCE)
+				//not done until the pump has reported that it's off
+				if(memory["pump_status"] != "off") //send a signal to stop pumping
+					signalPump(tag_airpump, 0)
+					if(cycle_to_external_air)
+						signalPump(tag_pump_out_internal, 0)
+						signalPump(tag_pump_out_external, 0)
+				else
+					cycleDoors(target_state)
+					state = STATE_IDLE
+					target_state = TARGET_NONE
 
 		if(STATE_DEPRESSURIZE)
-			if(memory["purge"])
-				if(memory["chamber_sensor_pressure"] <= ONE_ATMOSPHERE * 0.05)
-					state = STATE_PRESSURIZE
-					signalPump(tag_airpump, 1, 1, memory["target_pressure"])
-
-
-			else if(memory["chamber_sensor_pressure"] <= memory["target_pressure"] * 1.05)
-				cycleDoors(target_state)
-
-				state = STATE_WAIT
-				target_state = TARGET_NONE
-
-				//send a signal to stop pumping
+			if(memory["chamber_sensor_pressure"] <= memory["target_pressure"] + SENSOR_TOLERANCE)
 				if(memory["pump_status"] != "off")
 					signalPump(tag_airpump, 0)
-
+					if(cycle_to_external_air)
+						signalPump(tag_pump_out_internal, 0)
+						signalPump(tag_pump_out_external, 0)
+				else
+					if(memory["purge"])
+						memory["purge"] = 0
+						memory["target_pressure"] = (target_state == TARGET_INOPEN ? memory["internal_sensor_pressure"] : memory["external_sensor_pressure"])
+						if (memory["target_pressure"] > SENSOR_TOLERANCE)
+							state = STATE_PREPARE
+					else
+						cycleDoors(target_state)
+						state = STATE_IDLE
+						target_state = TARGET_NONE
 
 	memory["processing"] = state != target_state
 
@@ -218,6 +262,48 @@
 	else
 		qdel(signal)
 
+/datum/computer/file/embedded_program/proc/begin_cycle_in()
+	state = STATE_IDLE
+	target_state = TARGET_INOPEN
+	memory["purge"] = cycle_to_external_air
+	playsound(master, 'sound/machines/warning-buzzer.ogg', 50)
+	shutAlarm()
+
+/datum/computer/file/embedded_program/proc/begin_cycle_out()
+	state = STATE_IDLE
+	target_state = TARGET_OUTOPEN
+	memory["purge"] = cycle_to_external_air
+	playsound(master, 'sound/machines/warning-buzzer.ogg', 50)
+	shutAlarm()
+
+/datum/computer/file/embedded_program/proc/close_doors()
+	toggleDoor(memory["interior_status"], tag_interior_door, 1, "close")
+	toggleDoor(memory["exterior_status"], tag_exterior_door, 1, "close")
+
+/datum/computer/file/embedded_program/proc/stop_cycling()
+	state = STATE_IDLE
+	target_state = TARGET_NONE
+
+/datum/computer/file/embedded_program/proc/done_cycling()
+	return (state == STATE_IDLE && target_state == TARGET_NONE)
+
+//are the doors closed and locked?
+/datum/computer/file/embedded_program/proc/check_exterior_door_secured()
+	return (memory["exterior_status"]["state"] == "closed" &&  memory["exterior_status"]["lock"] == "locked")
+
+/datum/computer/file/embedded_program/proc/check_interior_door_secured()
+	return (memory["interior_status"]["state"] == "closed" &&  memory["interior_status"]["lock"] == "locked")
+
+/datum/computer/file/embedded_program/proc/check_doors_secured()
+	var/ext_closed = check_exterior_door_secured()
+	var/int_closed = check_interior_door_secured()
+	return (ext_closed && int_closed)
+
+/datum/computer/file/embedded_program/proc/shutAlarm()
+	var/datum/signal/signal = new
+	signal.data["alarm_id"] = tag_air_alarm
+	signal.data["command"] = "shutdown"
+	post_signal(signal)
 
 /datum/computer/file/embedded_program/proc/signalDoor(tag, command)
 	var/datum/signal/signal = new
@@ -309,10 +395,12 @@ send an additional command to open the door again.
 		signalDoor(doorTag, doorCommand)
 
 
-#undef STATE_WAIT
+#undef STATE_IDLE
 #undef STATE_DEPRESSURIZE
 #undef STATE_PRESSURIZE
 
 #undef TARGET_NONE
 #undef TARGET_INOPEN
 #undef TARGET_OUTOPEN
+
+#undef SENSOR_TOLERANCE

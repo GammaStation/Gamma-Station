@@ -29,7 +29,7 @@
 		return INITIALIZE_HINT_QDEL
 	if(ishuman(affecting))
 		var/mob/living/carbon/human/H = affecting
-		if(H.species.flags[IS_IMMATERIAL])
+		if(H.species.flags[IS_IMMATERIAL] && !istype(H.wear_suit, /obj/item/clothing/suit/space/rig/tycheon))
 			return INITIALIZE_HINT_QDEL
 	last_action = world.time - 10
 

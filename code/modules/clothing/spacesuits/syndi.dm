@@ -4,12 +4,17 @@
 	icon_state = "syndicate-helm"
 	item_state = "syndicate-helm"
 	desc = "Has a tag: Totally not property of an enemy corporation, honest."
-	armor = list(melee = 60, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 30, rad = 30)
-	action_button_name = "Toggle Helmet Light"
+	armor = list(melee = 60, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 30, rad = 30, telepathy = 15)
+	actions_types = list(/datum/action/item_action/attack_self, /datum/action/item_action/hands_free/toggle_holomap)
 	var/brightness = 3 //light_range when on
 	var/lit = FALSE
 	species_restricted = list("exclude" , DIONA , VOX , TYCHEON)
 	var/image/lamp = null
+
+/obj/item/clothing/head/helmet/space/syndicate/atom_init()
+	. = ..()
+	holochip = new /obj/item/holochip/nuclear(src)
+	holochip.holder = src
 
 /obj/item/clothing/suit/space/syndicate
 	name = "red space suit"
@@ -25,7 +30,7 @@
 	               /obj/item/weapon/handcuffs,
 	               /obj/item/weapon/tank/emergency_oxygen)
 	slowdown = 1
-	armor = list(melee = 60, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 30, rad = 30)
+	armor = list(melee = 60, bullet = 35, laser = 30,energy = 15, bomb = 30, bio = 30, rad = 30, telepathy = 20)
 	species_restricted = list("exclude" , DIONA , VOX , TYCHEON)
 
 /obj/item/clothing/head/helmet/space/syndicate/update_icon(mob/user)
@@ -46,7 +51,7 @@
 	desc = "Space helmet made by unknown manufacturer."
 	icon_state = "syndicate-helm-civ"
 	item_state = "syndicate-helm-jailbreaker"
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 20)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 20, telepathy = 15)
 	species_restricted = list("exclude" , UNATHI , TAJARAN , SKRELL , DIONA , VOX , TYCHEON)
 
 /obj/item/clothing/suit/space/syndicate/civilian
@@ -54,7 +59,7 @@
 	desc = "Space suit made by unknown manufacturer."
 	icon_state = "syndicate-civ"
 	item_state = "s_suit"
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 20)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 20, telepathy = 20)
 
 
 //Striker syndicate space suit
@@ -63,7 +68,7 @@
 	desc = "That's obviously some kind of military space helmet."
 	icon_state = "syndicate-helm-striker"
 	item_state = "syndicate-helm-striker"
-	armor = list(melee = 60, bullet = 45, laser = 40,energy = 45, bomb = 50, bio = 100, rad = 30)
+	armor = list(melee = 60, bullet = 45, laser = 40,energy = 45, bomb = 50, bio = 100, rad = 30, telepathy = 15)
 	brightness = 4
 
 /obj/item/clothing/suit/space/syndicate/striker
@@ -71,7 +76,7 @@
 	desc = "That's obviously some kind of military space suit."
 	icon_state = "syndicate-striker"
 	item_state = "syndicate-striker"
-	armor = list(melee = 60, bullet = 45, laser = 40,energy = 45, bomb = 50, bio = 100, rad = 30)
+	armor = list(melee = 60, bullet = 45, laser = 40,energy = 45, bomb = 50, bio = 100, rad = 30, telepathy = 20)
 	breach_threshold = 12
 
 
@@ -95,7 +100,7 @@
 	desc = "Space helmet made by unknown manufacturer. It's made from some strange composite material."
 	icon_state = "syndicate-helm-infiltrator"
 	item_state = "syndicate-helm-elite"
-	action_button_name = null
+	actions_types = /datum/action/item_action/hands_free/toggle_holomap
 
 /obj/item/clothing/suit/space/syndicate/infiltrator
 	name = "infiltrator space suit"
@@ -113,8 +118,8 @@
 	desc = "It looks like the person wearing this should be death incarnate wannabe."
 	icon_state = "syndicate-helm-elite"
 	item_state = "syndicate-helm-elite"
-	armor = list(melee = 75, bullet = 65, laser = 65, energy = 65, bomb = 70, bio = 100, rad = 20)
-	action_button_name = null
+	armor = list(melee = 75, bullet = 65, laser = 65, energy = 65, bomb = 70, bio = 100, rad = 20, telepathy = 15)
+	actions_types = /datum/action/item_action/hands_free/toggle_holomap
 
 /obj/item/clothing/head/helmet/space/syndicate/elite/attack_self(mob/user)
 	return
@@ -124,7 +129,7 @@
 	desc = "It looks like the person wearing this should be death incarnate wannabe."
 	icon_state = "syndicate-elite"
 	item_state = "syndicate-elite"
-	armor = list(melee = 75, bullet = 65, laser = 65, energy = 65, bomb = 70, bio = 100, rad = 20)
+	armor = list(melee = 75, bullet = 65, laser = 65, energy = 65, bomb = 70, bio = 100, rad = 20, telepathy = 20)
 	breach_threshold = 32
 
 

@@ -112,7 +112,7 @@
 
 	var/mob/living/carbon/human/H = user
 
-	var/choice = input(user, "Something to change?", "Magical Grooming") as null|anything in list("name", "skin tone", "xenos skin",  "gender", "hair", "eyes")
+	var/choice = input(user, "Something to change?", "Magical Grooming") as null|anything in list("name", "skin tone", "xenos skin",  "gender", "hair", "eye model", "eyes")
 
 	switch(choice)
 		if("name")
@@ -181,22 +181,10 @@
 			*/
 
 		if("gender")
-			if(!(H.gender in list("male", "female"))) //blame the patriarchy
-				return
+			var/new_gender = input("Choose your gender!", "Options are...") as null|anything in H.species.genders
 
-			if(H.gender == "male")
-				if(alert(H, "Become a Witch?", "Confirmation", "Yes", "No") == "Yes")
-					H.gender = "female"
-					to_chat(H, "<span class='notice'>Man, you feel like a woman!</span>")
-				else
-					return
+			H.gender = new_gender
 
-			else
-				if(alert(H, "Become a Warlock?", "Confirmation", "Yes", "No") == "Yes")
-					H.gender = "male"
-					to_chat(H, "<span class='notice'>Whoa man, you feel like a man!</span>")
-				else
-					return
 			H.update_hair()
 			H.update_body()
 			H.check_dna(H)
@@ -252,6 +240,14 @@
 						H.r_hair = hex2num(copytext(new_facial, 2, 4))
 						H.g_hair = hex2num(copytext(new_facial, 4, 6))
 						H.b_hair = hex2num(copytext(new_facial, 6, 8))
+			H.update_hair()
+			H.update_body()
+			H.check_dna(H)
+
+		if("eye model")
+			var/new_eyes = input(user, "Choose your character's eye model:", "Character Preference") as null|anything in H.species.eyes
+			if(new_eyes)
+				H.eyes = H.species.eyes[new_eyes]
 			H.update_hair()
 			H.update_body()
 			H.check_dna(H)

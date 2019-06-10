@@ -8,6 +8,7 @@
 #define POSTERLEGIT 0
 #define POSTERCONTRABAND 1
 #define POSTERREV 2
+#define POSTERSOV 3
 
 var/global/list/revposters = list(
 list(name = "- Kill Police", desc = " Poster with a bloody secyrity helmet on it."),
@@ -97,6 +98,10 @@ list(name = "- The Owl", desc = " The Owl would do his best to protect the stati
 list(name = "- No ERP", desc = " This poster reminds the crew that Eroticism, Rape and Pornography are banned on Nanotrasen stations."),
 list(name = "- Carbon Dioxide", desc = " This informational poster teaches the viewer what carbon dioxide is.") )
 
+var/global/list/sovposters = list(
+
+list(name = "- Lenin", desc = "A poster glorifying tovarisch Lenin."),
+list(name = "-Stalin", desc = "A poster glorifying tovarisch Stalin.") )
 
 /obj/item/weapon/contraband
 	name = "contraband item"
@@ -134,6 +139,12 @@ list(name = "- Carbon Dioxide", desc = " This informational poster teaches the v
 	desc = "An official Nanotrasen-issued poster to foster a compliant and obedient workforce. It comes with state-of-the-art adhesive backing, for easy pinning to any vertical surface."
 	official = POSTERLEGIT
 
+/obj/item/weapon/poster/soviet
+	name = "soviet posters"
+	desc = "For the motherland!"
+	icon_state = "rolled_poster"
+	official = POSTERSOV
+
 /obj/item/weapon/poster/atom_init(mapload, given_serial = 0)
 	if(!given_serial)
 		generate_first_time()
@@ -155,6 +166,11 @@ list(name = "- Carbon Dioxide", desc = " This informational poster teaches the v
 /obj/item/weapon/poster/contraband/rev/generate_first_time()
 	serial_number = rand(1, revposters.len)
 	resulting_poster = new /obj/structure/sign/poster/contraband/rev(0, serial_number, official)
+	name += " - No. [serial_number]"
+
+/obj/item/weapon/poster/soviet/generate_first_time()
+	serial_number = rand(1, sovposters.len)
+	resulting_poster = new /obj/structure/sign/poster/contraband/sov(0, serial_number, official)
 	name += " - No. [serial_number]"
 
 //############################## THE ACTUAL DECALS ###########################
@@ -192,6 +208,18 @@ list(name = "- Carbon Dioxide", desc = " This informational poster teaches the v
 /obj/structure/sign/poster/contraband/rev/pick_state(poster_number)
 	serial_number = poster_number ? poster_number : rand(1, revposters.len)
 	icon_state = "poster[serial_number]_rev"
+	name += revposters[serial_number][POSTERNAME]
+	desc += revposters[serial_number][POSTERDESC]
+
+/obj/structure/sign/poster/contraband/sov
+	name = "poster"
+	desc = "A large suspicious piece of space-resistant printed paper. "
+	icon = 'icons/obj/contraband.dmi'
+	official = POSTERSOV
+
+/obj/structure/sign/poster/contraband/sov/pick_state(poster_number)
+	serial_number = poster_number ? poster_number : rand(1, sovposters.len)
+	icon_state = "poster[serial_number]_sov"
 	name += revposters[serial_number][POSTERNAME]
 	desc += revposters[serial_number][POSTERDESC]
 
@@ -254,6 +282,11 @@ list(name = "- Carbon Dioxide", desc = " This informational poster teaches the v
 			P.forceMove(newloc)
 			forceMove(P)
 		if(POSTERREV)
+			var/obj/item/weapon/poster/contraband/rev/P = new(src, serial_number)
+			P.resulting_poster = src
+			P.forceMove(newloc)
+			forceMove(P)
+		if(POSTERSOV)
 			var/obj/item/weapon/poster/contraband/rev/P = new(src, serial_number)
 			P.resulting_poster = src
 			P.forceMove(newloc)

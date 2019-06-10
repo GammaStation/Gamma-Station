@@ -42,16 +42,16 @@
 			papers.Remove(P)
 		else
 			if(response == "Regular")
-				P = new /obj/item/weapon/paper
+				P = new /obj/item/weapon/paper(loc)
 				if(Holiday == "April Fool's Day")
 					if(prob(30))
 						P.info = "<font face=\"[P.crayonfont]\" color=\"red\"><b>HONK HONK HONK HONK HONK HONK HONK<br>HOOOOOOOOOOOOOOOOOOOOOONK<br>APRIL FOOLS</b></font>"
 						P.rigged = 1
 						P.updateinfolinks()
 			else if (response == "Carbon-Copy")
-				P = new /obj/item/weapon/paper/carbon
+				P = new /obj/item/weapon/paper/carbon(loc)
 
-		user.put_in_hands(P, TRUE) // TRUE means if we can't put it in our hands, we drop it under src.
+		user.put_in_hands(P)
 		to_chat(user, "<span class='notice'>You take [P] out of the [src].</span>")
 	else
 		to_chat(user, "<span class='notice'>[src] is empty!</span>")

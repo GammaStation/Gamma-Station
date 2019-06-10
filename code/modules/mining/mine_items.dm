@@ -849,6 +849,13 @@ obj/item/projectile/kinetic/atom_init()
 	density = 0
 	icon_state = "fan_tiny"
 
+/obj/structure/fans/tiny/gray
+	name = "tiny fan"
+	desc = "A tiny fan, releasing a thin gust of air."
+	layer = ABOVE_NORMAL_TURF_LAYER
+	density = 0
+	icon_state = "fan_tiny_gray"
+
 /obj/structure/fans/tiny/atom_init()
 	var/turf/T = get_turf(loc)
 	if(T)

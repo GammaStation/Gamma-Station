@@ -14,6 +14,7 @@
 	throw_speed = 1
 	layer = 3.9
 	slot_flags = SLOT_HEAD
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 95)
 	body_parts_covered = HEAD
 	attack_verb = list("bapped")
 

@@ -107,6 +107,12 @@
 /datum/browser/proc/close()
 	user << browse(null, "window=[window_id]")
 
+/datum/browser/proc/update(var/force_open = 0, var/use_onclose = 1)
+	if(force_open)
+		open(use_onclose)
+	else
+		user << output(get_content(), "[window_id].browser")
+
 // This will allow you to show an icon in the browse window
 // This is added to mob so that it can be used without a reference to the browser object
 // There is probably a better place for this...
@@ -175,3 +181,4 @@
 		//world << "[src] was [src.mob.machine], setting to null"
 		src.mob.unset_machine()
 	return
+

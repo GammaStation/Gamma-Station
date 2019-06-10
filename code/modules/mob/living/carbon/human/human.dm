@@ -94,7 +94,10 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 			set_species()
 
 	if(species) // For safety, we put it seperately.
+		metabolism_factor = species.metabolism_mod
 		butcher_results = species.butcher_drops
+		eyes = species.def_eye_icon // Default eye icon is determined there.
+		gender = species.def_gender
 
 	dna.species = species.name
 
@@ -1092,12 +1095,10 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	if(new_style)
 		f_style = new_style
 
-	var/new_gender = alert(usr, "Please select gender.", "Character Generation", "Male", "Female")
-	if (new_gender)
-		if(new_gender == "Male")
-			gender = MALE
-		else
-			gender = FEMALE
+	var/new_gender = input(usr, "Please select gender.", "Character Generation") as null|anything in species.genders
+	if(new_gender)
+		gender = new_gender
+
 	regenerate_icons()
 	check_dna()
 
@@ -1275,7 +1276,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 /mob/living/carbon/human/add_blood(mob/living/carbon/human/M)
 	if (!..())
 		return 0
-	if(!species.flags[IS_IMMATERIAL]) // Can't touch this.
+	if(species.flags[IS_IMMATERIAL]) // Can't touch this.
 		return 0
 	//if this blood isn't already in the list, add it
 	if(blood_DNA[M.dna.unique_enzymes])
@@ -1289,9 +1290,12 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 
 /mob/living/carbon/human/clean_blood(var/clean_feet)
 	.=..()
-	if(clean_feet && !shoes && istype(feet_blood_DNA, /list) && feet_blood_DNA.len)
+	if(hand_dirt_color)
+		hand_dirt_color = null
+	if(clean_feet && !shoes)
+		if(istype(feet_blood_DNA, /list))
+			feet_blood_DNA = null
 		feet_dirt_color = null
-		feet_blood_DNA = null
 		update_inv_shoes()
 		return 1
 
@@ -1832,7 +1836,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		return 1
 
 /mob/living/carbon/human/start_pulling(atom/movable/AM)
-	if(species.flags[IS_IMMATERIAL])
+	if(species.flags[IS_IMMATERIAL] && !(TK in mutations))
 		return
 	..()
 
@@ -1850,10 +1854,10 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 			calc_max_tk_range = min(tk_maxrange, calc_max_tk_range)
 			if(dist > calc_max_tk_range)
 				to_chat(src, "<span class='notice'>Your mind won't reach that far.</span>")
-				return
+				return FALSE
 		//if(species.flags[STATICALLY_CHARGED]) // Statically charged species use static electricity for telekinesis. Don't question it!
-			if(nutrition >= 200 + (dist * 2))
-				nutrition -= dist * 2 // DON'T QUESTION THIS EITHER. The only Statically Charged specie is Tycheon, and they use nutrition as static charge.
+			if(nutrition >= 200 + dist)
+				nutrition -= dist // DON'T QUESTION THIS EITHER. The only Statically Charged specie is Tycheon, and they use nutrition as static charge.
 			else
 				to_chat(src, "<span class='warning'>Not enough static charge.</span>")
 				return FALSE

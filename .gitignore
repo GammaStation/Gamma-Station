@@ -9,3 +9,4 @@ taucetistation.dmb
 Thumbs.db
 data/
 .vscode
+.atom-build.json

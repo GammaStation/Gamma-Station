@@ -51,6 +51,10 @@
 	var/tag_exterior_sensor
 	var/tag_interior_sensor
 	var/tag_secure = 0
+	var/tag_air_alarm
+	var/cycle_to_external_air = 0
+	var/tag_pump_out_external
+	var/tag_pump_out_internal
 
 	frequency = 1379
 
@@ -68,6 +72,11 @@
 	new_prog.tag_chamber_sensor = tag_chamber_sensor
 	new_prog.tag_exterior_sensor = tag_exterior_sensor
 	new_prog.tag_interior_sensor = tag_interior_sensor
+	new_prog.tag_air_alarm = tag_air_alarm
+	new_prog.cycle_to_external_air = cycle_to_external_air
+	if(cycle_to_external_air)
+		new_prog.tag_pump_out_external = tag_pump_out_external
+		new_prog.tag_pump_out_internal = tag_pump_out_internal
 	new_prog.memory["secure"] = tag_secure
 
 	new_prog.master = src

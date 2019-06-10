@@ -51,6 +51,11 @@
 		crit_fail = 1
 		fixtime = world.time + 900 / severity
 
+/obj/item/clothing/glasses/hud/health/eyepatch
+	name = "health scanner eyepatch HUD"
+	desc = "The neural network connects directly to the eye, provides accurate data about their health status."
+	icon_state = "eyepatchhealth"
+
 /obj/item/clothing/glasses/hud/security
 	name = "security HUD"
 	desc = "A heads-up display that scans the humans in view and provides accurate data about their ID status and security records."
@@ -65,6 +70,11 @@
 	desc = "Sunglasses with a HUD."
 	icon_state = "sunhud"
 	flash_protection = 2
+
+/obj/item/clothing/glasses/hud/security/eyepatch
+	name = "security eyepatch HUD"
+	desc = "The neural network connects directly to the eye, provides accurate data about their ID status and security records."
+	icon_state = "eyepatchsec"
 
 /obj/item/clothing/glasses/hud/security/sun/tactical
 	name = "tactical HUD"

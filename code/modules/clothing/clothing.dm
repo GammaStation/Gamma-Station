@@ -6,6 +6,7 @@
 	var/equipping = 0
 	var/rig_restrict_helmet = 0 // Stops the user from equipping a rig helmet without attaching it to the suit first.
 	var/gang //Is this a gang outfit?
+	var/gang_mogified
 
 	/*
 		Sprites used when the clothing item is refit. This is done by setting icon_override.
@@ -278,7 +279,7 @@ BLIND     // can't see anything
 	var/fire_resist = T0C+100
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 	allowed = list(/obj/item/weapon/tank/emergency_oxygen)
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	slot_flags = SLOT_OCLOTHING
 	var/blood_overlay_type = "suit"
 	siemens_coefficient = 0.9
@@ -299,7 +300,7 @@ BLIND     // can't see anything
 	flags_pressure = STOPS_PRESSUREDMAGE
 	item_state = "space"
 	permeability_coefficient = 0.01
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 50)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 50, telepathy = 15)
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE
 	body_parts_covered = HEAD|FACE|EYES
 	cold_protection = HEAD
@@ -308,10 +309,69 @@ BLIND     // can't see anything
 	species_restricted = list("exclude" , DIONA , VOX , TYCHEON)
 	sprite_sheets = list(VOX = 'icons/mob/species/vox/head.dmi')
 	flash_protection = 2
+	var/obj/item/holochip/holochip
+	actions_types = /datum/action/item_action/hands_free/toggle_holomap
+
+/obj/item/clothing/head/helmet/space/grant_actions(mob/user)
+	for(var/datum/action/A in actions)
+		if(!holochip && istype(A, /datum/action/item_action/hands_free/toggle_holomap))
+			continue
+		A.Grant(user)
+
+/obj/item/clothing/head/helmet/space/dropped()
+	if(!holochip)
+		return ..()
+	holochip.deactivate_holomap()
+	..()
+
+/obj/item/clothing/head/helmet/space/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/holochip))
+		if(holochip)
+			to_chat(user, "<span class='notice'>The [src] is already modified with the [holochip]</span>")
+			return
+		user.drop_item(I)
+		I.forceMove(src)
+		holochip = I
+		holochip.holder = src
+		playsound(user, 'sound/items/Screwdriver.ogg', 100, 1)
+		to_chat(user, "<span class='notice'>[user] modifies the [src] with the [holochip]</span>")
+		if(ishuman(loc))
+			grant_actions(user)
+	else if(istype(I, /obj/item/weapon/screwdriver))
+		holochip.deactivate_holomap()
+		holochip.holder = null
+		if(!user.put_in_hands(holochip))
+			holochip.forceMove(get_turf(src))
+		holochip = null
+		playsound(user, 'sound/items/Screwdriver.ogg', 100, 1)
+		to_chat(user, "<span class='notice'>[user] removes the [holochip] from the [src]</span>")
+		if(ishuman(loc))
+			for(var/datum/action/A in actions)
+				if(istype(A, /datum/action/item_action/hands_free/toggle_holomap))
+					A.Remove(user)
+
+/obj/item/clothing/head/helmet/space/proc/toggle_holomap()
+	if(!holochip)
+		to_chat(usr, "<span class='notice'>There is no holochip in your [src].</span>")
+		return
+	if(holochip.activator)
+		holochip.deactivate_holomap()
+		to_chat(usr, "<span class='notice'>You deactivate the holomap.</span>")
+	else if(ishuman(usr))
+		var/mob/living/carbon/human/H = usr
+		if(H.head != src)
+			to_chat(usr, "<span class='notice'>You need to put your helmet on.</span>")
+			return
+		holochip.activate_holomap(usr)
+		to_chat(usr, "<span class='notice'>You activate the holomap.</span>")
+
+/obj/item/clothing/head/helmet/space/Destroy()
+	QDEL_NULL(holochip)
+	return ..()
 
 /obj/item/clothing/suit/space
 	name = "space suit"
-	desc = "A suit that protects against low pressure environments. \"NSS EXODUS\" is written in large block letters on the back."
+	desc = "A suit that protects against low pressure environments. \"NFS GAMMA\" is written in large block letters on the back."
 	icon_state = "space"
 	item_state = "s_suit"
 	w_class = 4//bulky item
@@ -323,7 +383,7 @@ BLIND     // can't see anything
 	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank/emergency_oxygen,/obj/item/device/suit_cooling_unit)
 	slowdown = 3
 	equip_time = 100 // Bone White - time to equip/unequip. see /obj/item/attack_hand (items.dm) and /obj/item/clothing/mob_can_equip (clothing.dm)
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 50)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 50, telepathy = 20)
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAIL
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | ARMS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
@@ -368,7 +428,7 @@ BLIND     // can't see anything
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	permeability_coefficient = 0.90
 	slot_flags = SLOT_ICLOTHING
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	w_class = 3
 	var/has_sensor = 1//For the crew computer 2 = unable to change mode
 	var/sensor_mode = 0
@@ -382,6 +442,17 @@ BLIND     // can't see anything
 	var/rolled_down = 0
 	var/basecolor
 	sprite_sheets = list(VOX = 'icons/mob/species/vox/uniform.dmi')
+	actions_types = /datum/action/item_action/attack_hand
+
+/obj/item/clothing/under/after_equipping()
+	if(!accessories.len)
+		return
+	return ..()
+
+/obj/item/clothing/under/pickup()
+	if(!accessories.len)
+		return
+	return ..()
 
 /obj/item/clothing/under/emp_act(severity)
 	..()
@@ -409,7 +480,7 @@ BLIND     // can't see anything
 	if(istype(loc, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = loc
 		H.update_inv_w_uniform()
-		action_button_name = null
+		remove_actions(user)
 
 /obj/item/clothing/under/verb/removetie()
 	set name = "Remove Accessory"
@@ -447,7 +518,7 @@ BLIND     // can't see anything
 			if(istype(loc, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = loc
 				H.update_inv_w_uniform()
-			action_button_name = "Use inventory."
+			grant_actions(user)
 			return
 		else
 			to_chat(user, "<span class='notice'>You cannot attach more accessories of this type to [src].</span>")

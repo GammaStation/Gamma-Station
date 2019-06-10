@@ -175,6 +175,18 @@
 	caliber = ".45"
 	max_ammo = 20
 
+/obj/item/ammo_box/magazine/type76_rubber
+	name = "magazine (9mm rubber)"
+	icon_state = "mag-76"
+	origin_tech = "combat=2"
+	ammo_type = /obj/item/ammo_casing/c9mmr
+	caliber = "9mm"
+	max_ammo = 36
+
+/obj/item/ammo_box/magazine/type76_rubber/update_icon()
+	..()
+	icon_state = "[initial(icon_state)]-[ammo_count() > 0 ? "full" : "empty"]"
+
 /obj/item/ammo_box/magazine/m12mm/update_icon()
 	..()
 	icon_state = "[initial(icon_state)]-[round(ammo_count(),2)]"
@@ -490,14 +502,14 @@
 	ammo_type = /obj/item/ammo_casing/a556i
 	icon_state = "556imm"
 
-/obj/item/ammo_box/magazine/a74mm
-	name = "A74 magazine (7.74mm)"
-	icon_state = "a74mm"
+/obj/item/ammo_box/magazine/om36mm
+	name = "OM36 magazine (5.56mm)"
+	icon_state = "om36mm"
 	origin_tech = "combat=3"
-	ammo_type = /obj/item/ammo_casing/a74
-	caliber = "7.74mm"
+	ammo_type = /obj/item/ammo_casing/om36
+	caliber = "5.56mm"
 	max_ammo = 30
 
-/obj/item/ammo_box/magazine/a74mm/update_icon()
+/obj/item/ammo_box/magazine/om36mm/update_icon()
 	..()
 	icon_state = "[initial(icon_state)]-[ceil(ammo_count(0) / 30) * 30]"

@@ -61,11 +61,11 @@
 		spread_germs_to_organ(BP, user)
 	if (ishuman(user) && prob(60))
 		var/mob/living/carbon/human/H = user
+		var/datum/dirt_cover/blood = new target.species.blood_color
 		if (blood_level)
-			H.bloody_hands(target,0)
+			H.bloody_hands(target,0,blood)
 		if (blood_level > 1)
-			H.bloody_body(target,0)
-	return
+			H.bloody_body(target,blood)
 
 // does stuff to end the step, which is normally print a message + do whatever this step changes
 /datum/surgery_step/proc/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -157,3 +157,11 @@
 	var/appendix = 0
 	var/ribcage = 0
 	var/list/in_progress = list()
+
+/datum/surgery_step/proc/make_blood(mob/living/user, mob/living/carbon/human/source, hands_only = 1, chance = 100)
+	if (ishuman(user) && prob(chance))
+		var/mob/living/carbon/human/H = user
+		var/datum/dirt_cover/blood = new source.species.blood_color
+		H.bloody_hands(source,0,blood)
+		if(!hands_only)
+			H.bloody_body(source,blood)

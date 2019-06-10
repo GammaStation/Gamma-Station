@@ -3,7 +3,7 @@
 	desc = "Used by obese officers to save their breath for running."
 	icon_state = "voice0"
 	item_state = "flashbang"	//looks exactly like a flash (and nothing like a flashbang)
-	action_button_name = "Toggle Hailer"
+	actions_types = /datum/action/item_action/attack_self
 	w_class = 1.0
 	flags = CONDUCT
 

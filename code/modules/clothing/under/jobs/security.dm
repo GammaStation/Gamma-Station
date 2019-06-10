@@ -14,7 +14,7 @@
 	icon_state = "warden"
 	item_state = "r_suit"
 	item_color = "warden"
-	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	flags = ONESIZEFITSALL
 	siemens_coefficient = 0.9
 
@@ -24,7 +24,7 @@
 	icon_state = "security"
 	item_state = "r_suit"
 	item_color = "secred"
-	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	flags = ONESIZEFITSALL
 	siemens_coefficient = 0.9
 
@@ -34,7 +34,7 @@
 	icon_state = "dispatch"
 	item_state = "dispatch"
 	item_color = "dispatch"
-	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS
 	siemens_coefficient = 0.9
 
@@ -44,7 +44,7 @@
 	icon_state = "redshirt2"
 	item_state = "r_suit"
 	item_color = "redshirt2"
-	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	flags = ONESIZEFITSALL
 	siemens_coefficient = 0.9
 
@@ -66,7 +66,7 @@
 	icon_state = "swatunder"
 	item_state = "swatunder"
 	item_color = "swatunder"
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/under/tactical/marinad
@@ -75,7 +75,7 @@
 	icon_state = "marinad"
 	item_state = "johnny"
 	item_color = "marinad"
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	siemens_coefficient = 0.9
 
 /*
@@ -87,7 +87,7 @@
 	icon_state = "detective"
 	item_state = "det"
 	item_color = "detective"
-	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	flags = ONESIZEFITSALL
 	siemens_coefficient = 0.9
 
@@ -115,7 +115,7 @@
 	desc = "Someone who wears this will look very smart."
 	icon_state = "detective"
 	allowed = list(/obj/item/weapon/reagent_containers/food/snacks/candy_corn, /obj/item/weapon/pen)
-	armor = list(melee = 50, bullet = 5, laser = 25,energy = 10, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 50, bullet = 5, laser = 25,energy = 10, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	siemens_coefficient = 0.9
 	body_parts_covered = 0
 
@@ -132,7 +132,7 @@
 	icon_state = "hos"
 	item_state = "r_suit"
 	item_color = "hosred"
-	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, telepathy = 0)
 	flags = ONESIZEFITSALL
 	siemens_coefficient = 0.8
 

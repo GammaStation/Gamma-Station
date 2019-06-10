@@ -171,9 +171,10 @@
 			to_chat(usr, "\blue Building [R.title] ...")
 			if (!do_after(usr, R.time, target = usr))
 				return
+		var/turf/T_R = get_turf(src)  // Since item can get used up completely, and we don't want our crafted thing to end in nullspace.
 		if(!src.use(R.req_amount*multiplier))
 			return
-		var/atom/O = new R.result_type(get_turf(src))
+		var/atom/O = new R.result_type(T_R)
 		O.dir = usr.dir
 		if (R.max_res_amount>1)
 			var/obj/item/stack/new_item = O

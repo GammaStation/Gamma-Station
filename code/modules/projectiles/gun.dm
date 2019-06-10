@@ -14,7 +14,7 @@
 	force = 5.0
 	origin_tech = "combat=1"
 	attack_verb = list("struck", "hit", "bashed")
-	action_button_name = "Switch Gun"
+	actions_types = /datum/action/item_action/attack_self
 	var/obj/item/ammo_casing/chambered = null
 	var/fire_sound = 'sound/weapons/Gunshot.ogg'
 	var/silenced = 0
@@ -30,6 +30,10 @@
 						// 1 for one bullet after tarrget moves and aim is lowered
 	var/fire_delay = 6
 	var/last_fired = 0
+
+	var/burst_mode = FALSE
+	var/burst_amount = 1
+	var/burst_delay = 3 //in world ticks
 
 	lefthand_file = 'icons/mob/inhands/guns_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/guns_righthand.dmi'
@@ -140,15 +144,21 @@
 		if (world.time % 3) //to prevent spam
 			to_chat(user, "<span class='warning'>[src] is not ready to fire again!</span>")
 		return
+
 	if(chambered)
-		if(!chambered.fire(target, user, params, , silenced))
-			shoot_with_empty_chamber(user)
+		if(burst_mode)
+			var/Burst_iter = burst_amount
+			while(Burst_iter--)
+				if(!single_shot(target, user, params))
+					shoot_with_empty_chamber(user)
+					break
+				shoot_live_shot(user)
+				if(burst_delay)
+					sleep(burst_delay * world.tick_lag)
 		else
-			shoot_live_shot(user)
+			single_shot(target, user, params) ? shoot_live_shot(user) : shoot_with_empty_chamber(user)
 	else
 		shoot_with_empty_chamber(user)
-	process_chamber()
-	user.newtonian_move(get_dir(target, user))
 	update_icon()
 
 	if(user.hand)
@@ -156,6 +166,14 @@
 	else
 		user.update_inv_r_hand()
 
+/obj/item/weapon/gun/proc/single_shot(atom/target, mob/living/user, params)
+	if(chambered.fire(target, user, params, , silenced))
+		user.newtonian_move(get_dir(target, user))
+		process_chamber()
+		return TRUE
+	else
+		process_chamber()
+		return FALSE
 
 /obj/item/weapon/gun/proc/can_fire()
 	return

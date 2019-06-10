@@ -327,7 +327,7 @@
 		<B>Revolution Successful:</B> [score["traitorswon"] ? "Yes" : "No"] (-[score["traitorswon"] * revpenalty] Points)<BR>
 		<B>All Revolution Heads Arrested:</B> [score["allarrested"] ? "Yes" : "No"] (Score tripled)<BR>
 		<HR>"}
-	var/totalfunds = station_account.money
+	var/totalfunds = SSeconomy.station_account.money
 	dat += {"<B><U>GENERAL STATS</U></B><BR>
 	<U>THE GOOD:</U><BR>
 	<B>Useful Crates Shipped:</B> [score["stuffshipped"]] ([score["stuffshipped"] * 75] Points)<BR>

@@ -60,3 +60,4 @@
 
 /obj/structure/shuttle/window/new_shuttle
 	icon = 'code/modules/locations/shuttles/shuttle.dmi'
+	autojoin = FALSE

@@ -27,7 +27,7 @@ RCD
 	var/canRwall = 0
 	var/disabled = 0
 
-	action_button_name = "Switch RCD"
+	actions_types = /datum/action/item_action/attack_self
 
 
 /obj/item/weapon/rcd/atom_init()
@@ -83,7 +83,8 @@ RCD
 
 
 /obj/item/weapon/rcd/afterattack(atom/A, mob/user, proximity)
-	if(!Adjacent(A))
+	var/turf/my_turf = get_turf(src)
+	if(!my_turf.Adjacent(get_turf(A)))
 		return FALSE
 	if(disabled && !isrobot(user))
 		return 0

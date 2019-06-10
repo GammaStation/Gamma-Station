@@ -7,7 +7,7 @@
 	prob(2);/obj/item/weapon/gun/projectile/automatic/l6_saw,\
 	prob(3);/obj/item/weapon/antag_spawner/borg_tele,\
 	prob(3);/obj/item/weapon/gun/projectile/revolver/rocketlauncher,\
-	prob(4);/obj/item/weapon/gun/projectile/automatic/a74,\
+	prob(4);/obj/item/weapon/gun/projectile/automatic/om36,\
 	prob(5);/obj/item/weapon/storage/box/syndie_kit/imp_uplink,\
 	prob(5);/obj/item/weapon/storage/box/syndicate,\
 	prob(5);/obj/item/toy/syndicateballoon,\
@@ -28,7 +28,7 @@
 	prob(14);/obj/item/weapon/implanter/storage,\
 	prob(14);/obj/item/weapon/gun/energy/crossbow,\
 	prob(14);/obj/item/weapon/melee/energy/sword,\
-	prob(14);/obj/item/ammo_box/magazine/a74mm,\
+	prob(14);/obj/item/ammo_box/magazine/om36mm,\
 	prob(14);/obj/item/weapon/grenade/spawnergrenade/manhacks,\
 	prob(14);/obj/item/device/healthanalyzer/rad_laser,\
 	prob(16);/obj/item/weapon/gun/projectile/automatic/pistol,\

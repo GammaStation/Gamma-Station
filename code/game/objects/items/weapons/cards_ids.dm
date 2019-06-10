@@ -148,6 +148,10 @@
 		fingerprint_hash = md5(H.dna.uni_identity)
 
 /obj/item/weapon/card/id/attack_self(mob/user)
+	if(world.time <(last_showoff_time + ITEM_SHOWOFF_COOLDOWN))
+		to_chat(user, "<span class='notice'>Please wait!</span>")
+		return
+	last_showoff_time = world.time
 	for(var/mob/O in viewers(user, null))
 		O.show_message("[user] shows you: [bicon(src)] [src.name]: assignment: [src.assignment]", 1)
 

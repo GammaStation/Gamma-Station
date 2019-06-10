@@ -123,20 +123,3 @@
 	S.attach(location)
 	S.set_up(reagents, 5, 0, location, 15, 5)
 	S.start()
-
-/datum/reagent/toxin/harvester
-	name = "Harvester Toxin"
-	id = "harvester"
-	description = "A toxic cloud."
-	color = "#9C3636"
-	toxpwr = 0
-	custom_metabolism = 1
-
-/datum/reagent/toxin/harvester/on_general_digest(mob/living/carbon/M)
-	..()
-	if(!data)
-		data = 1
-	if(!volume)
-		volume = 1
-	if(volume > 5)
-		M.Weaken(4)

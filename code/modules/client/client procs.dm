@@ -49,16 +49,23 @@ var/list/blacklisted_builds = list(
 		completed_asset_jobs += job
 		return
 
+	if (href_list["action"] && href_list["action"] == "debugFileOutput" && href_list["file"] && href_list["message"])
+		var/file = href_list["file"]
+		var/message = href_list["message"]
+		debugFileOutput.error(file, message, src)
+		return
+
 	//Admin PM
 	if(href_list["priv_msg"])
 		var/client/C = locate(href_list["priv_msg"])
+		var/datum/ticket/ticket = locate(href_list["ticket"])
 		if(ismob(C)) 		//Old stuff can feed-in mobs instead of clients
 			var/mob/M = C
 			C = M.client
 		if(href_list["ahelp_reply"])
 			cmd_ahelp_reply(C)
 			return
-		cmd_admin_pm(C,null)
+		cmd_admin_pm(C,null,ticket)
 		return
 
 	if(href_list["irc_msg"])
@@ -70,6 +77,14 @@ var/list/blacklisted_builds = list(
 			return
 		cmd_admin_irc_pm()
 		return
+
+	if(href_list["close_ticket"])
+		var/datum/ticket/ticket = locate(href_list["close_ticket"])
+
+		if(isnull(ticket))
+			return
+
+		ticket.close(client_repository.get_lite_client(usr.client))
 
 	//Logs all hrefs
 	if(config && config.log_hrefs && href_logfile)
@@ -220,7 +235,7 @@ var/list/blacklisted_builds = list(
 	if(config.allow_donators && ckey in donators)
 		donator = 1
 		to_chat(src, "<span class='info bold'>Hello [key]! Thanks for supporting us! You have access to all the additional donator-only features this month.</span>")
-		
+
 	log_client_to_db(tdata)
 
 	send_resources()
