@@ -119,3 +119,89 @@
 	desc = "A suit worn by medical members of a NanoTrasen Emergency Response Team. Has white highlights. Armoured and space ready."
 	icon_state = "ert_medical"
 	slowdown = 0.8
+
+/obj/item/clothing/head/helmet/space/rig/ert/stealth
+	name = "emergency response team steatlh helmet"
+	desc = "A helmet worn by special stealth members of a NanoTrasen Emergency Response Team."
+	icon_state = "rig0-ert_stealth"
+	item_color = "ert_stealth"
+	armor = list(melee = 30, bullet = 15, laser = 20, energy = 5, bomb = 20, bio = 100, rad = 100)
+	light_color = "#c388eb"
+
+/obj/item/clothing/suit/space/rig/ert/stealth
+	name = "emergency response team stealth suit"
+	desc = "A suit worn by special stealth members of a NanoTrasen Emergency Response Team."
+	icon_state = "ert_stealth"
+	armor = list(melee = 30, bullet = 15, laser = 20, energy = 5, bomb = 20, bio = 100, rad = 100)
+	slowdown = 0.6
+	var/on = FALSE
+	var/mob/living/carbon/human/wearer
+
+/obj/item/clothing/suit/space/rig/ert/stealth/verb/toggle()
+	set name = "Toggle Stealth"
+	set category = "Object"
+	set src in usr
+
+	src.toggle_stealth(FALSE)
+
+/obj/item/clothing/suit/space/rig/ert/stealth/process()
+	if(!on)
+		return
+
+	if(is_damaged())
+		toggle_stealth(TRUE)
+	else
+		wearer.alpha = 4
+
+/obj/item/clothing/suit/space/rig/ert/stealth/equipped(mob/user, slot)
+	..()
+	if(slot == slot_wear_suit)
+		wearer = user
+
+/obj/item/clothing/suit/space/rig/ert/stealth/dropped(mob/user)
+	toggle_stealth(TRUE)
+	wearer = null
+	..()
+
+/obj/item/clothing/suit/space/rig/ert/stealth/proc/toggle_stealth(deactive = FALSE)
+	if(on)
+		on = FALSE
+		anim(wearer.loc,wearer,'icons/mob/mob.dmi',,"uncloak",,wearer.dir)
+		STOP_PROCESSING(SSobj, src)
+		wearer.alpha = 255
+	else if(!deactive)
+		if(wearer.is_busy()) return
+			to_chat(wearer, "<span class='notice'>Starting invisibility protocol, please wait until it done.</span>")
+		if(do_after(wearer, 40, target = wearer))
+			if(!istype(wearer) || wearer.wear_suit != src)
+				return
+			if(is_damaged())
+				return
+			on = TRUE
+			to_chat(wearer, "<span class='notice'>Invisibility protocol has been engaged.</span>")
+			anim(wearer.loc,wearer,'icons/mob/mob.dmi',,"cloak",,wearer.dir)
+			START_PROCESSING(SSobj, src)
+
+/obj/item/clothing/suit/space/rig/ert/stealth/proc/is_damaged()
+	if(damage >= 2)
+		to_chat(wearer, "<span class='warning'>ERROR![src] is too damaged to engage stealth invisibility protocol!</span>")
+		var/datum/effect/effect/system/spark_spread/s = new
+		s.set_up(5, 1, src)
+		s.start()
+		return TRUE
+	else
+		return FALSE
+
+/obj/item/clothing/suit/space/rig/ert/stealth/proc/overload()
+	wearer.visible_message(
+	"<span class='warning'>[wearer] appears from nowhere!",
+	"<span class='warning'>Invisibilty protocol has been disturbed!</span>"
+	)
+	toggle_stealth()
+
+/obj/item/clothing/suit/space/rig/ert/stealth/attack_reaction(mob/living/carbon/human/H, reaction_type, mob/living/carbon/human/T = null)
+	if(reaction_type == REACTION_ITEM_TAKE || reaction_type == REACTION_ITEM_TAKEOFF)
+		return
+
+	if(on)
+		overload()
