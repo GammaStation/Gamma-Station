@@ -149,7 +149,7 @@
 	if(!istype(wearer.head, /obj/item/clothing/head/helmet/space/rig/ert/stealth))
 		to_chat(wearer, "<span class='warning'>ERROR! Special equipment for user head, missing! Stopping invisibility protocol!</span>")
 		toggle_stealth(TRUE)
-	if(is_damaged())
+	else if(is_damaged())
 		toggle_stealth(TRUE)
 	else
 		wearer.alpha = 4
@@ -167,10 +167,8 @@
 /obj/item/clothing/suit/space/rig/ert/stealth/proc/toggle_stealth(deactive = FALSE)
 	if(on || deactive)
 		on = FALSE
-		STOP_PROCESSING(SSobj, src)
 		wearer.alpha = 255
-		wearer.head.canremove = TRUE
-		wearer.wear_suit.canremove = TRUE
+		STOP_PROCESSING(SSobj, src)
 	else if(!deactive)
 		if(wearer.is_busy())
 			return
@@ -184,8 +182,6 @@
 			if(is_damaged())
 				return
 			on = TRUE
-			wearer.head.canremove = FALSE
-			wearer.wear_suit.canremove = FALSE
 			to_chat(wearer, "<span class='notice'>Invisibility protocol has been engaged.</span>")
 			START_PROCESSING(SSobj, src)
 
