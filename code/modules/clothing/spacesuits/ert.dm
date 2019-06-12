@@ -140,14 +140,15 @@
 /obj/item/clothing/suit/space/rig/ert/stealth/verb/toggle()
 	set name = "Toggle Stealth"
 	set category = "Object"
-	set src in usr
 
-	src.toggle_stealth(FALSE)
+	toggle_stealth()
 
 /obj/item/clothing/suit/space/rig/ert/stealth/process()
 	if(!on)
 		return
-
+	if(!istype(wearer.head, /obj/item/clothing/head/helmet/space/rig/ert/stealth))
+		to_chat(wearer, "<span class='warning'>ERROR! Special equipment for user head, missing! Stopping invisibility protocol!</span>")
+		toggle_stealth(TRUE)
 	if(is_damaged())
 		toggle_stealth(TRUE)
 	else
@@ -164,22 +165,28 @@
 	..()
 
 /obj/item/clothing/suit/space/rig/ert/stealth/proc/toggle_stealth(deactive = FALSE)
-	if(on)
+	if(on || deactive)
 		on = FALSE
-		anim(wearer.loc,wearer,'icons/mob/mob.dmi',,"uncloak",,wearer.dir)
 		STOP_PROCESSING(SSobj, src)
 		wearer.alpha = 255
+		wearer.head.canremove = TRUE
+		wearer.wear_suit.canremove = TRUE
 	else if(!deactive)
-		if(wearer.is_busy()) return
-			to_chat(wearer, "<span class='notice'>Starting invisibility protocol, please wait until it done.</span>")
+		if(wearer.is_busy())
+			return
+		to_chat(wearer, "<span class='notice'>Starting invisibility protocol, please wait until it done.</span>")
 		if(do_after(wearer, 40, target = wearer))
 			if(!istype(wearer) || wearer.wear_suit != src)
+				return
+			if(!istype(wearer.head, /obj/item/clothing/head/helmet/space/rig/ert/stealth))
+				to_chat(wearer, "<span class='warning'>ERROR! Special equipment for user head, has not finded!</span>")
 				return
 			if(is_damaged())
 				return
 			on = TRUE
+			wearer.head.canremove = FALSE
+			wearer.wear_suit.canremove = FALSE
 			to_chat(wearer, "<span class='notice'>Invisibility protocol has been engaged.</span>")
-			anim(wearer.loc,wearer,'icons/mob/mob.dmi',,"cloak",,wearer.dir)
 			START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/suit/space/rig/ert/stealth/proc/is_damaged()
@@ -189,8 +196,7 @@
 		s.set_up(5, 1, src)
 		s.start()
 		return TRUE
-	else
-		return FALSE
+	return FALSE
 
 /obj/item/clothing/suit/space/rig/ert/stealth/proc/overload()
 	wearer.visible_message(
