@@ -221,7 +221,7 @@
 /mob/living/simple_animal/bullet_act(obj/item/projectile/Proj)
 	if(!Proj)	return
 	adjustBruteLoss(Proj.damage)
-	return 0
+	return ..()
 
 /mob/living/simple_animal/attack_hand(mob/living/carbon/human/M)
 	..()

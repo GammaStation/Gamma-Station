@@ -19,6 +19,7 @@
 		sub_item.make_old()
 	if(prob(50))
 		crit_fail = 1
+	old = TRUE
 	update_icon()
 
 /obj/item/make_old()

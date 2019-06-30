@@ -225,11 +225,15 @@
 	return 1
 
 /obj/item/projectile/proc/add_logs(mob/M, miss)
-	if(silenced)
-		to_chat(M, "<span class='userdanger'>You've been shot in the [parse_zone(def_zone)] by the [src.name]!</span>")
-	else
-		M.visible_message("<span class='userdanger'>[M.name] is hit by the [src.name] in the [parse_zone(def_zone)]!</span>")
-
+	if(!miss)
+		if(silenced)
+			to_chat(M, "<span class='userdanger'>You've been shot in the [parse_zone(def_zone)] by the [src.name]!</span>")
+		else
+			var/bodypart = parse_zone(def_zone)
+			if(bodypart)
+				M.visible_message("<span class='userdanger'>[M.name] is hit by the [src.name] in the [bodypart]!</span>")
+			else
+				M.visible_message("<span class='userdanger'>[M.name] is hit by the [src.name]!</span>")
 	if(firer)
 		if(miss)
 			M.attack_log += "\[[time_stamp()]\] <b>[firer]/[firer.ckey]</b> tried to shot <b>[M]/[M.ckey]</b> with a <b>[src.type] but MISSED</b>"

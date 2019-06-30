@@ -83,11 +83,10 @@
 		return -1
 
 	//Tasers and the like should not damage windows.
-	if(!(Proj.damage_type == BRUTE || Proj.damage_type == BURN))
-		return
+	if(Proj.damage_type == BRUTE || Proj.damage_type == BURN)
+		take_damage(Proj.damage, Proj.damage_type)
 
 	..()
-	take_damage(Proj.damage, Proj.damage_type)
 	return
 
 

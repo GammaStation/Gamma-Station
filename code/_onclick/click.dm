@@ -337,11 +337,17 @@
 
 /obj/screen/click_catcher/Click(location, control, params)
 	var/list/modifiers = params2list(params)
+	var/turf/T
 	if(modifiers["middle"] && istype(usr, /mob/living/carbon))
 		var/mob/living/carbon/C = usr
-		C.swap_hand()
+		if(iswizard(C) && C.mind.wizard_power_system.chosen_spell)
+			T = params2turf(modifiers["screen-loc"], get_turf(usr))
+			if(T)
+				T.Click(location, control, params)
+		else
+			C.swap_hand()
 	else
-		var/turf/T = params2turf(modifiers["screen-loc"], get_turf(usr))
+		T = params2turf(modifiers["screen-loc"], get_turf(usr))
 		if(T)
 			T.Click(location, control, params)
 	. = 1

@@ -37,7 +37,7 @@
 		usr.layer = 9
 		var/cur_dir = usr.dir
 		var/turf/simulated/floor/tile = usr.loc
-		if(tile)
+		if(istype(tile))
 			tile.break_tile()
 		var/o=3
 		for(var/i=0, i<14, i++)
@@ -52,8 +52,9 @@
 			sleep(1)
 		playsound(usr.loc, 'sound/effects/explosionfar.ogg', 50, 1)
 		for(tile in range(1, usr))
-			if(prob(50))
-				tile.break_tile()
+			if(istype(tile))
+				if(prob(50))
+					tile.break_tile()
 		for(var/mob/living/M in usr.loc.contents)
 			if(M != usr)
 				usr.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [M.name] ([M.ckey]) with hulk_jump</font>"
@@ -164,7 +165,7 @@
 		usr.layer = 9
 		var/cur_dir = usr.dir
 		var/turf/simulated/floor/tile = usr.loc
-		if(tile)
+		if(istype(tile))
 			tile.break_tile()
 		var/speed = 3
 		for(var/i=0, i<30, i++)
@@ -360,8 +361,9 @@
 						M.take_overall_damage(65, used_weapon = "Hulk Arm")
 		sleep(2)
 		for(tile in range(1, T))
-			if(prob(75))
-				tile.break_tile()
+			if(istype(tile))
+				if(prob(75))
+					tile.break_tile()
 		for(var/mob/living/M in range(1, T))
 			if( (M != usr) && !M.lying)
 				playsound(M.loc, 'sound/misc/slip.ogg', 50, 1)
@@ -373,8 +375,9 @@
 				qdel(S)
 		sleep(3)
 		for(tile in range(2, T))
-			if(prob(40))
-				tile.break_tile()
+			if(istype(tile))
+				if(prob(40))
+					tile.break_tile()
 		for(var/mob/living/M in range(2, T))
 			if( (M != usr) && !M.lying)
 				playsound(M.loc, 'sound/misc/slip.ogg', 50, 1)

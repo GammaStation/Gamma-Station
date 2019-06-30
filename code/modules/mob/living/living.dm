@@ -847,7 +847,7 @@
 	if(L.buckled && (L.last_special <= world.time) )
 		if(iscarbon(L))
 			var/mob/living/carbon/C = L
-			if (istype(C.buckled,/obj/structure/stool/bed/nest))
+			if (istype(C.buckled,/obj/structure/stool/bed/nest) || istype(C.buckled,/obj/structure/stool/bed/magic_cell))
 				C.buckled.user_unbuckle_mob(C)
 				return
 			if( C.handcuffed )

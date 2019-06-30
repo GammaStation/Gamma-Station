@@ -146,7 +146,8 @@
 				OpenFire(target)
 		if(retreat_distance != null)//If we have a retreat distance, check if we need to run from our target
 			if(target_distance <= retreat_distance)//If target's closer than our retreat distance, run
-				walk_away(src,target,retreat_distance,move_to_delay)
+				if(!anchored)
+					walk_away(src,target,retreat_distance,move_to_delay)
 			else
 				Goto(target,move_to_delay,minimum_distance)//Otherwise, get to our minimum distance so we chase them
 		else
@@ -166,7 +167,8 @@
 	LostTarget()
 
 /mob/living/simple_animal/hostile/proc/Goto(target, delay, minimum_distance)
-        walk_to(src, target, minimum_distance, delay)
+	if(!anchored)
+		walk_to(src, target, minimum_distance, delay)
 
 /mob/living/simple_animal/hostile/adjustBruteLoss(damage)
 	..(damage)
@@ -251,12 +253,12 @@
 	ranged_cooldown = ranged_cooldown_cap
 	return
 
-/mob/living/simple_animal/hostile/proc/Shoot(target, start, user, bullet = 0)
+/mob/living/simple_animal/hostile/proc/Shoot(atom/target, atom/start, bullet = 0)
 	if(target == start)
 		return
 
-	var/obj/item/projectile/A = new projectiletype(user:loc)
-	playsound(user, projectilesound, 100, 1)
+	var/obj/item/projectile/A = new projectiletype(src.loc)
+	playsound(src.loc, projectilesound, 100, 1)
 	if(!A)	return
 
 	if (!istype(target, /turf))
@@ -265,8 +267,8 @@
 	A.current = target
 	A.starting = get_turf(src)
 	A.original = get_turf(target)
-	A.yo = target:y - start:y
-	A.xo = target:x - start:x
+	A.yo = target.y - start.y
+	A.xo = target.x - start.x
 	spawn( 0 )
 		A.process()
 	return

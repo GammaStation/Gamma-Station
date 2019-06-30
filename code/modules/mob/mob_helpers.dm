@@ -20,6 +20,24 @@
 		} \
 	}
 
+#define STATPANEL_SPELLS(BYOND) \
+	if(mind && mind.wizard_power_system && mind.wizard_power_system.spells.len) \
+	{ \
+		for(var/obj/effect/proc_holder/magic/spell in mind.wizard_power_system.spells) \
+		{ \
+			if(iswizard(src)) \
+			{ \
+				statpanel("[spell.panel]", (spell.cooldown > 0 ? "Mana: [spell.mana_cost], CD: [spell.cooldown_left]/[spell.cooldown]" : "Mana: [spell.mana_cost]"),spell); \
+			} \
+		} \
+	}
+
+#define STATPANEL_WIZARD_STATUS(BYOND) \
+	if(mind && mind.wizard_power_system) \
+	{ \
+		stat("Mana", "[mind.wizard_power_system.mana]/[mind.wizard_power_system.maxmana]") \
+	}
+
 // see _DEFINES/is_helpers.dm for mob type checks
 #define SAFE_PERP -50
 
