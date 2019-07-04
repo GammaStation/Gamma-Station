@@ -76,7 +76,7 @@
 	harm_intent_damage = 5
 	melee_damage_lower = 12
 	melee_damage_upper = 12
-	attacktext = "bites into"
+	attack_message = list("bites into")
 	a_intent = "harm"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	ranged_cooldown_cap = 4
@@ -155,7 +155,7 @@
 	harm_intent_damage = 5
 	melee_damage_lower = 0
 	melee_damage_upper = 0
-	attacktext = "barrels into"
+	attack_message = list("barrels into")
 	a_intent = "help"
 	throw_message = "sinks in slowly, before being pushed out of "
 	status_flags = CANPUSH
@@ -256,7 +256,7 @@
 	harm_intent_damage = 5
 	melee_damage_lower = 0
 	melee_damage_upper = 0
-	attacktext = "lashes out at"
+	attack_message = list("lashes out at")
 	throw_message = "falls right through the strange body of the"
 	ranged_cooldown = 0
 	ranged_cooldown_cap = 0
@@ -335,7 +335,7 @@
 	harm_intent_damage = 5
 	melee_damage_lower = 2
 	melee_damage_upper = 2
-	attacktext = "slashes"
+	attack_message = list("slashes")
 	throw_message = "falls right through the strange body of the"
 	environment_smash = 0
 	pass_flags = PASSTABLE
@@ -376,7 +376,7 @@
 	harm_intent_damage = 0
 	melee_damage_lower = 25
 	melee_damage_upper = 25
-	attacktext = "pulverizes"
+	attack_message = list("pulverizes")
 	throw_message = "does nothing to the rocky hide of the"
 	aggro_vision_range = 9
 	idle_vision_range = 5

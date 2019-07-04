@@ -43,7 +43,7 @@
 	a_intent = "harm"
 	stop_automated_movement = 1
 	status_flags = CANPUSH
-	attacktext = "nips"
+	attack_message = list("nips")
 	friendly = "prods"
 	wander = 0
 	pass_flags = PASSTABLE

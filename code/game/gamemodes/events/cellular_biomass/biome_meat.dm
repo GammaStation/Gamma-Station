@@ -57,7 +57,7 @@
 	desc = "A sanity-destroying otherthing."
 	icon = 'code/game/gamemodes/events/cellular_biomass/meatland_cellular.dmi'
 	speak_emote = list("gibbers")
-	attacktext = "brutally chomps"
+	attack_message = list("brutally chomps")
 	attack_sound = 'sound/weapons/bite.ogg'
 	faction = "meat"
 

@@ -69,7 +69,7 @@
 	if(M.melee_damage_upper == 0)
 		return
 	src.health -= M.melee_damage_upper
-	src.visible_message("\red <B>[M] has [M.attacktext] [src]!</B>")
+	src.visible_message("\red <B>[M] has [pick(M.attack_message)] [src]!</B>")
 	M.attack_log += text("\[[time_stamp()]\] <font color='red'>attacked [src.name]</font>")
 	if(prob(10))
 		new /obj/effect/decal/cleanable/blood/oil(src.loc)

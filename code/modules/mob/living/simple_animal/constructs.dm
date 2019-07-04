@@ -86,7 +86,7 @@
 	harm_intent_damage = 0
 	melee_damage_lower = 30
 	melee_damage_upper = 30
-	attacktext = "smashes their armoured gauntlet into"
+	attack_message = list("smashes their armoured gauntlet into")
 	speed = 3
 	environment_smash = 2
 	attack_sound = 'sound/weapons/punch3.ogg'
@@ -146,7 +146,7 @@
 	health = 75
 	melee_damage_lower = 25
 	melee_damage_upper = 25
-	attacktext = "slashes"
+	attack_message = list("slashes")
 	speed = -1
 	see_in_dark = 7
 	attack_sound = 'sound/weapons/bladeslice.ogg'
@@ -167,7 +167,7 @@
 	harm_intent_damage = 5
 	melee_damage_lower = 5
 	melee_damage_upper = 5
-	attacktext = "rams"
+	attack_message = list("rams")
 	speed = 0
 	environment_smash = 2
 	attack_sound = 'sound/weapons/punch2.ogg'
@@ -192,7 +192,7 @@
 	harm_intent_damage = 0
 	melee_damage_lower = 50
 	melee_damage_upper = 50
-	attacktext = "brutally crushes"
+	attack_message = list("brutally crushes")
 	speed = 5
 	environment_smash = 2
 	attack_sound = 'sound/weapons/punch4.ogg'
@@ -227,7 +227,7 @@
 	health = 60
 	melee_damage_lower = 1
 	melee_damage_upper = 5
-	attacktext = "prods"
+	attack_message = list("prods")
 	speed = 0
 	environment_smash = 1
 	see_in_dark = 7

@@ -45,7 +45,7 @@
 	maxHealth = 40
 	melee_damage_lower = 2
 	melee_damage_upper = 4
-	attacktext = "hits"
+	attack_message = list("hits")
 	attack_sound = 'sound/weapons/genhit1.ogg'
 	var/obj/effect/blob/factory/factory = null
 	var/is_zombie = 0

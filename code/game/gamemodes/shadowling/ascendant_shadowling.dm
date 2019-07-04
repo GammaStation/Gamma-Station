@@ -20,7 +20,7 @@
 	harm_intent_damage = 0
 	melee_damage_lower = 35
 	melee_damage_upper = 35
-	attacktext = "claws at"
+	attack_message = list("claws at")
 	attack_sound = 'sound/weapons/slash.ogg'
 
 	min_oxy = 0
