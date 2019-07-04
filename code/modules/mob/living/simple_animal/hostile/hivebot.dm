@@ -13,7 +13,7 @@
 	maxHealth = 15
 	melee_damage_lower = 2
 	melee_damage_upper = 3
-	attacktext = "claws"
+	attack_message = list("claws")
 	projectilesound = 'sound/weapons/Gunshot.ogg'
 	projectiletype = /obj/item/projectile/hivebotbullet
 	faction = "hivebot"

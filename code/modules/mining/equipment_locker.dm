@@ -623,7 +623,7 @@
 	melee_damage_lower = 15
 	melee_damage_upper = 15
 	environment_smash = 0
-	attacktext = "drills"
+	attack_message = list("drills")
 	attack_sound = 'sound/weapons/circsawhit.ogg'
 	ranged = 1
 	ranged_message = "shoots"

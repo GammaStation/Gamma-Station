@@ -19,7 +19,7 @@
 	harm_intent_damage = 0
 	melee_damage_lower = 5
 	melee_damage_upper = 20
-	attacktext = "brutally crushes"
+	attack_message = list("brutally crushes")
 	environment_smash = 2
 
 	speed = 1
@@ -60,7 +60,7 @@
 
 	melee_damage_lower = 15
 	melee_damage_upper = 15
-	attacktext = "brutally bites"
+	attack_message = list("brutally bites")
 
 	speed = 2
 

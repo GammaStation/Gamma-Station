@@ -217,7 +217,7 @@
 	else
 		var/damage = rand(user.melee_damage_lower, user.melee_damage_upper)
 		deal_damage(damage)
-		visible_message("<span class='danger'>[user]</span> [user.attacktext] [src]!")
+		visible_message("<span class='danger'>[user]</span> [pick(user.attack_message)] [src]!")
 		user.attack_log +=("<font color='red'>attacked [src.name]</font>")
 	return
 

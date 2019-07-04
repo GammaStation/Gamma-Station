@@ -17,7 +17,7 @@
 	response_disarm = "gently pushes aside the"
 	response_harm   = "kicks the"
 	faction = "goat"
-	attacktext = "kicks"
+	attack_message = list("kicks")
 	health = 40
 	melee_damage_lower = 1
 	melee_damage_upper = 5
@@ -93,7 +93,7 @@
 	response_help  = "pets the"
 	response_disarm = "gently pushes aside the"
 	response_harm   = "kicks the"
-	attacktext = "kicks"
+	attack_message = list("kicks")
 
 //cow
 /mob/living/simple_animal/cow
