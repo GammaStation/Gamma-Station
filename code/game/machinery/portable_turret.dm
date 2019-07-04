@@ -675,7 +675,7 @@ var/list/turret_icons
 	if(M.melee_damage_upper == 0)
 		return
 	if(!(stat & BROKEN))
-		visible_message("<span class='danger'>[M] [M.attacktext] [src]!</span>")
+		visible_message("<span class='danger'>[M] [pick(M.attack_message)] [src]!</span>")
 		M.attack_log += text("\[[time_stamp()]\] <font color='red'>attacked [src.name]</font>")
 		take_damage(M.melee_damage_upper)
 	else

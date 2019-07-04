@@ -26,8 +26,7 @@
 	health = 10
 	maxHealth = 10
 
-	attacktext = "shocks"
-	attacktext = "shocks"
+	attack_message = list("shocks")
 	melee_damage_lower = 1
 	melee_damage_upper = 3
 

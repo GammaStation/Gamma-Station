@@ -17,7 +17,7 @@
 	harm_intent_damage = 5
 	melee_damage_lower = 10
 	melee_damage_upper = 10
-	attacktext = "punches"
+	attack_message = list("punches")
 	a_intent = "harm"
 	var/corpse = /obj/effect/landmark/mobcorpse/syndicatesoldier
 	var/weapon1
@@ -55,7 +55,7 @@
 	icon_living = "syndicatemelee"
 	weapon1 = /obj/item/weapon/melee/energy/sword/red
 	weapon2 = /obj/item/weapon/shield/energy
-	attacktext = "slashes"
+	attack_message = list("slashes")
 	status_flags = 0
 
 /mob/living/simple_animal/hostile/syndicate/melee/attackby(obj/item/O, mob/user)
@@ -147,7 +147,7 @@
 	maxHealth = 15
 	melee_damage_lower = 15
 	melee_damage_upper = 15
-	attacktext = "cuts"
+	attack_message = list("cuts")
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	faction = "syndicate"
 	min_oxy = 0

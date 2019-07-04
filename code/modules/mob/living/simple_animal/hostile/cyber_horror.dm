@@ -13,7 +13,7 @@
 	health = 150
 	melee_damage_lower = 5
 	melee_damage_upper = 15
-	attacktext = "flails around and hits"
+	attack_message = list("flails around and hits")
 	move_to_delay = 5
 	attack_sound = 'sound/weapons/bite.ogg'
 

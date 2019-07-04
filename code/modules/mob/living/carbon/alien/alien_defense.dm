@@ -140,7 +140,7 @@ This is what happens, when we attack aliens.
 	else
 		if(M.attack_sound)
 			playsound(loc, M.attack_sound, 50, 1, 1)
-		visible_message("<span class='userdanger'><B>[M]</B>[M.attacktext] [src]!</span>")
+		visible_message("<span class='userdanger'><B>[M]</B> [pick(M.attack_message)] [src]!</span>")
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
 		adjustBruteLoss(damage)
 		updatehealth()
