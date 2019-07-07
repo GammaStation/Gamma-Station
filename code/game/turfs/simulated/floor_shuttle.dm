@@ -89,6 +89,15 @@
 	if(under_turf)
 		under = under_turf
 
+	//Well if this isn't our first rodeo, we know EXACTLY what we landed on, and it looks like this.
+	if(landed_holder && !interior_corner)
+		var/mutable_appearance/landed_on = new(landed_holder)
+		landed_on.layer = FLOAT_LAYER //Not turf
+		landed_on.plane = FLOAT_PLANE //Not turf
+		us.underlays = list(landed_on)
+		appearance = us
+		return
+
 	if(!under)
 		var/turf/T1
 		var/turf/T2
