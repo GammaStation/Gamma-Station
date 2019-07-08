@@ -854,3 +854,12 @@ obj/item/weapon/circuitboard/biogenerator
 							/obj/item/weapon/stock_parts/matter_bin = 1,
 							/obj/item/weapon/stock_parts/manipulator = 1,)
 
+/obj/item/weapon/circuitboard/oxyregenerator
+	name = "circuit board (Oxyregenerator)"
+	build_path = /obj/machinery/atmospherics/components/binary/oxyregenerator
+	board_type = "machine"
+	origin_tech = "programming=2;engineering=4;biotech=2"
+	req_components = list(
+							/obj/item/weapon/stock_parts/micro_laser = 1,
+							/obj/item/weapon/stock_parts/matter_bin = 1,
+							/obj/item/weapon/stock_parts/manipulator = 1,)
