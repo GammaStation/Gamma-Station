@@ -215,6 +215,8 @@ var/const/INGEST = 2
 	else if(ismonkey(M))
 		var/mob/living/carbon/monkey/MM = M
 		metabolism_factor *= all_species[MM.race].custom_metabolism
+	if(has_reagent("aclometasone")) // Prevents any metabolism.
+		return
 	for(var/A in reagent_list)
 		var/datum/reagent/R = A
 		if(M && R)
@@ -504,13 +506,23 @@ var/const/INGEST = 2
 	return FALSE
 
 /datum/reagents/proc/has_reagent(reagent, amount = 0)
+	. = 0
+	var/is_mob = ismob(my_atom) // If we are a mob, "aclometasone" prevents any other reagents taking effect.
+
 	for(var/datum/reagent/R in reagent_list)
 		if(R.id == reagent)
 			if(!amount)
-				return R
+				if(!is_mob || reagent == "aclometasone")
+					return R
+				else
+					. = R
 			else if(R.volume >= amount)
-				return R
-	return 0
+				if(!is_mob || reagent == "aclometasone")
+					return R
+				else
+					. = R
+		else if(R.id == "aclometasone" && is_mob)
+			return 0
 
 /datum/reagents/proc/get_reagent_amount(reagent)
 	for(var/A in reagent_list)
