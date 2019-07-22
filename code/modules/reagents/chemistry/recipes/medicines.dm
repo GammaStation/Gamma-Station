@@ -12,6 +12,13 @@
 			required_reagents = list("oxygen" = 1, "carbon" = 1, "sugar" = 1)
 			result_amount = 3
 
+/datum/chemical_reaction/thermopsis
+	name = "Thermopsis"
+	id = "thermopsis"
+	result = "thermopsis"
+	required_reagents = list("anti_toxin" = 1, "sugar" = 1, "carbon" = 1)
+	result_amount = 3
+
 /datum/chemical_reaction/anti_toxin
 			name = "Anti-Toxin (Dylovene)"
 			id = "anti_toxin"
