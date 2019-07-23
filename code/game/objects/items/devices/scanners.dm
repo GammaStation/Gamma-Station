@@ -180,6 +180,214 @@ REAGENT SCANNER
 	add_fingerprint(usr)
 	return
 
+/obj/item/device/handheld_bodyscanner
+	name = "Handheld Bodypart Scanner"
+	icon = 'icons/obj/bodypart_scanner.dmi'
+	icon_state = "hand_scan"
+	item_state = "healthanalyzer" // placeholder, I guess
+
+	desc = "Bodyscans, one limb at a time."
+	flags = CONDUCT
+	slot_flags = SLOT_BELT
+	throwforce = 3
+	w_class = 2.0
+	throw_speed = 5
+	throw_range = 10
+	m_amt = 200
+	origin_tech = "programming=4;biotech=3;engineering=4;materials=3;magnets=3"
+	var/last_scanned = "" // A "name" of last scanned mob.
+	var/list/limbs_to_scan = list()
+	var/list/limbs_scanned = list()
+	var/all_scanned = FALSE
+	var/final_data = ""
+
+	var/known_implants = list(/obj/item/weapon/implant/chem, /obj/item/weapon/implant/death_alarm, /obj/item/weapon/implant/mindshield, /obj/item/weapon/implant/tracking, /obj/item/weapon/implant/mindshield/loyalty)
+
+/obj/item/device/handheld_bodyscanner/examine(mob/user)
+	..()
+	if(user.get_active_hand() == src)
+		if(!last_scanned)
+			to_chat(user, "[src] is not storing any data.")
+			return
+
+		if(all_scanned)
+			to_chat(user, "[src] is ready to give full status report on [last_scanned].")
+			return
+
+		var/missing = ""
+		var/i = 1
+		for(var/limb in limbs_to_scan)
+			if(!limbs_scanned[limb])
+				missing += "[limb][i == limbs_to_scan.len ? "" : ", "]"
+			i++
+		to_chat(user, "[src] is missing: [missing] for full report on [last_scanned].")
+
+/obj/item/device/handheld_bodyscanner/proc/get_full_print_out()
+	set name = "Get Printout"
+	set desc = "If patient is throughly scanned, gives out a full status report on patient's health."
+	set category = "Object"
+
+	if(all_scanned)
+		var/dat = "<HTML><HEAD><title>[last_scanned]'s Statistics</title></HEAD><BODY>"
+		dat += final_data
+		dat += "</BODY></HTML>"
+
+		usr << browse(entity_ja(dat), "window=full_scan_[last_scanned]")
+		onclose(usr, "full_scan_[last_scanned]")
+
+/obj/item/device/handheld_bodyscanner/attack_self(mob/living/user)
+	if(user.incapacitated())
+		return FALSE
+
+	if(!user.IsAdvancedToolUser())
+		return FALSE
+
+	to_chat(user, "[bicon(src)] <span class='notice'>[src] reset it's saved values.</span>")
+
+	overlays.Cut()
+	last_scanned = ""
+	limbs_to_scan = list()
+	limbs_scanned = list()
+	all_scanned = FALSE
+	final_data = ""
+
+	verbs.Remove(/obj/item/device/handheld_bodyscanner/proc/get_full_print_out)
+
+/obj/item/device/handheld_bodyscanner/attack(mob/living/carbon/human/H, mob/living/user)
+	if(istype(H))
+		if(last_scanned != "" && H.name != last_scanned)
+			to_chat(user, "[bicon(src)] <span class='notice'>[src] has no [H] \"patient\" data saved.")
+			return
+
+		if(last_scanned == "")
+			last_scanned = H.name
+			overlays += icon(src.icon, "last_scanned_saved_overlay")
+			for(var/obj/item/organ/external/BP in H.bodyparts)
+				limbs_to_scan += BP.name
+
+		var/list/res = get_bodyscan_data(H, user, known_implants) // We can update final_data by clicking again.
+		final_data = res["dat"]
+
+		var/obj/item/organ/external/BP = H.get_bodypart(user.zone_sel.selecting)
+		if(BP)
+			limbs_scanned[BP.name] = TRUE
+			overlays += icon(src.icon, BP.name)
+
+			if(!all_scanned)
+				var/_scanned = TRUE
+				for(var/limb in limbs_to_scan)
+					if(!limbs_scanned[limb])
+						_scanned = FALSE
+						break
+				if(_scanned)
+					to_chat(user, "[bicon(src)] <span class='notice'>Ping!</span>")
+					overlays += icon(src.icon, "final_data_ready_overlay")
+					all_scanned = TRUE
+					verbs += /obj/item/device/handheld_bodyscanner/proc/get_full_print_out
+
+			var/dat = "<HTML><HEAD><title>[H.name]'s scan report</title></HEAD><BODY>"
+			dat += "<font color='blue'><B>[capitalize(BP.name)]'s Statistics:</B></FONT><BR>"
+
+			dat += "<HR><table border='1'>"
+			dat += "<tr>"
+			dat += "<th>Body Part</th>"
+			dat += "<th>Burn Damage</th>"
+			dat += "<th>Brute Damage</th>"
+			dat += "<th>Other Wounds</th>"
+			dat += "</tr>"
+
+			dat += "<tr>"
+			var/AN = ""
+			var/open = ""
+			var/infected = ""
+			var/imp = ""
+			var/bled = ""
+			var/robot = ""
+			var/splint = ""
+			var/arterial_bleeding = ""
+			var/lung_ruptured = ""
+
+			if(BP.status & ORGAN_ARTERY_CUT)
+				arterial_bleeding = "<br>Arterial bleeding"
+			if(istype(BP, /obj/item/organ/external/chest) && H.is_lung_ruptured())
+				lung_ruptured = "Lung ruptured:"
+			if(BP.status & ORGAN_SPLINTED)
+				splint = "Splinted:"
+			if(BP.status & ORGAN_BLEEDING)
+				bled = "Bleeding:"
+			if(BP.status & ORGAN_BROKEN)
+				AN = "[BP.broken_description]:"
+			if(BP.status & ORGAN_ROBOT)
+				robot = "Prosthetic:"
+			if(BP.open)
+				open = "Open:"
+
+			switch(BP.germ_level)
+				if(INFECTION_LEVEL_ONE to INFECTION_LEVEL_ONE_PLUS)
+					infected = "Mild Infection:"
+				if(INFECTION_LEVEL_ONE_PLUS to INFECTION_LEVEL_ONE_PLUS_PLUS)
+					infected = "Mild Infection+:"
+				if(INFECTION_LEVEL_ONE_PLUS_PLUS to INFECTION_LEVEL_TWO)
+					infected = "Mild Infection++:"
+				if(INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO_PLUS)
+					infected = "Acute Infection:"
+				if(INFECTION_LEVEL_TWO_PLUS to INFECTION_LEVEL_TWO_PLUS_PLUS)
+					infected = "Acute Infection+:"
+				if(INFECTION_LEVEL_TWO_PLUS_PLUS to INFECTION_LEVEL_THREE)
+					infected = "Acute Infection++:"
+				if(INFECTION_LEVEL_THREE to INFINITY)
+					infected = "Septic:"
+
+			var/unknown_body = 0
+			for(var/I in BP.implants)
+				if(is_type_in_list(I, known_implants))
+					imp += "[I] implanted:"
+				else
+					unknown_body++
+
+			if(unknown_body || BP.hidden)
+				imp += "Unknown body present:"
+			if(!AN && !open && !infected & !imp)
+				AN = "None:"
+			if(!(BP.status & ORGAN_DESTROYED))
+				dat += "<td>[BP.name]</td><td>[BP.burn_dam]</td><td>[BP.brute_dam]</td><td>[robot][bled][AN][splint][open][infected][imp][arterial_bleeding][lung_ruptured]</td>"
+			else
+				dat += "<td>[BP.name]</td><td>-</td><td>-</td><td>Not Found</td>"
+			dat += "</tr>"
+
+			for(var/obj/item/organ/internal/IO in BP.bodypart_organs)
+				var/mech = ""
+				if(IO.robotic == 1)
+					mech = "Assisted:"
+				if(IO.robotic == 2)
+					mech = "Mechanical:"
+
+				var/infection = "None"
+				switch(IO.germ_level)
+					if(INFECTION_LEVEL_ONE to INFECTION_LEVEL_ONE_PLUS)
+						infection = "Mild Infection:"
+					if(INFECTION_LEVEL_ONE_PLUS to INFECTION_LEVEL_ONE_PLUS_PLUS)
+						infection = "Mild Infection+:"
+					if(INFECTION_LEVEL_ONE_PLUS_PLUS to INFECTION_LEVEL_TWO)
+						infection = "Mild Infection++:"
+					if(INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO_PLUS)
+						infection = "Acute Infection:"
+					if(INFECTION_LEVEL_TWO_PLUS to INFECTION_LEVEL_TWO_PLUS_PLUS)
+						infection = "Acute Infection+:"
+					if(INFECTION_LEVEL_TWO_PLUS_PLUS to INFECTION_LEVEL_THREE)
+						infection = "Acute Infection++:"
+					if(INFECTION_LEVEL_THREE to INFINITY)
+						infection = "Necrotic:"
+
+				dat += "<tr>"
+				dat += "<td>[IO.name]</td><td>N/A</td><td>[IO.damage]</td><td>[infection]:[mech]</td><td></td>"
+				dat += "</tr>"
+
+			dat += "</table>"
+
+			dat += text("<BR><BR><A href='?src=\ref[user];mach_close=scan_paient_[last_scanned]'>Close</A><BODY></HTML>")
+			user << browse(entity_ja(dat), "window=scan_paient_[last_scanned]")
+			onclose(user, "scan_paient_[last_scanned]")
 
 /obj/item/device/analyzer
 	desc = "A hand-held environmental scanner which reports current gas levels."
