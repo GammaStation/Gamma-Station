@@ -52,6 +52,12 @@
 	liquidfood
 		name = "\improper \"LiquidFood\" ration"
 		icon_state = "liquidfood"
+	proteinbar
+		name = "protein bar"
+		icon_state = "proteinbar"
+	fruitbar
+		name = "fruit bar"
+		icon_state = "fruitbar"
 
 /obj/item/trash/candle/ghost
 	icon_state = "gcandle4"

@@ -122,6 +122,15 @@
 	color = "#731008" // rgb: 115, 16, 8
 	taste_message = "ketchup"
 
+/datum/reagent/nutriment/mayo
+	name = "Mayonnaise"
+	id = "mayo"
+	description = "A mixture of egg yolk with lemon juice or vinegar. Usually put on bland food to make it more edible."
+	reagent_state = LIQUID
+	nutriment_factor = 5 * REAGENTS_METABOLISM
+	color = "#efede8"
+	taste_message = "mayo"
+
 /datum/reagent/consumable/flour
 	name = "Flour"
 	id = "flour"
