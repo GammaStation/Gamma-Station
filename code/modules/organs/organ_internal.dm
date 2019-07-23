@@ -214,7 +214,7 @@
 			to_chat(owner, "\red Your skin itches.")
 	if (germ_level > INFECTION_LEVEL_TWO)
 		if(prob(1))
-			INVOKE_ASYNC(owner, /mob/living/carbon/human.proc/vomit)
+			INVOKE_ASYNC(owner, /mob/living/carbon/human.proc/invoke_vomit)
 
 	if(owner.life_tick % process_accuracy == 0)
 		if(src.damage < 0)

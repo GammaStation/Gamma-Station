@@ -1002,8 +1002,55 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 			xylophone=0
 	return
 
-/mob/living/carbon/human/proc/vomit()
+/mob/living/carbon/human/vomit(punched = FALSE)
+	if(species.flags[IS_SYNTHETIC] || species.flags[IS_IMMATERIAL])
+		return FALSE //Machines don't throw up. Neither do beings out of this plane of existance... (If more flags seem to pile up here, add NO_VOMIT flag instead) ~Luduk.
 
+	if(wear_mask && (wear_mask.flags & MASKCOVERSMOUTH))
+		return FALSE
+
+	return ..()
+
+/mob/living/carbon/human/proc/force_vomit(mob/living/carbon/human/H)
+	if(H.species.flags[IS_SYNTHETIC] || H.species.flags[IS_IMMATERIAL])
+		to_chat(src, "<span class='warning'>Wait... Where is the mouth?")
+		return
+
+	if((H.head && (H.head.flags & HEADCOVERSMOUTH)) || (H.wear_mask && (H.wear_mask.flags & MASKCOVERSMOUTH)))
+		to_chat(src, "<span class='warning'>You can't slide your fingers through THAT...</span>")
+		return
+
+	if(src != H)
+		visible_message("<span class='notice'>[src] is sliding \their fingers into [H]'s mouth.</span>", "<span class='notice'>You are sliding your fingers into [H]'s mouth.</span>")
+		if(is_busy() || !do_after(src, 15, target = H))
+			return
+
+	if(src != H)
+		visible_message("<span class='warning'>[src] put \their fingers into [H]'s mouth and begins to press on.</span>", "<span class='notice'>You put your fingers into [H]'s mouh and begin to press on.</span>")
+	else
+		visible_message("<span class='warning'>[src] put \their fingers into \their own mouth.</span>", "<span class='notice'>You put your fingers into your own mouth.</span>")
+
+	if(H.species.flags[IS_PLANT])
+		return
+
+	var/stage = 0
+
+	for(var/i in 1 to 10)
+		if(!is_busy() && do_after(src, 5, target = H))
+			if(stage < 2)
+				if(prob(30))
+					switch(stage)
+						if(0)
+							to_chat(H, "<span class='warning'>Your stomach feels uneasy.</span>")
+						if(1)
+							to_chat(H, "<span class='warning'>You feel something coming up your throat!</span>")
+					stage++
+			else
+				H.vomit()
+		else
+			break
+
+/mob/living/carbon/human/proc/invoke_vomit()
 	if(species.flags[IS_SYNTHETIC] || species.flags[IS_IMMATERIAL])
 		return //Machines don't throw up. Neither do beings out of this plane of existance... (If more flags seem to pile up here, add NO_VOMIT flag instead) ~Luduk.
 
@@ -1013,17 +1060,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		spawn(150)	//15 seconds until second warning
 			to_chat(src, "<span class='warning'>You feel like you are about to throw up!</span>")
 			spawn(100)	//and you have 10 more for mad dash to the bucket
-				Stun(5)
-
-				src.visible_message("<span class='warning'>[src] throws up!","<spawn class='warning'>You throw up!</span>")
-				playsound(loc, 'sound/effects/splat.ogg', 50, 1)
-
-				var/turf/location = loc
-				if (istype(location, /turf/simulated))
-					location.add_vomit_floor(src, 1)
-
-				nutrition -= 40
-				adjustToxLoss(-3)
+				vomit()
 				spawn(350)	//wait 35 seconds before next volley
 					lastpuke = 0
 

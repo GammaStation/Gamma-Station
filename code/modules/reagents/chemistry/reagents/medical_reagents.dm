@@ -263,6 +263,23 @@
 	if(M.getToxLoss() && prob(80))
 		M.adjustToxLoss(-1 * REM)
 
+/datum/reagent/thermopsis
+	name = "Thermopsis"
+	id = "thermopsis"
+	description = "Irritates stomach receptors, that leads to reflex rise of vomiting."
+	reagent_state = LIQUID
+	color = "#a0a000"
+	taste_message = "vomit"
+	restrict_species = list(IPC, DIONA)
+	data = 1
+
+/datum/reagent/thermopsis/on_general_digest(mob/living/M)
+	..()
+	data++
+	if(data > 10)
+		M.vomit()
+		data -= rand(0, 10)
+
 /datum/reagent/anti_toxin
 	name = "Anti-Toxin (Dylovene)"
 	id = "anti_toxin"

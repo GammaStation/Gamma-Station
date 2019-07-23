@@ -600,8 +600,7 @@
 		visible_message("<span class='danger'>[src] heaves violently, expelling a rush of vomit and a wriggling, sluglike creature!</span>")
 		B.chemicals -= 100
 
-		new /obj/effect/decal/cleanable/vomit(get_turf(src))
-		playsound(loc, 'sound/effects/splat.ogg', 50, 1)
+		vomit()
 		new /mob/living/simple_animal/borer(get_turf(src))
 
 	else
@@ -687,3 +686,15 @@
 /mob/living/carbon/proc/crawl_in_blood(obj/effect/decal/cleanable/blood/floor_blood,amount)
 	return
 
+/mob/living/carbon/vomit(punched = FALSE)
+	if(head && (head.flags & HEADCOVERSMOUTH))
+		return FALSE
+
+	. = ..()
+	if(.)
+		if(reagents.total_volume > 0)
+			var/datum/reagents/R = new(10)
+			reagents.trans_to(R, 10)
+			R.reaction(loc)
+		else
+			adjustToxLoss(-10)
