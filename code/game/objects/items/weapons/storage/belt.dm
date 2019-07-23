@@ -56,14 +56,15 @@
 	item_state = "medical"
 	can_hold = list(
 		"/obj/item/device/healthanalyzer",
+		"/obj/item/device/plant_analyzer",
+		"/obj/item/device/robotanalyzer",
 		"/obj/item/weapon/dnainjector",
 		"/obj/item/weapon/reagent_containers/dropper",
 		"/obj/item/weapon/reagent_containers/glass/beaker",
 		"/obj/item/weapon/reagent_containers/glass/bottle",
 		"/obj/item/weapon/reagent_containers/pill",
 		"/obj/item/weapon/reagent_containers/syringe",
-		"/obj/item/weapon/reagent_containers/glass/dispenser",
-		"/obj/item/weapon/lighter/zippo",
+		"/obj/item/weapon/lighter",
 		"/obj/item/weapon/storage/fancy/cigarettes",
 		"/obj/item/weapon/storage/pill_bottle",
 		"/obj/item/stack/medical",
