@@ -2,7 +2,7 @@
 #define SAVEFILE_VERSION_MIN 8
 
 //This is the current version, anything below this will attempt to update (if it's not obsolete)
-#define SAVEFILE_VERSION_MAX 21
+#define SAVEFILE_VERSION_MAX 22
 
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
@@ -48,6 +48,9 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if(current_version < 16)
 		S["aooccolor"] << S["ooccolor"]
 		aooccolor = ooccolor
+
+	if(current_version < 22)
+		S["analyzis_to_chat"] << FALSE
 
 /datum/preferences/proc/update_character(current_version, savefile/S)
 	if(current_version < 17)
@@ -109,6 +112,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["UI_style_alpha"]		>> UI_style_alpha
 	S["permamuted"]			>> permamuted
 	S["permamuted"]			>> muted
+	S["analyzis_to_chat"]   >> analyzis_to_chat
 
 	//Antag preferences
 	S["be_role"]			>> be_role
@@ -161,6 +165,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	S["ghost_orbit"]		<< ghost_orbit
 	S["randomslot"]			<< randomslot
 	S["permamuted"]			<< permamuted
+
+	S["analyzis_to_chat"]   << analyzis_to_chat
 	return 1
 
 /datum/preferences/proc/load_saved_character(dir)
