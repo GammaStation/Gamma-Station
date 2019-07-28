@@ -2558,6 +2558,15 @@ datum/design/body_warp
 	materials = list(MAT_METAL = 500, MAT_SILVER = 500)
 	build_path = /obj/item/airbag
 
+/datum/design/handheld_bodyscanner
+	name = "Handheld Bodypart Scanner"
+	desc = "Bodyscans, one limb at a time."
+	id = "handheld_bodyscanner"
+	req_tech = list("programming" = 4, "biotech" = 3, "engineering" = 4, "material" = 3, "magnets" = 3)
+	build_type = PROTOLATHE
+	materials = list(MAT_METAL = 500, MAT_SILVER = 500)
+	build_path = /obj/item/device/handheld_bodyscanner
+
 /////////////////////////////////////////
 ////////////Janitor Designs//////////////
 /////////////////////////////////////////
