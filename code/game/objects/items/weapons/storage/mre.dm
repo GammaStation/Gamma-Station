@@ -18,13 +18,12 @@ var/list/mre_drinks = list(
 	max_w_class = ITEM_SIZE_SMALL
 	var/opened = FALSE
 	var/open_sound = 'sound/effects/rip1.ogg'
-	var/list/startswith = list(
-	/obj/item/weapon/storage/fancy/crackers,
-	/obj/item/weapon/kitchen/utensil/pfork
-	)
 
 /obj/item/weapon/storage/mre/atom_init()
 	. = ..()
+	new /obj/item/weapon/storage/fancy/crackers(src)
+	new /obj/item/weapon/kitchen/utensil/pfork(src)
+
 
 	var/candy_pick = pick(mre_candy)
 	new candy_pick(src)
@@ -41,10 +40,8 @@ var/list/mre_drinks = list(
 	var/sauce_pick = pick(subtypesof(/obj/item/weapon/storage/mrebag/sauce))
 	new sauce_pick(src)
 
-	new /obj/item/weapon/storage/fancy/crackers(src)
-	new /obj/item/weapon/kitchen/utensil/pfork(src)
 
-	var/meal_pick = pick((subtypesof(/obj/item/weapon/storage/mrebag) - /obj/item/weapon/storage/mrebag/dessert) - /obj/item/weapon/storage/mrebag/sauce)
+	var/meal_pick = pick(subtypesof(/obj/item/weapon/storage/mrebag/meal))
 	new meal_pick(src)
 	make_exact_fit()
 
@@ -62,21 +59,17 @@ var/list/mre_drinks = list(
 	..()
 
 /obj/item/weapon/storage/mrebag
-	name = "main course"
-	desc = "A vacuum-sealed bag containing the MRE's main course. Self-heats when opened."
+	name = "mre bag"
+	desc = "This shouldn't be here."
 	icon = 'icons/obj/food.dmi'
 	icon_state = "pouch_medium"
-	storage_slots = 1
 	w_class = ITEM_SIZE_SMALL
 	max_w_class = ITEM_SIZE_SMALL
+	storage_slots = 1
 	var/message = "The pouch heats up as you break the vaccum seal."
 	var/opened = FALSE
 	var/open_sound = 'sound/effects/bubbles.ogg'
 	var/meal = /obj/item/weapon/reagent_containers/food/snacks/enchiladas
-
-/obj/item/weapon/storage/mrebag/atom_init()
-	. = ..()
-	new meal(src)
 
 /obj/item/weapon/storage/mrebag/open(mob/user)
 	if(!opened)
@@ -85,34 +78,47 @@ var/list/mre_drinks = list(
 		icon_state = "[initial(icon_state)][opened]"
 		to_chat(usr, "<span class='notice'>[message]</span>")
 	..()
-/obj/item/weapon/storage/mrebag/menu2
+
+/obj/item/weapon/storage/mrebag/meal
+	name = "main course"
+	desc = "A vacuum-sealed bag containing the MRE's main course. Self-heats when opened."
+	icon_state = "pouch_medium"
+	message = "The pouch heats up as you break the vaccum seal."
+	open_sound = 'sound/effects/bubbles.ogg'
+	meal = /obj/item/weapon/reagent_containers/food/snacks/enchiladas
+
+/obj/item/weapon/storage/mrebag/meal/atom_init()
+	. = ..()
+	new meal(src)
+
+/obj/item/weapon/storage/mrebag/meal/menu2
 	meal = /obj/item/weapon/reagent_containers/food/snacks/margheritaslice
 
-/obj/item/weapon/storage/mrebag/menu2
+/obj/item/weapon/storage/mrebag/meal/menu2
 	meal = /obj/item/weapon/reagent_containers/food/snacks/margheritaslice
 
-/obj/item/weapon/storage/mrebag/menu3
+/obj/item/weapon/storage/mrebag/meal/menu3
 	meal = /obj/item/weapon/reagent_containers/food/snacks/pastatomato
 
-/obj/item/weapon/storage/mrebag/menu4
+/obj/item/weapon/storage/mrebag/meal/menu4
 	meal = /obj/item/weapon/reagent_containers/food/snacks/monkeyburger
 
-/obj/item/weapon/storage/mrebag/menu5
+/obj/item/weapon/storage/mrebag/meal/menu5
 	meal = /obj/item/weapon/reagent_containers/food/snacks/taco
 
-/obj/item/weapon/storage/mrebag/menu6
+/obj/item/weapon/storage/mrebag/meal/menu6
 	meal = /obj/item/weapon/reagent_containers/food/snacks/meatbreadslice
 
-/obj/item/weapon/storage/mrebag/menu7
+/obj/item/weapon/storage/mrebag/meal/menu7
 	meal = /obj/item/weapon/reagent_containers/food/snacks/tossedsalad
 
-/obj/item/weapon/storage/mrebag/menu8
+/obj/item/weapon/storage/mrebag/meal/menu8
 	meal = /obj/item/weapon/reagent_containers/food/snacks/hotchili
 
-/obj/item/weapon/storage/mrebag/menu9
+/obj/item/weapon/storage/mrebag/meal/menu9
 	meal = /obj/item/weapon/reagent_containers/food/snacks/boiledrice
 
-/obj/item/weapon/storage/mrebag/menu10
+/obj/item/weapon/storage/mrebag/meal/menu10
 	meal = /obj/item/weapon/reagent_containers/food/snacks/meatsteak
 
 /obj/item/weapon/storage/mrebag/dessert
@@ -150,6 +156,7 @@ var/list/mre_drinks = list(
 /obj/item/weapon/storage/mrebag/sauce
 	name = "sauce"
 	desc = "A vacuum-sealed bag containing the MRE's sauce."
+	storage_slots = 5
 	icon_state = "pouch_small"
 	open_sound = 'sound/effects/rip1.ogg'
 	message = "You tear open the bag, breaking the vacuum seal."
