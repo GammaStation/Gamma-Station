@@ -29,7 +29,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	power_equip = 0
 	power_environ = 0
 	valid_territory = 0
-
+	ambience = list('sound/ambience/ambispace.ogg','sound/music/title2.ogg','sound/music/space.ogg','sound/music/main.ogg','sound/music/traitor.ogg','sound/ambience/voidambi.ogg','sound/ambience/timeship_amb1.ogg')
 
 //These are shuttle areas, they must contain two areas in a subgroup if you want to move a shuttle from one
 //place to another. Look at escape shuttle for example.
@@ -56,7 +56,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 
 /area/shuttle/escape
 	name = "Emergency Shuttle"
-	music = "music/escape.ogg"
 
 /area/shuttle/escape/station
 	name = "Emergency Shuttle Station"
@@ -73,7 +72,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 
 /area/shuttle/escape_pod1
 	name = "Escape Pod One"
-	music = "music/escape.ogg"
+
 
 /area/shuttle/escape_pod1/station
 	icon_state = "shuttle2"
@@ -87,7 +86,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 
 /area/shuttle/escape_pod2
 	name = "Escape Pod Two"
-	music = "music/escape.ogg"
 
 /area/shuttle/escape_pod2/station
 	icon_state = "shuttle2"
@@ -101,7 +99,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 
 /area/shuttle/escape_pod3
 	name = "Escape Pod Three"
-	music = "music/escape.ogg"
 
 /area/shuttle/escape_pod3/station
 	icon_state = "shuttle2"
@@ -115,7 +112,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 
 /area/shuttle/escape_pod5 //Pod 4 was lost to meteors
 	name = "Escape Pod Five"
-	music = "music/escape.ogg"
 
 /area/shuttle/escape_pod5/station
 	icon_state = "shuttle2"
@@ -129,7 +125,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 
 /area/shuttle/mining
 	name = "Mining Shuttle"
-	music = "music/escape.ogg"
 
 /area/shuttle/mining/station
 	icon_state = "shuttle2"
@@ -181,7 +176,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 
 /area/shuttle/research
 	name = "Research Shuttle"
-	music = "music/escape.ogg"
 	icon_state = "shuttle"
 
 /area/shuttle/vox/station
@@ -310,6 +304,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "Syndicate Station"
 	icon_state = "yellow"
 	requires_power = 0
+	ambience = list('sound/ambience/omega.ogg')
 
 /area/syndicate_station/start
 	name = "Syndicate Forward Operating Base"
@@ -489,12 +484,11 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/bridge
 	name = "Bridge"
 	icon_state = "bridge"
-	music = "signal"
+	ambience = list('sound/ambience/signal.ogg')
 
 /area/bridge/meeting_room
 	name = "Heads of Staff Meeting Room"
 	icon_state = "bridge"
-	music = null
 
 /area/crew_quarters/captain
 	name = "Captain's Office"
@@ -594,6 +588,8 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
  	name = "Library"
  	icon_state = "library"
 
+/area/chapel
+	ambience = list('sound/ambience/ambicha1.ogg','sound/ambience/ambicha2.ogg','sound/ambience/ambicha3.ogg','sound/ambience/ambicha4.ogg')
 
 /area/chapel/main
 	name = "Chapel"
@@ -670,6 +666,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 
 /area/engine
 	icon_state = "engine"
+	ambience = list('sound/ambience/ambisin1.ogg','sound/ambience/ambisin2.ogg','sound/ambience/ambisin3.ogg','sound/ambience/ambisin4.ogg')
 
 /area/engine/drone_fabrication
 	name = "Drone Fabrication"
@@ -758,17 +755,17 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/teleporter
 	name = "Teleporter"
 	icon_state = "teleporter"
-	music = "signal"
+	ambience = list('sound/ambience/signal.ogg')
 
 /area/gateway
 	name = "Gateway"
 	icon_state = "teleporter"
-	music = "signal"
+	ambience = list('sound/ambience/signal.ogg')
 
 /area/AIsattele
 	name = "AI Satellite Teleporter Room"
 	icon_state = "teleporter"
-	music = "signal"
+	ambience = list('sound/ambience/signal.ogg')
 
 //MedBay
 
@@ -779,7 +776,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 //Medbay is a large area, these additional areas help level out APC load.
 /area/medical/hallway
 	icon_state = "medbay2"
-	music = 'sound/ambience/signal.ogg'
 
 /area/medical/hallway/outbranch
 	icon_state = "medbay3"
@@ -787,17 +783,14 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/medical/reception
 	name = "Medbay Reception"
 	icon_state = "medbay"
-	music = 'sound/ambience/signal.ogg'
 
 /area/medical/psych
 	name = "Psych Room"
 	icon_state = "medbay3"
-	music = 'sound/ambience/signal.ogg'
 
 /area/medical/medbreak
 	name = "Break Room"
 	icon_state = "medbay3"
-	music = 'sound/ambience/signal.ogg'
 
 /area/medical/patients_rooms
 	name = "Patient's Rooms"
@@ -822,6 +815,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/medical/morgue
 	name = "Morgue"
 	icon_state = "morgue"
+	ambience = list('sound/ambience/ambimo1.ogg','sound/ambience/ambimo2.ogg')
 
 /area/medical/chemistry
 	name = "Chemistry"
@@ -1003,7 +997,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/toxins/server
 	name = "Server Room"
 	icon_state = "server"
-	music = 'sound/ambience/server.ogg'
+	ambience = list('sound/ambience/server.ogg')
 
 
 //Storage
@@ -1127,18 +1121,22 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/turret_protected/ai_upload
 	name = "AI Upload Chamber"
 	icon_state = "ai_upload"
+	ambience = list('sound/ambience/ambimalf.ogg')
 
 /area/turret_protected/ai
 	name = "AI Chamber"
 	icon_state = "ai_chamber"
+	ambience = list('sound/ambience/ambimalf.ogg')
 
 /area/turret_protected/aisat
 	name = "AI Satellite"
 	icon_state = "ai"
+	ambience = list('sound/ambience/ambimalf.ogg')
 
 /area/aisat
 	name = "AI Satellite Exterior"
 	icon_state = "storage"
+	ambience = list('sound/ambience/ambimalf.ogg')
 
 /area/turret_protected/aisat_interior
 	name = "AI Satellite Antechamber"
@@ -1150,6 +1148,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/tcommsat/chamber
 	name = "Telecoms Central Compartment"
 	icon_state = "tcomsatcham"
+	ambience = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/ambigen10.ogg')
 
 /area/tcommsat/computer
 	name = "Telecoms Control Room"

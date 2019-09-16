@@ -1189,3 +1189,23 @@
 		to_chat(src, "<span class='notice'>You can taste [english_list(final_taste_list)].</span>")
 		telepathy_hear("can taste", "<span class='notice'>[english_list(final_taste_list)]</span>", src)
 		lasttaste = world.time
+
+/mob/living/proc/vomit(punched = FALSE)
+	if(stat == DEAD && !punched)
+		return FALSE
+
+	Stun(3)
+
+	if(nutrition < 40)
+		visible_message("<span class='warning'>[src] convulses in place, gagging!</span>", "<span class='warning'>You try to throw up, but there is nothing!</span>")
+		return FALSE
+
+	visible_message("<span class='warning'>[src] throws up!","<spawn class='warning'>You throw up!</span>")
+	playsound(loc, 'sound/effects/splat.ogg', 50, 1)
+
+	var/turf/location = loc
+	if(istype(location, /turf/simulated))
+		location.add_vomit_floor(src, getToxLoss() > 0 ? TRUE : FALSE)
+
+	nutrition -= 40
+	return TRUE

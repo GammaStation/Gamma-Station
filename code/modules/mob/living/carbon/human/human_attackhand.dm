@@ -113,7 +113,10 @@
 					O.process()
 				return 1
 			else if(!(M == src && apply_pressure(M, M.zone_sel.selecting)))
-				help_shake_act(M)
+				if(M.zone_sel.selecting == O_MOUTH)
+					M.force_vomit(src)
+				else
+					help_shake_act(M)
 				return 1
 
 		if("grab")

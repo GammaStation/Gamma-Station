@@ -29,9 +29,15 @@
 	damage = 0
 
 /obj/item/organ/internal/proc/is_bruised()
+	// If not robotic, and owner has stabyzol in bloodstream, we are considered not bruised.
+	if(!robotic && owner.reagents.has_reagent("stabyzol"))
+		return FALSE
 	return damage >= min_bruised_damage
 
 /obj/item/organ/internal/proc/is_broken()
+	// If not robotic, and owner has stabyzol in bloodstream, we are considered not broken.
+	if(!robotic && owner.reagents.has_reagent("stabyzol"))
+		return FALSE
 	return damage >= min_broken_damage
 
 
@@ -208,7 +214,7 @@
 			to_chat(owner, "\red Your skin itches.")
 	if (germ_level > INFECTION_LEVEL_TWO)
 		if(prob(1))
-			INVOKE_ASYNC(owner, /mob/living/carbon/human.proc/vomit)
+			INVOKE_ASYNC(owner, /mob/living/carbon/human.proc/invoke_vomit)
 
 	if(owner.life_tick % process_accuracy == 0)
 		if(src.damage < 0)

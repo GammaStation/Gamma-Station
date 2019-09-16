@@ -492,14 +492,8 @@
 				L.Weaken(3)
 				if(ishuman(L))
 					shake_camera(L, 20, 1)
-					spawn(20)
-						if(L)
-							L.visible_message("<span class='danger'>[L.name] vomits from travelling through the [src.name]!</span>", "<span class='userdanger'>You throw up from travelling through the [src.name]!</span>")
-							L.nutrition -= 20
-							L.adjustToxLoss(-3)
-							var/turf/T = get_turf(L)
-							T.add_vomit_floor(L)
-							playsound(L, 'sound/effects/splat.ogg', 50, 1)
+					INVOKE_ASYNC(L, /mob/living/carbon/human.proc/invoke_vomit)
+
 
 
 /**********************Resonator**********************/
@@ -623,7 +617,7 @@
 	melee_damage_lower = 15
 	melee_damage_upper = 15
 	environment_smash = 0
-	attacktext = "drills"
+	attack_message = list("drills")
 	attack_sound = 'sound/weapons/circsawhit.ogg'
 	ranged = 1
 	ranged_message = "shoots"

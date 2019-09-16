@@ -20,7 +20,7 @@
 	harm_intent_damage = 8
 	melee_damage_lower = 15
 	melee_damage_upper = 15
-	attacktext = "bites"
+	attack_message = list("bites")
 	attack_sound = 'sound/weapons/bite.ogg'
 
 	//Space carp aren't affected by atmos.
@@ -85,7 +85,7 @@
 	melee_damage_lower = 400
 	melee_damage_upper = 400
 
-	attacktext = "licks"
+	attack_message = list("licks")
 
 	var/idle_snd_chance = 5
 

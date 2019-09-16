@@ -30,6 +30,7 @@
 	new /obj/item/clothing/under/rank/capcamsole(src)
 	new /obj/item/device/remote_device/captain(src)
 	new /obj/item/airbag(src)
+	new /obj/item/weapon/storage/pouch/pistol_holster(src)
 	#ifdef NEWYEARCONTENT
 	new /obj/item/clothing/suit/wintercoat/captain(src)
 	new /obj/item/clothing/head/santa(src)
@@ -60,6 +61,7 @@
 	new /obj/item/weapon/gun/energy/gun(src)
 	new /obj/item/device/flash(src)
 	new /obj/item/airbag(src)
+	new /obj/item/weapon/storage/pouch/pistol_holster(src)
 
 /obj/structure/closet/secure_closet/hop2
 	name = "Head of Personnel's Attire"
@@ -132,6 +134,8 @@
 	new /obj/item/clothing/under/rank/head_of_security/turtleneck(src)
 	new /obj/item/device/flashlight/seclite(src)
 	new /obj/item/airbag(src)
+	new /obj/item/weapon/storage/pouch/pistol_holster(src)
+	new /obj/item/weapon/storage/pouch/baton_holster(src)
 	#ifdef NEWYEARCONTENT
 	new /obj/item/clothing/suit/wintercoat/security(src)
 	new /obj/item/clothing/shoes/winterboots(src)
@@ -173,6 +177,8 @@
 	new /obj/item/weapon/melee/baton(src)
 	new /obj/item/weapon/storage/box/holobadge(src)
 	new /obj/item/device/flashlight/seclite(src)
+	new /obj/item/weapon/storage/pouch/pistol_holster(src)
+	new /obj/item/weapon/storage/pouch/baton_holster(src)
 	#ifdef NEWYEARCONTENT
 	new /obj/item/clothing/suit/wintercoat/security(src)
 	new /obj/item/clothing/shoes/winterboots(src)
@@ -211,6 +217,8 @@
 	new /obj/item/device/hailer(src)
 	new /obj/item/device/flashlight/flare(src)
 	new /obj/item/device/flashlight/seclite(src)
+	new /obj/item/weapon/storage/pouch/pistol_holster(src)
+	new /obj/item/weapon/storage/pouch/baton_holster(src)
 	#ifdef NEWYEARCONTENT
 	new /obj/item/clothing/suit/wintercoat/security(src)
 	new /obj/item/clothing/shoes/winterboots(src)
@@ -272,6 +280,7 @@
 	new /obj/item/taperoll/police(src)
 	new /obj/item/weapon/gun/projectile/automatic/colt1911/detective(src)
 	new /obj/item/clothing/accessory/holster/armpit(src)
+	new /obj/item/weapon/storage/pouch/pistol_holster(src)
 
 /obj/structure/closet/secure_closet/detective/update_icon()
 	if(broken)

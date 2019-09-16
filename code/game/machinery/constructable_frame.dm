@@ -248,7 +248,18 @@ to destroy them and players will be able to make replacements.
 							/obj/machinery/vending/coffee = "Getmore Chocolate Corp",
 							/obj/machinery/vending/snack = "Hot Drinks",
 							/obj/machinery/vending/cola = "Robust Softdrinks",
-							/obj/machinery/vending/cigarette = "Cigarette")
+							/obj/machinery/vending/cigarette = "Cigarette",
+							/obj/machinery/vending/barbervend = "Fab-O-Vend",
+							/obj/machinery/vending/chinese = "\improper Mr. Chang",
+							/obj/machinery/vending/medical = "NanoMed Plus",
+							/obj/machinery/vending/hydronutrients = "NutriMax",
+							/obj/machinery/vending/hydroseeds = "MegaSeed Servitor",
+							/obj/machinery/vending/dinnerware = "Dinnerware",
+							/obj/machinery/vending/tool = "YouTool",
+							/obj/machinery/vending/engivend = "Engi-Vend",
+							/obj/machinery/vending/clothing = "ClothesMate",
+							/obj/machinery/vending/blood = "Blood'O'Matic",
+							/obj/machinery/vending/security = "SecTech")
 //							/obj/machinery/vending/autodrobe = "AutoDrobe")
 
 		build_path = pick(names)
@@ -364,6 +375,25 @@ to destroy them and players will be able to make replacements.
 							/obj/item/weapon/stock_parts/manipulator = 1,
 							/obj/item/stack/cable_coil = 1,
 							/obj/item/weapon/stock_parts/console_screen = 2)
+
+/obj/item/weapon/circuitboard/bodyscanner
+	name = "circuit board (Bodyscanner)"
+	build_path = /obj/machinery/bodyscanner
+	board_type = "machine"
+	origin_tech = "programming=3;biotech=3;engineering=3;materials=2"
+	req_components = list(
+							/obj/item/weapon/stock_parts/manipulator = 2,
+							/obj/item/stack/cable_coil = 1,
+							/obj/item/weapon/stock_parts/console_screen = 2)
+
+/obj/item/weapon/circuitboard/body_scanconsole
+	name = "circuit board (Bodyscanner Console)"
+	build_path = /obj/machinery/body_scanconsole
+	board_type = "machine"
+	origin_tech = "programming=3;biotech=3;engineering=3;materials=2"
+	req_components = list(
+							/obj/item/stack/cable_coil = 1,
+							/obj/item/weapon/stock_parts/console_screen = 1)
 
 /obj/item/weapon/circuitboard/cryo_tube
 	name = "circuit board (Cryotube)"
