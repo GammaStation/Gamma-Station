@@ -16,7 +16,7 @@ var/list/supply_drops = list()
 	icon = 'icons/obj/computer-new.dmi'
 	icon_state = "comm"
 	light_color = "#00b000"
-	var/points = 3
+	var/points = 6
 
 /obj/machinery/computer/outpost_supply/atom_init()
 	..()
