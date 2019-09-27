@@ -97,10 +97,10 @@
 
 	if(((CLUMSY in user.mutations) || user.getBrainLoss() >= 60) && prob(50))
 		user.visible_message("<span class='warning'>[user] has analyzed the floor's vitals!</span>", "<span class = 'warning'>You try to analyze the floor's vitals!</span>")
-		message += "<span class='notice'>Analyzing Results for The floor:\n&emsp; Overall Status: Healthy</span><br>"
-		message += "<span class='notice'>&emsp; Damage Specifics: [0]-[0]-[0]-[0]</span><br>"
-		message += "<span class='notice'>Key: Suffocation/Toxin/Burns/Brute</span><br>"
-		message += "<span class='notice'>Body Temperature: ???</span>"
+		message += "<font color='blue'><i>Analyzing Results for The floor:\n&emsp; Overall Status: Healthy</i></font><br>"
+		message += "<font color='blue'><i>&emsp; Damage Specifics: [0]-[0]-[0]-[0]</i></font><br>"
+		message += "<font color='blue'><i>Key: Suffocation/Toxin/Burns/Brute</i></font><br>"
+		message += "<font color='blue'><i>Body Temperature: ???</i></font>"
 		user.show_message(message)
 		return
 	if(!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
@@ -115,56 +115,56 @@
 	var/BR = M.getBruteLoss() > 50 	? 	"<b>[M.getBruteLoss()]</b>" 	: M.getBruteLoss()
 	if(M.status_flags & FAKEDEATH)
 		OX = fake_oxy > 50 			? 	"<b>[fake_oxy]</b>" 			: fake_oxy
-		message += "<span class='notice'>Analyzing Results for [M]:\n&emsp; Overall Status: dead</span><br>"
+		message += "<font color='blue'><i>Analyzing Results for [M]:\n&emsp; Overall Status: dead</i></font><br>"
 	else
-		message += "<span class='notice'>Analyzing Results for [M]:\n&emsp; Overall Status: [M.stat > 1 ? "dead" : "[M.health - M.halloss]% healthy"]</span><br>"
+		message += "<font color='blue'><i>Analyzing Results for [M]:\n&emsp; Overall Status: [M.stat > 1 ? "dead" : "[M.health - M.halloss]% healthy"]</i></font><br>"
 	message += "&emsp; Key: <font color='blue'>Suffocation</font>/<font color='green'>Toxin</font>/<font color='#FFA500'>Burns</font>/<font color='red'>Brute</font><br>"
 	message += "&emsp; Damage Specifics: <font color='blue'>[OX]</font> - <font color='green'>[TX]</font> - <font color='#FFA500'>[BU]</font> - <font color='red'>[BR]</font><br>"
-	message += "<span class='notice'>Body Temperature: [M.bodytemperature-T0C]&deg;C ([M.bodytemperature*1.8-459.67]&deg;F)</span><br>"
+	message += "<font color='blue'><i>Body Temperature: [M.bodytemperature-T0C]&deg;C ([M.bodytemperature*1.8-459.67]&deg;F)</i></font><br>"
 	if(M.tod && (M.stat == DEAD || (M.status_flags & FAKEDEATH)))
-		message += "<span class='notice'>Time of Death: [M.tod]</span><br>"
+		message += "<font color='blue'><i>Time of Death: [M.tod]</i></font><br>"
 	if(istype(M, /mob/living/carbon/human) && mode)
 		var/mob/living/carbon/human/H = M
 		var/list/damaged = H.get_damaged_bodyparts(1, 1)
-		message += "<span class='notice'>Localized Damage, Brute/Burn:</span><br>"
+		message += "<font color='blue'><i>Localized Damage, Brute/Burn:</i></font><br>"
 		if(length(damaged))
 			for(var/obj/item/organ/external/BP in damaged)
-				message += "<span class='notice'>&emsp; [capitalize(BP.name)]: [(BP.brute_dam > 0) ? "<span class='warning'>[BP.brute_dam]</span>" : 0][(BP.status & ORGAN_BLEEDING) ? "<span class='warning bold'>\[Bleeding\]</span>" : "&emsp;"] - [(BP.burn_dam > 0) ? "<font color='#FFA500'>[BP.burn_dam]</font>" : 0]</span><br>"
+				message += "<font color='blue'><i>&emsp; [capitalize(BP.name)]: [(BP.brute_dam > 0) ? "<font color='red'><i>[BP.brute_dam]</i></font>" : 0][(BP.status & ORGAN_BLEEDING) ? "<font color='red'><i><b>\[Bleeding\]</b></i></font>" : "&emsp;"] - [(BP.burn_dam > 0) ? "<font color='#FFA500'>[BP.burn_dam]</font>" : 0]</i></font><br>"
 		else
-			message += "<span class='notice'>&emsp; Limbs are OK.</span><br>"
+			message += "<font color='blue'><i>&emsp; Limbs are OK.</span><br>"
 
 	OX = M.getOxyLoss() > 50 ? "<font color='blue'><b>Severe oxygen deprivation detected</b></font>" : "Subject bloodstream oxygen level normal"
 	TX = M.getToxLoss() > 50 ? "<font color='green'><b>Dangerous amount of toxins detected</b></font>" : "Subject bloodstream toxin level minimal"
 	BU = M.getFireLoss() > 50 ? "<font color='#FFA500'><b>Severe burn damage detected</b></font>" : "Subject burn injury status O.K"
 	BR = M.getBruteLoss() > 50 ? "<font color='red'><b>Severe anatomical damage detected</b></font>" : "Subject brute-force injury status O.K"
 	if(M.status_flags & FAKEDEATH)
-		OX = fake_oxy > 50 ? 		"<span class='warning'>Severe oxygen deprivation detected<span class='notice'>" : "Subject bloodstream oxygen level normal"
-	message += "[OX] | [TX] | [BU] | [BR]<br>"
+		OX = fake_oxy > 50 ? 		"<font color='red'><i>Severe oxygen deprivation detected</i></font>" : "Subject bloodstream oxygen level normal"
+	message += "[OX]<br>[TX]<br>[BU]<br>[BR]<br>"
 	if(istype(M, /mob/living/carbon))
 		var/mob/living/carbon/C = M
 		if(C.reagents.total_volume || C.is_infected_with_zombie_virus())
-			message += "<span class='warning'>Warning: Unknown substance detected in subject's blood.</span><br>"
+			message += "<font color='red'><i>Warning: Unknown substance detected in subject's blood.</i></font><br>"
 		if(C.virus2.len)
 			for (var/ID in C.virus2)
 				if (ID in virusDB)
 					var/datum/data/record/V = virusDB[ID]
-					message += "<span class='warning'>Warning: Pathogen [V.fields["name"]] detected in subject's blood. Known antigen : [V.fields["antigen"]]</span><br>"
+					message += "<font color='red'><i>Warning: Pathogen [V.fields["name"]] detected in subject's blood. Known antigen : [V.fields["antigen"]]</i></font><br>"
 //			user.show_message(text("\red Warning: Unknown pathogen detected in subject's blood."))
 	if(M.getCloneLoss())
 		user.show_message("<span class='warning'>Subject appears to have been imperfectly cloned.</span>")
 	for(var/datum/disease/D in M.viruses)
 		if(!D.hidden[SCANNER])
-			message += "<span class = 'warning bold'>Warning: [D.form] Detected</span>\n<span class = 'warning'>Name: [D.name].\nType: [D.spread].\nStage: [D.stage]/[D.max_stages].\nPossible Cure: [D.cure]</span><br>"
+			message += "<font color='red'><i><b>Warning: [D.form] Detected</span>\n<span class = 'warning'>Name: [D.name].\nType: [D.spread].\nStage: [D.stage]/[D.max_stages].\nPossible Cure: [D.cure]</i></font><br>"
 	if(M.reagents && M.reagents.get_reagent_amount("inaprovaline"))
-		message += "<span class='notice'>Bloodstream Analysis located [M.reagents:get_reagent_amount("inaprovaline")] units of rejuvenation chemicals.</span><br>"
+		message += "<font color='blue'><i>Bloodstream Analysis located [M.reagents:get_reagent_amount("inaprovaline")] units of rejuvenation chemicals.</i></font><br>"
 	if(M.has_brain_worms())
-		message += "<span class='warning'>Subject suffering from aberrant brain activity. Recommend further scanning.</span><br>"
+		message += "<font color='red'><i>Subject suffering from aberrant brain activity. Recommend further scanning.</i></font><br>"
 	else if(M.getBrainLoss() >= 100 || istype(M, /mob/living/carbon/human) && M:brain_op_stage == 4.0)
-		message += "<span class='warning'>Subject is brain dead.</span>"
+		message += "<font color='red'><i>Subject is brain dead.</i></font>"
 	else if(M.getBrainLoss() >= 60)
-		message += "<span class='warning'>Severe brain damage detected. Subject likely to have mental retardation.</span><br>"
+		message += "<font color='red'><i>Severe brain damage detected. Subject likely to have mental retardation.</i></font><br>"
 	else if(M.getBrainLoss() >= 10)
-		message += "<span class='warning'>Significant brain damage detected. Subject may have had a concussion.</span><br>"
+		message += "<font color='red'><i>Significant brain damage detected. Subject may have had a concussion.</i></font><br>"
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 
@@ -173,7 +173,7 @@
 		for(var/obj/item/organ/external/BP in H.bodyparts)
 			if(BP.status & ORGAN_BROKEN)
 				if(((BP.body_zone == BP_L_ARM) || (BP.body_zone == BP_R_ARM) || (BP.body_zone == BP_L_LEG) || (BP.body_zone == BP_R_LEG)) && !(BP.status & ORGAN_SPLINTED))
-					message += "<span class='warning'>Unsecured fracture in subject [BP.name]. Splinting recommended for transport.</span><br>"
+					message += "<font color='red'><i>Unsecured fracture in subject [BP.name]. Splinting recommended for transport.</i></font><br>"
 				if(!found_broken)
 					found_broken = TRUE
 
@@ -181,12 +181,12 @@
 				found_bleed = TRUE
 
 			if(BP.has_infected_wound())
-				message += "<span class='warning'>Infected wound detected in subject [BP.name]. Disinfection recommended.</span><br>"
+				message += "<font color='red'><i>Infected wound detected in subject [BP.name]. Disinfection recommended.</i></font><br>"
 
 		if(found_bleed)
-			message += "<span class='warning'>Arterial bleeding detected. Advanced scanner required for location.</span><br>"
+			message += "<font color='red'><i>Arterial bleeding detected. Advanced scanner required for location.</i></font><br>"
 		if(found_broken)
-			message += "<span class='warning'>Bone fractures detected. Advanced scanner required for location.</span><br>"
+			message += "<font color='red'><i>Bone fractures detected. Advanced scanner required for location.</i></font><br>"
 
 		if(H.vessel)
 			var/blood_volume = round(H.vessel.get_reagent_amount("blood"))
@@ -194,17 +194,17 @@
 			var/blood_type = H.dna.b_type
 			blood_percent *= 100
 			if(blood_volume <= 500 && blood_volume > 336)
-				message += "<span class='warning bold'>Warning: Blood Level LOW: [blood_percent]% [blood_volume]cl.</span><span class='notice'>Type: [blood_type]</span><br>"
+				message += "<font color='red'><i><b>Warning: Blood Level LOW: [blood_percent]% [blood_volume]cl.</b></i></font><font color='blue'><i><b>Type: [blood_type]</b></i></font><br>"
 			else if(blood_volume <= 336)
-				message += "<span class='warning bold'>Warning: Blood Level CRITICAL: [blood_percent]% [blood_volume]cl.</span><span class='notice bold'>Type: [blood_type]</span><br>"
+				message += "<font color='red'><i><b>Warning: Blood Level CRITICAL: [blood_percent]% [blood_volume]cl.</b></i></font><font color='blue'><i><b>Type: [blood_type]</b></i></font><br>"
 			else
-				message += "<span class='notice'>Blood Level Normal: [blood_percent]% [blood_volume]cl. Type: [blood_type]</span><br>"
-		message += "<span class='notice'>Subject's pulse: <font color='[H.pulse == PULSE_THREADY || H.pulse == PULSE_NONE ? "red" : "blue"]'>[H.get_pulse(GETPULSE_TOOL)] bpm.</font></span><br>"
+				message += "<font color='blue'><i>Blood Level Normal: [blood_percent]% [blood_volume]cl. Type: [blood_type]</i></font><br>"
+		message += "<font color='blue'><i>Subject's pulse: <font color='[H.pulse == PULSE_THREADY || H.pulse == PULSE_NONE ? "red" : "blue"]'>[H.get_pulse(GETPULSE_TOOL)] bpm.</font></i></font><br>"
 	add_fingerprint(user)
 
 	if(user.client && !user.client.prefs.analyzis_to_chat)
 		message += "</BODY></HTML>"
-		user << browse(entity_ja(message), "window=[M.name]_scan_report")
+		user << browse(entity_ja(message), "window=[M.name]_scan_report;size=400x400;can_resize=1")
 		onclose(user, "[M.name]_scan_report")
 	else
 		user.show_message(message)
