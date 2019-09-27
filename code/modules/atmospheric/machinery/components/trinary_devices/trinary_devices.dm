@@ -56,8 +56,8 @@
 
 /obj/machinery/atmospherics/components/trinary/mixer/t_mixer/getNodeConnects()
 	var/node1_connect = turn(dir, -90)
-	var/node2_connect = dir
-	var/node3_connect = turn(dir, 90)
+	var/node2_connect = turn(dir, 90)
+	var/node3_connect =	dir
 
 	return list(node1_connect, node2_connect, node3_connect)
 

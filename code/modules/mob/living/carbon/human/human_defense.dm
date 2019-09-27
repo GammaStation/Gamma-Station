@@ -272,7 +272,11 @@
 			visible_message("<span class='notice'>[src] attempted to touch [src], missing narrowly.</span>")
 			return
 
-	var/target_zone = def_zone? check_zone(def_zone) : get_zone_with_miss_chance(user.zone_sel.selecting, src)
+	var/target_zone
+	if(isanimal(user))
+		target_zone = get_zone_with_miss_chance(pick(bodyparts_by_name), src)
+	else
+		target_zone = def_zone? check_zone(def_zone) : get_zone_with_miss_chance(user.zone_sel.selecting, src)
 
 	if(user == src) // Attacking yourself can't miss
 		target_zone = user.zone_sel.selecting

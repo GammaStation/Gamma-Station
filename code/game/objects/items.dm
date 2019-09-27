@@ -440,6 +440,12 @@
 // apparently called whenever an item is removed from a slot, container, or anything else.
 /obj/item/proc/dropped(mob/user)
 	remove_actions(user)
+	update_twohanding()
+	if(user)
+		if(user.l_hand)
+			user.l_hand.update_twohanding()
+		if(user.r_hand)
+			user.r_hand.update_twohanding()
 	if(DROPDEL & flags)
 		qdel(src)
 
@@ -465,6 +471,14 @@
 // for items that can be placed in multiple slots
 // note this isn't called during the initial dressing of a player
 /obj/item/proc/equipped(mob/user, slot)
+	//Update two-handing status
+	var/mob/M = loc
+	if(!istype(M))
+		return
+	if(M.l_hand)
+		M.l_hand.update_twohanding()
+	if(M.r_hand)
+		M.r_hand.update_twohanding()
 	return
 
 //Called after the initial dressing of a player

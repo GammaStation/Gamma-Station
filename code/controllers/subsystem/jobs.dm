@@ -25,7 +25,7 @@ var/datum/subsystem/job/SSjob
 	..()
 
 
-/datum/subsystem/job/proc/SetupOccupations(faction = "Station")
+/datum/subsystem/job/proc/SetupOccupations(faction = "Outpost")
 	occupations = list()
 	var/list/all_jobs = typesof(/datum/job)
 	if(!all_jobs.len)
@@ -461,7 +461,7 @@ var/datum/subsystem/job/SSjob
 			if("AI")
 				return H
 			if("Clown")	//don't need bag preference stuff!
-			else
+			else if(job.faction == "Station")
 				switch(H.backbag) //BS12 EDIT
 					if(1)
 						H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
@@ -502,7 +502,9 @@ var/datum/subsystem/job/SSjob
 	if(job.req_admin_notify)
 		to_chat(H, "<b>You are playing a job that is important for Game Progression. If you have to disconnect, please notify the admins via adminhelp.</b>")
 
-	spawnId(H, rank, alt_title)
+	if(!job.special_id_handling)
+		spawnId(H, rank, alt_title)
+
 	H.equip_to_slot_or_del(new /obj/item/device/radio/headset(H), slot_l_ear)
 
 	//Gives glasses to the vision impaired

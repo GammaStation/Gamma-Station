@@ -862,6 +862,119 @@ proc/anim(turf/location,target,a_icon,a_icon_state,flick_anim,sleeptime = 0,dire
 					refined_trg -= B
 					continue moving
 
+/area/proc/move_contents_to_new(area/A, turftoleave=null, direction = null)
+	//Takes: Area. Optional: turf type to leave behind.
+	//Returns: Nothing.
+	//Notes: Attempts to move the contents of one area to another area.
+	//       Movement based on lower left corner. Tiles that do not fit
+	//		 into the new area will not be moved.
+
+	if(!A || !src) return 0
+
+	var/list/turfs_src = get_area_turfs(src.type)
+	var/list/turfs_trg = get_area_turfs(A.type)
+
+	var/src_min_x = 0
+	var/src_min_y = 0
+	for (var/turf/T in turfs_src)
+		if(T.x < src_min_x || !src_min_x) src_min_x	= T.x
+		if(T.y < src_min_y || !src_min_y) src_min_y	= T.y
+
+	var/trg_min_x = 0
+	var/trg_min_y = 0
+	for (var/turf/T in turfs_trg)
+		if(T.x < trg_min_x || !trg_min_x) trg_min_x	= T.x
+		if(T.y < trg_min_y || !trg_min_y) trg_min_y	= T.y
+
+	var/list/refined_src = new/list()
+	for(var/turf/T in turfs_src)
+		refined_src += T
+		refined_src[T] = new/datum/coords
+		var/datum/coords/C = refined_src[T]
+		C.x_pos = (T.x - src_min_x)
+		C.y_pos = (T.y - src_min_y)
+
+	var/list/refined_trg = new/list()
+	for(var/turf/T in turfs_trg)
+		refined_trg += T
+		refined_trg[T] = new/datum/coords
+		var/datum/coords/C = refined_trg[T]
+		C.x_pos = (T.x - trg_min_x)
+		C.y_pos = (T.y - trg_min_y)
+
+	moving:
+		for (var/turf/T in refined_src)
+			var/datum/coords/C_src = refined_src[T]
+			for (var/turf/B in refined_trg)
+				var/datum/coords/C_trg = refined_trg[B]
+				if(C_src.x_pos == C_trg.x_pos && C_src.y_pos == C_trg.y_pos)
+
+					//You can stay, though.
+					if(istype(T,/turf/space))
+						refined_src -= T
+						refined_trg -= B
+						continue moving
+
+					var/turf/X //New Destination Turf
+
+					//Are we doing shuttlework? Just to save another type check later.
+					var/shuttlework = 0
+
+					//Shuttle turfs handle their own fancy moving.
+					if(istype(T,/turf/simulated/shuttle))
+						shuttlework = 1
+						var/turf/simulated/shuttle/SS = T
+						if(!SS.landed_holder) SS.landed_holder = new(turf = SS)
+						X = SS.landed_holder.land_on(B)
+
+					//Generic non-shuttle turf move.
+					else
+						var/old_dir1 = T.dir
+						var/old_icon_state1 = T.icon_state
+						var/old_icon1 = T.icon
+						var/old_underlays = T.underlays.Copy()
+						var/old_overlays = T.overlays.Copy()
+
+						X = B.ChangeTurf(T.type)
+						X.set_dir(old_dir1)
+						X.icon_state = old_icon_state1
+						X.icon = old_icon1
+						X.overlays = old_overlays
+						X.underlays = old_underlays
+
+					//Move the air from source to dest
+					var/turf/simulated/ST = T
+					if(istype(ST) && ST.zone)
+						var/turf/simulated/SX = X
+						if(!SX.air)
+							SX.make_air()
+						SX.air.copy_from(ST.zone.air)
+						ST.zone.remove(ST)
+
+					//Move the objects. Not forceMove because the object isn't "moving" really, it's supposed to be on the "same" turf.
+					for(var/obj/O in T)
+						O.loc = X
+						O.update_light()
+						if (length(O.client_mobs_in_contents))
+							O.update_parallax_contents()
+
+					//Move the mobs unless it's an AI eye or other eye type.
+					for(var/mob/M in T)
+						if(istype(M, /mob/camera)) continue // If we need to check for more mobs, I'll add a variable
+						M.loc = X
+						M.update_parallax_contents()
+
+					if(shuttlework)
+						var/turf/simulated/shuttle/SS = T
+						SS.landed_holder.leave_turf()
+					else if(turftoleave)
+						T.ChangeTurf(turftoleave)
+					else
+						T.ChangeTurf(get_base_turf_by_area(T))
+
+					refined_src -= T
+					refined_trg -= B
+					continue moving
 
 proc/DuplicateObject(obj/original, perfectcopy = 0 , sameloc = 0)
 	if(!original)
@@ -1606,3 +1719,32 @@ var/list/WALLITEMS = typecacheof(list(
 	else if(hol_dir == WEST && (hit_dir in list(EAST, NORTHEAST, SOUTHEAST)))
 		return TRUE
 	return FALSE
+
+#define CORNER_NONE 0
+#define CORNER_COUNTERCLOCKWISE 1
+#define CORNER_DIAGONAL 2
+#define CORNER_CLOCKWISE 4
+
+/proc/dirs_to_corner_states(list/dirs)
+	if(!istype(dirs))
+		return
+
+	var/list/ret = list(NORTHWEST, SOUTHEAST, NORTHEAST, SOUTHWEST)
+
+	for(var/i = 1 to ret.len)
+		var/dir = ret[i]
+		. = CORNER_NONE
+		if(dir in dirs)
+			. |= CORNER_DIAGONAL
+		if(turn(dir,45) in dirs)
+			. |= CORNER_COUNTERCLOCKWISE
+		if(turn(dir,-45) in dirs)
+			. |= CORNER_CLOCKWISE
+		ret[i] = "[.]"
+
+	return ret
+
+#undef CORNER_NONE
+#undef CORNER_COUNTERCLOCKWISE
+#undef CORNER_DIAGONAL
+#undef CORNER_CLOCKWISE

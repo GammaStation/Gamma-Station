@@ -499,6 +499,7 @@ var/list/wood_icons = list("wood","wood-broken")
 
 	if(istype(C, /obj/item/weapon/crowbar) && (!(is_plating())))
 		if(broken || burnt)
+			overlays.Cut()
 			to_chat(user, "\red You remove the broken plating.")
 		else
 			if(is_wood_floor())

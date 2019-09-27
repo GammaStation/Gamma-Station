@@ -1,6 +1,7 @@
 /obj/item/weapon/gun/energy/gun
 	name = "energy gun"
 	desc = "A basic energy-based gun with two settings: Stun and kill."
+	icon = 'icons/obj/guns/energy/pistols.dmi'
 	icon_state = "energy"
 	item_state = null	//so the human update icon uses the icon_state instead.
 	ammo_type = list(/obj/item/ammo_casing/energy/stun, /obj/item/ammo_casing/energy/laser)
@@ -14,26 +15,6 @@
 		user.update_inv_l_hand()
 	else
 		user.update_inv_r_hand()
-
-/obj/item/weapon/gun/energy/gun/carbine
-	name = "energy carbine"
-	desc = "A basic energy-based carbine with two settings: Stun and kill."
-	icon = 'icons/obj/gun.dmi'
-	icon_state = "ecar"
-	icon_custom = null
-
-/obj/item/weapon/gun/energy/gun/carbine/atom_init()
-	. = ..()
-	if(power_supply)
-		power_supply.maxcharge = 1500
-		power_supply.charge = 1500
-
-/obj/item/weapon/gun/energy/gun/pistol
-	icon = 'icons/obj/gun.dmi'
-	icon_state = "egun"
-	icon_custom = null
-	fire_delay = 0
-	ammo_type = list(/obj/item/ammo_casing/energy/stun, /obj/item/ammo_casing/energy/laser_pulse)
 
 /obj/item/weapon/gun/energy/gun/nuclear
 	name = "Advanced Energy Gun"

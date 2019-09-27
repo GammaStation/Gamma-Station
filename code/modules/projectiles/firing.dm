@@ -19,7 +19,10 @@
 		return
 	BB.original = target
 	BB.firer = user
-	BB.def_zone = user.zone_sel.selecting
+	if(isanimal(user))
+		BB.def_zone = get_zone_with_miss_chance("chest", target)
+	else
+		BB.def_zone = user.zone_sel.selecting
 	BB.silenced = quiet
 	return
 

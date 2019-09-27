@@ -2004,13 +2004,13 @@ datum/design/large_grenade
 	build_path = /obj/item/ammo_box/magazine/l10mag
 
 datum/design/smg
-	name = "Submachine Gun"
+	name = "Saber submachine Gun"
 	desc = "A lightweight, fast firing gun."
 	id = "smg"
 	req_tech = list("combat" = 4, "materials" = 3)
 	build_type = PROTOLATHE
 	materials = list(MAT_METAL = 8000, MAT_SILVER = 2000, MAT_DIAMOND = 1000)
-	build_path = /obj/item/weapon/gun/projectile/automatic
+	build_path = /obj/item/weapon/gun/projectile/automatic/smg
 
 datum/design/ammo_9mm
 	name = "Ammunition Box (9mm)"

@@ -34,6 +34,7 @@
 
 	var/in_use_action = FALSE // do_after sets this to TRUE and is_busy() can check for that to disallow multiple users to interact with this at the same time.
 
+	var/bypass_icon = null
 /atom/New(loc, ...)
 	if(use_preloader && (src.type == _preloader.target_path))//in case the instanciated atom is creating other atoms in New()
 		_preloader.load(src)
@@ -76,6 +77,7 @@
 		var/turf/T = src.loc
 		T.has_opaque_atom = TRUE // No need to recalculate it in this case, it's guaranteed to be on afterwards anyways.
 
+	get_bypass_icon()
 	return INITIALIZE_HINT_NORMAL
 
 //called if atom_init returns INITIALIZE_HINT_LATELOAD
@@ -535,3 +537,7 @@
 
 	if(changed)
 		animate(src, transform = ntransform, time = 2, easing = EASE_IN|EASE_OUT)
+
+/atom/proc/get_bypass_icon()
+	if(bypass_icon && fexists(bypass_icon))
+		icon = file(bypass_icon)

@@ -107,9 +107,10 @@
  */
 /obj/item/weapon/twohanded/fireaxe  // DEM AXES MAN, marker -Agouri
 	icon_state = "fireaxe0"
+	item_state = "fireaxe0"
 	name = "fire axe"
 	desc = "Truly, the weapon of a madman. Who would think to fight fire with an axe?"
-	force = 5
+	force = 10
 	sharp = 1
 	edge = 1
 	w_class = 4.0
@@ -120,20 +121,8 @@
 
 /obj/item/weapon/twohanded/fireaxe/update_icon()  //Currently only here to fuck with the on-mob icons.
 	icon_state = "fireaxe[wielded]"
+	item_state = "fireaxe[wielded]"
 	return
-
-/obj/item/weapon/twohanded/fireaxe/afterattack(atom/A, mob/user, proximity)
-	if(!proximity) return
-	..()
-	if(A && wielded) //destroys windows and grilles in one hit
-		if(istype(A,/obj/structure/window)) //should just make a window.Break() proc but couldn't bother with it
-			var/obj/structure/window/W = A
-			W.shatter()
-		else if(istype(A,/obj/structure/grille))
-			var/obj/structure/grille/G = A
-			new /obj/item/stack/rods(G.loc)
-			qdel(A)
-
 
 /*
  * Double-Bladed Energy Swords - Cheridan

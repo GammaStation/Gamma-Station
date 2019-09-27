@@ -17,6 +17,8 @@
 	actions_types = /datum/action/item_action/attack_self
 	var/obj/item/ammo_casing/chambered = null
 	var/fire_sound = 'sound/weapons/Gunshot.ogg'
+	var/load_sound = null
+	var/unload_sound = null
 	var/silenced = 0
 	var/recoil = 0
 	var/clumsy_check = 1
@@ -38,6 +40,19 @@
 	lefthand_file = 'icons/mob/inhands/guns_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/guns_righthand.dmi'
 
+	var/wielded = FALSE
+	var/twohands_required = FALSE
+
+/obj/item/weapon/gun/update_twohanding()
+	if(twohands_required)
+		var/mob/living/M = loc
+		if(istype(M) && is_held_twohanded(M))
+			wielded = TRUE
+		else
+			wielded = FALSE
+		update_icon()
+		..()
+
 /obj/item/weapon/gun/proc/ready_to_fire()
 	if(world.time >= last_fired + fire_delay)
 		last_fired = world.time
@@ -50,6 +65,9 @@
 
 /obj/item/weapon/gun/proc/special_check(mob/M, atom/target) //Placeholder for any special checks, like detective's revolver. or wizards
 	if(M.mind && M.mind.special_role == "Wizard")
+		return FALSE
+	if(!wielded && twohands_required && ishuman(M))
+		to_chat(M, "<span class='red'>You must hold [src.name] in both hands in order to fire!</span>")
 		return FALSE
 	return TRUE
 
