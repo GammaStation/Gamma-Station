@@ -49,8 +49,8 @@
 //		to_chat(world,"[S] - [i] - [tier] -[S.mobs_list.len]")
 	current_wave++
 
-	if(tier < 3)
-		wave_coeff += 1
+//	if(tier < 3)
+//		wave_coeff += 1
 	if((current_wave/2 > tier) && (tier < 3))
 		tier++
 
