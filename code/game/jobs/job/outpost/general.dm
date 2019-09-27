@@ -11,6 +11,7 @@
 	access = list()
 	minimal_player_age = 0
 	minimal_player_ingame_minutes = 0
+	restricted_species = list(DIONA, TAJARAN, UNATHI, SKRELL, IPC, TYCHEON)
 
 /datum/job/crewman/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(!H)	return FALSE
