@@ -7,7 +7,7 @@ var/list/tier_2 = list(/mob/living/simple_animal/hostile/hellspawn/imp = 5,\
 						/mob/living/simple_animal/hostile/hellspawn/imp/fast = 3,)
 
 var/list/tier_3 = list(/mob/living/simple_animal/hostile/hellspawn/imp/fire/dark = 4,\
-						/mob/living/simple_animal/hostile/hellspawn/hellknight = 2,\
+						/mob/living/simple_animal/hostile/hellspawn/hellknight = 1,\
 						/mob/living/simple_animal/hostile/hellspawn/mancubus/cyber = 1)
 
 /obj/effect/mob_spawner
