@@ -3,8 +3,8 @@ var/datum/configuration/config = null
 var/host = null
 var/join_motd = null
 var/station_name = "NFS Gamma"
-var/game_version = "TauCetiStation"
-var/game_year = (text2num(time2text(world.realtime, "YYYY")) + 544)
+var/game_version = "GammaStation"
+var/game_year = (text2num(time2text(world.realtime, "YYYY")) + 218)
 var/changelog_hash = ""
 
 var/list/donators = list()

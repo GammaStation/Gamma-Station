@@ -27,7 +27,7 @@ var/datum/subsystem/atoms/SSatoms
 	setupGenetics() // to set the mutations' place in structural enzymes, so monkey.initialize() knows where to put the monkey mutation.
 	initialized = INITIALIZATION_INNEW_MAPLOAD
 	InitializeAtoms()
-	color_windows_init()
+//	color_windows_init()
 	..()
 
 /datum/subsystem/atoms/proc/InitializeAtoms(list/atoms)

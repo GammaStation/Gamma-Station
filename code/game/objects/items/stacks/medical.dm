@@ -8,6 +8,7 @@
 	full_w_class = ITEM_SIZE_SMALL
 	throw_speed = 4
 	throw_range = 20
+	multiple_sprites = TRUE
 	var/heal_brute = 0
 	var/heal_burn = 0
 
@@ -55,7 +56,12 @@
 		user.visible_message("<span class='notice'>[M] has been applied with [src] by [user].</span>", \
 							"<span class='notice'>You apply \the [src] to [M].</span>")
 		use(1)
+		update_icon()
 	M.updatehealth()
+
+/obj/item/stack/medical/update_icon()
+	if(multiple_sprites)
+		icon_state = "[initial(icon_state)]-[amount]"
 
 /obj/item/stack/medical/bruise_pack
 	name = "roll of gauze"
@@ -63,6 +69,8 @@
 	desc = "Some sterile gauze to wrap around bloody stumps."
 	icon_state = "brutepack"
 	origin_tech = "biotech=1"
+	amount = 6
+	max_amount = 6
 
 /obj/item/stack/medical/bruise_pack/attack(mob/living/carbon/M, mob/user, def_zone)
 	if(..())
@@ -127,6 +135,8 @@
 	icon_state = "ointment"
 	heal_burn = 1
 	origin_tech = "biotech=1"
+	amount = 6
+	max_amount = 6
 
 /obj/item/stack/medical/ointment/attack(mob/living/carbon/M, mob/user, def_zone)
 	if(..())
@@ -168,6 +178,7 @@
 	icon = 'icons/obj/harvest.dmi'
 	icon_state = "shandp"
 	heal_brute = 7
+	multiple_sprites = FALSE
 
 /obj/item/stack/medical/ointment/tajaran
 	name = "\improper Messa's Tear petals"
@@ -176,6 +187,7 @@
 	icon = 'icons/obj/harvest.dmi'
 	icon_state = "mtearp"
 	heal_burn = 7
+	multiple_sprites = FALSE
 
 /obj/item/stack/medical/advanced/bruise_pack
 	name = "advanced trauma kit"
@@ -184,6 +196,7 @@
 	icon_state = "traumakit"
 	heal_brute = 12
 	origin_tech = "biotech=1"
+	multiple_sprites = FALSE
 
 /obj/item/stack/medical/advanced/bruise_pack/attack(mob/living/carbon/M, mob/user, def_zone)
 	if(..())
@@ -244,6 +257,7 @@
 	icon_state = "burnkit"
 	heal_burn = 12
 	origin_tech = "biotech=1"
+	multiple_sprites = FALSE
 
 /obj/item/stack/medical/advanced/ointment/attack(mob/living/carbon/M, mob/user, def_zone)
 	if(..())
@@ -289,6 +303,7 @@
 	max_amount = 5
 	w_class = ITEM_SIZE_SMALL
 	full_w_class = ITEM_SIZE_SMALL
+	multiple_sprites = FALSE
 
 /obj/item/stack/medical/splint/attack(mob/living/carbon/M, mob/user, def_zone)
 	if(..())

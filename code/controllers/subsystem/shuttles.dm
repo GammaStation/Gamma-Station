@@ -113,7 +113,7 @@ var/datum/subsystem/shuttle/SSshuttle
 					var/area/start_location = locate(/area/shuttle/escape/transit)
 					var/area/end_location = locate(/area/shuttle/escape/centcom)
 
-					start_location.move_contents_to(end_location, null, NORTH)
+					start_location.move_contents_to_new(end_location, null, NORTH)
 
 					dock_act(end_location, "shuttle_escape")
 
@@ -153,7 +153,7 @@ var/datum/subsystem/shuttle/SSshuttle
 					start_location = locate(/area/shuttle/escape_pod2/transit)
 					end_location = locate(/area/shuttle/escape_pod2/centcom)
 					if( prob(5) ) // 5% that they survive
-						start_location.move_contents_to(end_location, null, NORTH)
+						start_location.move_contents_to_new(end_location, null, NORTH)
 
 					for(var/obj/machinery/door/D in machines)
 						if( get_area(D) == end_location )
@@ -263,18 +263,18 @@ var/datum/subsystem/shuttle/SSshuttle
 					pest.gib()
 					CHECK_TICK
 
-				start_location.move_contents_to(end_location)
+				start_location.move_contents_to_new(end_location)
 
 				dock_act(end_location, "shuttle_escape")
 				dock_act(/area/hallway/secondary/exit, "arrival_escape")
 
 				settimeleft(SHUTTLELEAVETIME)
-				if(alert == 0)
+/*				if(alert == 0)
 					captain_announce("The Emergency Shuttle has docked with the station. You have [round(timeleft()/60,1)] minutes to board the Emergency Shuttle.")
 					world << sound('sound/AI/shuttledock.ogg')
 				else
 					captain_announce("The scheduled Crew Transfer Shuttle has docked with the station. It will depart in approximately [round(timeleft()/60,1)] minutes.")
-
+*/
 				send2slack_service("the shuttle has docked with the station")
 
 				return 1
@@ -314,7 +314,7 @@ var/datum/subsystem/shuttle/SSshuttle
 				var/area/end_location = locate(/area/shuttle/escape/transit)
 				end_location.parallax_movedir = WEST
 				settimeleft(SHUTTLETRANSITTIME)
-				start_location.move_contents_to(end_location, null, NORTH)
+				start_location.move_contents_to_new(end_location, null, NORTH)
 
 				// Some aesthetic turbulance shaking
 				for(var/mob/M in end_location)
@@ -334,7 +334,7 @@ var/datum/subsystem/shuttle/SSshuttle
 					start_location = locate(/area/shuttle/escape_pod1/station)
 					end_location = locate(/area/shuttle/escape_pod1/transit)
 					end_location.parallax_movedir = EAST
-					start_location.move_contents_to(end_location, null, NORTH)
+					start_location.move_contents_to_new(end_location, null, NORTH)
 					for(var/obj/machinery/door/D in end_location)
 						D.close()
 						CHECK_TICK
@@ -353,7 +353,7 @@ var/datum/subsystem/shuttle/SSshuttle
 					start_location = locate(/area/shuttle/escape_pod2/station)
 					end_location = locate(/area/shuttle/escape_pod2/transit)
 					end_location.parallax_movedir = EAST
-					start_location.move_contents_to(end_location, null, NORTH)
+					start_location.move_contents_to_new(end_location, null, NORTH)
 					for(var/obj/machinery/door/D in end_location)
 						D.close()
 						CHECK_TICK
@@ -372,7 +372,7 @@ var/datum/subsystem/shuttle/SSshuttle
 					start_location = locate(/area/shuttle/escape_pod3/station)
 					end_location = locate(/area/shuttle/escape_pod3/transit)
 					end_location.parallax_movedir = EAST
-					start_location.move_contents_to(end_location, null, NORTH)
+					start_location.move_contents_to_new(end_location, null, NORTH)
 					for(var/obj/machinery/door/D in end_location)
 						D.close()
 						CHECK_TICK
@@ -406,11 +406,11 @@ var/datum/subsystem/shuttle/SSshuttle
 								if(!M.buckled)
 									M.Weaken(5)
 						CHECK_TICK
-
+/*
 					captain_announce("The Emergency Shuttle has left the station. Estimate [round(timeleft()/60,1)] minutes until the shuttle docks at Central Command.")
 				else
 					captain_announce("The Crew Transfer Shuttle has left the station. Estimate [round(timeleft()/60,1)] minutes until the shuttle docks at Central Command.")
-
+*/
 				return 1
 
 		else
@@ -607,6 +607,8 @@ var/datum/subsystem/shuttle/SSshuttle
 	// During mutiny rounds, the shuttle takes twice as long.
 	if(ticker && istype(ticker.mode,/datum/game_mode/mutiny))
 		return SHUTTLEARRIVETIME * 2
+	else if(ticker && istype(ticker.mode,/datum/game_mode/survival))
+		return SHUTTLEARRIVETIME * 6
 
 	return SHUTTLEARRIVETIME
 

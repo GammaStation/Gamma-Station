@@ -4161,6 +4161,31 @@
 	trash = /obj/item/trash/candy
 	filling_color = "#7D5F46"
 
+/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar
+	name = "protein bar"
+	desc = "SwoleMAX brand protein bars, guaranteed to get you feeling perfectly overconfident."
+	icon_state = "proteinbar"
+	trash = /obj/item/trash/proteinbar
+	filling_color = "#7D5F46"
+
+/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar/atom_init()
+	. = ..()
+	reagents.add_reagent("nutriment", 10)
+	reagents.add_reagent("sugar", 4)
+
+/obj/item/weapon/reagent_containers/food/snacks/candy/fruitbar
+	name = "protein bar"
+	desc = "Getmore brand fruit bars, sweet and healthy."
+	icon_state = "fruitbar"
+	trash = /obj/item/trash/fruitbar
+	filling_color = "#7D5F46"
+
+/obj/item/weapon/reagent_containers/food/snacks/candy/fruitbar/atom_init()
+	. = ..()
+	reagents.add_reagent("nutriment", 8)
+	reagents.add_reagent("orangejuice", 2)
+	reagents.add_reagent("sugar", 2)
+
 /obj/item/weapon/reagent_containers/food/snacks/candy/rice
 	name = "Asteroid Crunch Bar"
 	desc = "Crunchy rice deposits in delicious chocolate! A favorite of miners galaxy-wide."

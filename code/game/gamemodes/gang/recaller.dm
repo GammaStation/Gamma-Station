@@ -184,11 +184,11 @@
 					points = 10
 			if("pistol")
 				if(points >= 35)
-					item_type = /obj/item/weapon/gun/projectile/automatic/pistol
+					item_type = /obj/item/weapon/gun/projectile/pistol/syndicate
 					points = 35
 			if("9mmammo")
 				if(points >= 10)
-					item_type = /obj/item/ammo_box/magazine/m9mm
+					item_type = /obj/item/ammo_box/magazine/m9mm_pistol
 					points = 10
 			if("uzi")
 				if(points >= 70)

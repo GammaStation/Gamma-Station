@@ -223,17 +223,17 @@
 		return
 
 
-	overlays += image('icons/obj/power.dmi', "smes-op[online]")
+	overlays += image(icon, "smes-op[online]")
 
 	if(charging)
-		overlays += image('icons/obj/power.dmi', "smes-oc1")
+		overlays += image(icon, "smes-oc1")
 	else
 		if(chargemode)
-			overlays += image('icons/obj/power.dmi', "smes-oc0")
+			overlays += image(icon, "smes-oc0")
 
 	var/clevel = chargedisplay()
 	if(clevel>0)
-		overlays += image('icons/obj/power.dmi', "smes-og[clevel]")
+		overlays += image(icon, "smes-og[clevel]")
 	return
 
 

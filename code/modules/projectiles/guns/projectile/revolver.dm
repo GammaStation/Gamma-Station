@@ -230,28 +230,6 @@
 	else
 		to_chat(user, "<span class='notice'>[src] is empty.</span>")
 
-/obj/item/weapon/gun/projectile/revolver/flare
-	name = "flare gun"
-	desc = "Fires flares."
-	icon_state = "flaregun"
-	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/flaregun
-
-/obj/item/weapon/gun/projectile/revolver/detective/dungeon
-	desc = "A a six-shot double-action revolver."
-	name = "Smith & Wesson Model 10"
-	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev38/dungeon
-
-/obj/item/weapon/gun/projectile/revolver/doublebarrel/dungeon
-	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/dualshot/dungeon
-
-/obj/item/weapon/gun/projectile/revolver/doublebarrel/dungeon/sawn_off
-	icon_state = "sawnshotgun"
-	w_class = 3.0
-	slot_flags = SLOT_BELT
-	name = "sawn-off shotgun"
-	desc = "Omar's coming!"
-	short = 1
-
 /obj/item/weapon/gun/projectile/revolver/syndie
 	name = "revolver"
 	desc = "A powerful revolver, very popular among mercenaries and pirates. Uses .357 ammo."

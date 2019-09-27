@@ -19,6 +19,7 @@
 	var/merge_type = null               // This path and its children should merge with this stack, defaults to src.type
 	var/full_w_class = ITEM_SIZE_NORMAL // The weight class the stack should have at amount > 2/3rds max_amount
 	var/is_fusion_fuel
+	var/multiple_sprites = FALSE
 
 /obj/item/stack/atom_init(mapload, new_amount = null, merge = FALSE)
 	. = ..()

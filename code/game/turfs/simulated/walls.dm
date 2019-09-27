@@ -22,6 +22,8 @@
 
 	var/walltype = "metal"
 	var/sheet_type = /obj/item/stack/sheet/metal
+	var/girder = /obj/structure/girder
+	var/base_plating = /turf/simulated/floor/plating
 
 /turf/simulated/wall/Destroy()
 	for(var/obj/effect/E in src)
@@ -126,15 +128,14 @@
 			P.roll_and_drop(src)
 		else
 			O.loc = src
-	ChangeTurf(/turf/simulated/floor/plating)
+	ChangeTurf(base_plating)
 
 /turf/simulated/wall/proc/break_wall()
 	if(istype(src, /turf/simulated/wall/cult))
 		new /obj/effect/decal/cleanable/blood(src)
-		return (new /obj/structure/cultgirder(src))
 
 	new sheet_type(src, 2)
-	return (new /obj/structure/girder(src))
+	return new girder(src)
 
 /turf/simulated/wall/proc/devastate_wall()
 	if(istype(src, /turf/simulated/wall/cult))

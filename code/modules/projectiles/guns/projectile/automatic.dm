@@ -2,10 +2,20 @@
 	name = "submachine gun"
 	desc = "A lightweight, fast firing gun. Uses 9mm rounds."
 	icon_state = "saber"	//ugly
-	w_class = 3.0
+	w_class = ITEM_SIZE_NORMAL
 	origin_tech = "combat=4;materials=2"
 	mag_type = /obj/item/ammo_box/magazine/msmg9mm
+	burst_mode = TRUE
+	burst_amount = 3
+	burst_delay = 3
 	var/alarmed = 0
+
+/obj/item/weapon/gun/projectile/automatic/CtrlClick(mob/user)
+	if(loc == user)
+		burst_mode = !burst_mode
+		to_chat(user, "<span class='notice'>You switch \the [src] to [burst_mode ? "burst mode" : "single mode"].</span>")
+	else
+		..()
 
 /obj/item/weapon/gun/projectile/automatic/isHandgun()
 	return 0
@@ -43,7 +53,9 @@
 	origin_tech = "combat=5;materials=2;syndicate=8"
 	mag_type = /obj/item/ammo_box/magazine/m12mm
 	fire_sound = 'sound/weapons/Gunshot_smg.ogg'
-
+	burst_mode = TRUE
+	burst_amount = 3
+	burst_delay = 3
 
 /obj/item/weapon/gun/projectile/automatic/c20r/atom_init()
 	. = ..()
@@ -97,7 +109,6 @@
 	mag_type = /obj/item/ammo_box/magazine/m762
 	fire_sound = 'sound/weapons/gunshot3.wav'
 	var/cover_open = 0
-	var/wielded = 0
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/proc/unwield()
 	wielded = 0
@@ -198,20 +209,6 @@
 		return
 	..()
 
-/obj/item/weapon/gun/projectile/automatic/tommygun
-	name = "thompson SMG"
-	desc = "Based on the classic 'Chicago Typewriter'."
-	icon_state = "tommygun"
-	item_state = "shotgun"
-	w_class = 5
-	slot_flags = 0
-	origin_tech = "combat=5;materials=1;syndicate=2"
-	mag_type = /obj/item/ammo_box/magazine/tommygunm45
-	fire_sound = 'sound/weapons/Gunshot_smg.ogg'
-	//can_suppress = 0
- 	//burst_size = 4
- 	//fire_delay = 1
-
 /* The thing I found with guns in ss13 is that they don't seem to simulate the rounds in the magazine in the gun.
    Afaik, since projectile.dm features a revolver, this would make sense since the magazine is part of the gun.
    However, it looks like subsequent guns that use removable magazines don't take that into account and just get
@@ -221,7 +218,7 @@
 
 /* Where Ausops failed, I have not. -SirBayer */
 
-//=================NEW GUNS=================\\
+//=================NEW GUNS=================//
 
 /obj/item/weapon/gun/projectile/automatic/l10c
 	name = "L10-c"
@@ -345,50 +342,6 @@
 		H.update_inv_belt()
 	return
 
-/obj/item/weapon/gun/projectile/automatic/tommygun
-	name = "tommy gun"
-	desc = "A genuine Chicago Typewriter."
-	icon_state = "tommygun"
-	item_state = "tommygun"
-	slot_flags = 0
-	origin_tech = "combat=5;materials=1;syndicate=2"
-	mag_type = /obj/item/ammo_box/magazine/tommygunm45
-	fire_sound = 'sound/weapons/Gunshot_smg.ogg'
-
-/obj/item/weapon/gun/projectile/automatic/tommygun/isHandgun()
-	return 0
-
-/obj/item/weapon/gun/projectile/automatic/bar
-	name = "Browning M1918"
-	desc = "Browning Automatic Rifle."
-	icon_state = "bar"
-	item_state = "bar"
-	w_class = 5.0
-	origin_tech = "combat=5;materials=2"
-	mag_type = /obj/item/ammo_box/magazine/m3006
-	fire_sound = 'sound/weapons/gunshot3.wav'
-
-/obj/item/weapon/gun/projectile/automatic/luger
-	name = "Luger P08"
-	desc = "A small, easily concealable gun. Uses 9mm rounds."
-	icon_state = "p08"
-	w_class = 2
-	origin_tech = "combat=2;materials=2;syndicate=2"
-	mag_type = /obj/item/ammo_box/magazine/m9pmm
-
-/obj/item/weapon/gun/projectile/automatic/luger/update_icon()
-	..()
-	icon_state = "[initial(icon_state)][magazine ? "" : "-e"]"
-
-/obj/item/weapon/gun/projectile/automatic/luger/isHandgun()
-	return 1
-
-/obj/item/weapon/gun/projectile/automatic/colt1911/dungeon
-	desc = "A single-action, semi-automatic, magazine-fed, recoil-operated pistol chambered for the .45 ACP cartridge."
-	name = "\improper Colt M1911"
-	mag_type = /obj/item/ammo_box/magazine/c45m
-	mag_type2 = /obj/item/ammo_box/magazine/c45r
-
 /obj/item/weapon/gun/projectile/automatic/borg
 	name = "Robot SMG"
 	icon_state = "borg_smg"
@@ -421,7 +374,7 @@
 	. = ..()
 	update_icon()
 
-/obj/item/weapon/gun/projectile/automatic/bulldog/proc/update_magazine()
+/obj/item/weapon/gun/projectile/automatic/bulldog/update_magazine()
 	if(magazine)
 		src.overlays = 0
 		overlays += "[magazine.icon_state]_o"
@@ -439,27 +392,6 @@
 		playsound(user, 'sound/weapons/smg_empty_alarm.ogg', 40, 1)
 		update_icon()
 		alarmed = 1
-	return
-
-/obj/item/weapon/gun/projectile/automatic/a28
-	name = "A28 assault rifle"
-	desc = ""
-	icon_state = "a28"
-	item_state = "a28"
-	w_class = 3.0
-	origin_tech = "combat=5;materials=4;syndicate=6"
-	mag_type = /obj/item/ammo_box/magazine/m556
-	fire_sound = 'sound/weapons/Gunshot.ogg'
-
-/obj/item/weapon/gun/projectile/automatic/a28/atom_init()
-	. = ..()
-	update_icon()
-
-/obj/item/weapon/gun/projectile/automatic/a28/update_icon()
-	overlays.Cut()
-	if(magazine)
-		overlays += "[magazine.icon_state]-o"
-	icon_state = "[initial(icon_state)][chambered ? "" : "-e"]"
 	return
 
 /obj/item/weapon/gun/projectile/automatic/om36

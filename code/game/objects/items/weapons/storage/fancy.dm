@@ -366,3 +366,22 @@
 /obj/item/weapon/storage/lockbox/vials/attackby(obj/item/weapon/W, mob/user)
 	..()
 	update_icon()
+
+/*
+ * Cracker Packet
+ */
+
+/obj/item/weapon/storage/fancy/crackers
+	name = "\improper Getmore Crackers"
+	icon = 'icons/obj/food.dmi'
+	icon_state = "crackerbox"
+	icon_type = "cracker"
+	storage_slots = 6
+	max_w_class = ITEM_SIZE_TINY
+	w_class = ITEM_SIZE_SMALL
+	can_hold = list(/obj/item/weapon/reagent_containers/food/snacks/cracker)
+
+/obj/item/weapon/storage/fancy/crackers/atom_init()
+	. = ..()
+	for (var/i in 1 to storage_slots)
+		new /obj/item/weapon/reagent_containers/food/snacks/cracker(src)

@@ -62,6 +62,16 @@
 		myseed = null
 	return ..()
 
+/obj/machinery/hydroponics/attack_animal(mob/living/simple_animal/M)
+	..()
+	if(M.environment_smash)
+		visible_message("<span class='danger'>[M.name] smashes [src] apart!</span>")
+		for(var/obj/I in component_parts)
+			if(prob(50))
+				I.loc = loc
+		qdel(src)
+	return
+
 /obj/machinery/hydroponics/constructable/attackby(obj/item/I, mob/user)
 	if(default_deconstruction_screwdriver(user, "hydrotray3", "hydrotray3", I))
 		return

@@ -10,6 +10,7 @@
 
 	walltype = "rwall"
 	sheet_type = /obj/item/stack/sheet/plasteel
+	girder = /obj/structure/girder/reinforced
 
 	var/d_state = 0
 

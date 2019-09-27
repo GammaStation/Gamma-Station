@@ -2,12 +2,12 @@
 /obj/random/guns/handgun_security
 	name = "Random Handgun"
 	desc = "This is a random security sidearm."
-	icon = 'icons/obj/gun.dmi'
-	icon_state = "sigi250"
+	icon = 'icons/obj/guns/projectile/pistols.dmi'
+	icon_state = "wjp250"
 /obj/random/guns/handgun_security/item_to_spawn()
 		return pick(\
-						prob(3);/obj/item/weapon/gun/projectile/sigi,\
-						prob(1);/obj/item/weapon/gun/projectile/sigi/spec
+						prob(3);/obj/item/weapon/gun/projectile/pistol/sec_pistol,\
+						prob(1);/obj/item/weapon/gun/projectile/pistol/sec_pistol/spec
 					)
 
 /obj/random/guns/projectile_security
@@ -48,25 +48,22 @@
 
 /obj/random/guns/projectile_handgun
 	name = "Random Handgun"
-	desc = "This is a random energy weapon."
+	desc = "This is a random pistol."
 	icon = 'icons/obj/gun.dmi'
 	icon_state = "revolver"
 /obj/random/guns/projectile_handgun/item_to_spawn()
 		return pick(\
-						prob(15);/obj/item/weapon/gun/projectile/sigi,\
-						prob(15);/obj/item/weapon/gun/projectile/automatic/pistol,\
-						prob(15);/obj/item/weapon/gun/projectile/automatic/colt1911,\
-						prob(15);/obj/item/weapon/gun/projectile/automatic/luger,\
-						prob(15);/obj/item/weapon/gun/projectile/automatic/silenced,\
+						prob(15);/obj/item/weapon/gun/projectile/pistol/sec_pistol,\
+						prob(15);/obj/item/weapon/gun/projectile/pistol,\
+						prob(15);/obj/item/weapon/gun/projectile/pistol/syndicate,\
+						prob(15);/obj/item/weapon/gun/projectile/pistol/colt1911,\
 						prob(15);/obj/item/weapon/gun/projectile/revolver/peacemaker,\
 						prob(15);/obj/item/weapon/gun/projectile/revolver/detective,\
-						prob(5);/obj/item/weapon/gun/projectile/automatic/silenced/nonlethal,\
 						prob(5);/obj/item/weapon/gun/projectile/revolver/syndie,\
 						prob(5);/obj/item/weapon/gun/projectile/revolver,\
-						prob(5);/obj/item/weapon/gun/projectile/automatic/deagle,\
-						prob(2);/obj/item/weapon/gun/projectile/automatic/gyropistol,\
-						prob(2);/obj/item/weapon/gun/projectile/sigi/spec,\
-						prob(2);/obj/item/weapon/gun/projectile/automatic/deagle/gold,\
+						prob(5);/obj/item/weapon/gun/projectile/pistol/deagle,\
+						prob(2);/obj/item/weapon/gun/projectile/pistol/sec_pistol/spec,\
+						prob(2);/obj/item/weapon/gun/projectile/pistol/deagle/gold,\
 						prob(2);/obj/item/weapon/gun/projectile/revolver/mateba\
 					)
 
@@ -78,7 +75,6 @@
 /obj/random/guns/projectile_shotgun/item_to_spawn()
 		return pick(\
 						prob(20);/obj/item/weapon/gun/projectile/revolver/doublebarrel,\
-						prob(15);/obj/item/weapon/gun/projectile/revolver/doublebarrel/dungeon/sawn_off,\
 						prob(10);/obj/item/weapon/gun/projectile/shotgun,\
 						prob(7);/obj/item/weapon/gun/projectile/shotgun/combat,\
 						prob(5);/obj/item/weapon/gun/projectile/automatic/bulldog\
@@ -91,15 +87,11 @@
 	icon_state = "shotgun"
 /obj/random/guns/projectile_assault/item_to_spawn()
 		return pick(\
-						prob(15);/obj/item/weapon/gun/projectile/shotgun/bolt_action,\
-						prob(15);/obj/item/weapon/gun/projectile/shotgun/repeater,\
 						prob(15);/obj/item/weapon/gun/projectile/automatic,\
 						prob(14);/obj/item/weapon/gun/projectile/automatic/c20r,\
 						prob(12);/obj/item/weapon/gun/projectile/automatic/mini_uzi,\
-						prob(10);/obj/item/weapon/gun/projectile/automatic/bar,\
-						prob(8);/obj/item/weapon/gun/projectile/automatic/tommygun,\
-						prob(8);/obj/item/weapon/gun/projectile/automatic/a28,\
-						prob(8);/obj/item/weapon/gun/projectile/automatic/a28/nonlethal,\
+						prob(8);/obj/item/weapon/gun/projectile/automatic/assault_rifle/a28,\
+						prob(8);/obj/item/weapon/gun/projectile/automatic/assault_rifle,\
 						prob(5);/obj/item/weapon/gun/projectile/heavyrifle,\
 						prob(5);/obj/item/weapon/gun/projectile/automatic/l6_saw\
 					)
@@ -140,9 +132,8 @@
 						prob(180);/obj/item/ammo_casing/c9mm,\
 						prob(25);/obj/item/ammo_casing/c9mmr,\
 						prob(5);/obj/item/ammo_box/c9mm,\
-						prob(2);/obj/item/weapon/gun/projectile/automatic/luger,\
-						prob(2);/obj/item/weapon/gun/projectile/sigi,\
-						prob(2);/obj/item/weapon/gun/projectile/automatic/pistol,\
+						prob(2);/obj/item/weapon/gun/projectile/pistol/sec_pistol,\
+						prob(2);/obj/item/weapon/gun/projectile/pistol/syndicate,\
 						prob(1);/obj/item/weapon/gun/projectile/automatic/mini_uzi\
 					)
 

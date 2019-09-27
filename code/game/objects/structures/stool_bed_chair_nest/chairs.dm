@@ -44,23 +44,6 @@
 	icon_state = "chair_bla"
 	behind = "chair_behind_bla"
 
-/obj/structure/stool/bed/chair/schair
-	name = "shuttle chair"
-	desc = "You sit in this. Either by will or force."
-	icon = 'icons/obj/objects.dmi'
-	icon_state = "schair"
-	var/sarmrest = null
-
-/obj/structure/stool/bed/chair/schair/atom_init()
-	sarmrest = image("icons/obj/objects.dmi", "schair_armrest", layer = FLY_LAYER)
-	. = ..()
-
-/obj/structure/stool/bed/chair/schair/post_buckle_mob(mob/living/M)
-	if(buckled_mob)
-		overlays += sarmrest
-	else
-		overlays -= sarmrest
-
 /obj/structure/stool/bed/chair/atom_init()
 	..()
 	return INITIALIZE_HINT_LATELOAD
@@ -228,7 +211,7 @@
 	var/armrest = null
 
 /obj/structure/stool/bed/chair/comfy/atom_init()
-	armrest = image("icons/obj/objects.dmi", "comfychair_armrest", layer = FLY_LAYER)
+	armrest = image(icon, "[icon_state]_armrest", layer = FLY_LAYER)
 	. = ..()
 
 /obj/structure/stool/bed/chair/comfy/post_buckle_mob(mob/living/M)

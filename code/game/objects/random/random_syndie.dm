@@ -31,7 +31,7 @@
 	prob(14);/obj/item/ammo_box/magazine/om36mm,\
 	prob(14);/obj/item/weapon/grenade/spawnergrenade/manhacks,\
 	prob(14);/obj/item/device/healthanalyzer/rad_laser,\
-	prob(16);/obj/item/weapon/gun/projectile/automatic/pistol,\
+	prob(16);/obj/item/weapon/gun/projectile/pistol/syndicate,\
 	prob(16);/obj/item/weapon/grenade/syndieminibomb,\
 	prob(16);/obj/item/weapon/storage/box/syndie_kit/throwing_weapon,\
 	prob(16);/obj/item/weapon/card/emag,\
@@ -61,7 +61,7 @@
 	prob(50);/obj/item/device/multitool/ai_detect,\
 	prob(50);/obj/item/device/syndicatedetonator,\
 	prob(50);/obj/item/ammo_box/magazine/m12mm,\
-	prob(50);/obj/item/ammo_box/magazine/m9mm,\
+	prob(50);/obj/item/ammo_box/magazine/m9mm_pistol,\
 	prob(50);/obj/item/weapon/storage/fancy/cigarettes/cigpack_syndicate,\
 	prob(50);/obj/item/weapon/cartridge/syndicate,\
 	prob(50);/obj/item/toy/carpplushie/dehy_carp,\

@@ -1,7 +1,7 @@
 /obj/item/weapon/gun/energy/laser
 	name = "laser rifle"
 	desc = "a basic weapon designed kill with concentrated energy bolts."
-	icon = 'icons/obj/gun.dmi'
+	icon = 'icons/obj/guns/energy/rifles.dmi'
 	icon_state = "laser"
 	item_state = null	//so the human update icon uses the icon_state instead.
 	w_class = 3.0
@@ -16,7 +16,6 @@
 		power_supply.maxcharge = 1500
 		power_supply.charge = 1500
 
-
 /obj/item/weapon/gun/energy/laser/isHandgun()
 	return 0
 
@@ -26,37 +25,38 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/practice)
 	clumsy_check = 0
 
-/obj/item/weapon/gun/energy/laser/classic
-	name = "laser carbine"
-	desc = "J10 carbine, pretty old model of corporate security laser weaponry with constant cooling issues. Faster firerate but reduced damage."
-	icon_state = "oldlaser"
-	icon_custom = null
-	fire_delay = 5
-
-/obj/item/weapon/gun/energy/laser/tactifool
-	name = "laser rifle"
-	desc = "T6 impulse laser rifle"
-	icon_state = "lasor"
-	icon_custom = null
-	fire_delay = 0
-	ammo_type = list(/obj/item/ammo_casing/energy/laser_pulse)
-
-
-/obj/item/weapon/gun/energy/laser/classic/newshot()
-	if (!ammo_type || !power_supply)	return
-	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
-	if (!power_supply.use(shot.e_cost))	return
-	chambered = shot
-	if(chambered && chambered.BB)
-		chambered.BB.damage -= 10
-	chambered.newshot()
-	return
-
 obj/item/weapon/gun/energy/laser/retro
 	name ="retro laser"
+	icon = 'icons/obj/guns/energy/pistols.dmi'
 	icon_state = "retro"
 	desc = "An older model of the basic lasergun, no longer used by Nanotrasen's security or military forces. Nevertheless, it is still quite deadly and easy to maintain, making it a favorite amongst pirates and other outlaws."
 	slot_flags = SLOT_BELT
+
+obj/item/weapon/gun/energy/laser/retro/jetsons
+	name ="unwanted laser"
+	icon_state = "jetsons"
+	item_state = "jetsons"
+	desc = "Very unusual version of laser gun, oldschool style"
+	origin_tech = "combat=2;magnets=1"
+	ammo_type = list(/obj/item/ammo_casing/energy/laser/practice/jetsons)
+
+
+obj/item/weapon/gun/energy/laser/retro/jetsons/update_icon()
+	return 0
+
+/obj/item/ammo_casing/energy/laser/practice/jetsons
+	projectile_type = /obj/item/projectile/beam/practice/jetsons
+	select_name = "practice_jetsons"
+	fire_sound = 'sound/weapons/Laser2.ogg'
+
+/obj/item/projectile/beam/practice/jetsons
+	name = "laser"
+	icon_state = "laser"
+	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
+	damage = 7 //lucky shot
+	damage_type = BURN
+	flag = "laser"
+	eyeblur = 2
 
 /obj/item/weapon/gun/energy/laser/selfcharging
 	slot_flags = SLOT_BELT
@@ -71,7 +71,6 @@ obj/item/weapon/gun/energy/laser/retro
 /obj/item/weapon/gun/energy/laser/selfcharging/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
-
 
 /obj/item/weapon/gun/energy/laser/selfcharging/process()
 	charge_tick++
@@ -97,6 +96,7 @@ obj/item/weapon/gun/energy/laser/retro
 
 /obj/item/weapon/gun/energy/laser/selfcharging/captain
 	icon_state = "caplaser"
+	icon = 'icons/obj/guns/energy/pistols.dmi'
 	desc = "This is an antique laser gun. All craftsmanship is of the highest quality. It is decorated with assistant leather and chrome. The object menaces with spikes of energy. On the item is an image of Space Station 13. The station is exploding."
 	force = 10
 	origin_tech = null
@@ -104,6 +104,7 @@ obj/item/weapon/gun/energy/laser/retro
 
 /obj/item/weapon/gun/energy/laser/selfcharging/alien
 	name = "Alien blaster"
+	icon = 'icons/obj/guns/energy/archeology.dmi'
 	icon_state = "egun"
 	desc = " The object menaces with spikes of energy. You don't kmown what kind of weapon."
 	force = 5
@@ -117,13 +118,14 @@ obj/item/weapon/gun/energy/laser/retro
 	slot_flags = SLOT_BELT
 	ammo_type = list(/obj/item/ammo_casing/energy/laser, /obj/item/ammo_casing/energy/laser/scatter)
 
-	attack_self(mob/living/user)
-		select_fire(user)
-		update_icon()
+/obj/item/weapon/gun/energy/laser/scatter/attack_self(mob/living/user)
+	select_fire(user)
+	update_icon()
 
 /obj/item/weapon/gun/energy/laser/scatter/alien
 	name = "scatter laser rife"
 	icon_state = "subegun"
+	icon = 'icons/obj/guns/energy/archeology.dmi'
 	desc = "A laser gun equipped with a refraction kit that spreads bolts."
 	ammo_type = list(/obj/item/ammo_casing/energy/laser, /obj/item/ammo_casing/energy/laser/scatter)
 	origin_tech = null
@@ -132,6 +134,7 @@ obj/item/weapon/gun/energy/laser/retro
 	name = "laser cannon"
 	desc = "With the L.A.S.E.R. cannon, the lasing medium is enclosed in a tube lined with uranium-235 and subjected to high neutron flux in a nuclear reactor core. This incredible technology may help YOU achieve high excitation rates with small laser volumes!"
 	icon_state = "lasercannon"
+	icon = 'icons/obj/guns/energy/rifles.dmi'
 	item_state = null
 	origin_tech = "combat=4;materials=3;powerstorage=3"
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/heavy)
@@ -154,6 +157,7 @@ obj/item/weapon/gun/energy/laser/retro
 /obj/item/weapon/gun/energy/xray
 	name = "xray laser gun"
 	desc = "A high-power laser gun capable of expelling concentrated xray blasts."
+	icon = 'icons/obj/guns/energy/rifles.dmi'
 	icon_state = "xray"
 	item_state = null
 	origin_tech = "combat=5;materials=3;magnets=2;syndicate=2"
@@ -164,6 +168,7 @@ obj/item/weapon/gun/energy/laser/retro
 /obj/item/weapon/gun/energy/laser/bluetag
 	name = "laser tag gun"
 	icon_state = "bluetag"
+	icon = 'icons/obj/guns/energy/pistols.dmi'
 	desc = "Standard issue weapon of the Imperial Guard."
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/bluetag)
 	origin_tech = "combat=1;magnets=2"
@@ -186,7 +191,6 @@ obj/item/weapon/gun/energy/laser/retro
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
-
 /obj/item/weapon/gun/energy/laser/bluetag/process()
 	charge_tick++
 	if(charge_tick < 4) return 0
@@ -199,6 +203,7 @@ obj/item/weapon/gun/energy/laser/retro
 /obj/item/weapon/gun/energy/laser/redtag
 	name = "laser tag gun"
 	icon_state = "redtag"
+	icon = 'icons/obj/guns/energy/pistols.dmi'
 	desc = "Standard issue weapon of the Imperial Guard."
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/redtag)
 	origin_tech = "combat=1;magnets=2"
@@ -216,11 +221,9 @@ obj/item/weapon/gun/energy/laser/retro
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
-
 /obj/item/weapon/gun/energy/laser/redtag/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
-
 
 /obj/item/weapon/gun/energy/laser/redtag/process()
 	charge_tick++

@@ -59,7 +59,7 @@
 	name = "ammo box (null_reference_exception)"
 	desc = "A box of ammo"
 	icon_state = "357"
-	icon = 'icons/obj/ammo.dmi'
+	icon = 'icons/obj/guns/ammo/boxes.dmi'
 	flags = CONDUCT
 	slot_flags = SLOT_BELT
 	item_state = "syringe_kit"
@@ -100,6 +100,9 @@
 			return 1
 	return 0
 
+/obj/item/ammo_box/proc/ammo_count()
+	return stored_ammo.len
+
 /obj/item/ammo_box/attackby(obj/item/A, mob/user, silent = 0)
 	var/num_loaded = 0
 	if(istype(A, /obj/item/ammo_box))
@@ -138,9 +141,10 @@
 		if(1)
 			icon_state = "[initial(icon_state)]-[stored_ammo.len]"
 		if(2)
-			icon_state = "[initial(icon_state)]-[stored_ammo.len ? "[max_ammo]" : "0"]"
+			icon_state = "[initial(icon_state)][ammo_count() ? "" : "-0"]"
 	desc = "[initial(desc)] There are [stored_ammo.len] shell\s left!"
 
-//Behavior for magazines
-/obj/item/ammo_box/magazine/proc/ammo_count()
-	return stored_ammo.len
+/obj/item/ammo_box/magazine
+	name = "magazine"
+	desc = "This shouldn't be here"
+	icon = 'icons/obj/guns/ammo/magazines.dmi'

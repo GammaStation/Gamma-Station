@@ -67,6 +67,13 @@
 	item_color = "vest_brown"
 	slots = 5
 
+/obj/item/clothing/accessory/storage/white_vest
+	name = "white webbing vest"
+	desc = "Durable white synthcotton vest with lots of pockets to carry essentials."
+	icon_state = "vest_white"
+	item_color = "vest_white"
+	slots = 5
+
 /obj/item/clothing/accessory/storage/syndi_vest
 	name = "suspicious webbing vest"
 	desc = "A villainous red synthcotton vest with lots of pockets to unload your hands."
@@ -92,3 +99,28 @@
 		)
 	new /obj/item/weapon/hatchet/unathiknife(hold)
 	new /obj/item/weapon/hatchet/unathiknife(hold)
+
+
+/obj/item/clothing/accessory/storage/drop_pouches
+	slots = 4 //to accomodate it being slotless
+/*
+/obj/item/clothing/accessory/storage/drop_pouches/create_storage()
+	hold = new/obj/item/weapon/storage/internal/pouch(src, slots*base_storage_cost(max_w_class))
+*/
+/obj/item/clothing/accessory/storage/drop_pouches/black
+	name = "black drop pouches"
+	desc = "Robust black synthcotton bags to hold whatever you need, but cannot hold in hands."
+	icon_state = "thigh_black"
+	item_color = "thigh_black"
+
+/obj/item/clothing/accessory/storage/drop_pouches/brown
+	name = "brown drop pouches"
+	desc = "Worn brownish synthcotton bags to hold whatever you need, but cannot hold in hands."
+	icon_state = "thigh_brown"
+	item_color = "thigh_brown"
+
+/obj/item/clothing/accessory/storage/drop_pouches/white
+	name = "white drop pouches"
+	desc = "Durable white synthcotton bags to hold whatever you need, but cannot hold in hands."
+	icon_state = "thigh_white"
+	item_color = "thigh_white"

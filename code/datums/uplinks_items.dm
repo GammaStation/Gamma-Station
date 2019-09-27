@@ -135,7 +135,7 @@
 	name = "Stechkin Pistol"
 	desc = "A small, easily concealable handgun that uses 9mm auto rounds in 8-round magazines and is compatible \
 			with suppressors."
-	item = /obj/item/weapon/gun/projectile/automatic/pistol
+	item = /obj/item/weapon/gun/projectile/pistol/syndicate
 	cost = 6
 /*
 /datum/uplink_item/dangerous/smg
@@ -312,7 +312,7 @@
 	name = "9mm Handgun Magazine"
 	desc = "An additional 8-round 9mm magazine; compatible with the Stechkin Pistol. These subsonic rounds \
 			are dirt cheap but are half as effective as .357 rounds."
-	item = /obj/item/ammo_box/magazine/m9mm
+	item = /obj/item/ammo_box/magazine/m9mm_pistol
 	cost = 2
 
 /datum/uplink_item/ammo/revolver
@@ -832,7 +832,7 @@ var/global/list/thunderfield_items = list()
 
 /datum/thunderfield_item/thunderfield_pistol
 	name = ".22CB pistol"
-	item = /obj/item/weapon/gun/projectile/sec_pistol/thunderfield_pistol
+	item = /obj/item/weapon/gun/projectile/pistol/sec_pistol/thunderfield_pistol
 	cost = 2
 
 /datum/thunderfield_item/thunderfield_pistol_magazine

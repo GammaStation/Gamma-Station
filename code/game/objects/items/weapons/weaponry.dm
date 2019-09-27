@@ -182,6 +182,16 @@
 	attack_verb = list("stubbed", "poked")
 	var/extended
 
+/obj/item/weapon/switchblade/extended
+	extended = TRUE
+	force = 13
+	w_class = 3
+	throwforce = 15
+	icon_state = "switchblade_ext"
+	item_state = "switchblade_ext"
+	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+	hitsound = 'sound/weapons/bladeslice.ogg'
+
 /obj/item/weapon/switchblade/attack_self(mob/user)
 	extended = !extended
 	playsound(src.loc, 'sound/weapons/batonextend.ogg', 50, 1)
@@ -203,3 +213,10 @@
 /obj/item/weapon/switchblade/suicide_act(mob/user)
 	user.visible_message("<span class='suicide'>[user] is slitting \his own throat with the [src.name]! It looks like \he's trying to commit suicide.</span>")
 	return (BRUTELOSS)
+
+/obj/item/weapon/hatchet/tomahawk
+	name = "makeshift tomahawk"
+	desc = "A makeshift handaxe with a crude blade of broken glass."
+	icon_state = "tomahawk"
+	item_state = "tomahawk"
+	force = 8
