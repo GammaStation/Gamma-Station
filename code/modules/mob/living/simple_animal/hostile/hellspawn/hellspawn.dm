@@ -326,7 +326,7 @@
 	health = 300
 	melee_damage_lower = 15
 	melee_damage_upper = 25
-	environment_smash = 1
+	environment_smash = 2
 	attack_message = list("bites","claws","slashes")
 	attack_sound = 'sound/mob/hellknight/hellknight_attack1.ogg'
 	sight_sound = list('sound/mob/hellknight/hellknight_sight1.ogg','sound/mob/hellknight/hellknight_sight2.ogg','sound/mob/hellknight/hellknight_sight3.ogg')
@@ -436,7 +436,7 @@
 	death_sound = list('sound/mob/mancubus/mancubus_death1.ogg','sound/mob/mancubus/mancubus_death2.ogg','sound/mob/mancubus/mancubus_death3.ogg','sound/mob/mancubus/mancubus_death4.ogg')
 	var/acid = 200
 	var/acid_max = 200
-
+/*
 /mob/living/simple_animal/hostile/hellspawn/mancubus/DestroySurroundings()
 	var/turf/T = get_step(src, dir)
 	if(istype(T, /turf/simulated/wall) || istype(T, /turf/simulated/mineral))
@@ -448,7 +448,7 @@
 			visible_message("\green <B>[name] vomits globs of vile stuff all over [T]. It begins to sizzle and melt under the bubbling mess of acid!</B>")
 	..()
 
-
+*/
 /mob/living/simple_animal/hostile/hellspawn/mancubus/Life()
 	..()
 	if(acid < acid_max)

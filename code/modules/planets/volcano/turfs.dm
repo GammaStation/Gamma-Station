@@ -34,6 +34,9 @@
 			icon_state = "basalt_dug"
 	return
 
+/turf/simulated/floor/plating/basalt/break_tile()
+	return
+
 /turf/simulated/floor/plating/basalt_plating/caution
 	icon_state = "basalt_plating-caution"
 
