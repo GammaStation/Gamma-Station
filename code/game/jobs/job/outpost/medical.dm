@@ -43,15 +43,15 @@
 
 //	H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/ertarmor_med/non_ert(H), slot_wear_suit)
 
-//	var/msg
+	var/msg
 	var/obj/item/weapon/card/id/C = new idtype(H)
 	C.registered_name = H.real_name
 	C.rank = "Ensign"
 	C.assignment = "Corpsman"
 	C.name = "[C.registered_name]'s ID Card ([C.assignment])"
 	H.equip_to_slot_or_del(C, slot_wear_id)
-//	msg = "¬ы - санитар на борту 'ј€кса'. ∆изни ваших товарищей и сохранность запасов медицинского спирта наход€тс€ именно в ваших руках, и если спирт уже не спасти, то за жизни вы ещЄ можете поборотьс€."
-//	to_chat(H,"[sanitize(msg)]")
+	msg = "¬ы - санитар на борту 'ј€кса'. ∆изни ваших товарищей и сохранность запасов медицинского спирта наход€тс€ именно в ваших руках, и если спирт уже не спасти, то за жизни вы ещЄ можете поборотьс€."
+	to_chat(H,"[sanitize(msg)]")
 
 
 /*
