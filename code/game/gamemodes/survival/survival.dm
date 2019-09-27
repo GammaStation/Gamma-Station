@@ -1,7 +1,7 @@
 /datum/game_mode/survival
 	name = "survival"
 	config_tag = "survival"
-	var/wave_delay = 15 MINUTES
+	var/wave_delay = 10 MINUTES
 	var/stop_waves = TRUE
 	var/spawn_time = 0
 	var/wave_coeff = 1
