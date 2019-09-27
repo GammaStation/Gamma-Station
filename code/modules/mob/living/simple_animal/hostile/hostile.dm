@@ -28,7 +28,7 @@
 	var/stat_attack = 0 //Mobs with stat_attack to 1 will attempt to attack things that are unconscious, Mobs with stat_attack set to 2 will attempt to attack the dead.
 	var/stat_exclusive = 0 //Mobs with this set to 1 will exclusively attack things defined by stat_attack, stat_attack 2 means they will only attack corpses
 	var/attack_faction = null //Put a faction string here to have a mob only ever attack a specific faction
-
+	var/reloading = FALSE //
 
 /mob/living/simple_animal/hostile/Life()
 	. = ..()
@@ -104,6 +104,8 @@
 	return chosen_target
 
 /mob/living/simple_animal/hostile/CanAttack(atom/the_target)//Can we actually attack a possible target?
+	if(reloading)
+		return 0
 	if(see_invisible < the_target.invisibility)//Target's invisible to us, forget it
 		return 0
 	if(isliving(the_target) && search_objects < 2)
@@ -151,7 +153,7 @@
 				Goto(target,move_to_delay,minimum_distance)//Otherwise, get to our minimum distance so we chase them
 		else
 			Goto(target,move_to_delay,minimum_distance)
-		if(isturf(loc) && target.Adjacent(src))	//If they're next to us, attack
+		if(isturf(loc) && target && target.Adjacent(src))	//If they're next to us, attack
 			AttackingTarget()
 		return
 	if(target.loc != null && get_dist(src, target.loc) <= vision_range)//We can't see our target, but he's in our vision range still
@@ -286,7 +288,7 @@
 			for(var/atom/A in T)
 				if(!A.Adjacent(src))
 					continue
-				if(istype(A, /obj/structure/window) || istype(A, /obj/structure/closet) || istype(A, /obj/structure/table) || istype(A, /obj/structure/grille) || istype(A, /obj/structure/rack) || istype(A, /obj/machinery/door/window))
+				if(istype(A, /obj/structure/window) || istype(A, /obj/structure/closet) || istype(A, /obj/structure/table) || istype(A, /obj/structure/grille) || istype(A, /obj/structure/rack) || istype(A, /obj/machinery/door/window) || istype(A, /obj/structure/girder) || istype(A,/obj/machinery/hydroponics))
 					A.attack_animal(src)
 				if(istype(A, /obj/item/tape))
 					var/obj/item/tape/Tp = A

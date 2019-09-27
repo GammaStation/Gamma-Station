@@ -44,6 +44,8 @@
 
 	var/list/restricted_species = list()
 
+	var/special_id_handling = FALSE
+
 /datum/job/proc/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	return TRUE
 

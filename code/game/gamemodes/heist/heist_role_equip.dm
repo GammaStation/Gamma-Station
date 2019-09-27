@@ -40,7 +40,7 @@ var/global/raider_tick = 1
 
 	raider_tick = 2
 	return 1*/
-
+/*
 /obj/item/weapon/gun/projectile/automatic/a28/nonlethal
 	name = "A28 assault rifle NL"
 	icon_state = "a28w"
@@ -104,7 +104,7 @@ var/global/raider_tick = 1
 		var/obj/mecha/M = target
 		M.take_damage(15)
 	..()
-
+*/
 /obj/item/weapon/storage/backpack/santabag/pirate
 	name = "Loot bag"
 	desc = "Just another ordinary bag."

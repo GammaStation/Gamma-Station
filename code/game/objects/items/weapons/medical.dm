@@ -81,7 +81,7 @@
 	new /obj/item/weapon/reagent_containers/hypospray/autoinjector/antitox(src)
 	new /obj/item/weapon/reagent_containers/hypospray/autoinjector/tramadol(src)
 	new /obj/item/weapon/reagent_containers/hypospray/autoinjector(src)
-	new /obj/item/device/healthanalyzer(src)
+//	new /obj/item/device/healthanalyzer(src)
 
 /obj/item/weapon/storage/firstaid/small_firstaid_kit/space
 	name = "Space first-aid small kit"
@@ -123,3 +123,23 @@
 	new /obj/item/weapon/reagent_containers/pill/dexalin(src)
 	new /obj/item/weapon/reagent_containers/hypospray/autoinjector(src)
 	new /obj/item/device/healthanalyzer(src)
+
+/obj/item/weapon/storage/firstaid/small_firstaid_kit/advanced
+	name = "Advanced combat first-aid small kit"
+	icon_state = "first_aid_kit_adv"
+	desc = "A small kit of auto injectors with drugs placed in his pocket. It`s combat version for extreme wounds."
+	max_w_class = 2
+	w_class = 2
+
+/obj/item/weapon/storage/firstaid/small_firstaid_kit/advanced/atom_init()
+	. = ..()
+
+	if (empty)
+		return
+	new /obj/item/weapon/reagent_containers/hypospray/autoinjector/combat()
+	new /obj/item/weapon/reagent_containers/hypospray/autoinjector/metatrombine(src)
+	new /obj/item/weapon/reagent_containers/hypospray/autoinjector/metatrombine(src)
+	new /obj/item/weapon/reagent_containers/hypospray/autoinjector/stabyzol(src)
+	new /obj/item/weapon/reagent_containers/hypospray/autoinjector/stabyzol(src)
+	new /obj/item/weapon/reagent_containers/hypospray/autoinjector/aclometasone(src)
+	new /obj/item/weapon/reagent_containers/hypospray/autoinjector/aclometasone(src)

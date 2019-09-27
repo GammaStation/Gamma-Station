@@ -3,99 +3,19 @@
 	caliber = "357"
 	projectile_type = "/obj/item/projectile/bullet/revbullet"
 
-/obj/item/ammo_casing/a50
-	desc = "A .50AE bullet casing."
-	caliber = ".50"
-	projectile_type = "/obj/item/projectile/bullet"
 
-/obj/item/ammo_casing/a418
-	desc = "A .418 bullet casing."
-	caliber = "357"
-	projectile_type = "/obj/item/projectile/bullet/suffocationbullet"
-
-/obj/item/ammo_casing/a666
-	desc = "A .666 bullet casing."
-	caliber = "357"
-	projectile_type = "/obj/item/projectile/bullet/cyanideround"
 
 /obj/item/ammo_casing/c38
 	desc = "A .38 bullet casing."
 	caliber = "38"
 	projectile_type = "/obj/item/projectile/bullet/weakbullet"
 
-/obj/item/ammo_casing/c22cb //Thunderfield stuff
-	desc = "A .22 CB bullet casing."
-	caliber = "22"
-	projectile_type = "/obj/item/projectile/bullet/midbullet/thunderfield_bullet"
 
-/obj/item/ammo_casing/c9mm
-	desc = "A 9mm bullet casing."
-	caliber = "9mm"
-	projectile_type = "/obj/item/projectile/bullet/midbullet2"
-
-/obj/item/ammo_casing/c9mmr
-	desc = "A 9mm rubber bullet casing."
-	caliber = "9mm"
-	projectile_type = "/obj/item/projectile/bullet/weakbullet/rubber"
-
-/obj/item/ammo_casing/c45
-	desc = "A .45 bullet casing."
-	caliber = ".45"
-	projectile_type = "/obj/item/projectile/bullet/midbullet"
-
-/obj/item/ammo_casing/c45r
-	desc = "A .45 rubber bullet casing."
-	caliber = ".45"
-	projectile_type = "/obj/item/projectile/bullet/weakbullet/rubber"
 
 /obj/item/ammo_casing/a12mm
 	desc = "A 12mm bullet casing."
 	caliber = "12mm"
 	projectile_type = "/obj/item/projectile/bullet/midbullet2"
-
-/obj/item/ammo_casing/shotgun
-	name = "shotgun slug"
-	desc = "A 12 gauge slug."
-	icon_state = "blshell"
-	caliber = "shotgun"
-	projectile_type = "/obj/item/projectile/bullet"
-	m_amt = 12500
-
-/obj/item/ammo_casing/shotgun/buckshot
-	name = "shotgun shell"
-	desc = "A 12 gauge shell."
-	icon_state = "gshell"
-	projectile_type = /obj/item/projectile/bullet/pellet
-	pellets = 5
-	variance = 0.8
-
-/obj/item/ammo_casing/shotgun/beanbag
-	name = "beanbag shell"
-	desc = "A weak beanbag shell."
-	icon_state = "bshell"
-	projectile_type = "/obj/item/projectile/bullet/weakbullet/beanbag"
-	m_amt = 500
-
-/obj/item/ammo_casing/shotgun/stunslug
-	name = "stun shell"
-	desc = "An electrified, stunning taser slug for shotguns."
-	icon_state = "stunshell"
-	projectile_type = "/obj/item/projectile/bullet/stunslug"
-	m_amt = 2500
-
-/obj/item/ammo_casing/shotgun/incendiary
-	name = "incendiary shell"
-	desc = "An incendiary slug."
-	icon_state = "ishell"
-	projectile_type = /obj/item/projectile/bullet/incendiary
-	m_amt = 2500
-
-/obj/item/ammo_casing/shotgun/dart
-	name = "shotgun darts"
-	desc = "A dart for use in shotguns."
-	icon_state = "dart"
-	projectile_type = "/obj/item/projectile/energy/dart"
-	m_amt = 12500
 
 /obj/item/ammo_casing/a762
 	desc = "A 7.62mm bullet casing."
@@ -184,13 +104,6 @@
 	caliber = "38"
 	projectile_type = /obj/item/projectile/bullet/midbullet2
 
-/obj/item/ammo_box/c38m
-	name = "speed loader (.38)"
-	icon_state = "38"
-	ammo_type = /obj/item/ammo_casing/c38m
-	max_ammo = 6
-	multiple_sprites = 1
-
 /obj/item/ammo_casing/a556
 	desc = "A 5.56mm bullet casing."
 	caliber = "5.56mm"
@@ -205,3 +118,5 @@
 	desc = "A 5.56mm bullet casing."
 	caliber = "5.56mm"
 	projectile_type = /obj/item/projectile/bullet/rifle3
+
+

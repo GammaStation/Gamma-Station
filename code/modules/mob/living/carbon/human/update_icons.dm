@@ -600,8 +600,10 @@ Please contact me on #coderbus IRC. ~Carn x
 		wear_id.screen_loc = ui_id
 		if(client && hud_used)
 			client.screen += wear_id
-
-		overlays_standing[ID_LAYER]	= image("icon"='icons/mob/mob.dmi', "icon_state"= get_species() == TYCHEON ? "id_tycheon" : "id", "layer"=-ID_LAYER)
+		if(!wear_id.icon_custom)
+			overlays_standing[ID_LAYER]	= image("icon"='icons/mob/mob.dmi', "icon_state"= get_species() == TYCHEON ? "id_tycheon" : "id", "layer"=-ID_LAYER)
+		else
+			overlays_standing[ID_LAYER]	= image("icon"=wear_id.icon_custom, "icon_state"= "[wear_id.icon_state]_mob", "layer"=-ID_LAYER)
 
 	hud_updateflag |= 1 << ID_HUD
 	hud_updateflag |= 1 << WANTED_HUD

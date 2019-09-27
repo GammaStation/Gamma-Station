@@ -28,6 +28,10 @@
 	name = "pellet"
 	damage = 20
 
+/obj/item/projectile/bullet/pellet/quake
+	name = "flechette"
+	damage = 15
+
 /obj/item/projectile/bullet/weakbullet/beanbag		//because beanbags are not bullets
 	name = "beanbag"
 	agony = 95

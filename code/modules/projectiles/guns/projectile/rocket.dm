@@ -9,7 +9,7 @@
 	origin_tech = "combat=8;materials=5"
 	slot_flags = 0
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rocket
-	var/wielded = 0
+//	var/wielded = 0
 	fire_sound = 'sound/effects/bang.ogg'
 
 /obj/item/weapon/gun/projectile/revolver/rocketlauncher/isHandgun()

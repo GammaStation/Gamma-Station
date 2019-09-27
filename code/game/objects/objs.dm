@@ -241,3 +241,8 @@
 
 /obj/proc/CanAStarPass(obj/item/weapon/card/id/ID, to_dir, caller)
 	return !density
+
+/obj/get_bypass_icon()
+	if(bypass_icon && fexists(bypass_icon))
+		icon = file(bypass_icon)
+		icon_custom = file(bypass_icon)

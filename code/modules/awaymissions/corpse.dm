@@ -7,6 +7,7 @@
 /obj/effect/landmark/corpse
 	name = "Unknown"
 	var/mobname = "Unknown"  //Unused now but it'd fuck up maps to remove it now
+	var/corpse_gender = "male"
 	var/corpseuniform = null //Set this to an object path to have the slot filled with said object on the corpse.
 	var/corpsesuit = null
 	var/corpseshoes = null
@@ -24,60 +25,82 @@
 	var/corpseidaccess = null //This is for access. See access.dm for which jobs give what access. Again, put in quotes. Use "Captain" if you want it to be all access.
 	var/corpseidicon = null //For setting it to be a gold, silver, centcomm etc ID
 	var/mutantrace = "human"
+	var/mob/living/carbon/human/human = /mob/living/carbon/human
+	var/hair_style
+	var/hair_color
+	var/face_style
 
 /obj/effect/landmark/corpse/atom_init()
 	. = ..()
 	createCorpse()
 
 /obj/effect/landmark/corpse/proc/createCorpse() //Creates a mob and checks for gear in each slot before attempting to equip it.
-	var/mob/living/carbon/human/M = new /mob/living/carbon/human (src.loc)
-	M.dna.mutantrace = mutantrace
-	M.real_name = src.name
-	M.death(1) //Kills the new mob
-	if(src.corpseuniform)
-		M.equip_to_slot_or_del(new src.corpseuniform(M), slot_w_uniform)
-	if(src.corpsesuit)
-		M.equip_to_slot_or_del(new src.corpsesuit(M), slot_wear_suit)
-	if(src.corpseshoes)
-		M.equip_to_slot_or_del(new src.corpseshoes(M), slot_shoes)
-	if(src.corpsegloves)
-		M.equip_to_slot_or_del(new src.corpsegloves(M), slot_gloves)
-	if(src.corpseradio)
-		M.equip_to_slot_or_del(new src.corpseradio(M), slot_l_ear)
-	if(src.corpseglasses)
-		M.equip_to_slot_or_del(new src.corpseglasses(M), slot_glasses)
-	if(src.corpsemask)
-		M.equip_to_slot_or_del(new src.corpsemask(M), slot_wear_mask)
-	if(src.corpsehelmet)
-		M.equip_to_slot_or_del(new src.corpsehelmet(M), slot_head)
-	if(src.corpsebelt)
-		M.equip_to_slot_or_del(new src.corpsebelt(M), slot_belt)
-	if(src.corpsepocket1)
-		M.equip_to_slot_or_del(new src.corpsepocket1(M), slot_r_store)
-	if(src.corpsepocket2)
-		M.equip_to_slot_or_del(new src.corpsepocket2(M), slot_l_store)
-	if(src.corpseback)
-		M.equip_to_slot_or_del(new src.corpseback(M), slot_back)
-	if(src.corpseid == 1)
-		var/obj/item/weapon/card/id/W = new(M)
-		W.name = "[M.real_name]'s ID Card"
+	human = new human(loc)
+	human.dna.mutantrace = mutantrace
+	human.real_name = name
+	human.gender = corpse_gender
+	human.death(1) //Kills the new mob
+
+//	for(var/obj/item/organ/external/E in M.bodyparts)
+//		E.take_damage(75, 0, 0, used_weapon = "claws")
+
+	human.adjustBruteLoss(60)
+
+
+	if(hair_style)
+		human.h_style = hair_style
+	if(face_style && human.gender == "male")
+		human.f_style = face_style
+	if(hair_color && hair_style)
+		human.r_hair = hex2num(copytext(hair_color, 2, 4))
+		human.g_hair = hex2num(copytext(hair_color, 4, 6))
+		human.b_hair = hex2num(copytext(hair_color, 6, 8))
+
+	if(corpseuniform)
+		human.equip_to_slot_or_del(new corpseuniform(human), slot_w_uniform)
+	if(corpsesuit)
+		human.equip_to_slot_or_del(new corpsesuit(human), slot_wear_suit)
+	if(corpseshoes)
+		human.equip_to_slot_or_del(new corpseshoes(human), slot_shoes)
+	if(corpsegloves)
+		human.equip_to_slot_or_del(new corpsegloves(human), slot_gloves)
+	if(corpseradio)
+		human.equip_to_slot_or_del(new corpseradio(human), slot_l_ear)
+	if(corpseglasses)
+		human.equip_to_slot_or_del(new corpseglasses(human), slot_glasses)
+	if(corpsemask)
+		human.equip_to_slot_or_del(new corpsemask(human), slot_wear_mask)
+	if(corpsehelmet)
+		human.equip_to_slot_or_del(new corpsehelmet(human), slot_head)
+	if(corpsebelt)
+		human.equip_to_slot_or_del(new corpsebelt(human), slot_belt)
+	if(corpsepocket1)
+		human.equip_to_slot_or_del(new corpsepocket1(human), slot_r_store)
+	if(corpsepocket2)
+		human.equip_to_slot_or_del(new corpsepocket2(human), slot_l_store)
+	if(corpseback)
+		human.equip_to_slot_or_del(new corpseback(human), slot_back)
+	if(corpseid == 1)
+		var/obj/item/weapon/card/id/W = new(human)
+		W.name = "[human.real_name]'s ID Card"
 		var/datum/job/jobdatum
 		for(var/jobtype in typesof(/datum/job))
 			var/datum/job/J = new jobtype
 			if(J.title == corpseidaccess)
 				jobdatum = J
 				break
-		if(src.corpseidicon)
+		if(corpseidicon)
 			W.icon_state = corpseidicon
-		if(src.corpseidaccess)
+		if(corpseidaccess)
 			if(jobdatum)
 				W.access = jobdatum.get_access()
 			else
 				W.access = list()
 		if(corpseidjob)
 			W.assignment = corpseidjob
-		W.registered_name = M.real_name
-		M.equip_to_slot_or_del(W, slot_wear_id)
+		W.registered_name = human.real_name
+		human.equip_to_slot_or_del(W, slot_wear_id)
+	human.regenerate_icons()
 	qdel(src)
 
 

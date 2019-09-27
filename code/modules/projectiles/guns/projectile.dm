@@ -7,13 +7,16 @@
 	m_amt = 1000
 	fire_delay = 0
 	recoil = 1
-	var/mag_type = /obj/item/ammo_box/magazine/m9mm //Removes the need for max_ammo and caliber info
+	var/mag_type = /obj/item/ammo_box/magazine/m9mm_pistol //Removes the need for max_ammo and caliber info
 	var/obj/item/ammo_box/magazine/magazine
 	var/energy_gun = 0 //Used in examine, if 1 - no ammo count.
 
 /obj/item/weapon/gun/projectile/atom_init()
 	. = ..()
-	magazine = new mag_type(src)
+	if(!magazine)
+		magazine = new mag_type(src)
+	else
+		magazine = new magazine(src) //for spawn with specific magazine
 	chamber_round()
 	update_icon()
 
@@ -60,6 +63,8 @@
 			magazine = AM
 			magazine.loc = src
 			to_chat(user, "<span class='notice'>You load a new magazine into \the [src].</span>")
+			if(load_sound)
+				playsound(loc, load_sound, 50, 1, 1)
 			chamber_round()
 			A.update_icon()
 			update_icon()
@@ -80,6 +85,8 @@
 		magazine = null
 		update_icon()
 		to_chat(user, "<span class='notice'>You pull the magazine out of \the [src]!</span>")
+		if(unload_sound)
+			playsound(loc, unload_sound, 50, 1, 1)
 		return 1
 	else
 		to_chat(user, "<span class='notice'>There's no magazine in \the [src].</span>")
@@ -103,3 +110,6 @@
 	if (magazine)
 		boolets += magazine.ammo_count()
 	return boolets
+
+/obj/item/weapon/gun/projectile/proc/update_magazine()
+	return

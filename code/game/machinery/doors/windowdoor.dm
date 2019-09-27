@@ -21,8 +21,6 @@
 		icon_state = "[icon_state]"
 		base_state = icon_state
 
-	color = color_windows()
-
 /obj/machinery/door/window/Destroy()
 	density = 0
 	update_nearby_tiles()

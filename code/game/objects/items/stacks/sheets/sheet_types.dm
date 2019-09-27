@@ -49,6 +49,7 @@ var/global/list/datum/stack_recipe/metal_recipes = list (
 	null,
 	new/datum/stack_recipe("computer frame", /obj/structure/computerframe, 5, time = 25, one_per_turf = TRUE, on_floor = TRUE),
 	new/datum/stack_recipe("wall girders", /obj/structure/girder, 2, time = 50, one_per_turf = TRUE, on_floor = TRUE),
+	new/datum/stack_recipe("outpost wall girders", /obj/structure/girder/outpost, 2, time = 50, one_per_turf = TRUE, on_floor = TRUE),
 	new/datum/stack_recipe("machine frame", /obj/machinery/constructable_frame/machine_frame, 5, time = 25, one_per_turf = TRUE, on_floor = TRUE),
 	new/datum/stack_recipe("turret frame", /obj/machinery/porta_turret_construct, 5, time = 25, one_per_turf = TRUE, on_floor = TRUE),
 	null,
@@ -118,7 +119,8 @@ var/global/list/datum/stack_recipe/plasteel_recipes = list (
 	new/datum/stack_recipe("shutters", /obj/machinery/door/poddoor/shutters/constructable, 5, time = 50, one_per_turf = TRUE, on_floor = TRUE),
 	new/datum/stack_recipe("roller bed", /obj/item/roller, 4, time = 50, one_per_turf = TRUE),
 	new/datum/stack_recipe("wheelchair", /obj/structure/stool/bed/chair/wheelchair, 3, time = 50, one_per_turf = TRUE),
-	new/datum/stack_recipe("reinforced wall girders", /obj/structure/girder/reinforced, 2, time = 75, one_per_turf = TRUE, on_floor = TRUE)
+	new/datum/stack_recipe("reinforced wall girders", /obj/structure/girder/reinforced, 2, time = 75, one_per_turf = TRUE, on_floor = TRUE),
+	new/datum/stack_recipe("outpost reinforced wall girders", /obj/structure/girder/outpost/reinforced, 2, time = 75, one_per_turf = TRUE, on_floor = TRUE)
 	)
 
 /obj/item/stack/sheet/plasteel

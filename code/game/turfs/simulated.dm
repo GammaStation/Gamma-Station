@@ -8,6 +8,7 @@
 	var/to_be_destroyed = 0 //Used for fire, if a melting temperature was reached, it will be destroyed
 	var/max_fire_temperature_sustained = 0 //The max temperature of the fire which it was subjected to
 	var/dirt = 0
+	var/list/footsteps_sound = list('sound/effects/tile1.wav','sound/effects/tile2.wav','sound/effects/tile3.wav','sound/effects/tile4.wav')
 
 /turf/simulated/atom_init()
 	. = ..()
@@ -59,7 +60,7 @@
 			if(istype(H:shoes, /obj/item/clothing/shoes) && !H.buckled)
 				var/obj/item/clothing/shoes/O = H.shoes
 
-				var/footstepsound = "footsteps"
+				var/footstepsound = pick(footsteps_sound)
 
 				if(istype(H.shoes, /obj/item/clothing/shoes/clown_shoes))
 					if(prob(25))

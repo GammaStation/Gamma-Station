@@ -1719,3 +1719,32 @@ var/list/WALLITEMS = typecacheof(list(
 	else if(hol_dir == WEST && (hit_dir in list(EAST, NORTHEAST, SOUTHEAST)))
 		return TRUE
 	return FALSE
+
+#define CORNER_NONE 0
+#define CORNER_COUNTERCLOCKWISE 1
+#define CORNER_DIAGONAL 2
+#define CORNER_CLOCKWISE 4
+
+/proc/dirs_to_corner_states(list/dirs)
+	if(!istype(dirs))
+		return
+
+	var/list/ret = list(NORTHWEST, SOUTHEAST, NORTHEAST, SOUTHWEST)
+
+	for(var/i = 1 to ret.len)
+		var/dir = ret[i]
+		. = CORNER_NONE
+		if(dir in dirs)
+			. |= CORNER_DIAGONAL
+		if(turn(dir,45) in dirs)
+			. |= CORNER_COUNTERCLOCKWISE
+		if(turn(dir,-45) in dirs)
+			. |= CORNER_CLOCKWISE
+		ret[i] = "[.]"
+
+	return ret
+
+#undef CORNER_NONE
+#undef CORNER_COUNTERCLOCKWISE
+#undef CORNER_DIAGONAL
+#undef CORNER_CLOCKWISE

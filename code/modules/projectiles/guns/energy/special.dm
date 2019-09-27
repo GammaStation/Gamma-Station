@@ -1,6 +1,7 @@
 /obj/item/weapon/gun/energy/ionrifle
 	name = "ion rifle"
 	desc = "A man portable anti-armor weapon designed to disable mechanical threats."
+	icon = 'icons/obj/guns/energy/rifles.dmi'
 	icon_state = "ionrifle"
 	item_state = "ionrifle"
 	origin_tech = "combat=2;magnets=4"
@@ -32,19 +33,9 @@
 	else
 		return
 
-/obj/item/weapon/gun/energy/ionrifle/classic
-	name = "ion rifle"
-	desc = "A man portable anti-armor weapon designed to disable mechanical threats."
-	icon_state = "oldion"
-	item_state = "oldion"
-	slot_flags = null
-
-/obj/item/weapon/gun/energy/ionrifle/tactifool
-	icon_state = "tfionrifle"
-	item_state = "tfionrifle"
-
 /obj/item/weapon/gun/energy/decloner
 	name = "biological demolecularisor"
+	icon = 'icons/obj/guns/energy/pistols.dmi'
 	desc = "A gun that discharges high amounts of controlled radiation to slowly break a target into component elements."
 	icon_state = "decloner"
 	origin_tech = "combat=5;materials=4;powerstorage=3"
@@ -53,6 +44,7 @@
 /obj/item/weapon/gun/energy/floragun
 	name = "floral somatoray"
 	desc = "A tool that discharges controlled radiation which induces mutation in plant cells."
+	icon = 'icons/obj/guns/energy/pistols.dmi'
 	icon_state = "flora"
 	item_state = "gun"
 	ammo_type = list(/obj/item/ammo_casing/energy/flora/yield, /obj/item/ammo_casing/energy/flora/mut)
@@ -131,31 +123,14 @@
 /obj/item/weapon/gun/energy/mindflayer
 	name = "mind flayer"
 	desc = "A prototype weapon recovered from the ruins of Research-Station Epsilon."
+	icon = 'icons/obj/guns/energy/rifles.dmi'
 	icon_state = "xray"
 	ammo_type = list(/obj/item/ammo_casing/energy/mindflayer)
-/*
-obj/item/weapon/gun/energy/staff/focus
-	name = "mental focus"
-	desc = "An artefact that channels the will of the user into destructive bolts of force. If you aren't careful with it, you might poke someone's brain out."
-	icon = 'icons/obj/wizard.dmi'
-	icon_state = "focus"
-	item_state = "focus"
-	projectile_type = "/obj/item/projectile/forcebolt"
-
-	attack_self(mob/living/user)
-		if(projectile_type == "/obj/item/projectile/forcebolt")
-			charge_cost = 200
-			to_chat(user, "\red The [src.name] will now strike a small area.")
-			projectile_type = "/obj/item/projectile/forcebolt/strong"
-		else
-			charge_cost = 100
-			to_chat(user, "\red The [src.name] will now strike only a single person.")
-			projectile_type = "/obj/item/projectile/forcebolt"
-	*/
 
 /obj/item/weapon/gun/energy/toxgun
 	name = "phoron pistol"
 	desc = "A specialized firearm designed to fire lethal bolts of phoron."
+	icon = 'icons/obj/guns/energy/pistols.dmi'
 	icon_state = "toxgun"
 	w_class = 3.0
 	origin_tech = "combat=5;phorontech=4"
@@ -248,7 +223,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 /obj/item/weapon/gun/tesla
 	name = "Tesla Cannon"
 	desc = "Cannon which uses electrical charge to damage multiple targets. Spin the generator handle to charge it up"
-	icon = 'icons/obj/gun.dmi'
+	icon = 'icons/obj/guns/energy/rifles.dmi'
 	icon_state = "tesla"
 	item_state = "tesla"
 	w_class = 4.0
@@ -356,7 +331,6 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 /obj/item/weapon/gun/tesla/rifle
 	name = "Tesla rifle"
 	desc = "Rifle which uses electrical charge to damage multiple targets. Spin the generator handle to charge it up"
-	icon = 'icons/obj/gun.dmi'
 	icon_state = "arctesla"
 	item_state = "arctesla"
 	w_class = 3.0

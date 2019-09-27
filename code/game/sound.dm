@@ -10,7 +10,6 @@ var/list/page_sound = list('sound/effects/pageturn1.ogg', 'sound/effects/pagetur
 var/list/fracture_sound = list('sound/effects/bonebreak1.ogg','sound/effects/bonebreak2.ogg','sound/effects/bonebreak3.ogg','sound/effects/bonebreak4.ogg')
 //var/list/gun_sound = list('sound/weapons/Gunshot.ogg', 'sound/weapons/Gunshot2.ogg','sound/weapons/Gunshot3.ogg','sound/weapons/Gunshot4.ogg')
 //var/list/footsteps_sound = list('sound/effects/footsteps.ogg','sound/effects/footsteps2.ogg')
-var/list/footsteps_sound = list('sound/effects/tile1.wav','sound/effects/tile2.wav','sound/effects/tile3.wav','sound/effects/tile4.wav')
 
 /proc/playsound(atom/source, soundin, vol, vary, extrarange, falloff, channel = 0, is_global)
 
@@ -124,7 +123,6 @@ var/const/FALLOFF_SOUNDS = 0.5
 /proc/get_sfx(soundin)
 	if(istext(soundin))
 		switch(soundin)
-			if ("footsteps") soundin = pick(footsteps_sound)
 			if ("shatter") soundin = pick(shatter_sound)
 			if ("explosion") soundin = pick(explosion_sound)
 			if ("sparks") soundin = pick(spark_sound)

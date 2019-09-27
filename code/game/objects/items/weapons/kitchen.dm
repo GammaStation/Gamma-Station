@@ -125,9 +125,9 @@
 	flags = CONDUCT
 	sharp = 1
 	edge = 1
-	force = 10.0
-	w_class = 2.0
-	throwforce = 6.0
+	force = 10
+	w_class = ITEM_SIZE_SMALL
+	throwforce = 6
 	throw_speed = 3
 	throw_range = 6
 	m_amt = 12000
@@ -150,7 +150,7 @@
 	desc = "The bluntest of blades."
 	icon_state = "pknife"
 	force = 0
-	w_class = 2.0
+	w_class = ITEM_SIZE_SMALL
 	throwforce = 0
 	edge = 0
 
@@ -167,11 +167,12 @@
 	name = "butcher's cleaver"
 	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "butch"
+	item_state = "butch"
 	desc = "A huge thing used for chopping and chopping up meat. This includes clowns and clown-by-products."
 	flags = CONDUCT
-	force = 15.0
-	w_class = 3.0
-	throwforce = 8.0
+	force = 15
+	w_class = ITEM_SIZE_NORMAL
+	throwforce = 8
 	throw_speed = 3
 	throw_range = 6
 	m_amt = 12000
@@ -194,11 +195,12 @@
 	name = "rolling pin"
 	desc = "Used to knock out the Bartender."
 	icon_state = "rolling_pin"
-	force = 8.0
-	throwforce = 10.0
+	item_state = "rolling_pin"
+	force = 8
+	throwforce = 10
 	throw_speed = 2
 	throw_range = 7
-	w_class = 3.0
+	w_class = ITEM_SIZE_NORMAL
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked") //I think the rollingpin attackby will end up ignoring this anyway.
 
 /obj/item/weapon/kitchen/rollingpin/attack(mob/living/M, mob/living/user)
