@@ -1,32 +1,25 @@
 /area/shuttle/survivor
+	name = "Apache"
 	icon_state = "shuttle"
 
 /area/shuttle/survivor/space
-	name = "Atlas"
 	icon_state = "shuttle"
 
 /area/shuttle/survivor/landed
-	name = "Atlas landed"
+	name = "Apache landed"
 	icon_state = "shuttlegrn"
+	base_turf = /turf/simulated/floor/plating/basalt
 
 /area/shuttle/survivor/transit
-	name = "Atlas in flight"
 	icon_state = "shuttle3"
 
 /obj/machinery/computer/survivor_shuttle
 	icon = 'icons/obj/computer-new.dmi'
-	icon_state = "steering"
+	icon_state = "shuttle_comp"
 	var/location = 0
 
-
-
-	var/arrival_note = "Landing complete. Warning - no fuel"
-	var/department_note = "Emergency undocking procedure is activated."
 	var/obj/item/device/radio/intercom/radio
 	var/area/curr_location
-
-	var/area/transit_area
-	var/moving = FALSE
 
 /obj/machinery/computer/survivor_shuttle/atom_init()
 	radio = new(src)
@@ -34,52 +27,40 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/computer/survivor_shuttle/atom_init_late()
-	transit_area = locate(/area/shuttle/survivor/transit)
 	curr_location = locate(/area/shuttle/survivor)
 
+/obj/machinery/computer/survivor_shuttle/proc/check_lockdown()
+	if(ticker && istype(ticker.mode,/datum/game_mode/survival))
+		var/datum/game_mode/survival/gamemode = ticker.mode
+		var/timeleft = gamemode.time_left()
+		if(timeleft <= 0)
+			return FALSE
+		else
+			return TRUE
+
+	else
+		return FALSE
+
+/obj/machinery/computer/survivor_shuttle/proc/finish_gamemode(location)
+	if(ticker && istype(ticker.mode,/datum/game_mode/survival))
+		var/datum/game_mode/survival/gamemode = ticker.mode
+		gamemode.shuttle_location = location
+
 /obj/machinery/computer/survivor_shuttle/proc/survivor_move_to()
-//	if(moving)	return
+	if(check_lockdown())
+		visible_message("<span class='notice'>Unable to start launching procedure - extreme weather conditions!</span>",1)
+		return
 
-	var/area/fromArea
-	var/area/toArea
-
-	if (location == 0)
-		fromArea = locate(/area/shuttle/survivor/space)
-		toArea = locate(/area/shuttle/survivor/landed)
-
-	fromArea.move_contents_to_new(toArea)
+	var/area/toArea = locate(/area/shuttle/survivor/space)
+	curr_location.move_contents_to_new(toArea,null,null,TRUE)
 	location = 1
-/*
-
-	from_area = curr_location
-//	moving = TRUE
-
-
-	radio.autosay(department_note, "Shuttle Alert System")
-	to_chat(world,"EDEM2")
-	transit_area.parallax_movedir = WEST
-	from_area.move_contents_to(transit_area, null, WEST)
-	to_chat(world,"EDEM3")
-	shake_mobs(transit_area)
-	curr_location = transit_area
-
-//	sleep(OFFICER_SHUTTLE_MOVE_TIME)
-	var/area/dest_location = locate(/area/shuttle/survivor/landed)
-	curr_location.move_contents_to(dest_location)
-
-	radio.autosay(arrival_note, "Arrivals Alert System")
-
-	curr_location = dest_location
-
-	moving = FALSE
-*/
+	finish_gamemode(location)
 
 /obj/machinery/computer/survivor_shuttle/attackby(obj/item/I, mob/user)
 	return attack_hand(user)
 
 /obj/machinery/computer/survivor_shuttle/ui_interact(mob/user)
-	var/dat = {"Внимание: топливные баки исчерпаны<br>
-		<a href='?src=\ref[src];escape=1'>Emergency undocking</a><br>
+	var/dat = {"<a href='?src=\ref[src];escape=1'>Laucnh</a><br>
 		<a href='?src=\ref[user];mach_close=computer'>Close</a>"}
 
 	user << browse(entity_ja(dat), "window=computer;size=575x450")
@@ -92,8 +73,6 @@
 
 	if(href_list["escape"])
 		survivor_move_to()
-
-
 	updateUsrDialog()
 
 
@@ -133,31 +112,10 @@
 					step(L, EAST)
 
 
-/*
-var/surv_ship_location = 1 // 0 = planet , 1 = space
-
-/proc/move_surv_ship()
-	var/area/fromArea
-	var/area/toArea
-	if (surv_ship_location == 1)
-		fromArea = locate(/area/shuttle/alien/mine)
-		toArea = locate(/area/shuttle/alien/base)
-	else
-		fromArea = locate(/area/shuttle/alien/base)
-		toArea = locate(/area/shuttle/alien/mine)
-	fromArea.move_contents_to(toArea)
-	if (surv_ship_location)
-		surv_ship_location = 0
-	else
-		surv_ship_location = 1
-	return
-
-*/
-
 /turf/simulated/shuttle/wall/erokez
-	icon = 'code/modules/locations/shuttles/erokez.dmi'
+	icon = 'code/modules/locations/shuttles/apache.dmi'
 	icon_state = "0,5"
 	base_state = "0,5"
 	join_group = null
 	under_turf = /turf/simulated/floor/plating/basalt
-	takes_underlays = 1
+	takes_underlays = TRUE

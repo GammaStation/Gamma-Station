@@ -862,7 +862,7 @@ proc/anim(turf/location,target,a_icon,a_icon_state,flick_anim,sleeptime = 0,dire
 					refined_trg -= B
 					continue moving
 
-/area/proc/move_contents_to_new(area/A, turftoleave=null, direction = null)
+/area/proc/move_contents_to_new(area/A, turftoleave=null, direction = null, shuttlework_bypass = FALSE)
 	//Takes: Area. Optional: turf type to leave behind.
 	//Returns: Nothing.
 	//Notes: Attempts to move the contents of one area to another area.
@@ -964,7 +964,7 @@ proc/anim(turf/location,target,a_icon,a_icon_state,flick_anim,sleeptime = 0,dire
 						M.loc = X
 						M.update_parallax_contents()
 
-					if(shuttlework)
+					if(shuttlework && !shuttlework_bypass)
 						var/turf/simulated/shuttle/SS = T
 						SS.landed_holder.leave_turf()
 					else if(turftoleave)

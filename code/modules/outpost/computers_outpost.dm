@@ -24,62 +24,21 @@
 
 /obj/machinery/computer/outpost_comms/ui_interact(mob/user)
 	var/dat = "<html><head><title>Communications</title></head><body>"
+	dat += "<span><b>Текущее время:</b> [(text2num(time2text(world.realtime, "DD")))].[time2text(world.timeofday, "MM")].[game_year]-[round(world.time / 36000)]:[add_zero("[world.time / 600 % 60]", 2)]:[add_zero("[world.time / 10 % 60]", 2)]</span><br>"
+	if(ticker && istype(ticker.mode,/datum/game_mode/survival))
+		var/datum/game_mode/survival/gamemode = ticker.mode
+		dat += "Экстремальные погодные условия - примерное время окончания: [gamemode.get_timer()]"
 
-	dat += "Отсутствует соединение с сетью, обратитесь к системному администратору"
-//	dat += "<span>Welcome, <b>Alan Simons</b></span><br>"
-//	dat += "<span><b>Current Time:</b> [round(world.time / 36000)]:[add_zero("[world.time / 600 % 60]", 2)]:[add_zero("[world.time / 10 % 60]", 2)]</span><br>"
-//
-//	dat += "<center><b><a href='?src=\ref[src];show_logs=1'>Оперативный журнал</a></center></b><br>"
-//	dat += "<table border=1><tr><td>Это старший научный сотрудник Гектор Маккри, сегодняшнее число [(text2num(time2text(world.realtime, "DD"))-1)].[time2text(world.timeofday, "MM")].[game_year], время 22:15."
-//	dat += "Не имея других альтернатив, наша группа остаётся здесь в ожидании прибытия помощи. Вместе с группой выживших, яЯ копирую свои личные записи в оперативный журнал аванпоста, чтобы группа Таркнассуса или ещё кто-нибудь, кто придёт сюда, могли иметь чуть больше информации о происходящем. Также я скопировал отдельные записи из журнала сеансов связи.</td></tr>"
-//	dat += "<tr><td>Итак, всё началось два дня назад, когда в районе 10 часов утра поступил автоматический сигнал об немедленной эвакуации. Сразу после этого было ещё одно сообщение, но кроме помех и шумов в нём ничего не было."
-//	dat += "Я немедленно запросил подтверждение, но в тоже время продублировал сигнал тревоги по всему участку и связался с каждой группой, чтобы они незамедлительно вернулись на Дельту-4. В тот момент, я лично не думал, что случилось что-то серьёзное."
-//	dat += "Однако, ответа с базы за это время так и не поступило и это не на шутку меня встревожило.</tr></td>"
 
-//	dat += "<tr><td>В итоге на аванпосту остались: я, Роб Финч, Тереза Палмер, Гектор Маккри,  "
-//	dat +=	"[round(world.time / 36000)]:[add_zero("[world.time / 600 % 60]", 2)]:[add_zero("[world.time / 10 % 60]", 2)]<BR>"
 	var/datum/browser/popup = new(user, "out_com", "Communications", 600, 700)
 	popup.set_content(dat)
 	popup.set_title_image(user.browse_rsc_icon(icon, icon_state))
 	popup.open()
-/*
-/obj/machinery/computer/outpost_comms/ui_interact(mob/user)
-	var/dat = "<html><head><title>Communications</title></head><body>"
 
-	dat += "<span>Welcome, <b>Alan Simons</b></span><br>"
-	dat += "<span><b>Current Time:</b> [round(world.time / 36000)]:[add_zero("[world.time / 600 % 60]", 2)]:[add_zero("[world.time / 10 % 60]", 2)]</span><br>"
+/obj/machinery/computer/outpost_comms/process()
+	if(..())
+		updateUsrDialog()
 
-	if(mode == 0)
-		dat += "<center><b><a href='?src=\ref[src];show_logs=1'>Журнал сеансов связи</a></center></b><br>"
-
-		dat += "<table border=1><tr><th>№ п/п</th><th>Дата, время</th><th>Тип</th><th>Сообщение</th></tr>"
-		dat += "<tr align='center'><td>1</td><td>[(text2num(time2text(world.realtime, "DD"))-3)].[time2text(world.timeofday, "MM")].[game_year]-16:42:32</td><td>Приём</td><td>RE:Окончание работ и подготовка к консервации переносится на 24 часа</td></tr>"
-
-		dat += "<tr align='center'><td>2</td><td>[(text2num(time2text(world.realtime, "DD"))-2)].[time2text(world.timeofday, "MM")].[game_year]-8:02:4</td><td>Передача</td><td>RE:Ежесменный отчёт</td></tr>"
-
-		dat += "<tr align='center'><td>3</td><td>[(text2num(time2text(world.realtime, "DD"))-2)].[time2text(world.timeofday, "MM")].[game_year]-9:58:6</td><td>Приём</td><td>ВНИМАНИЕ! ЭТО СООБЩЕНИЕ СОЗДАНО АВТОМАТИЗИРОВАННОЙ СИСТЕМОЙ ОПОВЕЩЕНИЯ."
-		dat += "В РЕЗУЛЬТАТЕ ЧРЕЗВЫЧАЙНОЙ СИТУАЦИИ ВСЕМУ ПЕРСОНАЛУ ОБЪЕКТОВ ПРЕДПИСЫВАЕТСЯ ПРИСТУПИТЬ К НЕМЕДЛЕННОЙ ЭВАКУАЦИИ! </td></tr>"
-
-		dat += "<tr align='center'><td>4</td><td>[(text2num(time2text(world.realtime, "DD"))-2)].[time2text(world.timeofday, "MM")].[game_year]-9:58:48</td><td>Приём</td><td>#4nd%;f4y6,Ј%-BZZZZZZZT</td></tr>"
-
-		dat += "<tr align='center'><td>5</td><td>[(text2num(time2text(world.realtime, "DD"))-2)].[time2text(world.timeofday, "MM")].[game_year]-9:59:52</td><td>Передача</td><td>Подтвердите посл</td></tr>"
-		dat += "</table>"
-
-	if(mode == 1)
-		dat += "<center><b><a href='?src=\ref[src];show_logs=1'>Оперативный журнал</a></center></b><br>"
-		dat += "<table border=1><tr><td>Это начальник смены участка Дельта-4 Алан Саймонс, сегодняшнее число [(text2num(time2text(world.realtime, "DD"))-1)].[time2text(world.timeofday, "MM")].[game_year], время 22:15."
-		dat += "Я копирую свои личные записи в оперативный журнал аванпоста, чтобы группа Таркнассуса или ещё кто-нибудь, кто придёт сюда, могли иметь чуть больше информации о происходящем. Также я скопировал отдельные записи из журнала сеансов связи.</td></tr>"
-		dat += "<tr><td>Итак, всё началось два дня назад, когда в районе 10 часов утра поступил автоматический сигнал об немедленной эвакуации. Сразу после этого было ещё одно сообщение, но кроме помех и шумов в нём ничего не было."
-		dat += "Я немедленно запросил подтверждение, но в тоже время продублировал сигнал тревоги по всему участку и связался с каждой группой, чтобы они незамедлительно вернулись на Дельту-4. В тот момент, я лично не думал, что случилось что-то серьёзное."
-		dat += "Однако, ответа с базы за это время так и не поступило и это не на шутку меня встревожило.</tr></td>"
-
-		dat += "<tr><td>В итоге на аванпосту остались: я, Роб Финч, Тереза Палмер, Гектор Маккри,  "
-//	dat +=	"[round(world.time / 36000)]:[add_zero("[world.time / 600 % 60]", 2)]:[add_zero("[world.time / 10 % 60]", 2)]<BR>"
-	var/datum/browser/popup = new(user, "out_com", "Communications", 600, 700)
-	popup.set_content(dat)
-	popup.set_title_image(user.browse_rsc_icon(icon, icon_state))
-	popup.open()
-*/
 /obj/machinery/computer/outpost_comms/Topic(href, href_list)
 	. = ..()
 	if(!.)
