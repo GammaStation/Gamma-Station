@@ -10,6 +10,8 @@
 	var/current_wave = 1
 	var/tier = 1
 
+	var/supply_points = 2
+
 	var/evac_delay = 60 MINUTES	//time to shuttle activation
 	var/end_time			// timeofday when evac is ready
 	var/shuttle_location = 0     // 0 - on planet, 1 - out of game
@@ -52,6 +54,7 @@
 
 //		to_chat(world,"[S] - [i] - [tier] -[S.mobs_list.len]")
 	current_wave++
+	supply_points++
 
 	if(tier < 3)
 		wave_coeff += 1

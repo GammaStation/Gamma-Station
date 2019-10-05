@@ -16,7 +16,7 @@ var/list/supply_drops = list()
 	icon = 'icons/obj/computer-new.dmi'
 	icon_state = "comm"
 	light_color = "#00b000"
-	var/points = 6
+	var/points = 3
 
 /obj/machinery/computer/outpost_supply/atom_init()
 	..()
@@ -25,13 +25,27 @@ var/list/supply_drops = list()
 		var/datum/supply_drop/P = new typepath()
 		supply_drops[P.name] = P
 
+/obj/machinery/computer/outpost_supply/proc/get_points()
+	if(ticker && istype(ticker.mode,/datum/game_mode/survival))
+		var/datum/game_mode/survival/gamemode = ticker.mode
+		return gamemode.supply_points
+	else
+		return points
+
+/obj/machinery/computer/outpost_supply/proc/manage_points()
+	if(ticker && istype(ticker.mode,/datum/game_mode/survival))
+		var/datum/game_mode/survival/gamemode = ticker.mode
+		gamemode.supply_points--
+	else
+		points--
+
 
 /obj/machinery/computer/outpost_supply/ui_interact(mob/user)
 	var/dat = "<i>¬о врем€ эвакуации с 'ј€кса', часть ценного снар€жени€ и припасов была перенесена в грузовые капсулы, которые по-прежнему наход€тс€ на орбите. »спользу€ эту консоль св€зи, вы можете установить контакт "
 	dat += "и дать команду на приземление. ќднако, учитыва€ сложную погодную обстановку, требуетс€ рассчитать безопасную траекторию дл€ каждой капсулы, что требует времени. ¬ыбирайте исход€ из обстановки.</i><br>"
-	dat += "<span><b>–ассчитанные траектории: [points]</b></span><br>"
+	dat += "<span><b>–ассчитанные траектории: [get_points()]</b></span><br>"
 
-	if(points)
+	if(get_points())
 		for(var/supply_name in supply_drops)
 			var/datum/supply_drop/N = supply_drops[supply_name]
 			dat += "<A href='?src=\ref[src];order=[N]'>[N.name]</A><BR>"
@@ -56,7 +70,7 @@ var/list/supply_drops = list()
 		if(!supply_points.len)
 			return FALSE
 
-		if(!points)
+		if(!get_points())
 			return FALSE
 
 		var/turf/T = pick(supply_points)
@@ -64,7 +78,7 @@ var/list/supply_drops = list()
 		var/turf/F = pick(surrounding_turfs)
 		new /obj/effect/decal/droppod_wreckage(F)
 		P.generate(F)
-		points--
+		manage_points()
 		updateUsrDialog()
 
 /obj/structure/closet/crate/outpost/supply_ammo
@@ -119,6 +133,7 @@ var/list/supply_drops = list()
 					/obj/item/ammo_box/fancy,
 					/obj/item/ammo_box/fancy,
 					/obj/item/ammo_box/fancy,
+					/obj/item/ammo_box/c9mm,
 					/obj/item/ammo_box/fancy/shotgun,
 					/obj/item/ammo_box/fancy/shotgun,)
 
@@ -129,3 +144,20 @@ var/list/supply_drops = list()
 	contains = list(/obj/item/stack/sheet/glass,
 					/obj/item/stack/sheet/metal,
 					/obj/item/stack/sheet/plasteel)
+
+/datum/supply_drop/medical
+	name = "Medical supplies"
+	crate_type = /obj/structure/closet/crate/outpost/medical
+	contains = list(/obj/item/weapon/storage/firstaid/regular,
+					/obj/item/weapon/storage/firstaid/fire,
+					/obj/item/weapon/storage/firstaid/toxin,
+					/obj/item/weapon/storage/firstaid/o2,
+					/obj/item/weapon/storage/firstaid/adv,
+					/obj/item/weapon/storage/pill_bottle/spaceacillin,
+					/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline,
+					/obj/item/weapon/reagent_containers/glass/bottle/stoxin,
+					/obj/item/weapon/storage/box/syringes,
+					/obj/item/weapon/storage/box/autoinjectors,
+					/obj/item/weapon/storage/firstaid/small_firstaid_kit/civilian,
+					/obj/item/weapon/storage/firstaid/small_firstaid_kit/civilian,
+					/obj/item/weapon/storage/firstaid/small_firstaid_kit/space)
