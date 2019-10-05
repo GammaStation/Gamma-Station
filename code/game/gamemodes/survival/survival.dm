@@ -33,7 +33,7 @@
 	for(var/mob/living/M in player_list)
 		M << browse(entity_ja(output_text), "window=doom;size=600x300")
 	SSweather.eligible_zlevels.Add(1)
-	addtimer(CALLBACK(src, .proc/call_shuttle), 3)
+	addtimer(CALLBACK(src, .proc/call_shuttle), 3000)
 
 /datum/game_mode/survival/process()
 	if(stop_waves)
