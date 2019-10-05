@@ -13,8 +13,8 @@
 
 /obj/item/weapon/card/id/outpost/eng
 	icon_state = "id-eng"
-	access = list(access_outpost_general,access_outpost_engineer)
+	access = list(access_outpost_general,access_outpost_engineer,access_engine_equip)
 
 /obj/item/weapon/card/id/outpost/sec
 	icon_state = "id-sec"
-	access = list(access_outpost_general,access_outpost_engineer, access_outpost_security, access_outpost_medical, access_outpost_command)
+	access = list(access_outpost_general,access_outpost_engineer, access_outpost_security, access_outpost_medical, access_outpost_command,access_engine_equip)
