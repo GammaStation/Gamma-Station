@@ -75,14 +75,14 @@
 	to_chat(H,"[sanitize(msg)]")
 
 	return TRUE
-/*
+
 /datum/job/doom_trooper
 	title = "Space Trooper"
 	flag = DTROOPER
 	department_flag = ENGSEC
 	faction = "Outpost"
-	total_positions = 1
-	spawn_positions = 1
+	total_positions = 2
+	spawn_positions = 2
 	supervisors = "the Commanding Officer and heads of staff"
 	selection_color = "#bab86c"
 	idtype = /obj/item/weapon/card/id/military/army
@@ -102,7 +102,8 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/suit/space/praetor(H), slot_wear_suit)
 	H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/praetor(H), slot_head)
 	H.equip_to_slot_or_del(new /obj/item/weapon/storage/firstaid/small_firstaid_kit/combat(H), slot_l_store)
-	H.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/plasma_rifle(H), slot_r_hand)
+	H.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/assault_rifle/military/carbine(H), slot_r_hand)
+//	H.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/plasma_rifle(H), slot_r_hand)
 	var/obj/item/weapon/card/id/C = new idtype(H)
 	C.registered_name = H.real_name
 	C.rank = "Lietenant"
@@ -113,4 +114,3 @@
 	to_chat(H,"[sanitize(msg)]")
 
 	return TRUE
-*/

@@ -147,6 +147,11 @@
 	icon_closed = "ammo"
 	icon_state = "ammo"
 
+/obj/structure/closet/crate/outpost/medical
+	icon_opened= "medicalopen"
+	icon_closed = "medical"
+	icon_state = "medical"
+
 /obj/structure/closet/crate/outpost/construction
 	icon_opened= "constructionopen"
 	icon_closed = "construction"
