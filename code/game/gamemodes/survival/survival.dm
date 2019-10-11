@@ -12,7 +12,7 @@
 
 	var/supply_points = 2
 
-	var/evac_delay = 60 MINUTES	//time to shuttle activation
+	var/evac_delay = 65 MINUTES	//time to shuttle activation
 	var/end_time			// timeofday when evac is ready
 	var/shuttle_location = 0     // 0 - on planet, 1 - out of game
 
@@ -33,6 +33,7 @@
 	for(var/mob/living/M in player_list)
 		M << browse(entity_ja(output_text), "window=doom;size=600x300")
 	SSweather.eligible_zlevels.Add(1)
+	end_time = world.timeofday + evac_delay
 	addtimer(CALLBACK(src, .proc/call_shuttle), 3000)
 
 /datum/game_mode/survival/process()
@@ -80,8 +81,6 @@
 /datum/game_mode/survival/proc/call_shuttle()
 	if (!ticker)
 		return
-
-	end_time = world.timeofday + evac_delay
 
 	stop_waves = FALSE
 	message_admins("Gamemode has called the shuttle.")
