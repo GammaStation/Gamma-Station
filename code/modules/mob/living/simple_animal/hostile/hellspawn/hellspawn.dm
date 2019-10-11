@@ -516,7 +516,7 @@
 	ranged = 1
 	minimum_distance = 5
 	ranged_cooldown_cap = 3
-	rapid = 1
+	rapid = 0
 	projectiletype = /obj/item/projectile/energy/mancubus_blast
 	projectilesound = 'sound/mob/mancubus/mancubus_shot1.ogg'
 
