@@ -40,6 +40,9 @@
 		return
 	if(spawn_time > world.time)
 		return
+	var/timeleft = time_left()
+	if(!timeleft)
+		return
 	spawn_time = world.time + wave_delay
 
 	for (var/i in 1 to tier)
