@@ -37,13 +37,18 @@
 	addtimer(CALLBACK(src, .proc/call_shuttle), 3000)
 
 /datum/game_mode/survival/process()
+	var/live_players = 0
+	for(var/mob/living/M in player_list)
+		if (M.client && M.stat != DEAD)
+			live_players++
+	if(!live_players)
+		return
+
 	if(stop_waves)
 		return
 	if(spawn_time > world.time)
 		return
-	var/timeleft = time_left()
-	if(!timeleft)
-		return
+
 	spawn_time = world.time + wave_delay
 
 	for (var/i in 1 to tier)
@@ -54,13 +59,11 @@
 		S.id = start.id
 		S.coeff = wave_coeff
 		S.mobs_list = get_tier(i)
-//		var/D = text2path("/tier_[tier]")
 
-//		to_chat(world,"[S] - [i] - [tier] -[S.mobs_list.len]")
 	current_wave++
 	supply_points++
 
-	if(tier < 3)
+	if(tier < 3 && live_players > 3)
 		wave_coeff += 1
 	if((current_wave/2 > tier) && (tier < 3))
 		tier++
