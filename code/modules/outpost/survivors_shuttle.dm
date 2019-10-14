@@ -60,7 +60,7 @@
 	return attack_hand(user)
 
 /obj/machinery/computer/survivor_shuttle/ui_interact(mob/user)
-	var/dat = {"<a href='?src=\ref[src];escape=1'>Laucnh</a><br>
+	var/dat = {"<a href='?src=\ref[src];escape=1'>Launch</a><br>
 		<a href='?src=\ref[user];mach_close=computer'>Close</a>"}
 
 	user << browse(entity_ja(dat), "window=computer;size=575x450")
