@@ -71,6 +71,10 @@
 /mob/living/simple_animal/hostile/giant_spider/AttackingTarget()
 	..()
 	if(isliving(target))
+		if(istype(target, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = target
+			if(H.energy_shield && H.energy_shield.active)
+				return
 		var/mob/living/L = target
 		if(L.reagents)
 			L.reagents.add_reagent("toxin", poison_per_bite)

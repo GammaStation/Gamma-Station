@@ -1,6 +1,11 @@
 // Large objects that don't fit in crates, but must be sellable anyway.
 
 // Crates, boxes, lockers.
+/datum/export/large/closet
+	cost = 50
+	unit_name = "closet"
+	export_types = list(/obj/structure/closet)
+
 /datum/export/large/crate
 	cost = 500
 	unit_name = "crate"

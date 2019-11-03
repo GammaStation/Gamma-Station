@@ -5,6 +5,8 @@
 	faction = "Station"
 	total_positions = -1
 	spawn_positions = -1
+	min_money = 10
+	max_money = 200
 	supervisors = "absolutely everyone"
 	selection_color = "#dddddd"
 	access = list()			//See /datum/job/assistant/get_access()

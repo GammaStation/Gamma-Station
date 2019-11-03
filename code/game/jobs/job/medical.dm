@@ -5,6 +5,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 5000
+	max_money = 10000
 	supervisors = "the captain"
 	selection_color = "#ffddf0"
 	idtype = /obj/item/weapon/card/id/medGold
@@ -45,6 +47,8 @@
 	faction = "Station"
 	total_positions = 4
 	spawn_positions = 3
+	min_money = 1000
+	max_money = 5000
 	supervisors = "the chief medical officer"
 	selection_color = "#ffeef0"
 	idtype = /obj/item/weapon/card/id/med
@@ -104,6 +108,8 @@
 	faction = "Station"
 	total_positions = 2
 	spawn_positions = 2
+	min_money = 500
+	max_money = 2500
 	supervisors = "the chief medical officer"
 	selection_color = "#ffeef0"
 	idtype = /obj/item/weapon/card/id/med
@@ -140,6 +146,8 @@
 	faction = "Station"
 	total_positions = 2
 	spawn_positions = 2
+	min_money = 1000
+	max_money = 5000
 	supervisors = "the chief medical officer"
 	selection_color = "#ffeef0"
 	idtype = /obj/item/weapon/card/id/med
@@ -174,6 +182,8 @@
 	faction = "Station"
 	total_positions = 2
 	spawn_positions = 2
+	min_money = 1000
+	max_money = 5000
 	supervisors = "the chief medical officer and research director"
 	selection_color = "#ffeef0"
 	idtype = /obj/item/weapon/card/id/med
@@ -208,6 +218,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 1000
+	max_money = 5000
 	supervisors = "the chief medical officer"
 	selection_color = "#ffeef0"
 	idtype = /obj/item/weapon/card/id/med
@@ -243,6 +255,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 500
+	max_money = 2000
 	supervisors = "the chief medical officer"
 	selection_color = "#ffeef0"
 	idtype = /obj/item/weapon/card/id/med

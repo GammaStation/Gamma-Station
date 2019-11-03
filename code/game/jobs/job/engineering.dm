@@ -5,6 +5,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 5000
+	min_money = 10000
 	supervisors = "the captain"
 	selection_color = "#ffeeaa"
 	idtype = /obj/item/weapon/card/id/engGold
@@ -46,6 +48,8 @@
 	faction = "Station"
 	total_positions = 5
 	spawn_positions = 5
+	min_money = 1000
+	max_money = 5000
 	supervisors = "the chief engineer"
 	selection_color = "#fff5cc"
 	idtype = /obj/item/weapon/card/id/eng
@@ -84,6 +88,8 @@
 	faction = "Station"
 	total_positions = 3
 	spawn_positions = 2
+	min_money = 1000
+	max_money = 5000
 	supervisors = "the chief engineer"
 	selection_color = "#fff5cc"
 	idtype = /obj/item/weapon/card/id/eng

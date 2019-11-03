@@ -19,7 +19,7 @@
 	var/source_terminal = ""
 
 /proc/create_random_account_and_store_in_mind(mob/living/carbon/human/H)
-	var/datum/money_account/M = create_account(H.real_name, rand(50,500)*10, null)
+	var/datum/money_account/M = create_account(H.real_name, rand(H.mind.assigned_job.min_money, H.mind.assigned_job.max_money), null)
 	if(H.mind)
 		var/remembered_info = ""
 		remembered_info += "<b>Your account number is:</b> #[M.account_number]<br>"
@@ -45,6 +45,8 @@
 	T.target_name = new_owner_name
 	T.purpose = "Account creation"
 	T.amount = starting_funds
+
+
 	if(!source_db)
 		//set a random date, time and location some time over the past few decades
 		T.date = "[num2text(rand(1,31))] [pick("January","February","March","April","May","June","July","August","September","October","November","December")], 25[rand(10,56)]"

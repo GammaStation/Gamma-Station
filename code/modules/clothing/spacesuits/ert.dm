@@ -136,8 +136,9 @@
 	slowdown = 0.6
 	var/on = FALSE
 	var/mob/living/carbon/human/wearer
+	actions_types = /datum/action/item_action/toggle_stealth
 
-/obj/item/clothing/suit/space/rig/ert/stealth/verb/toggle()
+/obj/item/clothing/suit/space/rig/ert/stealth/verb/stealth()
 	set name = "Toggle Stealth"
 	set category = "Object"
 

@@ -48,3 +48,7 @@
 /obj/item/weapon/storage/briefcase/centcomm
 	icon_state = "briefcase-centcomm"
 	item_state = "briefcase-centcomm"
+
+/obj/item/weapon/storage/briefcase/centcomm/atom_init()
+	. = ..()
+	new /obj/item/clothing/belt/energy_shield(src)

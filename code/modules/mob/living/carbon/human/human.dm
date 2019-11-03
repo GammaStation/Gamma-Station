@@ -8,6 +8,7 @@
 	var/datum/species/species //Contains icon generation and language information, set during New().
 	var/dog_owner
 	var/heart_beat = 0
+	var/obj/item/clothing/belt/energy_shield/energy_shield // var used for portable energy shield
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 
 	var/scientist = 0	//Vars used in abductors checks and etc. Should be here because in species datums it changes globaly.
@@ -172,12 +173,19 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 /mob/living/carbon/human/ex_act(severity)
 	if(!blinded)
 		flash_eyes()
-
 	var/shielded = 0
 	var/b_loss = null
 	var/f_loss = null
 	switch (severity)
 		if (1.0)
+			if(energy_shield)
+				if(energy_shield.active)
+					energy_shield.scell.use(1000)
+					var/atom/target = get_edge_target_turf(src, get_dir(src, get_step_away(src, src)))
+					throw_at(target, 200, 4)
+					Paralyse(10)
+					return
+
 			b_loss += 500
 			if (!prob(getarmor(null, "bomb")))
 				gib()
@@ -190,6 +198,14 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 				//user.throw_at(target, 200, 4)
 
 		if (2.0)
+			if(energy_shield)
+				if(energy_shield.active)
+					energy_shield.scell.use(400)
+					var/atom/target = get_edge_target_turf(src, get_dir(src, get_step_away(src, src)))
+					throw_at(target, 100, 3)
+					Paralyse(10)
+					return
+
 			if (!shielded)
 				b_loss += 60
 
@@ -206,6 +222,14 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 				Paralyse(10)
 
 		if(3.0)
+			if(energy_shield)
+				if(energy_shield.active)
+					energy_shield.scell.use(200)
+					var/atom/target = get_edge_target_turf(src, get_dir(src, get_step_away(src, src)))
+					throw_at(target, 50, 3)
+					Paralyse(10)
+					return
+
 			b_loss += 30
 			if (prob(getarmor(null, "bomb")))
 				b_loss = b_loss/2
@@ -252,6 +276,15 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 
 /mob/living/carbon/human/blob_act()
 	if(stat == DEAD)	return
+	if(energy_shield)
+		if(energy_shield.active)
+			energy_shield.scell.use(100)
+			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread()
+			s.set_up(3, 1, src)
+			s.start()
+			to_chat(src, "<span class='danger'>\The blob attacks you, but energy shield protect you!</span>")
+			return
+
 	to_chat(src, "<span class='danger'>\The blob attacks you!</span>")
 	var/dam_zone = pick(BP_CHEST , BP_L_ARM , BP_R_ARM , BP_L_LEG , BP_R_LEG)
 	var/obj/item/organ/external/BP = bodyparts_by_name[ran_zone(dam_zone)]
@@ -262,6 +295,10 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	for(var/mob/M in viewers(src, null))
 		if ((M.client && !( M.blinded )))
 			M.show_message("\red [src] has been hit by [O]", 1)
+	if(energy_shield)
+		if(energy_shield.active)
+			energy_shield.scell.use(200)
+			return
 	if (health > 0)
 		var/obj/item/organ/external/BP = bodyparts_by_name[pick(BP_CHEST , BP_CHEST , BP_CHEST , BP_HEAD)]
 		if(!BP)
@@ -285,6 +322,12 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		visible_message("<span class='userdanger'><B>[M]</B> [pick(M.attack_message)] [src]!</span>")
 		M.attack_log += text("\[[time_stamp()]\] <font color='red'>attacked [src.name] ([src.ckey])</font>")
 		src.attack_log += text("\[[time_stamp()]\] <font color='orange'>was attacked by [M.name] ([M.ckey])</font>")
+		if(energy_shield)
+			if(energy_shield.active)
+				energy_shield.scell.use(M.melee_damage_upper * 2)
+				visible_message("<span class='warning'>Shield protect [src] from [M]'s attack!</span>")
+				return
+
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
 		var/dam_zone = pick(BP_CHEST , BP_L_ARM , BP_R_ARM , BP_L_LEG , BP_R_LEG)
 		var/obj/item/organ/external/BP = bodyparts_by_name[ran_zone(dam_zone)]
@@ -300,7 +343,13 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		for(var/mob/O in viewers(src, null))
 			if ((O.client && !( O.blinded )))
 				O.show_message(text("\red <B>The [M.name] glomps []!</B>", src), 1)
-
+		if(energy_shield)
+			if(energy_shield.active)
+				energy_shield.scell.use(100)
+				visible_message("<span class='warning'>[src]'s shield suddenly trows [M] far away!</span>")
+				var/atom/target = get_edge_target_turf(src, get_dir(src, get_step_away(src, src)))
+				throw_at(target, 75, 5)
+				return
 		var/damage = rand(1, 3)
 
 		if(istype(M, /mob/living/carbon/slime/adult))

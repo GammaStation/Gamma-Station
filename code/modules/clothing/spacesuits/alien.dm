@@ -149,6 +149,12 @@
 	var/on = FALSE
 	var/mob/living/carbon/human/wearer
 
+/obj/item/clothing/suit/space/vox/stealth/verb/stealth()
+	set name = "Toggle Stealth"
+	set category = "Object"
+
+	toggle_stealth()
+
 /obj/item/clothing/suit/space/vox/stealth/process()
 	if(!on)
 		return

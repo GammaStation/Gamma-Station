@@ -5,6 +5,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 10000
+	max_money = 25000
 	supervisors = "Nanotrasen officials and Space law"
 	selection_color = "#ccccff"
 	idtype = /obj/item/weapon/card/id/gold
@@ -59,6 +61,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 7500
+	max_money = 20000
 	supervisors = "the captain"
 	selection_color = "#ddddff"
 	idtype = /obj/item/weapon/card/id/silver

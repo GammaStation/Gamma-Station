@@ -263,7 +263,7 @@
 	action_procname = "ToggleHood"
 
 /datum/action/item_action/toggle_stealth
-	action_procname = "toggle_stealth"
+	action_procname = "stealth"
 
 /datum/action/item_action/toggle_mister
 	action_procname = "toggle_mister"
@@ -275,6 +275,10 @@
 /datum/action/item_action/jetpack_stabilisation
 	name = "toggle stabilisation"
 	action_procname = "toggle_rockets"
+
+/datum/action/item_action/shield
+	name = "toggle shield"
+	action_procname = "shield"
 
 /datum/action/item_action/implant_storage
 	action_procname = "open_storage"
@@ -295,3 +299,7 @@
 /datum/action/item_action/adjust_helmet
 	name = "adjust helmet"
 	action_procname = "toggle"
+
+/datum/action/item_action/adjust
+	name = "adjust"
+	action_procname = "adjust"

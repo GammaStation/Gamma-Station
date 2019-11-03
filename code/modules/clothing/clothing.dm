@@ -649,3 +649,8 @@ BLIND     // can't see anything
 /obj/item/clothing/under/rank/atom_init()
 	sensor_mode = pick(0,1,2,3)
 	. = ..()
+
+/obj/item/clothing/belt
+	icon = 'icons/obj/clothing/belts.dmi'
+	name = "belt"
+	slot_flags = SLOT_BELT
