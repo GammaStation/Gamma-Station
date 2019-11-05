@@ -487,6 +487,25 @@ the implant may become unstable and either pre-maturely inject the subject or si
 /obj/item/weapon/implant/compressed/islegal()
 	return 0
 
+/obj/item/weapon/implant/fake_loyalty
+	name = "fake loyalty implant"
+	desc = "A implant that imatate loyal implant function"
+	icon_state = "implant_evil"
+
+/obj/item/weapon/implant/fake_loyalty/get_data()
+	var/dat = {"
+	<b>Implant Specifications:</b><BR>
+	<b>Name:</b> Nanotrasen Employee Management Implant<BR>
+	<b>Life:</b> Ten years.<BR>
+	<b>Important Notes:</b> Personnel injected with this device tend to be much more loyal to the company.<BR>
+	<b>Warning:</b> Usage without special equipment may cause heavy injuries and severe brain damage.<BR>
+	<HR>
+	<b>Implant Details:</b><BR>
+	<b>Function:</b> Contains a small pod of nanobots that manipulate the host's mental functions.<BR>
+	<b>Special Features:</b> Will prevent and cure most forms of brainwashing.<BR>
+	<b>Integrity:</b> Implant will last so long as the nanobots are inside the bloodstream."}
+	return dat
+
 /obj/item/weapon/implant/cortical
 	name = "cortical stack"
 	desc = "A fist-sized mass of biocircuits and chips."

@@ -122,3 +122,11 @@
 /obj/item/weapon/implanter/storage/atom_init()
 	imp = new /obj/item/weapon/implant/storage(src)
 	. = ..()
+/obj/item/weapon/implanter/fake_loyalty
+	name = "implanter-fake-loyalty"
+
+/obj/item/weapon/implanter/fake_loyalty/atom_init()
+	imp = new /obj/item/weapon/implant/fake_loyalty(src)
+	. = ..()
+	update()
+

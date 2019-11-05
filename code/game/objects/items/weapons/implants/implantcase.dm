@@ -135,3 +135,13 @@
 /obj/item/weapon/implantcase/death_alarm/atom_init()
 	imp = new /obj/item/weapon/implant/death_alarm(src)
 	. = ..()
+
+/obj/item/weapon/implantcase/fake_loyalty
+	name = "Glass Case- 'Fake Loyalty'"
+	desc = "A case containing a fake loyalty implant."
+	icon = 'icons/obj/items.dmi'
+	icon_state = "implantcase-r"
+
+/obj/item/weapon/implantcase/fale/atom_init()
+	imp = new /obj/item/weapon/implant/fake_loyalty(src)
+	. = ..()

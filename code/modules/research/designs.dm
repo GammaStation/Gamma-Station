@@ -1763,6 +1763,15 @@ datum/design/implant_free
 	materials = list(MAT_METAL = 1000, MAT_GLASS = 1000, MAT_SILVER = 1000, MAT_GOLD = 1000, MAT_DIAMOND = 1000)
 	build_path = /obj/item/weapon/implantcase/freedom
 
+datum/design/fake_loyalty_implant
+	name = "Glass Case- 'Fake Loyalty'"
+	desc = "A case that contains fake loyalty implant."
+	id = "fake_loyalty_implant"
+	req_tech = list("syndicate" = 4, "biotech" = 4, "programming" = 4)
+	build_type = PROTOLATHE
+	materials = list(MAT_METAL = 3000, MAT_GLASS = 3000)
+	build_path = /obj/item/weapon/implantcase/fake_loyalty
+
 datum/design/chameleon
 	name = "Chameleon Kit"
 	desc = "It's a set of clothes with dials on them."

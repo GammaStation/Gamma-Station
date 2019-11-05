@@ -463,6 +463,12 @@
 /datum/uplink_item/stealthy_tools
 	category = "Stealth and Camouflage Items"
 
+/datum/uplink_item/stealthy_tools/fake_loyalty_implant
+	name = "Fake Loyalty Implant"
+	desc = "Implant that provide you trust of security and head's of the station."
+	item = /obj/item/weapon/storage/box/syndie_kit/fake_loyalty
+	cost = 2
+
 /datum/uplink_item/stealthy_tools/chameleon_kit
 	name = "Chameleon Kit"
 	desc = "A set of clothes used to imitate the uniforms of Nanotrasen crewmembers."
