@@ -25,7 +25,7 @@ var/datum/subsystem/job/SSjob
 	..()
 
 
-/datum/subsystem/job/proc/SetupOccupations(faction = "Outpost")
+/datum/subsystem/job/proc/SetupOccupations(faction = "Station")
 	occupations = list()
 	var/list/all_jobs = typesof(/datum/job)
 	if(!all_jobs.len)

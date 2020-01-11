@@ -269,12 +269,12 @@ var/datum/subsystem/shuttle/SSshuttle
 				dock_act(/area/hallway/secondary/exit, "arrival_escape")
 
 				settimeleft(SHUTTLELEAVETIME)
-/*				if(alert == 0)
+				if(alert == 0)
 					captain_announce("The Emergency Shuttle has docked with the station. You have [round(timeleft()/60,1)] minutes to board the Emergency Shuttle.")
 					world << sound('sound/AI/shuttledock.ogg')
 				else
 					captain_announce("The scheduled Crew Transfer Shuttle has docked with the station. It will depart in approximately [round(timeleft()/60,1)] minutes.")
-*/
+
 				send2slack_service("the shuttle has docked with the station")
 
 				return 1
