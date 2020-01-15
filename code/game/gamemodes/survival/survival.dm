@@ -18,10 +18,11 @@
 
 /datum/game_mode/survival/announce()
 	to_chat(world, "<B>The current game mode is - Survival!</B>")
-	to_chat(world, "<B>[sanitize("–€дова€ спасательна€ операци€ пошла совсем не так, как ожидалось и теперь, помощь нужна вам самим.")]</B>")
+//	to_chat(world, "<B>[sanitize("–€дова€ спасательна€ операци€ пошла совсем не так, как ожидалось и теперь, помощь нужна вам самим.")]</B>")
 
 
 /datum/game_mode/survival/post_setup()
+/*
 	var/output_text = {"<font color='red'>============„то здесь происходит============</font><BR>
 	[sanitize("1. ¬ы член экипажа 'ј€кса' - патрульного корвета посланного исследовать сигнал —ќ— в систему звезды HR 4979 (примерно 67 световых года от —олнца), посланный исследовательской станцией с одного из газовых гигантов системы.")]<BR>
 	[sanitize("2. Ќебольша€ колони€ “ей “енга расположена на единственной обитаемой планеты системы, основанна€ только ради исследовани€ следов вымершей цивилизации, жившей здесь столети€ назад.")]<BR>
@@ -33,6 +34,7 @@
 	for(var/mob/living/M in player_list)
 		M << browse(entity_ja(output_text), "window=doom;size=600x300")
 	SSweather.eligible_zlevels.Add(1)
+*/
 	end_time = world.timeofday + evac_delay
 	addtimer(CALLBACK(src, .proc/call_shuttle), 3000)
 
@@ -86,8 +88,8 @@
 		return
 
 	stop_waves = FALSE
-	message_admins("Gamemode has called the shuttle.")
-	log_game("Gamemode has called the shuttle.")
+//	message_admins("Gamemode has called the shuttle.")
+//	log_game("Gamemode has called the shuttle.")
 
 
 /datum/game_mode/survival/proc/time_left()

@@ -406,11 +406,11 @@ var/datum/subsystem/shuttle/SSshuttle
 								if(!M.buckled)
 									M.Weaken(5)
 						CHECK_TICK
-/*
+
 					captain_announce("The Emergency Shuttle has left the station. Estimate [round(timeleft()/60,1)] minutes until the shuttle docks at Central Command.")
 				else
 					captain_announce("The Crew Transfer Shuttle has left the station. Estimate [round(timeleft()/60,1)] minutes until the shuttle docks at Central Command.")
-*/
+
 				return 1
 
 		else
