@@ -143,6 +143,15 @@
 	new /obj/item/weapon/tank/emergency_oxygen/engi(src)
 	make_exact_fit()
 
+/obj/item/weapon/storage/box/syndie_kit/fake_loyalty
+	desc = "Fake nanites for your safety"
+	origin_tech = "syndicate=5;programming=4;biotech=4"
+
+/obj/item/weapon/storage/box/syndie_kit/fake_loyalty/atom_init()
+	. = ..()
+	new /obj/item/weapon/implanter/fake_loyalty(src)
+	make_exact_fit()
+
 /obj/item/weapon/storage/box/syndie_kit/chameleon
 	desc = "Comes with all the clothes you need to impersonate most people.  Acting lessons sold seperately."
 

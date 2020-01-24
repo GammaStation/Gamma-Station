@@ -102,4 +102,7 @@ var/datum/subsystem/economy/SSeconomy
 	department_account.transaction_log.Add(T)
 	all_money_accounts.Add(department_account)
 
+	if(department == "Cargo")
+		SSshuttle.department_account = department_account
+
 	department_accounts[department] = department_account

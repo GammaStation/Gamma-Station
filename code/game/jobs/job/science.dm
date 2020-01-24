@@ -5,6 +5,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 5000
+	max_money = 10000
 	supervisors = "the captain"
 	selection_color = "#ffddff"
 	idtype = /obj/item/weapon/card/id/sciGold
@@ -45,6 +47,8 @@
 	faction = "Station"
 	total_positions = 3
 	spawn_positions = 2
+	min_money = 1000
+	max_money = 5000
 	supervisors = "the research director"
 	selection_color = "#ffeeff"
 	idtype = /obj/item/weapon/card/id/sci
@@ -84,6 +88,8 @@
 	faction = "Station"
 	total_positions = 2
 	spawn_positions = 2
+	min_money = 2500
+	max_money = 7500
 	supervisors = "the research director"
 	selection_color = "#ffeeff"
 	idtype = /obj/item/weapon/card/id/sci
@@ -117,6 +123,8 @@
 	faction = "Station"
 	total_positions = 2
 	spawn_positions = 2
+	min_money = 1000
+	max_money = 5000
 	supervisors = "the research director"
 	selection_color = "#ffeeff"
 	idtype = /obj/item/weapon/card/id/sci
@@ -150,6 +158,8 @@
 	faction = "Station"
 	total_positions = 2
 	spawn_positions = 2
+	min_money = 1000
+	max_money = 5000
 	supervisors = "research director"
 	selection_color = "#ffeeff"
 	idtype = /obj/item/weapon/card/id/sci

@@ -345,6 +345,7 @@ var/datum/subsystem/job/SSjob
 /datum/subsystem/job/proc/EquipRank(mob/living/carbon/human/H, rank, joined_late=0)
 	if(!H)	return 0
 	var/datum/job/job = GetJob(rank)
+	H.mind.assigned_job = job
 	var/list/spawn_in_storage = list()
 
 	if(job)

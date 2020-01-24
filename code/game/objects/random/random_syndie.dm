@@ -68,6 +68,7 @@
 	prob(50);/obj/item/weapon/storage/box/syndie_kit/chameleon,\
 	prob(50);/obj/item/device/camera_bug,\
 	prob(50);/obj/item/weapon/silencer,\
+	prob(50);/obj/item/weapon/storage/box/syndie_kit/fake_loyalty,\
 	prob(50);/obj/item/ammo_casing/a145,\
 	prob(50);/obj/item/weapon/gun/syringe/syndicate,\
 	prob(100);/obj/item/weapon/storage/secure/briefcase/syndie,\

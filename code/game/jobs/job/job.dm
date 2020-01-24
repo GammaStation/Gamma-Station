@@ -42,6 +42,10 @@
 	//If you have use_age_restriction_for_jobs config option enabled and the database set up, this option will add a requirement for players to be at least minimal_player_ingame_minutes ingame minutes old. (meaning they must play a game.)
 	var/minimal_player_ingame_minutes = 0
 
+	//Account money job based system
+	var/min_money = 0
+	var/max_money = 0
+
 	var/list/restricted_species = list()
 
 	var/special_id_handling = FALSE

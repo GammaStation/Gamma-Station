@@ -138,6 +138,8 @@
 		return TRUE
 	if(wear_suit && wear_suit.IsReflect(def_zone, hol_dir, hit_dir))
 		return TRUE
+	if(belt && belt.IsReflect(def_zone, hol_dir, hit_dir))
+		return TRUE
 	if(l_hand && l_hand.IsReflect(def_zone, hol_dir, hit_dir))
 		return TRUE
 	if(r_hand && r_hand.IsReflect(def_zone, hol_dir, hit_dir))
@@ -216,6 +218,15 @@
 	return 0
 
 /mob/living/carbon/human/check_shields(damage = 0, attack_text = "the attack", hit_dir = 0)
+	if(belt && istype (belt,/obj/item/clothing/belt/energy_shield))
+		if(energy_shield)
+			if(energy_shield.active)
+				energy_shield.scell.use(damage * 2)
+				visible_message("<span class='userdanger'>[src] blocks [attack_text] with the enegy shield!</span>")
+				if(energy_shield.scell.charge == 0)
+					energy_shield.toggle_shield()
+					visible_message("<span class='userdanger'>[src]'s shield suddenly disappear!</span>")
+				return 1
 	if(l_hand && istype(l_hand, /obj/item/weapon))//Current base is the prob(50-d/3)
 		var/obj/item/weapon/I = l_hand
 		if( (!hit_dir || is_the_opposite_dir(dir, hit_dir)) && prob(I.Get_shield_chance() - round(damage / 3) ))

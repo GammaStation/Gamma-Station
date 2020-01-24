@@ -6,6 +6,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 100
+	max_money = 500
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
 	idtype = /obj/item/weapon/card/id/civ

@@ -12,7 +12,7 @@
 /obj/machinery/computer/stockexchange/proc/balance()
 	if(!logged_in)
 		return 0
-	return SSshuttle.points
+	return SSshuttle.department_account.money
 
 /obj/machinery/computer/stockexchange/ui_interact(mob/user)
 	var/css={"<style>
@@ -48,7 +48,7 @@
 	var/dat = "<html><head><title>[station_name()] Stock Exchange</title>[css]</head><body>"
 
 	dat += "<span>Welcome, <b>[logged_in]</b></span><br>"
-	dat += "<span><b>Credits:</b> [balance()]</span><br>"
+	dat += "<span><b>Department money:</b> [balance()]</span><br>"
 	dat += "<span><b>Spacetime:</b> [round(world.time / 36000)]:[add_zero("[world.time / 600 % 60]", 2)]:[add_zero("[world.time / 10 % 60]", 2)]</span><br>"
 	for (var/datum/stock/S in stockExchange.last_read)
 		var/list/LR = stockExchange.last_read[S]
@@ -165,7 +165,7 @@
 	if(!li)
 		to_chat(user, "<span class='danger'>No active account on the console!</span>")
 		return
-	var/b = SSshuttle.points
+	var/b = SSshuttle.department_account.money
 	var/avail = S.shareholders[logged_in]
 	if(!avail)
 		to_chat(user, "<span class='danger'>This account does not own any shares of [S.name]!</span>")
@@ -180,7 +180,7 @@
 		return
 	if(li != logged_in)
 		return
-	b = SSshuttle.points
+	b = SSshuttle.department_account.money
 	if(!isnum(b))
 		to_chat(user, "<span class='danger'>No active account on the console!</span>")
 		return

@@ -127,6 +127,16 @@
 
 //Much like get_heat_protection(), this returns a 0 - 1 value, which corresponds to the percentage of protection based on what you're wearing and what you're exposed to.
 /mob/living/carbon/human/proc/get_pressure_protection(pressure_check = STOPS_PRESSUREDMAGE)
+	if(energy_shield)
+		if(energy_shield.active)
+			if(istype(src.loc,/turf/space))
+				if(prob(20) && energy_shield.scell.charge >= 200)
+					to_chat(src, "<span class='warning'>Your shield loudly crack!</span>")
+					energy_shield.scell.use(200)
+				else
+					energy_shield.scell.use(50)
+			return 1
+
 	var/pressure_adjustment_coefficient = 1	//Determins how much the clothing you are wearing protects you in percent.
 
 	if(((head && (head.flags_pressure & pressure_check)) || !(BP_HEAD in species.has_bodypart)) && (wear_suit && (wear_suit.flags_pressure & pressure_check)))
@@ -1966,6 +1976,9 @@
 			if(I.implanted)
 				if(istype(I,/obj/item/weapon/implant/tracking))
 					holder1.icon_state = "hud_imp_tracking"
+				if(istype(I,/obj/item/weapon/implant/fake_loyalty))
+					has_loyal_implant = TRUE
+					holder2.icon_state = "hud_imp_loyal"
 				if(istype(I,/obj/item/weapon/implant/mindshield) && !has_loyal_implant)
 					if(istype(I,/obj/item/weapon/implant/mindshield/loyalty))
 						has_loyal_implant = TRUE

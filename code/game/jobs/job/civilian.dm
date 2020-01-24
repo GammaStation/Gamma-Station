@@ -6,6 +6,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 5000
+	max_money = 50000 // More than captain have (because this cargo, boy)!!!
 	supervisors = "the head of personnel"
 	selection_color = "#d7b088"
 	idtype = /obj/item/weapon/card/id/cargoGold
@@ -37,6 +39,8 @@
 	faction = "Station"
 	total_positions = 2
 	spawn_positions = 2
+	min_money = 100
+	max_money = 1000
 	supervisors = "the quartermaster and the head of personnel"
 	selection_color = "#d7b088"
 	idtype = /obj/item/weapon/card/id/cargo
@@ -65,6 +69,8 @@
 	faction = "Station"
 	total_positions = 3
 	spawn_positions = 3
+	min_money = 200
+	max_money = 2000
 	supervisors = "the quartermaster and the head of personnel"
 	selection_color = "#d7b088"
 	idtype = /obj/item/weapon/card/id/cargo
@@ -98,6 +104,8 @@
 	faction = "Station"
 	total_positions = 2
 	spawn_positions = 2
+	min_money = 150
+	max_money = 750
 	supervisors = "the quartermaster and the head of personnel"
 	selection_color = "#d7b088"
 	idtype = /obj/item/weapon/card/id/cargo
@@ -126,6 +134,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 100
+	max_money = 500
 	supervisors = "the head of personnel"
 	selection_color = "#bbe291"
 	idtype = /obj/item/weapon/card/id/civ
@@ -171,6 +181,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 100
+	max_money = 500
 	supervisors = "the head of personnel"
 	selection_color = "#bbe291"
 	idtype = /obj/item/weapon/card/id/civ
@@ -198,6 +210,8 @@
 	faction = "Station"
 	total_positions = 3
 	spawn_positions = 2
+	min_money = 100
+	max_money = 500
 	supervisors = "the head of personnel"
 	selection_color = "#bbe291"
 	idtype = /obj/item/weapon/card/id/civ
@@ -233,6 +247,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 100
+	max_money = 500
 	supervisors = "the head of personnel"
 	selection_color = "#bbe291"
 	idtype = /obj/item/weapon/card/id/civ
@@ -264,6 +280,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 100
+	max_money = 500
 	supervisors = "the head of personnel"
 	selection_color = "#bbe291"
 	idtype = /obj/item/weapon/card/id/civ
@@ -299,6 +317,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 100
+	max_money = 450
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
 	idtype = /obj/item/weapon/card/id/civ
@@ -327,6 +347,8 @@
 	faction = "Station"
 	total_positions = 2
 	spawn_positions = 2
+	min_money = 3000
+	max_money = 10000
 	supervisors = "the captain"
 	selection_color = "#dddddd"
 	idtype = /obj/item/weapon/card/id/civ
@@ -365,6 +387,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 100
+	max_money = 500
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
 	idtype = /obj/item/weapon/card/id/clown
@@ -399,6 +423,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 100
+	max_money = 500
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
 	idtype = /obj/item/weapon/card/id/mime

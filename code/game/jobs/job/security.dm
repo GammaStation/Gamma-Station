@@ -5,6 +5,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 5000
+	max_money = 10000
 	supervisors = "the captain"
 	selection_color = "#ffdddd"
 	idtype = /obj/item/weapon/card/id/secGold
@@ -56,6 +58,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 2500
+	max_money = 7500
 	supervisors = "the Star Vigil Commander"
 	selection_color = "#ffeeee"
 	idtype = /obj/item/weapon/card/id/sec
@@ -102,6 +106,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 1000
+	max_money = 5000
 	supervisors = "the Star Vigil Commander"
 	selection_color = "#ffeeee"
 	idtype = /obj/item/weapon/card/id/sec
@@ -145,6 +151,8 @@
 	faction = "Station"
 	total_positions = 5
 	spawn_positions = 5
+	min_money = 1000
+	max_money = 5000
 	supervisors = "the Star Vigil Commander"
 	selection_color = "#ffeeee"
 	idtype = /obj/item/weapon/card/id/sec
@@ -186,6 +194,8 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
+	min_money = 1000
+	max_money = 5000
 	supervisors = "the Star Vigil Commander"
 	selection_color = "#ffeeee"
 	idtype = /obj/item/weapon/card/id/sec

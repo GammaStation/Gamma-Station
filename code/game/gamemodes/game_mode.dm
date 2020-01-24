@@ -54,6 +54,7 @@ Stealthy and Inconspicuous Weapons;
 Whitespace:Seperator;
 Stealth and Camouflage Items;
 /obj/item/weapon/storage/box/syndie_kit/chameleon:3:Chameleon Kit;
+/obj/item/weapon/storage/box/syndie_kit/fake_loyalty:2:Fake Loyalty Implant;
 /obj/item/clothing/shoes/syndigaloshes:2:No-Slip Syndicate Shoes;
 /obj/item/weapon/card/id/syndicate:2:Agent ID card;
 /obj/item/clothing/mask/gas/voice:4:Voice Changer;

@@ -145,3 +145,138 @@
 		loc:update_icons()
 	..()
 */
+
+/obj/item/clothing/belt/energy_shield
+	name = "portable energy shield"
+	desc = "A shield capable of defend user from projectiles and melee attacks."
+	origin_tech = "materials=6;magnets=5;bluespace=4;phorontech=3"
+	icon_state = "shieldbelt"
+	actions_types = /datum/action/item_action/shield
+	var/active = 0
+	var/mob/living/carbon/human/wearer = null
+	var/obj/item/weapon/stock_parts/cell/scell = null
+	var/charge_cost = 10
+	var/shield_on = "shield-old"
+
+/obj/item/clothing/belt/energy_shield/atom_init()
+	. = ..()
+	scell = new /obj/item/weapon/stock_parts/cell
+
+/obj/item/clothing/belt/energy_shield/IsReflect(def_zone, hol_dir, hit_dir)
+	if(active)
+		return 1
+	return 0
+
+/obj/item/clothing/belt/energy_shield/equipped(mob/user, slot)
+	..()
+	if(slot == slot_belt)
+		wearer = user
+	if(istype(wearer, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = wearer
+		H.energy_shield = src
+
+/obj/item/clothing/belt/energy_shield/dropped(mob/user)
+	if(active)
+		toggle_shield()
+	if(istype(wearer, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = wearer
+		H.energy_shield = null
+	wearer = null
+
+	..()
+
+/obj/item/clothing/belt/energy_shield/proc/slot_check()
+	if(!ishuman(wearer))
+		return 1
+
+	if((slot_flags & SLOT_BELT) && wearer.belt == src)
+		return 1
+	return 0
+
+/obj/item/clothing/belt/energy_shield/proc/actble()
+	if(active)
+		to_chat(wearer, "<span class='warning'>You cannot operate with [src] while it's active!</span>")
+		return 0
+	return 1
+
+/obj/item/clothing/belt/energy_shield/attackby(obj/item/I, mob/user, params)
+	if(istype(I, /obj/item/weapon/stock_parts/cell) && actble())
+		if(scell)
+			to_chat(user, "<span class='notice'>\the [src] already has a cell.</span>")
+		else
+			if(!user.unEquip(I))
+				return
+			I.forceMove(src)
+			scell = I
+			to_chat(user, "<span class='notice'>You install a cell in \the [src].</span>")
+			src.add_fingerprint(user)
+			update_icon()
+
+	else if(isscrewdriver(I) && actble())
+		if(scell)
+			scell.update_icon()
+			scell.forceMove(get_turf(src.loc))
+			scell = null
+			to_chat(user, "<span class='notice'>You remove the cell from \the [src].</span>")
+			src.add_fingerprint(user)
+			update_icon()
+		else
+			to_chat(user, "<span class='notice'>[src] don't have any cell in it.</span>")
+	else
+		return ..()
+
+/obj/item/clothing/belt/energy_shield/verb/shield()
+	set name = "Toggle Shield"
+	set category = "Object"
+
+	if(!slot_check())
+		to_chat(wearer, "<span class='warning'>You need to equip [src] before running the shield protocol!</span>")
+		return
+	if(wearer.is_busy())
+		return
+	if(!istype(wearer, /mob/living/carbon/human))
+		to_chat(wearer, "<span class='warning'>The [src] designed only for humanoid type species!</span>")
+		return
+	if(scell.charge <= 0)
+		to_chat(wearer, "<span class='warning'>The [src] not have enough charge for this!</span>")
+		return
+	src.add_fingerprint(wearer)
+	toggle_shield()
+
+/obj/item/clothing/belt/energy_shield/proc/toggle_shield()
+	if(!active)
+		to_chat(wearer, "<span class='notice'>You launching the shield protocol.</span>")
+		if(do_after(wearer, 40, target = wearer))
+			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread()
+			s.set_up(3, 1, wearer)
+			s.start()
+			scell.use(charge_cost)
+			active = 1
+			canremove = 0
+			START_PROCESSING(SSobj, src)
+			wearer.overlays += image('icons/effects/effects.dmi', shield_on)
+			return
+	active = 0
+	canremove = 1
+	STOP_PROCESSING(SSobj, src)
+	wearer.overlays -= image('icons/effects/effects.dmi', shield_on)
+	to_chat(wearer, "<span class='notice'>Shield bubble disabled.</span>")
+
+/obj/item/clothing/belt/energy_shield/process()
+	if(scell.charge < charge_cost)
+		to_chat(wearer, "<span class='warning'>Not enough energy to support a shield!</span>")
+		STOP_PROCESSING(SSobj, src)
+		toggle_shield()
+		return
+	scell.use(charge_cost)
+
+/obj/item/clothing/belt/energy_shield/emp_act()
+	if(active)
+		toggle_shield()
+	if(scell)
+		explosion(src.loc, scell.rating / 2, scell.rating/ 2, scell.rating)
+	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread()
+	s.set_up(3, 1, src)
+	s.start()
+	qdel(src)
+	return

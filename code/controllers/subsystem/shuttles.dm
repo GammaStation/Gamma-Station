@@ -35,7 +35,7 @@ var/datum/subsystem/shuttle/SSshuttle
 	var/departed = 0
 
 		//supply shuttle stuff
-	var/points = 5000
+	var/datum/money_account/department_account = 0
 	// When TRUE, these vars allow exporting emagged/contraband items, and add some special interactions to existing exports.
 	var/contraband = FALSE
 	var/hacked = FALSE
@@ -532,11 +532,19 @@ var/datum/subsystem/shuttle/SSshuttle
 			continue
 
 		msg += export_text + "\n"
-		SSshuttle.points += E.total_cost
+		SSshuttle.department_account.money += E.total_cost
+		var/datum/transaction/T = new()
+		T.target_name = "NFS Gamma Cargo Shuttle"
+		T.purpose = "Transaction"
+		T.amount = E.total_cost
+		T.date = SSeconomy.current_date_string
+		T.time = worldtime2text()
+		T.source_terminal = "CentCom"
+		SSshuttle.department_account.transaction_log.Add(T)
 		E.export_end()
 
 	centcom_message = msg
-	//investigate_log("Shuttle contents sold for [SSshuttle.points - presale_points] credits. Contents: [sold_atoms || "none."] Message: [SSshuttle.centcom_message || "none."]", "cargo")
+	//investigate_log("Shuttle contents sold for [SSshuttle.department_account.money - presale_points] credits. Contents: [sold_atoms || "none."] Message: [SSshuttle.centcom_message || "none."]", "cargo")
 
 
 //Buyin

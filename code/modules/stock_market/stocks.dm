@@ -108,10 +108,10 @@
 		fluctuate()
 
 /datum/stock/proc/modifyAccount(whose, by, force = 0)
-	if (SSshuttle.points)
-		if (by < 0 && SSshuttle.points + by < 0 && !force)
+	if (SSshuttle.department_account.money)
+		if (by < 0 && SSshuttle.department_account.money + by < 0 && !force)
 			return 0
-		SSshuttle.points += by
+		SSshuttle.department_account.money += by
 		stockExchange.balanceLog(whose, by)
 		return 1
 	return 0
