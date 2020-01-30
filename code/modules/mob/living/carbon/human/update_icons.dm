@@ -636,7 +636,7 @@ Please contact me on #coderbus IRC. ~Carn x
 	else
 		if(blood_DNA)
 			var/image/bloodsies	= image("icon"='icons/effects/blood.dmi', "icon_state"="bloodyhands")
-			bloodsies.color = hand_dirt_color.color
+			bloodsies.color = hand_dirt_color.color			//This shit runtimes! Can't read null.color. Fix!
 			overlays_standing[GLOVES_LAYER]	= bloodsies
 
 	apply_overlay(GLOVES_LAYER)

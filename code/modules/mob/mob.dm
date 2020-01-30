@@ -85,6 +85,9 @@
 			msg = self_message
 		M.show_message(msg, 1, blind_message, 2)
 
+	for(var/obj/machinery/camera/C in view(src, world.view))
+		C.capture(message, src)
+
 // Show a message to all mobs in sight of this atom
 // Use for objects performing visible actions
 // message is output to anyone who can see, e.g. "The [src] does something!"
@@ -92,6 +95,9 @@
 /atom/proc/visible_message(message, blind_message)
 	for(var/mob/M in viewers(src))
 		M.show_message(message, 1, blind_message, 2)
+
+	for(var/obj/machinery/camera/C in view(src, world.view))
+		C.capture(message, src)
 
 // Show a message to all mobs in earshot of this one
 // This would be for audible actions by the src mob
@@ -110,6 +116,9 @@
 			msg = self_message
 		M.show_message(msg, 2, deaf_message, 1)
 
+	for(var/obj/machinery/camera/C in view(src, world.view))
+		C.capture(message, src)
+
 // Show a message to all mobs in earshot of this atom
 // Use for objects performing audible actions
 // message is the message output to anyone who can hear.
@@ -122,6 +131,9 @@
 		range = hearing_distance
 	for(var/mob/M in get_hearers_in_view(range, src))
 		M.show_message(message, 2, deaf_message, 1)
+
+	for(var/obj/machinery/camera/C in view(src, world.view))
+		C.capture(message, src)
 
 /mob/proc/findname(msg)
 	for(var/mob/M in mob_list)
