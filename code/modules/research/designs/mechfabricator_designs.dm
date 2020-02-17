@@ -898,6 +898,15 @@
 	construction_time = 120
 	category = list("Cyborg Upgrade Modules")
 
+/datum/design/borg_upgrade_combat
+	name = "Cyborg Upgrade Module (Combat Module)"
+	id = "borg_upgrade_combat"
+	build_type = MECHFAB
+	req_tech = list("materials" = 6, "combat" = 5, "engineering"= 4, "powerstorage"= 5, "bluespace" = 3)
+	build_path = /obj/item/borg/upgrade/combat
+	materials = list(MAT_METAL=80000, MAT_GLASS=60000, MAT_PHORON=20000, MAT_URANIUM=20000 , MAT_DIAMOND=5000 , MAT_GOLD=20000)
+	construction_time = 300
+	category = list("Cyborg Upgrade Modules")
 
 //Misc
 /datum/design/mecha_tracking

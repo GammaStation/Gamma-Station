@@ -37,6 +37,32 @@
 
 	return 1
 
+/obj/item/borg/upgrade/combat
+	name = "combat module"
+	desc = "Module for crisis situation, which required installed security module (Use only in red code)."
+	icon_state = "cyborg_upgrade3"
+	require_module = 1
+
+/obj/item/borg/upgrade/combat/action(mob/living/silicon/robot/R, mob/user)
+	if(..()) return 0
+	if(!istype(R.module, /obj/item/weapon/robot_module/security)) return 0
+	R.uneq_all()
+	R.hands.icon_state = "nomod"
+	var/list/icon = list("Combat Android","Acheron","Kodiak")
+	var/appearance = input(user, "Please, select your appearance", "Combat module status: on", input_default("Combat Android")) in icon
+	switch(appearance)
+		if("Combat Android")
+			R.icon_state = "droid-combat"
+		if("Acheron")
+			R.icon_state = "mechoid-Combat"
+		if("Kodiak")
+			R.icon_state = "kodiak-combat"
+	qdel(R.module)
+	R.module = new /obj/item/weapon/robot_module/combat(src)
+	R.updatename("Combat")
+	R.updateicon()
+	return 1
+
 /obj/item/borg/upgrade/rename
 	name = "robot reclassification board"
 	desc = "Used to rename a cyborg."
@@ -147,7 +173,6 @@
 		R.internals = jet*/
 	//R.icon_state="Miner+j"
 	return 1
-
 
 /obj/item/borg/upgrade/syndicate/
 	name = "illegal equipment module"
