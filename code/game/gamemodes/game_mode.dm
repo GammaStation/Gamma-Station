@@ -290,6 +290,8 @@ Implants;
 	if(security_level < SEC_LEVEL_BLUE)
 		set_security_level(SEC_LEVEL_BLUE)*/
 
+/datum/game_mode/proc/check_species_restriction(var/mob/dead/new_player/player)
+	return 1
 
 /datum/game_mode/proc/get_players_for_role(role)
 	var/list/players = list()
@@ -300,7 +302,8 @@ Implants;
 		if(player.client && player.ready)
 			if(role in player.client.prefs.be_role)
 				if(!jobban_isbanned(player, "Syndicate") && !jobban_isbanned(player, role) && !role_available_in_minutes(player, role))
-					players += player
+					if(check_species_restriction(player)) // Remove candidates with inappropriate species for role
+						players += player
 
 	// Shuffle the players list so that it becomes ping-independent.
 	players = shuffle(players)

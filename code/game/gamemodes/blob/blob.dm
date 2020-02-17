@@ -55,6 +55,11 @@ var/list/blob_nodes = list()
 
 	return 1
 
+/datum/game_mode/blob/check_species_restriction(var/mob/dead/new_player/player)
+	var/datum/species/S = all_species[player.client.prefs.species]
+	if(S)
+		return S.restricted_roles.Find(ROLE_BLOB) ? TRUE : FALSE
+	return TRUE
 
 /datum/game_mode/blob/announce()
 	to_chat(world, "<B>The current game mode is - <font color='green'>Blob</font>!</B>")

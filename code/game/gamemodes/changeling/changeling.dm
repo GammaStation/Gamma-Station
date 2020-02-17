@@ -75,6 +75,11 @@ var/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","Epsilon"
 
 	return ..()
 
+/datum/game_mode/changeling/check_species_restriction(var/mob/dead/new_player/player)
+	var/datum/species/S = all_species[player.client.prefs.species]
+	if(S)
+		return S.restricted_roles.Find(ROLE_BLOB) ? TRUE : FALSE
+	return TRUE
 
 /datum/game_mode/proc/forge_changeling_objectives(datum/mind/changeling)
 	//OBJECTIVES - Always absorb 5 genomes, plus random traitor objectives.

@@ -120,6 +120,13 @@ Made by Xhuis
 
 	return ..()
 
+/datum/game_mode/shadowling/check_species_restriction(var/mob/dead/new_player/player)
+	var/datum/species/S = all_species[player.client.prefs.species]
+	if(S)
+		return S.restricted_roles.Find(ROLE_BLOB) ? TRUE : FALSE
+	return TRUE
+
+
 /datum/game_mode/proc/greet_shadow(datum/mind/shadow)
 	to_chat(shadow.current, "<b>Currently, you are disguised as an employee aboard [world.name].</b>")
 	to_chat(shadow.current, "<b>In your limited state, you have three abilities: Enthrall, Hatch, and Hivemind Commune.</b>")

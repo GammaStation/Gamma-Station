@@ -71,6 +71,8 @@
 	var/flesh_color = "#FFC896" //Pink.
 	var/base_color      //Used when setting species.
 
+	var/list/restricted_roles = list()
+
 	//Used in icon caching.
 	var/race_key = 0
 	var/icon/icon_template
@@ -328,6 +330,7 @@
 	def_eye_icon = "skrell_eyes"
 	eyes = list("default" = "skrell_eyes")
 	blood_color = /datum/dirt_cover/purple_blood
+
 	flesh_color = "#8CD7A3"
 
 /datum/species/skrell/call_digest_proc(mob/living/M, datum/reagent/R)
@@ -486,6 +489,8 @@
 	burn_mod = 1.3
 	speed_mod = 7
 
+	restricted_roles = list(ROLE_SHADOWLING, ROLE_CHANGELING)
+
 	restricted_inventory_slots = list(slot_wear_mask, slot_glasses, slot_gloves, slot_shoes) // These are trees. Not people. Deal with the fact that they don't have these.
 
 	body_temperature = T0C + 15		//make the plant people have a bit lower body temperature, why not
@@ -606,6 +611,8 @@
 	siemens_coefficient = 1.3 // ROBUTT.
 
 	butcher_drops = list(/obj/item/stack/sheet/plasteel = 3)
+
+	restricted_roles = list(ROLE_SHADOWLING, ROLE_CHANGELING, ROLE_WIZARD, ROLE_CULTIST, ROLE_BLOB)
 
 	flags = list(
 	 IS_WHITELISTED = TRUE

@@ -55,6 +55,12 @@
 
 	return ..()
 
+/datum/game_mode/wizard/check_species_restriction(var/mob/dead/new_player/player)
+	var/datum/species/S = all_species[player.client.prefs.species]
+	if(S)
+		return S.restricted_roles.Find(ROLE_BLOB) ? TRUE : FALSE
+	return TRUE
+
 
 /datum/game_mode/proc/forge_wizard_objectives(datum/mind/wizard)
 	if (config.objectives_disabled)

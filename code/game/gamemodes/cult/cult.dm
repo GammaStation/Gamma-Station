@@ -78,6 +78,11 @@
 
 	return (cult.len >= required_enemies)
 
+/datum/game_mode/changeling/check_species_restriction(var/mob/dead/new_player/player)
+	var/datum/species/S = all_species[player.client.prefs.species]
+	if(S)
+		return S.restricted_roles.Find(ROLE_BLOB) ? TRUE : FALSE
+	return TRUE
 
 /datum/game_mode/cult/post_setup()
 	modePlayer += cult
